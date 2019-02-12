@@ -1,0 +1,2099 @@
+id,dateLastActivity,dueComplete,due,animal_type,label_names
+5a6b7b9a29e061877fb5b4f8,2018-01-31,FALSE,2018-01-26,dog,ready for review
+5a6d207d02f18c352f6f88f5,2018-01-31,TRUE,2018-01-27,dog,ready for review
+5a6a4fc9d1f3ce495577981b,2018-01-31,TRUE,2018-01-25,dog,not utd
+5a65332b1006b0fdd0aaea3f,2018-01-31,TRUE,2018-01-21,dog,not utd
+5a673b39ca4708e32046b057,2018-01-30,FALSE,NA,dog,need info
+5a6d2327e0d2616f9c2d28a5,2018-01-30,FALSE,NA,dog,"need vet info, questions"
+5a6d2243a9e6d5b837a402e6,2018-01-29,FALSE,NA,dog,not utd
+5a6a4a6a3a628d64226cf62a,2018-01-29,FALSE,NA,dog,ready to adopt
+5a6bba519049eab1fc1bc463,2018-01-29,FALSE,NA,dog,withdrawn
+59caa2354bb72a1602d3ba17,2018-01-29,TRUE,2018-01-29,dog,adopted
+59f22224624bfcaa6947079a,2018-01-29,FALSE,NA,dog,adopted
+5a36a3066151d8bb9133d4dc,2018-01-28,FALSE,NA,dog,"adopted, returned"
+5a5911347a7f0f705681239a,2018-01-28,FALSE,NA,dog,"not utd, pet policy"
+5a611de33fa47ef5c849e840,2018-01-28,FALSE,NA,dog,ready to adopt
+5a6cede96eb92235374bd385,2018-01-27,FALSE,2018-01-27,dog,ready for review
+5a6cd539c627958d40c667d9,2018-01-27,TRUE,2018-01-27,dog,adopted
+5a6caf864516d7aa1e404fa4,2018-01-27,FALSE,2018-01-27,dog,adopted
+5a500c310b20c9fae619fe88,2018-01-26,TRUE,2018-01-05,dog,"ready to adopt, adopted elsewhere"
+59fb28dd3f2fd1649009cddc,2018-01-26,FALSE,2017-11-18,dog,adopted
+5a5d26e4490ad58b20e51d53,2018-01-25,FALSE,2018-01-25,dog,adopted
+5a663bf490f498a38b4a680e,2018-01-25,TRUE,2018-01-22,dog,"ready to adopt, ready for review"
+5a69d906fa70dbed715f2a60,2018-01-25,FALSE,2018-01-25,dog,"ready for review, ready to adopt"
+5a5edd33a5350de394caa132,2018-01-25,TRUE,2018-01-15,dog,ready to adopt
+5a651727479521f66fbfaaaf,2018-01-24,FALSE,2018-01-21,dog,adopted
+5a67c1f6f142c364d5260b9e,2018-01-24,FALSE,2018-01-23,dog,ready to adopt
+5a5104cd68a0d5b73b931d5c,2018-01-23,FALSE,2018-01-10,dog,"ready for review, ready to adopt"
+5a63c4f68ee0d201de8c7ee1,2018-01-23,FALSE,NA,dog,"adopted elsewhere, need vet info"
+59ce7fc13613dea340bfa97e,2018-01-23,TRUE,2017-09-29,dog,ready to adopt
+5a64cf696cd039789b5549b6,2018-01-22,FALSE,2018-01-22,dog,ready for review
+5a64c92b85e146fdeb3484d8,2018-01-22,FALSE,NA,dog,ready to adopt
+59a9accd4d2a40adde027b21,2018-01-22,FALSE,NA,dog,adopted
+59ea5a548ae4d8b19d788379,2018-01-21,FALSE,2017-10-20,dog,adopted
+5a63be5ae8e4dbf94eb1fa90,2018-01-21,FALSE,2018-01-20,dog,adopted
+5a63b2efa3213b575d2e1345,2018-01-21,TRUE,2018-01-21,dog,adopted
+5a63c3cf212c2494ac940417,2018-01-20,FALSE,NA,dog,ready to adopt
+5a5b65d719d8c89e22a39dc5,2018-01-20,FALSE,2018-01-13,dog,not utd
+5a0742950d5775e1e566a31e,2018-01-20,FALSE,NA,dog,adopted
+5a623f6e5368d2aa9db1e9c2,2018-01-20,FALSE,2018-01-19,dog,ready to adopt
+5a56712f29525f9e70435e0f,2018-01-19,FALSE,NA,dog,ready to adopt
+58263ce7eb6d05380681c7e8,2018-01-19,FALSE,2018-02-02,dog,ready to adopt
+5a52563c6b50f6a45e519f1c,2018-01-19,FALSE,NA,dog,ready to adopt
+5a53b63ed915d2710edb50a7,2018-01-19,FALSE,NA,dog,"need to see id, ready for review"
+5a5a77f153736cd6a72594da,2018-01-18,FALSE,2018-01-13,dog,"need info, need vet info"
+59bc46ba7a43d31fdc766a8d,2018-01-18,FALSE,NA,dog,ready for review
+5a5d2b44d9f5f1ebed3f57c2,2018-01-18,FALSE,2018-01-15,dog,need vet info
+5a411b45879173e4fb57f5f4,2018-01-18,FALSE,2017-12-24,dog,ready to adopt
+5a59228ce3d9a4a827def597,2018-01-18,TRUE,2018-01-12,dog,denied
+5a53b95fd13f584f25c2d622,2018-01-18,FALSE,2018-01-08,dog,"red flag, need vet info"
+5a5135702b64b6b6ea4305f3,2018-01-18,FALSE,2018-01-06,dog,ready for review
+5a5a66cf8fd94f9c99a0b6bb,2018-01-17,FALSE,NA,dog,adopted
+5a5a6698fd57bfb91d12305f,2018-01-17,TRUE,2018-01-13,dog,"pet policy, questions"
+5a590bb9843fb40e4df4c3a1,2018-01-17,FALSE,2018-01-12,dog,ready to adopt
+5982408565bcadab5844d47c,2018-01-17,FALSE,NA,dog,adopted
+5a3d6edb189a05c00835029f,2018-01-17,TRUE,2018-01-11,dog,adopted
+5a5281830348535a1749818b,2018-01-17,FALSE,2018-01-07,dog,ready for review
+5936dc51e32a96b1bed4c068,2018-01-16,FALSE,NA,dog,adopted
+5a57b1a01ee5091c22e3fe8b,2018-01-15,FALSE,NA,dog,"need info, need vet info"
+5a54f530a55721bc77f4bd14,2018-01-15,FALSE,NA,dog,ready to adopt
+5a5bba927b7e00a6682bd7f3,2018-01-14,FALSE,NA,dog,adopted
+5a5a61efe4efc71c4ad445b8,2018-01-13,FALSE,NA,dog,adopted
+57f2dc6c30cb7228d8b43c38,2018-01-13,FALSE,NA,dog,ready to adopt
+5a15c1c8e3ffff5ce7032def,2018-01-13,FALSE,NA,dog,ready to adopt
+5a57cb6fd66b5d7960c213fb,2018-01-12,FALSE,2018-01-10,dog,ready for review
+5a500e3ee1e0f142ca3ad486,2018-01-12,FALSE,NA,dog,"need vet info, questions, not utd"
+5a539660d022734f5b61c45d,2018-01-12,FALSE,2018-01-08,dog,"ready to adopt, dog meet"
+5a4d3de2af0e37a430392339,2018-01-12,TRUE,2018-01-02,dog,"ready for review, ready to adopt, adopted elsewhere"
+5a56634d4eb8410dff8548d1,2018-01-11,TRUE,2018-01-11,dog,adopted
+5a25b47d73adccf692c4ca51,2018-01-11,FALSE,2017-12-02,dog,adopted
+5a5392e9db89fbbe79298499,2018-01-11,FALSE,NA,dog,need vet info
+5a566b5b23697a8cbb47aee4,2018-01-11,FALSE,NA,dog,"ready to adopt, ready for review"
+5a53c5ec7ea086774e0040df,2018-01-10,TRUE,2018-01-10,dog,adopted
+5a554420d6413f019d86fd52,2018-01-10,TRUE,2018-01-09,dog,"questions, need info, need vet info"
+5a53d3746c465f34628e974c,2018-01-10,FALSE,2018-01-08,dog,ready for review
+5a4fb701fd52915899e9e7df,2018-01-10,FALSE,2018-01-05,dog,adopted
+5a3e62a568ef1cb16a7367eb,2018-01-10,FALSE,2017-12-23,dog,"questions, ready for review"
+5a4be49bca52120b80818214,2018-01-10,TRUE,2018-01-10,dog,adopted
+5a395d60eabcadba12946300,2018-01-10,FALSE,2017-12-19,dog,ready to adopt
+5a50021b507bc1dd7e1fdfdf,2018-01-10,FALSE,2018-01-05,dog,ready to adopt
+5a3aee89cfe5dc1f892ad82d,2018-01-10,FALSE,2017-12-21,dog,adopted
+5a5393cd32c754882aa4366e,2018-01-10,TRUE,2018-01-06,dog,ready for review
+5a56353be6291fd5524cb1b1,2018-01-10,FALSE,2018-01-10,dog,ready for review
+5a5284a694252f885b829488,2018-01-10,FALSE,2018-01-07,dog,"ready for review, dog meet"
+5a513641eb3f7ed8f7754eb3,2018-01-09,FALSE,2018-01-06,dog,"ready for review, questions"
+5a4fb8312c3092150d13f588,2018-01-09,FALSE,2018-01-04,dog,"need info, need vet info"
+5a39b76e68c57cf026552db7,2018-01-09,FALSE,2017-12-18,dog,"red flag, need vet info, manager decision, need info"
+5a54f200995728f17f10fc08,2018-01-09,TRUE,2018-01-08,dog,"need vet info, not utd"
+5a4e7402ed93faf54caee9b3,2018-01-09,TRUE,2018-01-09,dog,ready for review
+5a553f44c7f58a1be1b8a295,2018-01-09,FALSE,NA,dog,"ready for review, questions"
+5a4bb99e512c95e3d4996878,2018-01-09,FALSE,2018-01-01,dog,need vet info
+5a3fec3bedd33b6e24e578de,2018-01-09,TRUE,2017-12-24,dog,ready for review
+5a3ff10d01be6eb6486c3bfb,2018-01-09,TRUE,2017-12-23,dog,"need vet info, questions"
+5a0ca2da34da20f53922f189,2018-01-09,FALSE,2017-12-20,dog,"adopted, ready to adopt, returned"
+5a492e8128d53aa130e41c96,2018-01-09,FALSE,NA,dog,"not utd, rescue check"
+5a28142db618bc77614d7634,2018-01-09,TRUE,2017-12-06,dog,adopted
+5a4fc172803cdc9324fa0f5e,2018-01-09,TRUE,2018-01-05,dog,ready to adopt
+5a354e661c1623c556d09951,2018-01-09,FALSE,2017-12-16,dog,"not utd, ready for review"
+5a5154325f4115344eafde38,2018-01-08,FALSE,NA,dog,ready to adopt
+5a5155b872b9f2bcf640cba4,2018-01-08,FALSE,NA,dog,"ready for review, adopted elsewhere"
+5a481f8e63c3f25dd053056a,2018-01-08,FALSE,NA,dog,adopted
+5a0f4b17b4becc40a3712c37,2018-01-08,FALSE,2017-12-14,dog,adopted elsewhere
+5a51341c5dd228fce68a8a4b,2018-01-08,FALSE,2018-01-06,dog,ready for review
+5a5135a996149788665f07cf,2018-01-08,FALSE,2018-01-06,dog,ready for review
+5a513508448039712dad0821,2018-01-08,FALSE,2018-01-06,dog,"ready for review, ready to adopt"
+5a3d80c1c35382b5cef4bdff,2018-01-07,FALSE,2017-12-22,dog,"need info, need vet info, need to see id"
+5a528370c82a08d5d2a675a9,2018-01-07,FALSE,2018-01-07,dog,ready to adopt
+5a442d09857479c022c4a59b,2018-01-07,FALSE,NA,dog,adopted
+5a03681374ae6ec5b04662be,2018-01-07,FALSE,NA,dog,ready for review
+5a5125c4f6448b6d47725126,2018-01-07,FALSE,NA,dog,adopted
+5a4bd9d60a0c3b3531ccd6f6,2018-01-06,FALSE,2018-01-02,dog,ready to adopt
+5a481ffa72b022a0eaa42f13,2018-01-06,TRUE,2017-12-30,dog,adopted elsewhere
+5a43d9e2f3bcdbc0c0893ede,2018-01-06,FALSE,2017-12-27,dog,ready for review
+5a3aa0b8ecfa7bef1f667c6f,2018-01-06,FALSE,2017-12-19,dog,ready for review
+5a3d5bec73c329b8540dbf1c,2018-01-05,FALSE,2017-12-22,dog,ready to adopt
+5a481ec1255cf64fae88e9e9,2018-01-05,FALSE,NA,dog,"questions, red flag"
+5a4d6e00970f647d5772a425,2018-01-04,FALSE,NA,dog,ready for review
+5a49383c3b12bb603d5b4bdc,2018-01-04,FALSE,2017-12-31,dog,ready for review
+5833316f93c738807b121ef4,2018-01-04,FALSE,2017-12-20,dog,adopted
+5a3bc71bad3f01038cbac3c9,2018-01-04,TRUE,2017-12-20,dog,adopted
+5a3d50ecff54bccf6edd303d,2018-01-04,FALSE,2017-12-22,dog,not utd
+5a3e625fa025b1b166da78ed,2018-01-04,FALSE,2017-12-23,dog,"ready to adopt, approved with limitation"
+5a397d1f9f878882e068f212,2018-01-04,FALSE,2017-12-18,dog,"need vet info, questions, need info"
+5a47eebc23bfed946154e815,2018-01-04,FALSE,2017-12-30,dog,"questions, ready for review, need vet info"
+59a8c177f4648d9928f4a4b8,2018-01-03,TRUE,2018-01-03,dog,adopted
+5a25da2e181b8248f6f3aa99,2018-01-03,FALSE,2018-01-03,dog,adopted
+5a3d524a9a0e9aae11a3540b,2018-01-02,TRUE,2017-12-22,dog,ready to adopt
+5a4417ce3509b665d0547b6f,2018-01-02,FALSE,NA,dog,ready to adopt
+5a3aee3c0907ca905fd6e82e,2017-12-31,FALSE,NA,dog,ready to adopt
+5a2814acec7d05eed5e3a4b9,2017-12-31,TRUE,2017-12-05,dog,ready to adopt
+5c3f4228522a894ba7fce483,2019-01-20,FALSE,2019-01-16,dog,"questions, red flag, need vet info"
+5c13de8f9b6c7252e971c285,2019-01-20,TRUE,2019-01-04,dog,adopted
+5c3f8bd720e7ef18a6f73d2a,2019-01-20,FALSE,2019-01-16,dog,ready to adopt
+5c3bad80b475a36fbc1820f7,2019-01-20,TRUE,2019-01-13,dog,"approved, reviewed with handouts only"
+5c38f4ce6c74525a6dadbafa,2019-01-20,TRUE,2019-01-11,dog,approved
+5c38c82950b1be03278bc0dc,2019-01-20,TRUE,2019-01-11,dog,"ready to adopt, reviewed with handouts only"
+5c413a4fbfd3301a7b9f8954,2019-01-19,FALSE,2019-01-18,dog,approved
+5c3b4d0119deed78dbd0d07b,2019-01-19,FALSE,2019-01-13,dog,"ready to adopt, reviewed with handouts only, dog meet"
+58e671873c542250be81a600,2019-01-19,FALSE,NA,dog,ready to adopt
+5c3a043e6b6d12377f12bb15,2019-01-19,TRUE,2019-01-15,dog,"rescue check, need vet info"
+5c4112e1dc9cac6355486c74,2019-01-19,TRUE,2019-01-17,dog,vet
+5c3cc983ff2c0e54f7d488a3,2019-01-19,TRUE,2019-01-15,dog,"need to see id, need vet info"
+5c3b8f8a4ab36f0cbef0f4cb,2019-01-19,TRUE,2019-01-13,dog,"questions, red flag"
+5c375fcd23909b6379fd9c17,2019-01-19,TRUE,2019-01-15,dog,"need vet info, pet policy"
+5c3bef64f4dbc68e1cfca6ce,2019-01-19,TRUE,2019-01-16,dog,"ready to adopt, reviewed with handouts only"
+5c3b9a18e05f5676eb2ecb76,2019-01-19,TRUE,2019-01-13,dog,adopted
+5b9547e6aecbfe774c89c775,2019-01-19,TRUE,2018-09-08,dog,adopted
+5c3613c067fb9b244e0f5ce8,2019-01-19,TRUE,2019-01-09,dog,denied
+5c3ea466ad52a4287a8d916b,2019-01-19,FALSE,2019-01-16,dog,"reviewed with handouts only, ready to adopt"
+5c39a64e6d21244d9c0ddbce,2019-01-19,FALSE,2019-01-15,dog,"pet policy, vet, questions"
+5c422427bdb41a269a4c66b2,2019-01-18,FALSE,2019-01-18,dog,approved
+5c1b059d19db22857395fe5b,2019-01-18,TRUE,2018-12-20,dog,"ready to adopt, reviewed with handouts only"
+5c40daa31314834b3bbb6860,2019-01-18,FALSE,2019-01-18,dog,adopted
+5c40ee01de55e163680e0611,2019-01-18,TRUE,2019-01-17,dog,approved
+5c3e45040b9ecf77820ad14d,2019-01-18,TRUE,2019-01-15,dog,"ready to adopt, approved, reviewed with handouts only"
+5c413184e12593625e343656,2019-01-18,FALSE,2019-01-18,dog,approved
+5c3c9f9d2e5ab48ac69b9c2d,2019-01-18,TRUE,2019-01-16,dog,"pet policy, need vet info, red flag"
+5c3fb48b1bb3f28812deb928,2019-01-18,TRUE,2019-01-13,dog,reviewed with handouts only
+5b96e4ee8f017841f9680a44,2019-01-18,FALSE,2018-09-09,dog,adopted
+5c2319b3ca466677ae0111ca,2019-01-18,FALSE,2018-12-26,dog,approved
+5c2d1a83b14c3405c71f6f38,2019-01-18,FALSE,2019-01-02,dog,"ready to adopt, reviewed with handouts only"
+5c3cf0cde0f11675f7b3dbe8,2019-01-18,FALSE,2019-01-14,dog,"approved, reviewed with handouts only"
+5b75d6572b70662d25d6a05a,2019-01-17,FALSE,2018-08-16,dog,adopted
+5c40bc51d4be35436e007488,2019-01-17,FALSE,NA,dog,approved
+5c38de72e3a545772540b0c6,2019-01-17,FALSE,2019-01-15,dog,"ready to adopt, reviewed with handouts only"
+5c3e677912abca448fddb862,2019-01-17,FALSE,2019-01-15,dog,not utd
+5c3bb6888722996ce1a19217,2019-01-17,TRUE,2019-01-13,dog,"need vet info, not utd"
+5c3b843fec90c45a63736157,2019-01-17,FALSE,2019-01-13,dog,"ready for review, approved"
+5c3a6db5b5eb0d23a561d681,2019-01-17,TRUE,2019-01-12,dog,"need vet info, opa, questions, adopted elsewhere"
+5c3aaaf9df775c82cb6a1ea8,2019-01-17,FALSE,2019-01-13,dog,checks
+5c38ecc78ac69e3747575614,2019-01-17,FALSE,2019-01-11,dog,"ready to adopt, approved, reviewed with handouts only"
+5c37cadc2aa2095894a25bc5,2019-01-17,FALSE,2019-01-10,dog,ready for review
+5c3bbab134d71e5a9fe2f417,2019-01-17,FALSE,2019-01-13,dog,need vet info
+5c350db062858857158f8573,2019-01-17,FALSE,2019-01-08,dog,"approved, reviewed with handouts only, questions"
+5c3a49d972fbfa3471cd03cc,2019-01-16,FALSE,2019-01-12,dog,"approved, reviewed with handouts only"
+5c185169edcdc02e215000d8,2019-01-16,FALSE,2018-12-18,dog,approved
+5c1be27cd5893b67cc72ec7f,2019-01-16,FALSE,NA,dog,"ready to adopt, approved, reviewed with handouts only"
+5c3cd9227333342014210b9d,2019-01-16,FALSE,2019-01-14,dog,"ready to adopt, reviewed with handouts only"
+5c3a6952a2a2f07952b78b37,2019-01-16,FALSE,2019-01-12,dog,"approved, reviewed with handouts only"
+5c3abbde23a2b683135f65be,2019-01-16,TRUE,2019-01-12,dog,"pet policy, ready for review"
+5c371864b06cdb1ce47587f2,2019-01-16,FALSE,2019-01-10,dog,"need to see id, vet, red flag"
+5c38c375a807b52d6e7e16c5,2019-01-16,FALSE,2019-01-15,dog,"pet policy, vet"
+5c38fb18b8eb701c1b474192,2019-01-16,FALSE,2019-01-11,dog,approved
+5c30fa2c6bda2c1b6d1ccf39,2019-01-16,FALSE,2019-01-05,dog,"ready to adopt, reviewed with handouts only"
+5c3e45b13d6106144fc8e5b9,2019-01-16,FALSE,2019-01-15,dog,checks
+5c3e9bc4b449734417264b25,2019-01-16,FALSE,2019-01-16,dog,"approved, reviewed with handouts only"
+5c388ed8784fd02576ae30f6,2019-01-16,FALSE,2019-01-11,dog,questions
+5c3b3d863edd83792de811e7,2019-01-16,FALSE,2019-01-13,dog,not utd
+5c30eb029a023a12b94867b6,2019-01-16,FALSE,2019-01-05,dog,vet
+5c37b88ea0fc40313675479e,2019-01-15,TRUE,2019-01-10,dog,approved
+5c3b9d4840f1525a8d91835d,2019-01-15,FALSE,2019-01-16,dog,"pet policy, vet"
+5c38fac99d99a40cd3d04d0d,2019-01-15,TRUE,2019-01-11,dog,pet policy
+5c115b88cc889424cf7b74a1,2019-01-15,FALSE,2018-12-12,dog,approved
+5c3a814599d5d884fcf03905,2019-01-15,FALSE,2019-01-12,dog,"ready to adopt, reviewed with handouts only"
+5c37e4864f16734decc31dcb,2019-01-15,FALSE,2019-01-16,dog,"questions, not utd, adopted elsewhere"
+5c3b59656d19485a9e1ebae7,2019-01-14,FALSE,NA,dog,adopted
+5c3a7abc43baba8e879bf752,2019-01-14,FALSE,2019-01-12,dog,"ready to adopt, approved, reviewed with handouts only"
+5c3914ecdd22b51e7aa901cf,2019-01-14,TRUE,2019-01-11,dog,"approved, ready to adopt, reviewed with handouts only"
+5c3a6fabcc1dcf3a5705275f,2019-01-14,TRUE,2019-01-12,dog,"approved, dog meet"
+5c390a105935a120baf267f3,2019-01-14,TRUE,2019-01-11,dog,"ready to adopt, approved, reviewed with handouts only"
+5c393cdaf67f240c9cce0c3c,2019-01-14,FALSE,2019-01-15,dog,not utd
+5c3a7fc8756e9c07333b591f,2019-01-14,FALSE,2019-01-12,dog,vet
+5c3382c3fcb24282b0f191da,2019-01-14,FALSE,2019-01-06,dog,"approved, reviewed with handouts only"
+5c38f9be867e7f1e73d9d4e4,2019-01-14,TRUE,2019-01-11,dog,reviewed with handouts only
+5c3b624a43a9c134b5737979,2019-01-14,TRUE,2019-01-12,dog,reviewed with handouts only
+5be6f7aad724a037912da39b,2019-01-14,FALSE,NA,dog,adopted
+5c3688876cfebe38ce08ba9c,2019-01-14,TRUE,2019-01-07,dog,"approved, dog meet"
+5bf0b0ec5794f48587b6815c,2019-01-14,FALSE,2018-11-18,dog,"ready to adopt, reviewed with handouts only, unsure foster or adopt"
+5c2d8a882a49fd68fdf035a4,2019-01-14,TRUE,2019-01-03,dog,"ready to adopt, reviewed with handouts only"
+5c3b62778070347933dcb742,2019-01-13,TRUE,2019-01-12,dog,pet policy
+5c06cb366c12916454fc25a5,2019-01-13,FALSE,2018-12-04,dog,adopted
+5c0e85f9f3a4ff79c41fb0a7,2019-01-13,FALSE,2018-12-10,dog,"reviewed with handouts only, approved"
+5c3b79d9b475a36fbc133e7b,2019-01-13,FALSE,2019-01-12,dog,questions
+5c3a25ba02d4f40ef504216f,2019-01-13,FALSE,NA,dog,"ready for review, reviewed with handouts only, ready to adopt, dog meet"
+5a2db738e52ce3f396d04bb9,2019-01-13,FALSE,2017-12-10,dog,adopted
+5c34d475ad6ce70206147c3a,2019-01-12,TRUE,2019-01-08,dog,"approved, ready to adopt, reviewed with handouts only"
+5c325c8ce4f53166f7b7f657,2019-01-12,TRUE,2019-01-06,dog,approved
+5c393f3387a01e3ffee01581,2019-01-12,TRUE,2019-01-12,dog,adopted
+5c392f3875c50b78f1d3d025,2019-01-12,FALSE,2019-01-11,dog,"ready to adopt, reviewed with handouts only"
+5c3126c578cb2c6f1ad019f1,2019-01-12,FALSE,2019-01-05,dog,"approved, ready for review"
+5c325c8deafde4348a7fe430,2019-01-12,TRUE,2019-01-06,dog,approved
+5c38e4280962c08e65076155,2019-01-12,TRUE,2019-01-11,dog,"approved, reviewed with handouts only"
+5c30c1e86e38d6245c4b00c8,2019-01-12,FALSE,2019-01-05,dog,not utd
+5b1afc1f0764c5ba63b71d55,2019-01-12,TRUE,2018-06-08,dog,adopted
+5bad3c7fe49242367f170bc1,2019-01-12,FALSE,2018-09-27,dog,checks
+5c34f9e24a05ff73c898e379,2019-01-12,FALSE,2019-01-08,dog,"reviewed with handouts only, ready to adopt"
+5c3541a98cbca27aa78f0486,2019-01-11,FALSE,2019-01-09,dog,approved
+5c2990a36f4532892cc59ab4,2019-01-11,TRUE,2018-12-31,dog,approved
+5c37d6d94b7bbd0911450822,2019-01-11,FALSE,2019-01-10,dog,approved
+5c3688f36eec7202d442d054,2019-01-11,FALSE,2019-01-08,dog,"red flag, denied"
+5c3246d5bfcd6d16dc8e4ce4,2019-01-11,TRUE,2019-01-06,dog,"red flag, ready for review"
+5c326fc970d5c70da9a67ad6,2019-01-11,TRUE,2019-01-06,dog,"ready to adopt, approved, reviewed with handouts only"
+5c33b1b69804b4831b4dcc66,2019-01-11,TRUE,2019-01-06,dog,"pet policy, need vet info"
+58cc4434e4ec57ee7bf95268,2019-01-11,TRUE,2017-03-18,dog,adopted
+5c32709ae4f53166f7b9e3ba,2019-01-11,TRUE,2019-01-06,dog,need vet info
+5c1ec9abbc1c5011fbcd1538,2019-01-11,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5c2ed7ac65a769543ec4370e,2019-01-11,FALSE,2019-01-03,dog,"questions, need vet info"
+5c3102a989602448378efaec,2019-01-11,FALSE,2019-01-05,dog,"need to see id, vet, need info"
+5c33595bfcf6293f7b9c4bc5,2019-01-10,FALSE,2019-01-07,dog,checks
+5c350fecbdf5f51ee9b6b629,2019-01-10,TRUE,2019-01-08,dog,"ready to adopt, approved, reviewed with handouts only"
+5c2c2c2f65f7225333868f0f,2019-01-10,TRUE,2019-01-02,dog,not utd
+5c16fafc85c2171ccf4c039d,2019-01-10,FALSE,2019-01-03,dog,"adopted, adoption follow up"
+5c340154a74cdf4cb8e73085,2019-01-10,TRUE,2019-01-08,dog,"ready to adopt, approved, reviewed with handouts only"
+5c2f9087aba96a1bea2c48c6,2019-01-10,FALSE,2019-01-04,dog,"ready to adopt, approved, reviewed with handouts only"
+5c32a3f8664455537f701d97,2019-01-10,FALSE,2019-01-08,dog,ready for review
+5c2fcbfd44ec4260600d044d,2019-01-10,FALSE,2019-01-04,dog,"ready to adopt, approved, reviewed with handouts only"
+5c277f7a9e18107856ab7aca,2019-01-10,TRUE,2018-12-29,dog,"ready to adopt, reviewed with handouts only, approved"
+5c3283e8d689d084f845be0f,2019-01-10,TRUE,2019-01-06,dog,"ready to adopt, approved, reviewed with handouts only"
+5c2e9ff03bc1686287d67ee2,2019-01-10,FALSE,2019-01-03,dog,need vet info
+5c3298bb8aae79675a852b7b,2019-01-10,FALSE,2019-01-07,dog,"need vet info, questions"
+5c327c8b1b225f51fb0eea57,2019-01-10,FALSE,2019-01-06,dog,denied
+5c26bb62bf89847583d5cf9c,2019-01-10,FALSE,2018-12-29,dog,"ready to adopt, approved, reviewed with handouts only"
+5c242cbf40a09f8b10958bf3,2019-01-10,FALSE,2018-12-27,dog,ready for review
+5c337b918c2b372f20cf7fc2,2019-01-10,FALSE,2019-01-07,dog,"ready to adopt, approved, reviewed with handouts only"
+5c336c5b4c77d439ce410d3e,2019-01-10,FALSE,2019-01-07,dog,"ready to adopt, approved, reviewed with handouts only"
+5c32c2cfc3f8271baf8cbbff,2019-01-10,TRUE,2019-01-07,dog,"approved, ready to adopt, reviewed with handouts only"
+5c311c2c11fe3c83be0adb3e,2019-01-10,TRUE,2019-01-05,dog,"ready to adopt, approved, reviewed with handouts only"
+5b2c1846f2577f894c23209a,2019-01-10,FALSE,2018-06-21,dog,"adopted, returned"
+5c328cb6b98da82832dc33cd,2019-01-09,FALSE,2019-01-06,dog,checks
+5c36376c5d1cc2432d1a49ac,2019-01-09,FALSE,2019-01-09,dog,reviewed with handouts only
+5c2a9fead01ef11fae9e7667,2019-01-09,FALSE,2018-12-31,dog,adopted
+5a68c09c493edb39d7fdb096,2019-01-09,FALSE,2018-01-24,dog,"ready for review, ready to adopt"
+5c34eb79f631254f9b45d7e0,2019-01-08,FALSE,2019-01-08,dog,ready for review
+5c2e547fc8aef16e37f20844,2019-01-08,FALSE,2019-01-02,dog,"ready to adopt, approved, reviewed with handouts only"
+5c28f79cf5ec4a30d7a3d6d8,2019-01-08,FALSE,NA,dog,"ready to adopt, approved, reviewed with handouts only"
+5c312233b6a2c17dfe049941,2019-01-08,FALSE,2019-01-05,dog,"ready to adopt, approved, reviewed with handouts only"
+5c323a111e381534fc5c4ff2,2019-01-08,FALSE,2019-01-06,dog,"ready to adopt, approved, reviewed with handouts only"
+5c31258005d64e485e227a59,2019-01-08,FALSE,2019-01-05,dog,"approved, ready to adopt, reviewed with handouts only"
+5c2d1989d32a647bc9c0caf6,2019-01-08,FALSE,2019-01-02,dog,"approved, ready to adopt, reviewed with handouts only"
+5c28b3cf30a5ba19a08cf697,2019-01-08,FALSE,2018-12-30,dog,"ready to adopt, approved, reviewed with handouts only"
+5bdb34845f79ea10ada7c94a,2019-01-08,FALSE,2018-11-01,dog,"ready to adopt, reviewed with handouts only"
+5c30eab47437b16890111163,2019-01-08,TRUE,2019-01-05,dog,"vet, denied"
+5c302a7c0d7f5383f8303def,2019-01-08,FALSE,2019-01-07,dog,adopted
+5c2e6e34f9f67983d533d3d9,2019-01-07,TRUE,2019-01-03,dog,"ready to adopt, approved, reviewed with handouts only"
+5c3206860f5e0866cebfc39e,2019-01-06,FALSE,2019-01-06,dog,questions
+5c313dc539fc6b08378ee09a,2019-01-06,TRUE,2019-01-05,dog,approved
+5c0d9c79408da7532c4dacc6,2019-01-06,TRUE,2018-12-09,dog,"ready to adopt, reviewed with handouts only"
+5c2ec12b22b06a6d0da31101,2019-01-05,TRUE,2019-01-03,dog,approved with limitation
+5ba5287349b3411a0ae9ad97,2019-01-05,FALSE,2018-09-28,dog,adopted
+5c2e557ee0db93828f17cb81,2019-01-05,TRUE,2019-01-03,dog,ready for review
+5c278ba69f6bee33648ac6b4,2019-01-05,TRUE,2018-12-29,dog,pet policy
+5c2fd545387fcc488c7b4476,2019-01-05,FALSE,2019-01-04,dog,approved
+5c30e01ee7874d30deaffe14,2019-01-05,FALSE,2019-01-05,dog,adopted
+5c1846f1a1016d1d7e3c5440,2019-01-04,FALSE,2019-01-05,dog,adopted
+5c2e611579d7575c9f655355,2019-01-04,TRUE,2019-01-03,dog,"ready for review, adopted"
+5c2fc57d9b3ec706d2891609,2019-01-04,FALSE,2019-01-04,dog,ready for review
+5c26c68acc92596dff1c821d,2019-01-04,TRUE,2018-12-28,dog,ready for review
+5c2b7b7fa0536570a536c089,2019-01-04,FALSE,2018-12-31,dog,"vet, need vet info, not utd"
+5c2a365d667cce777acecdc6,2019-01-04,TRUE,2018-12-31,dog,questions
+5c2bd0c2cbe9f786c62c2912,2019-01-04,TRUE,2018-12-31,dog,need vet info
+5b9540019b16af5621036022,2019-01-04,FALSE,NA,dog,adopted
+5c0ac858ce18b341bcec1b79,2019-01-04,FALSE,2018-12-07,dog,adopted
+5c2d4dfd22228f089ccef869,2019-01-04,FALSE,2019-01-02,dog,"pet policy, red flag, need vet info"
+5c26681e616e4b3398cbabf8,2019-01-04,TRUE,2018-12-28,dog,ready to adopt
+5c26f197b39f3e41d4eed964,2019-01-03,TRUE,2018-12-28,dog,"pet policy, ready to adopt, approved, reviewed with handouts only"
+5c2d47df0f44866354f8053a,2019-01-03,FALSE,2019-01-02,dog,adopted
+5bb64ff5371f9d6c47491cbc,2019-01-03,FALSE,2018-10-04,dog,"ready to adopt, approved, reviewed with handouts only"
+5c2d1b4f5d08091ad64de3a4,2019-01-03,TRUE,2019-01-02,dog,"ready to adopt, approved, reviewed with handouts only"
+5b183f2b5e56bc2b3f6a77bc,2019-01-03,FALSE,2018-12-29,dog,"reviewed with handouts only, adopted"
+5c2b7ae6372c610a4483af72,2019-01-03,TRUE,2018-12-31,dog,ready for review
+5c297fc5d4431c86860f7f09,2019-01-03,FALSE,2018-12-30,dog,adopted
+5c1fbb0fe35b382a04311093,2019-01-03,TRUE,2018-12-22,dog,"ready for review, approved"
+5c25249a2e73df1147945faa,2019-01-03,FALSE,2018-12-27,dog,"pet policy, need vet info"
+5c2b7b35e43b4711dcac1548,2019-01-02,FALSE,2018-12-31,dog,"ready to adopt, reviewed with handouts only"
+5908fd1fae11eff29d4ae1e0,2019-01-02,FALSE,NA,dog,"returned, approved with limitation"
+5c26b4b55daea9753fbdea96,2019-01-02,TRUE,2018-12-27,dog,"ready to adopt, approved, reviewed with handouts only"
+5c07fca81a56e105d4aca7ef,2019-01-02,FALSE,2018-12-05,dog,"reviewed with handouts only, approved"
+5c2cd14ea729a741abe17139,2019-01-02,FALSE,2019-01-02,dog,approved
+5a721ac84a0c253407abc9f6,2018-02-28,TRUE,2018-02-05,dog,"red flag, rescue check, need vet info"
+5a949616e4b81bdc8511b829,2018-02-28,FALSE,2018-02-26,dog,ready for review
+5a847e0a80f948093229dde2,2018-02-28,TRUE,2018-02-28,dog,adopted
+5a95e67b3aeed93625c2ae86,2018-02-28,FALSE,2018-02-27,dog,ready to adopt
+5a70a904981b4a89a1ea3e45,2018-02-28,FALSE,2018-01-30,dog,"adopted, returned"
+5a93302974ac537efb72eb90,2018-02-28,FALSE,2018-02-25,dog,"need vet info, need info"
+59138137e8bfd4145ec1597d,2018-02-28,FALSE,2017-05-14,dog,"adopted, adoption follow up"
+5a91e61ea0e7096afc514e9c,2018-02-28,TRUE,2018-02-24,dog,need vet info
+5a8b6149fe3f49769642dc11,2018-02-28,FALSE,2018-02-23,dog,ready to adopt
+5a8ac0b84db14d274489e0da,2018-02-28,FALSE,NA,dog,ready to adopt
+5a92d83041ff70f676a100c7,2018-02-28,FALSE,2018-02-26,dog,"ready for review, ready to adopt"
+5a933f5b6c4e02904eb24378,2018-02-27,TRUE,2018-02-25,dog,"ready for review, ready to adopt"
+5a931f898bdb9156232374ef,2018-02-27,TRUE,2018-02-26,dog,"ready for review, pet policy"
+5a837133e9a7303cdec07db9,2018-02-27,TRUE,2018-02-13,dog,adopted
+5a91d9ff846baf9f33c419fd,2018-02-27,FALSE,2018-02-24,dog,not utd
+5a860b09749bffec4f0a25e4,2018-02-26,FALSE,2018-02-15,dog,ready to adopt
+5a29cf7e33e46fa49d40450e,2018-02-26,TRUE,2017-12-07,dog,"manager decision, ready for review, denied, red flag"
+5a9081e0039f297e7015a4d6,2018-02-26,FALSE,NA,dog,"need vet info, need info, adopted elsewhere"
+599f092b881b8b9dc51172df,2018-02-26,FALSE,NA,dog,adopted
+5a931e84c60c5eb92402ca4a,2018-02-26,FALSE,2018-02-24,dog,"rescue check, need info, questions"
+5822167712252898c4002622,2018-02-26,FALSE,2016-11-07,dog,"ready to adopt, dog meet"
+5a71d486a098ae955df80e1d,2018-02-25,TRUE,2018-03-10,dog,"adopted, returned"
+5a6bbb4764106d33c959a886,2018-02-25,FALSE,NA,dog,ready to adopt
+584da9d1871552e3e4571c13,2018-02-25,FALSE,2018-02-25,dog,adopted
+5a3fd0baa498e3e622582e85,2018-02-25,FALSE,2017-12-24,dog,"approved with limitation, pet policy"
+5a80813edb1167fa265ce8fd,2018-02-25,TRUE,2018-02-10,dog,ready to adopt
+5a83298c07921899deae48da,2018-02-25,FALSE,2018-02-13,dog,ready to adopt
+5a91ce8f928cbcf02037613b,2018-02-24,FALSE,2018-02-24,dog,ready for review
+5a91d1fcc1e3c8b920784241,2018-02-24,FALSE,2018-02-24,dog,ready to adopt
+5a8d93c557b53ee6275ea36d,2018-02-23,FALSE,NA,dog,"need vet info, questions"
+5a7e2ab62abe9ac4325cc78f,2018-02-23,FALSE,NA,dog,ready for review
+5a84c574d0d91091440e144f,2018-02-22,FALSE,NA,dog,ready to adopt
+5a58eae7575e9bef6c5e67de,2018-02-22,TRUE,2018-01-12,dog,adopted
+5a8f0da53995604948c698a7,2018-02-22,FALSE,NA,dog,"pet policy, manager decision"
+5a8ddc683e3aaa47f305dc68,2018-02-22,FALSE,2018-02-21,dog,not utd
+5a89ffbcbe65da9b53fe89d0,2018-02-21,FALSE,2018-02-18,dog,"need vet info, questions"
+5a8d957e7aee205be5b7c144,2018-02-21,TRUE,2018-02-21,dog,checks
+5a8b2715a0ae077733098373,2018-02-21,FALSE,2018-02-19,dog,ready for review
+5a610ce028001c761bcbebb2,2018-02-21,FALSE,2018-01-18,dog,adopted
+5a8cadbd295e3e64ed04c6ad,2018-02-21,FALSE,2018-02-20,dog,ready for review
+5a8b27f1571a88016af11375,2018-02-20,TRUE,2018-02-19,dog,"red flag, questions, not utd"
+5a8b247bb3e217800a57a3c0,2018-02-20,FALSE,2018-02-19,dog,"need info, need vet info"
+5a887767741f1a160c4da8a1,2018-02-20,TRUE,2018-02-17,dog,ready to adopt
+5a845cd2ffecef35afd401ac,2018-02-20,TRUE,2018-02-13,dog,denied
+5953be1fc6ce5f222827f1a7,2018-02-20,TRUE,2017-08-07,dog,"adopted, returned"
+5a8b5e18893a9ea4ef317f0d,2018-02-20,FALSE,2018-02-18,dog,"need vet info, need info"
+5a858ef8d9577bd389825c12,2018-02-20,FALSE,2018-02-14,dog,"checks, need to see id, questions"
+5a7f380ba1122dfe68410bd5,2018-02-19,FALSE,2018-02-10,dog,adopted
+59aed67be4f27d5fc74a2ee6,2018-02-19,FALSE,2017-09-05,dog,questions
+5a8070b1da918d8eb7572ccf,2018-02-19,FALSE,2018-02-11,dog,questions
+5a849a73beb2a6fbc9e8e2a6,2018-02-19,FALSE,2018-02-14,dog,"questions, red flag"
+5a89fe87127c62c9b613d3e0,2018-02-19,FALSE,NA,dog,ready to adopt
+5a70a83ac3ebe70564165099,2018-02-19,FALSE,2018-01-30,dog,adopted
+5a8a019ad13ee79b45ce6288,2018-02-19,FALSE,2018-02-17,dog,"red flag, questions, withdrawn"
+5a889f354db14d27446c8717,2018-02-19,FALSE,2018-02-17,dog,ready to adopt
+5a89ed5297e63926d9b4f44f,2018-02-19,FALSE,2018-02-18,dog,"ready to adopt, ready for review"
+5a8756d144e41b30277292ab,2018-02-19,FALSE,2018-02-16,dog,ready to adopt
+5a889f890e81354a0ff9ad12,2018-02-18,FALSE,2018-02-17,dog,adopted
+5a63792af7c2eacf2d6a936d,2018-02-18,FALSE,NA,dog,ready to adopt
+5a860b226c068c4204eaff61,2018-02-18,FALSE,NA,dog,"need vet info, need info"
+5a7b8f35bee86e16522b8c4a,2018-02-17,FALSE,2018-02-07,dog,adopted
+5a7f82319ac489ea3a2351db,2018-02-17,FALSE,2018-02-10,dog,ready to adopt
+5984caf475a6d0ab6bf28b65,2018-02-16,FALSE,NA,dog,ready to adopt
+5a7c77573eecabec7c910fa7,2018-02-16,TRUE,2018-02-08,dog,adopted
+5a761833331442bbbb6905d4,2018-02-16,TRUE,2018-02-03,dog,"manager decision, questions, need vet info"
+5a858cf5c071fa26bedddc8b,2018-02-16,FALSE,2018-02-14,dog,"need vet info, ready for review"
+5a8728ef461417e3740c0ae9,2018-02-16,FALSE,NA,dog,ready for review
+5a7f7fa6dee0d09380d7e155,2018-02-15,FALSE,2018-02-10,dog,"red flag, questions"
+5a832b5a16c28b909ef7fdb7,2018-02-15,TRUE,2018-02-14,dog,ready to adopt
+5a808d102abe9ac432851364,2018-02-15,FALSE,2018-02-12,dog,ready for review
+5a832b29c18d3ba842d09bba,2018-02-15,FALSE,2018-02-12,dog,need vet info
+5a84c6baeb14aebee58f9463,2018-02-15,FALSE,2018-02-10,dog,"need info, need vet info, pet policy"
+5a84c5d7db538ad333e04dce,2018-02-15,FALSE,2018-02-10,dog,ready to adopt
+5a7f83c771142c9cdbf9dfa8,2018-02-15,FALSE,2018-02-13,dog,"ready for review, ready to adopt"
+5a7f82da4a955e2f9fd7e390,2018-02-14,FALSE,2018-02-10,dog,"ready for review, questions"
+5a74f10e0d0a1d9ccaece5c4,2018-02-13,FALSE,NA,dog,ready to adopt
+5a7dd923db2b90e1850be899,2018-02-13,FALSE,NA,dog,"ready for review, questions"
+5a7a048aff0b3e387021064c,2018-02-13,TRUE,2018-02-08,dog,"ready for review, adopted elsewhere"
+5a81ed0d235df9d537392a7d,2018-02-12,FALSE,NA,dog,"ready for review, questions"
+57e5869373e21eb39c9bf6a9,2018-02-12,FALSE,NA,dog,ready to adopt
+5a7c7ef20619d90e0c6b0a37,2018-02-12,FALSE,NA,dog,ready to adopt
+5a74c39d40a8e5096418880c,2018-02-12,FALSE,NA,dog,ready to adopt
+5a7f344bdd992e466c308799,2018-02-12,FALSE,NA,dog,ready for review
+5a809745e38e0fdf10b3ee17,2018-02-11,FALSE,2018-02-11,dog,"need info, ready for review"
+5a7f5e735551fc62e67401a6,2018-02-11,FALSE,NA,dog,ready for review
+5a622b242b3c7e16cbb1795e,2018-02-10,FALSE,NA,dog,"ready to adopt, adopted elsewhere"
+5a78e54930d933987f4392d3,2018-02-10,FALSE,2018-02-05,dog,not utd
+5a79dbca373deef88f8463f1,2018-02-10,TRUE,2018-02-05,dog,ready for review
+5a737f8bc757462903eb5ec8,2018-02-10,TRUE,2018-02-01,dog,ready for review
+5a7e292b0f0e4c34c28c3714,2018-02-10,TRUE,2018-02-09,dog,ready to adopt
+5a7b5d6190cc64f8273d3de1,2018-02-10,TRUE,2018-02-11,dog,adopted
+5a762d455ee9637019f62223,2018-02-10,FALSE,2018-02-03,dog,"questions, pet policy, manager decision, needs app attached"
+5a79dbfd350fad492563f51c,2018-02-09,FALSE,NA,dog,ready to adopt
+5a78b9e669725ba80499c058,2018-02-09,FALSE,NA,dog,"questions, pet policy, need vet info"
+5a763217a5c6eea038afb1a0,2018-02-09,FALSE,2018-02-03,dog,ready to adopt
+5a78c05a380c4e00d11f990b,2018-02-09,FALSE,2018-02-08,dog,ready for review
+5a7c6c899089cd895fc903bc,2018-02-09,FALSE,NA,dog,"need vet info, questions"
+5a7b4167b8dbc0f83c59415f,2018-02-09,TRUE,2018-02-06,dog,ready for review
+5a7b2fe4ca08d7aba78107de,2018-02-09,FALSE,NA,dog,denied
+5a7a0243388ac188914778ba,2018-02-09,FALSE,2018-02-08,dog,"questions, ready for review"
+5a7758fda5c6eea038c3a07b,2018-02-09,FALSE,2018-02-04,dog,ready for review
+5a75fcba4702dc8d907ce151,2018-02-08,FALSE,2018-02-06,dog,need vet info
+5a7606e9a75d58fae42b615c,2018-02-08,TRUE,2018-02-03,dog,"questions, red flag"
+5a6fb1568e537530036ee72f,2018-02-08,TRUE,2018-02-08,dog,ready for review
+5a75eb547891790a64fc748e,2018-02-08,TRUE,2018-02-03,dog,"red flag, manager decision, rescue check"
+5a67cdaef493664a8114339a,2018-02-08,FALSE,NA,dog,ready to adopt
+5a7b5a790f2af318ec83ea64,2018-02-08,FALSE,2018-02-07,dog,adopted
+5a7b4a3c060c1f1606ce492a,2018-02-08,FALSE,2018-02-08,dog,ready to adopt
+5a7601ca47f42bd438b102ec,2018-02-07,FALSE,NA,dog,ready for review
+5a7b2bd982cb2a5f8ddac0c4,2018-02-07,FALSE,2018-02-12,dog,ready to adopt
+5a526e06eb3f7ed8f78657f8,2018-02-07,FALSE,NA,dog,"ready to adopt, unsure foster or adopt"
+5a7a0c69a5c12328355bde1c,2018-02-06,FALSE,2018-02-06,dog,ready to adopt
+5a42d9122b9ef302768cb42d,2018-02-06,FALSE,NA,dog,adopted
+59dd43c7417cd3f9336de4e9,2018-02-06,FALSE,2017-10-16,dog,withdrawn
+5a7243ee5ef0b9bf26c43c3b,2018-02-05,FALSE,NA,dog,adopted
+5a75ea88eca6e1fd75261f88,2018-02-05,FALSE,2018-02-02,dog,ready to adopt
+5a4d6dafe75cce41023b3261,2018-02-05,TRUE,2018-01-03,dog,"adopted, returned"
+5a74ebc582fa80ea8d741e36,2018-02-05,FALSE,2018-02-02,dog,"need info, questions, need vet info"
+5a6fb28f185dad0111367e70,2018-02-05,FALSE,2018-01-29,dog,not utd
+5a592264586291c82da1dc27,2018-02-05,FALSE,NA,dog,ready to adopt
+5a6222c7eb6888ca79a24da5,2018-02-04,FALSE,NA,dog,adopted
+5a76271f536bc6ec61804677,2018-02-03,FALSE,2018-02-03,dog,ready to adopt
+5a736c624de7e01024d4f2e3,2018-02-03,FALSE,NA,dog,ready for review
+5a74f2cbfe75a614da7701a0,2018-02-03,FALSE,NA,dog,"need to see id, questions"
+5a74dffc87ee6a8d649405de,2018-02-03,FALSE,NA,dog,"ready to adopt, ready for review"
+57d842f89d3660322074bfd0,2018-02-03,FALSE,NA,dog,"need info, need vet info, questions"
+5a74fa31f3c3eefd3a590077,2018-02-03,FALSE,2018-02-02,dog,ready to adopt
+5a5a7da05d47fa1bf91b33db,2018-02-02,FALSE,2018-01-15,dog,adopted
+59fdffb40b36e6e8c0f6cd63,2018-02-02,FALSE,NA,dog,"ready to adopt, ready for review"
+5a6fb2b9ed4e648dad1f5915,2018-02-02,TRUE,2018-02-02,dog,adopted
+5a6a445dde2cdd58df762900,2018-02-02,TRUE,2018-01-25,dog,ready to adopt
+59eb7157137eeb3cfc54c4a6,2018-02-01,FALSE,2017-10-21,dog,ready to adopt
+5abd4616b52d7ce51416e72d,2018-03-31,FALSE,NA,dog,adopted
+5ab567cb7c1650e225c52839,2018-03-31,TRUE,2018-03-23,dog,adopted
+5aba970b6b4dae7ba1921669,2018-03-30,FALSE,NA,dog,ready to adopt
+5aa2db950209e30fbe1eee4f,2018-03-30,FALSE,2018-03-09,dog,"ready to adopt, reviewed with handouts only"
+5aba9624bf461e88a6cc0fc8,2018-03-30,FALSE,2018-03-27,dog,ready for review
+59987273198614ec8ecb522d,2018-03-30,FALSE,2018-03-28,dog,"adopted, red flag, adoption follow up"
+5ab811d00a76825169b07ef4,2018-03-30,FALSE,2018-03-25,dog,ready for review
+5ab823b38d4e6e5afc6cba7d,2018-03-30,TRUE,2018-03-25,dog,"questions, ready for review, adopted elsewhere"
+5ab81ae09625744781eebc29,2018-03-30,FALSE,2018-03-25,dog,"questions, ready for review"
+5ab6e42a0e1b7c7905583188,2018-03-30,FALSE,2018-03-24,dog,ready for review
+5ab578a132f0d2e6a989020b,2018-03-30,FALSE,2018-03-23,dog,"withdrawn, ready to adopt"
+5abd57823e8383cf84258e80,2018-03-29,FALSE,NA,dog,ready to adopt
+5aafe76599dd8b67112dfcc6,2018-03-29,TRUE,2018-03-19,dog,ready to adopt
+5ab2ad76812d5428cd5360a2,2018-03-29,TRUE,2018-03-20,dog,questions
+5aaedb35eed1a2edc64e684d,2018-03-29,TRUE,2018-03-18,dog,"ready for review, adopted elsewhere"
+5aac0047f843d5888aa993b1,2018-03-29,FALSE,NA,dog,adopted
+57b38ab0ed6471133f522ea2,2018-03-28,FALSE,NA,dog,ready to adopt
+5ab934914e20268f4463656f,2018-03-28,FALSE,NA,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5ab66c7f0d01954f953ec0f2,2018-03-27,TRUE,2018-03-23,dog,ready to adopt
+5ab925450cdc8ff7952bb5e1,2018-03-27,FALSE,NA,dog,adopted
+5ab421985d8f4e85fb6da7aa,2018-03-27,FALSE,NA,dog,adopted elsewhere
+5ab577f4ea63d54fa1fef001,2018-03-26,FALSE,2018-03-23,dog,not utd
+5ab7d5cd3a6a921b6ed13732,2018-03-26,FALSE,2018-03-25,dog,"need vet info, need to see id, not utd"
+5ab5744617b5b78c4d1d915a,2018-03-26,FALSE,2018-03-23,dog,need vet info
+5ab148a31e1bcb1a7913732a,2018-03-26,FALSE,NA,dog,"ready for review, adopted elsewhere"
+5ab3e515f3db5b996541360d,2018-03-26,FALSE,2018-03-21,dog,ready to adopt
+5aa465d79fa35856a5a2e483,2018-03-26,FALSE,NA,dog,"need vet info, need info"
+5ab67fcf735600f82b028723,2018-03-26,TRUE,2018-03-24,dog,ready for review
+5ab0349d5ce285c767f729d5,2018-03-26,FALSE,2018-03-18,dog,ready to adopt
+5ab7d528fb9ea0d02d348e44,2018-03-26,TRUE,2018-03-25,dog,ready to adopt
+5ab69327a551960451a7ac0b,2018-03-26,FALSE,2018-03-24,dog,ready to adopt
+5ab8094bd953df8f4aa8cdd3,2018-03-26,FALSE,2018-03-25,dog,not utd
+5ab8062c20d11036d2cb4958,2018-03-26,FALSE,2018-03-25,dog,need vet info
+596fbeb92bfb0758d4ee050a,2018-03-25,FALSE,NA,dog,NA
+5a4bc96145e577aad8e99681,2018-03-25,FALSE,2018-01-02,dog,ready to adopt
+595541004140c0e83de0897d,2018-03-24,FALSE,NA,dog,adopted
+5aad85eadd7bd60d3ddd15bb,2018-03-24,TRUE,2018-03-17,dog,ready for review
+58b9e107678cbfde81d32020,2018-03-24,FALSE,2017-03-03,dog,"returned, adopted"
+5aa95adfe5f3a11a70ebcfed,2018-03-24,FALSE,2018-03-14,dog,not utd
+5aad919e43d6899156c9a6ba,2018-03-24,TRUE,2018-03-17,dog,not utd
+597f84af822bb55c19941433,2018-03-24,FALSE,2018-03-04,dog,"need vet info, red flag"
+5a67be4af9a15b2a92b920a3,2018-03-23,TRUE,2018-01-23,dog,"not utd, manager decision"
+5aac2bd7aedddbc975f2abea,2018-03-23,FALSE,NA,dog,ready to adopt
+5a91c70d3f21bcb4a5cbe1b8,2018-03-23,TRUE,2018-02-23,dog,"reviewed with handouts only, ready to adopt"
+5ab42a53cfb3e385da810710,2018-03-23,FALSE,2018-03-22,dog,"ready for review, questions, red flag"
+5aad731668bb6f024c30e7d1,2018-03-23,TRUE,2018-03-17,dog,ready to adopt
+5aafe711cf9684810c10c139,2018-03-22,FALSE,2018-03-18,dog,ready to adopt
+5aad51ffe1f4852a937a52f3,2018-03-22,FALSE,2018-03-17,dog,"need info, questions"
+5aa846d5c23633205c94ce65,2018-03-22,FALSE,2018-03-13,dog,"ready for review, questions"
+5ab0363f0cd2a2be0aecac4c,2018-03-22,FALSE,2018-03-19,dog,ready for review
+5aaad8829861ea7779c98b9d,2018-03-22,FALSE,2018-03-15,dog,"red flag, manager decision, pet policy"
+5aafde33994329cdc3c09198,2018-03-22,TRUE,2018-03-18,dog,adopted
+5aac159ee24db9b67c4da21a,2018-03-22,FALSE,2018-03-16,dog,"ready for review, questions"
+5aad55c88c93ddf17c408420,2018-03-22,FALSE,2018-03-17,dog,ready for review
+5aa94707995d11376854bdc9,2018-03-22,FALSE,2018-03-13,dog,"need info, need vet info"
+5a397db3a2da4370ad8c5b90,2018-03-22,TRUE,2018-01-11,dog,returned
+5ab03aac25c0b3191570302c,2018-03-21,FALSE,2018-03-19,dog,ready to adopt
+5aafddc7afa13a8148b86fa1,2018-03-20,FALSE,NA,dog,ready to adopt
+5aa82358daec41ca7616799b,2018-03-20,FALSE,NA,dog,ready to adopt
+5aa453e3e3687aec985698c6,2018-03-20,FALSE,NA,dog,ready for review
+5a7f525fbef2ce25d3db070d,2018-03-20,FALSE,NA,dog,"ready to adopt, dog meet"
+5aa95b3442000ce06af0c9b3,2018-03-20,FALSE,2018-03-14,dog,"ready to adopt, reviewed with handouts only"
+5aac2c06bff72a2c0f2a1bec,2018-03-20,FALSE,2018-03-16,dog,"ready to adopt, reviewed with handouts only"
+5aa95854990ff6abec050ec3,2018-03-20,FALSE,2018-03-13,dog,need vet info
+5aad732017e0bfcae7016374,2018-03-20,TRUE,2018-03-17,dog,"ready to adopt, reviewed with handouts only"
+5aa54390ba204141ab7ade78,2018-03-20,FALSE,2018-03-10,dog,ready for review
+5aa6f77370606559075ab13c,2018-03-19,FALSE,NA,dog,ready for review
+5aae9992e0fd98b681088962,2018-03-19,FALSE,2018-03-18,dog,ready for review
+5aa43202492dd1b0a3656a18,2018-03-19,FALSE,NA,dog,ready to adopt
+5aada8bd32eff73816796f77,2018-03-19,FALSE,NA,dog,ready to adopt
+5aad7ca4fa2bd8da2a550668,2018-03-19,FALSE,2018-03-17,dog,ready for review
+5aaed27cb4b48923f82ae5b2,2018-03-18,FALSE,2018-03-18,dog,pet policy
+5aaab7e959b020d58d747157,2018-03-18,TRUE,2018-03-18,dog,adopted
+5aa6d2e522699c400c0ae19b,2018-03-17,FALSE,2018-03-14,dog,adopted
+5aa55c7512ece3a214741c7a,2018-03-17,TRUE,2018-03-11,dog,ready to adopt
+586d0d37b0e1c5f0a1afb54d,2018-03-17,FALSE,NA,dog,ready to adopt
+5a6fb2aee3ba74647e275d6a,2018-03-17,TRUE,2018-03-18,dog,adopted elsewhere
+5aac366312915f40f2432abc,2018-03-16,FALSE,2018-03-16,dog,ready to adopt
+5a9de0a158cc27a17a4267ac,2018-03-16,FALSE,NA,dog,ready to adopt
+5aa4036f1dd2e47524d1be37,2018-03-15,TRUE,2018-03-15,dog,"ready to adopt, ready for review"
+5aa6d334b1f0b5ecf265d782,2018-03-15,FALSE,2018-03-11,dog,ready for review
+5aa99529a06acf3972bf8a8f,2018-03-15,FALSE,NA,dog,adopted
+5aa07a0b7c150bfc131799cd,2018-03-15,TRUE,2018-03-07,dog,ready for review
+5aa2cd847abea4036ab5fbce,2018-03-15,TRUE,2018-03-08,dog,adopted
+5a9b177743274d4176983546,2018-03-15,FALSE,2018-03-03,dog,"questions, red flag"
+5aa4281fe415b52973609644,2018-03-14,TRUE,2018-03-10,dog,adopted
+5aa9800f6058f944473399ac,2018-03-14,FALSE,2018-03-14,dog,"ready to adopt, reviewed with handouts only"
+5aa95ab3dc45c86bd6943abb,2018-03-14,TRUE,2018-03-14,dog,ready to adopt
+59de33e6e35a8f9f8e9723a7,2018-03-14,FALSE,NA,dog,adopted
+5aa815ddf4f6959ee078ac8f,2018-03-13,FALSE,NA,dog,adopted
+5a9edfc26b221050cb4baf36,2018-03-13,FALSE,2018-03-06,dog,not utd
+5a9ff010d81fb5f07ea6fe51,2018-03-13,FALSE,2018-03-07,dog,withdrawn
+5aa3119aef457aaa478c7309,2018-03-13,FALSE,NA,dog,ready to adopt
+5aa6fcf165964d21e2928189,2018-03-13,FALSE,NA,dog,ready to adopt
+5aa6f8c7ad16c74b22fa04fa,2018-03-13,TRUE,2018-03-12,dog,"questions, need vet info"
+5a9ef67443dc8b505034b65d,2018-03-12,FALSE,NA,dog,ready to adopt
+5aa3113bf9c6be29b2a1a5f1,2018-03-12,FALSE,NA,dog,ready to adopt
+57ee9810f102d944cb72aa74,2018-03-12,TRUE,2018-03-10,dog,ready for review
+5a95b8ff26a98423d299085a,2018-03-12,FALSE,NA,dog,adopted
+5a42aeb06f2eb76e596af4af,2018-03-11,FALSE,NA,dog,ready for review
+5aa421cd2d1086d0c77c188c,2018-03-11,FALSE,NA,dog,adopted
+5a9bff42503d35772c38c18c,2018-03-11,FALSE,NA,dog,"red flag, questions, not utd, need vet info"
+5a9ec8d90f3a0cccf5a3a821,2018-03-11,FALSE,NA,dog,adopted
+5a107658328cf931b9525978,2018-03-10,TRUE,2018-02-13,dog,adopted
+5a9f1b858479eccb7b2e592d,2018-03-10,FALSE,NA,dog,ready to adopt
+5a9ec51d160b25502bdf5037,2018-03-10,FALSE,NA,dog,ready to adopt
+5aa421aa3e3792298b7f2adc,2018-03-10,FALSE,2018-03-11,dog,ready to adopt
+5aa1cb2dc48838c91a06992e,2018-03-10,TRUE,2018-03-10,dog,adopted
+5a9bfdf9cbc988ca987fa363,2018-03-09,FALSE,NA,dog,ready to adopt
+5aa2d7d2ffb4a9aa5ef05758,2018-03-09,TRUE,2018-03-08,dog,"ready to adopt, reviewed with handouts only"
+5a9bfa3412f26265b83629cc,2018-03-09,FALSE,NA,dog,"need vet info, not utd, questions"
+59d4e36e7235b88b9f43aa1e,2018-03-09,FALSE,2018-02-26,dog,"red flag, need vet info, not utd"
+5a3d792046c9a7e6fcb8aeb5,2018-03-09,FALSE,NA,dog,ready to adopt
+5a9d9f1b40bbf38094161cc7,2018-03-08,FALSE,NA,dog,adopted
+5a8c8598e256ecb75628c3d2,2018-03-08,FALSE,2018-02-19,dog,"red flag, need vet info, manager decision, need info, questions"
+5a4691e9f11ea55ece65a018,2018-03-08,TRUE,2017-12-27,dog,ready to adopt
+5a4931a04b551abc0df49db4,2018-03-08,FALSE,2018-01-12,dog,adopted
+5a43dc301ae6cccb1064851e,2018-03-08,FALSE,2017-12-27,dog,"declaw only, adopted"
+59cbbfbab28a535540fbeeb6,2018-03-08,FALSE,NA,dog,ready to adopt
+5a91cebc7fbd07b8b8c3b82d,2018-03-08,FALSE,2018-03-03,dog,"adopted, red flag"
+5a9da68eea4f2b9f34d41673,2018-03-08,FALSE,2018-03-05,dog,ready for review
+5a9d9fe497b3cf7591c8bdba,2018-03-07,FALSE,2018-03-05,dog,denied
+58ced43768d12144e15bb67c,2018-03-07,FALSE,2018-03-07,dog,adopted
+5a9f215224d709e230b1eb78,2018-03-07,FALSE,2018-03-06,dog,ready to adopt
+5a9c5cd3bd8beff3d22cf24c,2018-03-06,FALSE,2018-03-04,dog,ready for review
+5a9b108ef9ab0d1895ec4297,2018-03-06,FALSE,2018-03-03,dog,not utd
+5a9b4cd97c24dd45c2f45c3c,2018-03-06,FALSE,2018-03-03,dog,ready for review
+58b342ef96ecc58e13a3885c,2018-03-06,TRUE,2017-03-04,dog,"returned, denied"
+5a957842ed260b1225cfc7dc,2018-03-06,FALSE,2018-02-26,dog,"need vet info, need info, withdrawn"
+5a9ec0ec612faa84faf1f5f5,2018-03-06,FALSE,2018-03-06,dog,checks
+5a9d638103ccff330b166355,2018-03-06,FALSE,2018-03-05,dog,"need info, need vet info"
+5a9cad05a6d489eca577869a,2018-03-06,FALSE,2018-03-04,dog,ready for review
+5a9c1006fe224eb71e4bac70,2018-03-06,FALSE,2018-03-04,dog,"need to see id, need vet info, questions"
+5a9c10058f336786b1c4ed57,2018-03-06,FALSE,2018-03-04,dog,need vet info
+5a2815106c263c73aa2e639d,2018-03-06,FALSE,2017-12-06,dog,ready to adopt
+5a9bfcaafdec66c80e930748,2018-03-06,FALSE,NA,dog,ready for review
+5a9c6bf4929f70c995ae8a81,2018-03-06,FALSE,2018-03-04,dog,ready for review
+5a7b487b830ee63d10c7e901,2018-03-06,FALSE,NA,dog,"ready to adopt, dog meet"
+5a9dac01d8f9fc55129dcab3,2018-03-05,TRUE,2018-03-05,dog,adopted
+5a9937dd0ba8eedd2a52f3b5,2018-03-05,FALSE,2018-03-01,dog,ready to adopt
+5a99349e143d8c08c55f839c,2018-03-05,TRUE,2018-03-02,dog,"need vet info, adopted elsewhere"
+5a986bbcd3c87361dec90199,2018-03-05,FALSE,2018-02-28,dog,"ready for review, questions"
+5a95df317d5226ba2c44aee8,2018-03-05,FALSE,2018-02-27,dog,"questions, ready for review, red flag"
+5a95b6099c829abfb8ab2b4a,2018-03-05,FALSE,2018-02-27,dog,ready for review
+5a8c9814335e6dc5db709790,2018-03-05,FALSE,2018-02-20,dog,"questions, need info, red flag"
+5a99fc43f0778f8d47cf41fb,2018-03-04,TRUE,2018-03-02,dog,ready for review
+5a9afb26499d8c85c6850bb0,2018-03-04,TRUE,2018-03-03,dog,ready for review
+5a9577d6bb4220368421792d,2018-03-04,TRUE,2018-02-25,dog,"ready to adopt, ready for review"
+5a9576a3de5358ad3186cd3d,2018-03-03,FALSE,2018-02-27,dog,adopted
+5a8a0215b6f99983b77d6917,2018-03-03,FALSE,2018-02-18,dog,pet policy
+5a1aeef5bb58c31d63b3c68c,2018-03-03,TRUE,2017-11-25,dog,adopted
+5a95b38c5ff98b5a68a5e50f,2018-03-03,FALSE,NA,dog,"need to see id, questions, adopted elsewhere"
+5a95bef145d9cdac2bf5c360,2018-03-03,TRUE,2018-02-26,dog,"need vet info, need info, not utd"
+5a1211ecfaf4daf3d89a08f6,2018-03-03,TRUE,2018-03-03,dog,adopted
+59c031c15cf33b04485e9e5a,2018-03-02,FALSE,2017-09-16,dog,adopted
+59b5aeaab0baa30b4cce99eb,2018-03-01,TRUE,2017-09-11,dog,adopted
+5a957a2deb6fcdbc04935e6f,2018-03-01,FALSE,2018-03-01,dog,adopted
+5a91c4973900fb7def72eb0b,2018-03-01,TRUE,2018-02-15,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5a95d0f78fdb3a363651eb21,2018-03-01,TRUE,2018-02-27,dog,"need to see id, ready for review"
+5a91b89c8d569114651585aa,2018-03-01,TRUE,2018-02-24,dog,ready for review
+5a96eb446f98856138dde235,2018-03-01,FALSE,2018-02-28,dog,"ready to adopt, ready for review"
+5ae4b6adf1626e328d14159c,2018-04-30,TRUE,2018-04-27,dog,ready to adopt
+5ae4b832a0cdfaa82b6c9c55,2018-04-30,FALSE,NA,dog,ready to adopt
+5ae1f54a745716e98149edd6,2018-04-30,FALSE,2018-04-25,dog,"ready for review, ready to adopt"
+5ae6063736e64de1fe7c758d,2018-04-30,FALSE,NA,dog,ready to adopt
+5ae67c8d6f8a528b85a92a49,2018-04-30,FALSE,NA,dog,ready for review
+5ad8d50aea2d356e77586998,2018-04-29,TRUE,2018-04-19,dog,"ready to adopt, reviewed with handouts only"
+5adcffbfacbb37c76536a6f3,2018-04-29,TRUE,2018-04-22,dog,"pet policy, ready for review, questions"
+5ae24ffe1e93c2cfd0f86fc5,2018-04-28,TRUE,2018-04-26,dog,adopted
+599f30f399db130d27578475,2018-04-28,TRUE,2017-08-24,dog,ready for review
+5ad662a491d3fd33b94888c0,2018-04-27,FALSE,2018-04-17,dog,ready to adopt
+5ae37b37bb215e3fdd75a653,2018-04-27,TRUE,2018-04-27,dog,"ready to adopt, reviewed with handouts only"
+5ae21d6bf56fe94770f3938d,2018-04-27,FALSE,NA,dog,"ready for review, need info"
+5ada3f8692b38f3f5b31c38e,2018-04-27,TRUE,2018-04-20,dog,pet policy
+5ae0c106aeb29ed377481efe,2018-04-27,FALSE,2018-04-25,dog,ready for review
+5adcb685dcf5b8a5727731e9,2018-04-26,FALSE,2018-04-22,dog,"need vet info, questions"
+5accf208b06025738d867d91,2018-04-26,FALSE,2018-04-10,dog,ready to adopt
+5ae0eb6d11c8159a380cac77,2018-04-25,FALSE,2018-04-25,dog,ready for review
+5ac911314cb0b3a12359d829,2018-04-25,FALSE,2018-04-30,dog,"adopted, ready to adopt, returned"
+5a1362f328f9ea04f6d08e6d,2018-04-25,TRUE,2017-11-18,dog,"adopted, red flag, adoption follow up"
+5adcd1995cd3316ce7c550a0,2018-04-24,FALSE,NA,dog,adopted
+5adb8c8d3ba09b2bbb652e89,2018-04-24,FALSE,2018-04-21,dog,ready for review
+5ade1f6f603558b157c69e65,2018-04-24,FALSE,2018-04-24,dog,ready for review
+594e92cac61b351cf09fd1da,2018-04-24,FALSE,2017-06-24,dog,adopted
+5ace7b6fee5344df8a7ce056,2018-04-24,TRUE,2018-04-11,dog,"red flag, manager decision, adopted elsewhere"
+5ad8d5557dcda4b16f5543ed,2018-04-24,TRUE,2018-04-19,dog,ready to adopt
+5ad7c38c2ce957978896bb92,2018-04-23,TRUE,2018-04-23,dog,ready to adopt
+5ada6488c85bd7c927fa6fca,2018-04-23,FALSE,NA,dog,ready for review
+5a1dc1af43e1997f8c6b0ddd,2018-04-23,TRUE,2017-12-16,dog,"returned, ready to adopt"
+5add0b542b27624c90bbc0f7,2018-04-23,FALSE,2018-04-22,dog,"not utd, need vet info, need info"
+5ad9ec75a4c3fa74e42c4023,2018-04-23,FALSE,NA,dog,ready to adopt
+5adb9016f73de17b60dfd520,2018-04-23,FALSE,NA,dog,"need info, pet policy, need vet info"
+5ad4ab258bcbedc4b181df56,2018-04-23,TRUE,2018-04-16,dog,"ready for review, ready to adopt"
+5ada23830e98e9443a2799b8,2018-04-22,FALSE,2018-04-20,dog,adopted
+5ad66130fb4113d9dda0e93e,2018-04-22,FALSE,NA,dog,ready to adopt
+5ada23b8bd63ebb694f0fe8d,2018-04-21,FALSE,NA,dog,ready to adopt
+5ace7feee95be455ca598a08,2018-04-21,FALSE,NA,dog,adopted
+5ad6471f55cf03f4e099381f,2018-04-21,FALSE,NA,dog,ready to adopt
+5ad63a6b5d19b0f36af07a9c,2018-04-20,FALSE,NA,dog,ready to adopt
+5ad4db7a83bbb5ea054ef4eb,2018-04-20,FALSE,2018-04-16,dog,ready to adopt
+5ad66c4b1edf76da3cd6a519,2018-04-20,TRUE,2018-04-17,dog,"red flag, manager decision, pet policy"
+5ad65c01404d352a420ca28d,2018-04-20,FALSE,2018-04-17,dog,"questions, ready for review"
+5ad5359aa3012c80445bed55,2018-04-20,FALSE,2018-04-16,dog,"rescue check, need vet info, questions, manager decision"
+5ac26564505deed2aa74b194,2018-04-20,FALSE,2018-04-03,dog,ready to adopt
+59e9499f8e3b4efc92b78933,2018-04-20,FALSE,2018-03-05,dog,adopted
+5aa8252f300e2f9a3dd19c3d,2018-04-20,FALSE,2018-03-13,dog,adopted
+5ab66b3445bf7aa69cbf2c87,2018-04-20,FALSE,NA,dog,ready to adopt
+5ad75a8b284bcd99e4d6704f,2018-04-19,TRUE,2018-04-18,dog,"ready to adopt, ready for review"
+5ac7e39ab391eee7f9bb374e,2018-04-19,FALSE,NA,dog,ready to adopt
+5a9712089ba90a4c33f08f57,2018-04-19,TRUE,2018-02-28,dog,"questions, need vet info"
+5acb9301089121755c703712,2018-04-19,TRUE,2018-04-08,dog,adopted
+5aac416b9d71c1b0a71463df,2018-04-19,FALSE,2018-03-16,dog,"reviewed with handouts only, adopted"
+597263c1d4f3e0f7bf78350e,2018-04-19,TRUE,2017-07-20,dog,"need to see id, ready to adopt"
+5ad25c44b382d9cc0b266618,2018-04-17,FALSE,2018-04-14,dog,ready for review
+5ad0c67f1f9c83cdda034676,2018-04-16,FALSE,NA,dog,"adopted, returned"
+5ac00953d5d19d805aade126,2018-04-16,FALSE,2018-03-31,dog,adopted
+5ad12e29ecfebed147c76c16,2018-04-16,FALSE,NA,dog,ready to adopt
+5ad26aed4a9ba139794a582a,2018-04-14,TRUE,2018-04-14,dog,ready to adopt
+584ae6b2066db69c34ef69aa,2018-04-14,TRUE,2018-03-31,dog,"adopted, adoption follow up, red flag"
+5ad117ef0f11e2c8a9a184b8,2018-04-14,FALSE,NA,dog,"need vet info, need info"
+5ad24270103217998ae0298c,2018-04-14,FALSE,2018-04-14,dog,ready to adopt
+5abbfe8281c8cdaa66a32647,2018-04-14,FALSE,2018-03-28,dog,ready for review
+5ac51b54c5894acdeac90e05,2018-04-13,FALSE,NA,dog,ready to adopt
+5a889fc76ab8a7e047b405bc,2018-04-13,FALSE,2018-02-17,dog,adopted
+5a8b25a8e73601da64ab2574,2018-04-13,FALSE,2018-02-19,dog,"ready to adopt, dog meet"
+5ab7c7df925e82026022ace9,2018-04-12,FALSE,NA,dog,adopted
+5ab24153f3aebc3534a4ec6f,2018-04-12,FALSE,2018-03-19,dog,"reviewed with handouts only, adopted"
+5ab508f30e0442de66c7985c,2018-04-11,FALSE,2018-03-23,dog,"reviewed with handouts only, ready to adopt"
+59a33b2adb1fa637c607f774,2018-04-11,TRUE,2017-08-27,dog,"ready to adopt, ready for review"
+5ac282e74b3496f6a0dbf35c,2018-04-11,FALSE,2018-04-01,dog,ready to adopt
+5ac66ff675f6b63590177d7b,2018-04-11,FALSE,2018-04-05,dog,"ready to adopt, reviewed with handouts only"
+5acbec038471a6c0d0a75253,2018-04-11,TRUE,2018-04-09,dog,ready for review
+5ace3c80bda3e3f8a759254f,2018-04-11,FALSE,NA,dog,ready to adopt
+5a3d8a37839ba8989e6daf3f,2018-04-11,TRUE,2018-03-10,dog,adopted
+5acb925d5ac6788a67300daa,2018-04-10,FALSE,NA,dog,ready to adopt
+5ac66e6f8c1aa3c0342d8288,2018-04-10,TRUE,2018-04-04,dog,"ready to adopt, reviewed with handouts only, adopted"
+5a788fe7916a2a51f6c80e0c,2018-04-10,FALSE,NA,dog,ready to adopt
+5ac66f9c041abe47bd9e8816,2018-04-10,FALSE,NA,dog,adopted
+5abfadc3eb71b9a06c28e8c0,2018-04-10,FALSE,NA,dog,adopted
+5aca928717460ce50e80c90d,2018-04-10,FALSE,2018-04-08,dog,"ready to adopt, reviewed with handouts only"
+5ac93631718dcf8055b09c4d,2018-04-10,TRUE,2018-04-07,dog,"ready to adopt, reviewed with handouts only"
+5ac910501f1f58e8160bff93,2018-04-10,FALSE,2018-04-07,dog,ready for review
+5ac3a768b8b16975c1063065,2018-04-10,FALSE,2018-04-03,dog,"ready for review, ready to adopt"
+5acba647d295e293f175d2db,2018-04-10,FALSE,2018-04-09,dog,"need vet info, questions, need info"
+5acb92019fe252a63bac8413,2018-04-09,TRUE,2018-04-09,dog,ready to adopt
+5abeb3c416e2cb6fe8e21141,2018-04-09,FALSE,2018-03-30,dog,adopted
+5aafe85ce3a223f1c820e9e7,2018-04-09,FALSE,NA,dog,ready for review
+5aad94f442943074b200ee66,2018-04-09,FALSE,2018-03-17,dog,adopted
+5a51052c162fb91462a84245,2018-04-08,FALSE,NA,dog,adopted
+5ac8f5a37bdeec5c48c526d2,2018-04-08,TRUE,2018-04-07,dog,ready to adopt
+5ac3a1d65899ff7145dfda7f,2018-04-08,TRUE,2018-04-02,dog,ready to adopt
+5ac280a57c680aa343bc41fe,2018-04-08,TRUE,2018-04-02,dog,"ready to adopt, reviewed with handouts only"
+5aac40e989e6e015bbd011b3,2018-04-07,FALSE,NA,dog,ready to adopt
+5ac64c3143b97a52907c6698,2018-04-07,FALSE,2018-04-05,dog,"need vet info, questions, need info"
+5ac6794c40f13cf822f1aa35,2018-04-07,FALSE,2018-04-05,dog,"need to see id, questions, pet policy"
+5ac006d411d4bdbf5d2c6da6,2018-04-07,FALSE,2018-03-31,dog,not utd
+5a7c7e40e7fa56b26766f8b3,2018-04-07,FALSE,2018-02-08,dog,adopted
+5ac5178ea2e661284669b229,2018-04-06,FALSE,2018-04-04,dog,ready for review
+5ac517eaf15c8a9192c75050,2018-04-06,FALSE,2018-04-04,dog,not utd
+5ac3d9ef53852ce0413d23a2,2018-04-06,FALSE,2018-04-03,dog,ready for review
+5ac2b274df5a8337b10a0160,2018-04-06,FALSE,2018-04-03,dog,ready for review
+5ac66f3aad8b59a69f04cabc,2018-04-06,TRUE,2018-04-05,dog,ready to adopt
+5abffcab2733d40b0ddf40e5,2018-04-05,TRUE,2018-03-30,dog,ready to adopt
+5ac3bebd421ee57f05df5c87,2018-04-05,TRUE,2018-04-03,dog,"ready for review, adopted elsewhere"
+5aa6fc0775b62b7e61c72d1a,2018-04-05,FALSE,NA,dog,ready to adopt
+5aba97b036eec5d7f63b0d3c,2018-04-04,FALSE,2018-03-26,dog,"questions, pet policy, red flag"
+5ac01d6b1305991cabe9e32f,2018-04-04,TRUE,2018-03-31,dog,ready for review
+5ac528fddbbbae765ba98aa7,2018-04-04,TRUE,2018-04-04,dog,"ready for review, ready to adopt"
+5abd2e68e932555b00da11c5,2018-04-04,FALSE,2018-03-29,dog,not utd
+5a259278a6bf5f104032dd49,2018-04-04,FALSE,NA,dog,adopted
+5ab15f778a9695df98928b7b,2018-04-03,FALSE,NA,dog,adopted
+5ac29512568194623d4f81f9,2018-04-03,FALSE,2018-04-02,dog,withdrawn
+5abeb6cd469235d193f8c2a3,2018-04-03,FALSE,2018-03-30,dog,"questions, need to see id"
+5abbf7aaa52a7ad9c314aaa6,2018-04-03,FALSE,2018-03-28,dog,"ready for review, pet policy"
+5abab9a2a8bcf2396fdf049a,2018-04-03,FALSE,2018-03-27,dog,ready for review
+5ac27cdd41b6051356ed9bcc,2018-04-03,FALSE,NA,dog,approved with limitation
+5a92cd2d75e64ab9412631fa,2018-04-01,FALSE,2018-02-24,dog,"need vet info, withdrawn"
+5b0d7db4840e47a901dfbd63,2018-05-31,TRUE,2018-05-29,dog,"need info, questions, pet policy"
+5b0e8ed5b8fd33b50217acd0,2018-05-31,FALSE,2018-05-29,dog,not utd
+5b05f376c60caad7104ab57d,2018-05-31,TRUE,2018-05-23,dog,ready to adopt
+5b009179a283af40811d287a,2018-05-31,TRUE,2018-05-19,dog,questions
+5b0e8e17733b55c11793a79e,2018-05-31,TRUE,2018-05-29,dog,"ready for review, ready to adopt"
+5b06cee22ae5a106bba3e0f7,2018-05-31,TRUE,2018-05-24,dog,"need info, questions"
+5b06f3eb3009b0ca88e392d6,2018-05-31,FALSE,2018-05-24,dog,"need to see id, questions, pet policy, need vet info"
+5b0098d460e5793d76b17fa1,2018-05-31,TRUE,2018-05-19,dog,"ready to adopt, reviewed with handouts only"
+5b01d2642b15e8598bc08353,2018-05-31,FALSE,NA,dog,ready to adopt
+580922cfc9abb13ddd139ec3,2018-05-31,FALSE,2018-05-30,dog,ready to adopt
+5b0b26934f706cf82faa9e3e,2018-05-31,FALSE,2018-05-27,dog,not utd
+5af89b1c622a2ef878449e2a,2018-05-31,TRUE,2018-05-13,dog,"reviewed with handouts only, ready for review"
+5b0eb8472b7aa87e60cc25f3,2018-05-30,FALSE,2018-05-26,dog,"need to see id, pet policy, questions"
+5b0d31e8c3b7bf2bbcdcea2a,2018-05-30,FALSE,2018-05-27,dog,"questions, pet policy"
+5ab564315886df5ad2802a85,2018-05-30,FALSE,NA,dog,"ready to adopt, ready for review"
+5b0090822b15e8598bad907a,2018-05-29,FALSE,NA,dog,"pet policy, not utd"
+5a65021a2644121999649678,2018-05-29,FALSE,2018-03-28,dog,"serial no show, adopted, returned"
+5b06cf1b9aa5d8ffe27502db,2018-05-29,FALSE,2018-05-24,dog,"need vet info, need info"
+5b0b00765caa417fe3cbd535,2018-05-29,FALSE,2018-05-29,dog,adopted
+5b0b077a5bb979bde1600833,2018-05-27,FALSE,NA,dog,ready to adopt
+5b048b71f465b37993e23f3e,2018-05-27,TRUE,2018-05-21,dog,ready for review
+5b05cd23a9fbbf651505b2b5,2018-05-27,TRUE,2018-05-23,dog,questions
+5a832b9c346d6d1a2d705571,2018-05-26,FALSE,2018-02-12,dog,"ready for review, adopted elsewhere"
+5b06f8fabbd52ef0c1d88d26,2018-05-26,FALSE,NA,dog,ready to adopt
+5b07004834d7ad386979bd64,2018-05-26,FALSE,NA,dog,ready to adopt
+5b00771a4b42a36fe352362f,2018-05-26,FALSE,NA,dog,"pet policy, questions"
+5a08c05f7bdd604836e68e4b,2018-05-26,TRUE,2017-11-12,dog,adopted
+5b0090de8305c985a4015401,2018-05-25,FALSE,2018-05-19,dog,questions
+5b048cf388591abee07a3e16,2018-05-25,FALSE,NA,dog,ready to adopt
+5b01b7a559842d8524d5ea8d,2018-05-25,FALSE,NA,dog,"questions, not utd"
+5ae396026dacb8ec672848fb,2018-05-25,FALSE,NA,dog,adopted
+5b03418ffbce096b27d58d9f,2018-05-25,FALSE,2018-05-21,dog,"need vet info, need to see id, need info"
+5afee16b6affca2bb6fe5906,2018-05-25,FALSE,2018-05-18,dog,"ready to adopt, reviewed with handouts only"
+5afdba46644f93153d9836b8,2018-05-24,FALSE,2018-05-17,dog,"need info, ready for review"
+5afc91dab6828893b5469e5a,2018-05-24,TRUE,2018-05-16,dog,"questions, need info"
+5b032a1230788a56852c0ba5,2018-05-24,TRUE,2018-05-24,dog,ready to adopt
+5b0345a72c2d12e04e48e75d,2018-05-24,FALSE,NA,dog,adopted
+5b019db54534263e1219976e,2018-05-23,TRUE,2018-05-20,dog,pet policy
+5a8c8c02b60f1ed3126eeb57,2018-05-23,TRUE,2018-03-03,dog,"ready for review, ready to adopt"
+5af2051f1764abe5e27e3dd5,2018-05-23,FALSE,NA,dog,"reviewed with handouts only, ready to adopt"
+5ad8d424954c8badb8eb6091,2018-05-21,FALSE,NA,dog,adopted
+5abffe934557099d1eb74273,2018-05-21,FALSE,2018-03-31,dog,"reviewed with handouts only, adopted"
+5b01a0590ed1cb40da8cce97,2018-05-21,FALSE,NA,dog,ready to adopt
+5ada24f01eaf9245edbf0bad,2018-05-20,FALSE,NA,dog,"ready to adopt, adopted, returned"
+5afa073393f2c410951c2e7a,2018-05-20,FALSE,2018-05-14,dog,adopted
+59f2226fb934c0e5624a54c8,2018-05-20,FALSE,NA,dog,"adopted, ready to adopt, returned"
+5af9f8abedbac52ad6f31d6d,2018-05-19,TRUE,2018-05-14,dog,"rescue check, questions, manager decision"
+5b007f3e4066af8ba359111d,2018-05-19,FALSE,NA,dog,ready to adopt
+5afec3d233b3be95bd29a6a0,2018-05-19,TRUE,2018-05-17,dog,"ready for review, reviewed with handouts only"
+5ac90c77d13f91e4920e5485,2018-05-19,TRUE,2018-04-07,dog,adopted
+5aff25ea9cad0225d4764cda,2018-05-18,FALSE,2018-05-18,dog,ready to adopt
+5afb47c2d8ca48e1424e520d,2018-05-18,TRUE,2018-05-18,dog,"ready to adopt, adopted"
+5af71207b9a190b417b31db0,2018-05-18,FALSE,2018-05-12,dog,need vet info
+5a9c2d123e9f5e9a0a8f00e0,2018-05-18,FALSE,2018-04-25,dog,"ready for review, questions"
+5aec7cd511fbde406d9924be,2018-05-18,TRUE,2018-05-03,dog,ready to adopt
+5a25b47946175ff6b24b7727,2018-05-18,FALSE,2017-12-02,dog,"reviewed with handouts only, ready to adopt"
+5afca8ef4739985bb72d0c12,2018-05-17,FALSE,2018-05-15,dog,"questions, not utd"
+5ae0a9d2ae5c8b14edeadc21,2018-05-17,FALSE,2018-04-24,dog,adopted
+5ad4ce909fa1eb912255402d,2018-05-17,FALSE,2018-04-16,dog,adopted
+5af9df67b4e67a04c9406fd5,2018-05-16,FALSE,2018-05-13,dog,"need vet info, questions"
+5af9fa8fa8cd10fc505183e0,2018-05-15,TRUE,2018-05-14,dog,"need to see id, ready for review"
+5af9e02ec5d74c9d2bccd8d1,2018-05-15,TRUE,2018-05-13,dog,not utd
+5ae6092e49367922cb9e5244,2018-05-14,TRUE,2018-04-28,dog,adopted
+5af2135d42242ec41b28f325,2018-05-14,FALSE,2018-05-08,dog,"red flag, questions, need info"
+5af33b6dd154df1212f83b61,2018-05-14,FALSE,2018-05-09,dog,"questions, pet policy, need to see id, need info, red flag"
+5af752cb4098d1d454b017a4,2018-05-14,FALSE,NA,dog,"questions, need vet info"
+5af737e7515c4ef0b7d3d36b,2018-05-14,FALSE,NA,dog,"need info, need vet info"
+5af32e5f5a908dba37d1b960,2018-05-12,TRUE,2018-05-09,dog,"need vet info, pet policy, questions"
+5af18a247be5735d528b6793,2018-05-12,TRUE,2018-05-07,dog,adopted
+596d086f1b91d78e3414db2a,2018-05-12,FALSE,2017-07-16,dog,"ready for review, ready to adopt"
+5af3641fba8643a0bd57b4d9,2018-05-12,FALSE,NA,dog,questions
+5af2d66eb3187dc5d3432fe8,2018-05-12,FALSE,2018-05-08,dog,ready for review
+5af216f1f51fb73ac1842d2a,2018-05-12,FALSE,NA,dog,not utd
+5af4c217b721bb9f90624fc4,2018-05-12,TRUE,2018-05-10,dog,not utd
+5ae0f632f26b41227b643e51,2018-05-12,FALSE,2018-05-12,dog,"reviewed with handouts only, adopted"
+5af6ff30c0c7a903d537cd0f,2018-05-12,FALSE,2018-05-12,dog,"ready for review, reviewed with handouts only"
+5af31ddc704d7653f37cc380,2018-05-11,TRUE,2018-05-09,dog,ready to adopt
+5af348cd879f05a8bdfbdf31,2018-05-11,FALSE,2018-05-09,dog,"rescue check, manager decision, need vet info"
+5af182307c36153f4863c026,2018-05-11,TRUE,2018-05-06,dog,"reviewed with handouts only, ready to adopt"
+5aef2eda32886d221a8c19b3,2018-05-11,TRUE,2018-05-06,dog,"ready to adopt, reviewed with handouts only"
+5aef2ccf54466a4ec6ed2c62,2018-05-11,FALSE,2018-05-06,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5aef53af8c64b25481ac75d1,2018-05-11,TRUE,2018-05-05,dog,ready for review
+5aee34387be12222452dfa51,2018-05-11,FALSE,2018-05-05,dog,"need vet info, questions"
+5aef54f00af4cd5e213dec5e,2018-05-11,FALSE,2018-05-05,dog,"ready for review, questions"
+5aef4850f1df5f7c870e5917,2018-05-11,FALSE,2018-05-05,dog,"questions, ready for review"
+5aedcf60b5bd006c7a7f1e82,2018-05-11,TRUE,2018-05-04,dog,ready to adopt
+5aecc62524029059cf7ea026,2018-05-11,TRUE,2018-05-04,dog,"red flag, rescue check, need vet info"
+5ae8a312041c34c347d1824a,2018-05-11,TRUE,2018-05-01,dog,"ready for review, questions"
+5af07e174faaeeffb61fe625,2018-05-11,FALSE,2018-05-07,dog,"red flag, manager decision, ready for review, adopted elsewhere"
+5aef6e72e40bccaa91486a83,2018-05-11,TRUE,2018-05-06,dog,ready to adopt
+592730791172be81d500bcec,2018-05-11,FALSE,2017-05-25,dog,"checks, denied"
+5aa6822badf3ed9351920e42,2018-05-11,TRUE,2018-03-11,dog,adopted
+5af4d5f8033f83eaffc41692,2018-05-10,FALSE,NA,dog,adopted
+5aef2c18b9161c789a0432d3,2018-05-10,FALSE,NA,dog,"ready for review, dog meet"
+5af4bf9dff2101639a030782,2018-05-10,FALSE,NA,dog,ready to adopt
+5ae4d2072a3b25714fbc43fa,2018-05-10,FALSE,2018-04-28,dog,ready to adopt
+5a50fe119da621bd08b92f4a,2018-05-10,TRUE,2018-05-08,dog,"adopted, adoption follow up"
+5aef281fb49acabf414734ad,2018-05-10,TRUE,2018-05-05,dog,ready to adopt
+5ad515141d2d74846e3cdc2d,2018-05-10,FALSE,2018-04-16,dog,"ready for review, ready to adopt, adopted elsewhere"
+5aeb6de24e279f1d964dbd87,2018-05-10,FALSE,2018-05-03,dog,"not utd, ready to adopt, withdrawn"
+5a5a402813d8d170493fd772,2018-05-09,TRUE,2018-01-13,dog,"denied, red flag"
+5ae8d79466c035b85e71ab32,2018-05-09,FALSE,2018-05-01,dog,"need vet info, questions"
+5af2007efff17f3e4977317f,2018-05-09,FALSE,2018-05-08,dog,ready to adopt
+5a3fef5be2d820b1bfc85543,2018-05-08,FALSE,2017-12-23,dog,"adopted, adoption follow up"
+5aec7d9c96575818821cc3f4,2018-05-08,FALSE,NA,dog,ready to adopt
+5ae8db4b4170decd96813eb7,2018-05-08,FALSE,2018-05-01,dog,ready for review
+5ae604489b94cbdbd0ee1aa4,2018-05-08,TRUE,2018-04-28,dog,"need vet info, red flag"
+5aef476a70d46d8574b30ac8,2018-05-08,FALSE,2018-05-08,dog,adopted
+5aef1e73e74a813d0115ff8d,2018-05-08,FALSE,2018-05-05,dog,"ready for review, ready to adopt"
+5ababb68075c2a2fed71d727,2018-05-08,FALSE,2018-03-26,dog,"ready to adopt, reviewed with handouts only"
+5aedc0c94b758df0bfa71971,2018-05-07,TRUE,2018-05-06,dog,adopted
+5aef30e50f857b1d7da67410,2018-05-07,FALSE,2018-05-06,dog,adopted
+5aebab908b2fb925837e9a23,2018-05-07,FALSE,2018-05-03,dog,ready for review
+5aec7d5ebceb9444c03c68e8,2018-05-07,FALSE,2018-05-03,dog,ready for review
+5ae8a11a9388933eadc3a705,2018-05-07,FALSE,2018-05-01,dog,"need vet info, questions, rescue check"
+5aec7c94cdacd4379f73a54b,2018-05-07,FALSE,2018-05-03,dog,need vet info
+5aebaaa37b897163b7df9c6f,2018-05-05,FALSE,2018-05-02,dog,ready for review
+5a4d2e3b4d534d2f647b6eb0,2018-05-05,FALSE,2018-01-03,dog,foster to adopt
+5aeb90c2447971f042b4e423,2018-05-05,FALSE,NA,dog,ready to adopt
+5aecc6817407b362660833f3,2018-05-05,FALSE,2018-05-04,dog,ready for review
+5ad3a5e87bd281a3d9f13caf,2018-05-05,FALSE,2018-04-15,dog,adopted
+5aecaedced6d804ff40a0a47,2018-05-04,FALSE,2018-05-04,dog,"need info, ready for review"
+5ae605299b94cbdbd0ee26e2,2018-05-04,TRUE,2018-04-28,dog,ready for review
+5abab8d621c9c9fca544b2a3,2018-05-03,FALSE,2018-03-27,dog,adopted
+5ad3ab7fd661c857e901b8fc,2018-05-03,FALSE,2018-04-17,dog,adopted
+5ae78b867d3ca9d5b639f72b,2018-05-03,FALSE,2018-04-30,dog,"need vet info, need info, questions"
+5ae8d89d417e756e625aacc8,2018-05-03,FALSE,2018-04-30,dog,not utd
+5adf85fb5563846d0302d44e,2018-05-03,FALSE,2018-04-23,dog,manager decision
+5ae0bd75e9a32b1bfe3d9d02,2018-05-03,TRUE,2018-05-03,dog,adopted
+5acfb0090ef04f0c988b8950,2018-05-03,FALSE,2018-04-12,dog,"ready for review, ready to adopt, adopted elsewhere"
+5ae365b10aec3f808f2e3b11,2018-05-02,FALSE,2018-04-27,dog,"ready to adopt, need to see id"
+5ae251a04f6fa680356b851d,2018-05-01,TRUE,2018-04-26,dog,not utd
+5ae607e32611c027dc83420e,2018-05-01,FALSE,2018-04-28,dog,ready for review
+5ae605af37065e71cc9a0f05,2018-05-01,FALSE,NA,dog,ready to adopt
+5ae609e4af8c2e79f27d7385,2018-05-01,FALSE,2018-04-28,dog,"ready for review, ready to adopt"
+5ae604bdcbedacf6ae78fa21,2018-05-01,FALSE,2018-04-28,dog,ready for review
+5adcfa60592436408ddc2f3f,2018-05-01,FALSE,2018-04-22,dog,"need vet info, need info"
+5ae87e800652bc31c8d7e094,2018-05-01,TRUE,2018-04-26,dog,checks
+5add20dbcc3cf069365e7452,2018-05-01,FALSE,2018-04-22,dog,"red flag, rescue check"
+5ae5de4654d5f4ea8b85c4e0,2018-05-01,FALSE,2018-04-29,dog,"need vet info, not utd"
+5ae5ff895d584843fa340786,2018-05-01,FALSE,2018-04-29,dog,ready for review
+5ae331345e9f762a2dbd2723,2018-05-01,FALSE,2018-04-27,dog,ready for review
+5ae60e56dbdff378368e8a97,2018-05-01,TRUE,2018-04-29,dog,ready for review
+5ab7dde301cf93a702cc51eb,2018-06-30,FALSE,NA,dog,"adopted, returned, ready to adopt"
+5b2ea2aeff5a5500b0956103,2018-06-29,FALSE,NA,dog,adopted
+5967cd8d9ce829b382f1e6c3,2018-06-29,FALSE,2017-07-12,dog,"ready for review, questions"
+5b296eca20a6c28fe28976de,2018-06-29,TRUE,2018-06-19,dog,ready to adopt
+5b364ed31c8b99b7b46c3ea8,2018-06-29,FALSE,2018-06-29,dog,"ready to adopt, ready for review"
+5b2e855b7d9bbacc43aca25f,2018-06-28,FALSE,2018-06-23,dog,questions
+5b329f72757b5d229a800080,2018-06-28,FALSE,2018-06-26,dog,"ready for review, ready to adopt"
+5b2ea9a4c6c27c27c06d9c45,2018-06-27,FALSE,2018-06-23,dog,ready for review
+5b2d0f098373eab87e5270f7,2018-06-27,TRUE,2018-06-22,dog,"ready to adopt, ready for review"
+5b2c28efcf63f7d13b3cda2c,2018-06-27,FALSE,2018-06-21,dog,ready to adopt
+5b25760015668964bde8145f,2018-06-27,FALSE,2018-06-16,dog,"need vet info, questions, not utd"
+5b258c64bbe9e795e353fd47,2018-06-27,FALSE,2018-06-16,dog,"need info, ready for review"
+5b2fdf22ff6800031e0f4436,2018-06-27,FALSE,2018-06-24,dog,"ready for review, ready to adopt"
+5b1e6d29f1479a4e2f7f8235,2018-06-27,FALSE,2018-06-19,dog,"red flag, ready for review"
+5a7b5bb47319d3636df1b4af,2018-06-27,TRUE,2018-02-07,dog,"ready for review, ready to adopt"
+5b32a95b2627132bf238115c,2018-06-26,FALSE,2018-06-26,dog,"checks, need info"
+5b329c4ed4c32fb20e7ad9c0,2018-06-26,FALSE,NA,dog,not utd
+5b2032ca5441919dd4e938d6,2018-06-26,TRUE,2018-06-12,dog,"ready to adopt, reviewed with handouts only"
+5b20276b6d744ff4518ca34d,2018-06-26,FALSE,NA,dog,"ready to adopt, adopted elsewhere"
+5b242b831f5028a593c9480b,2018-06-26,TRUE,2018-06-21,dog,"red flag, questions"
+5b184c1690c557180f096dc4,2018-06-25,FALSE,NA,dog,ready to adopt
+59f35505a176a94170f1a898,2018-06-24,FALSE,2018-06-28,dog,"adopted, returned"
+5abffe211b4a44502d9ede15,2018-06-23,FALSE,2018-03-31,dog,"ready for review, need info"
+5ac3d254c7d9bd7f0f3705c1,2018-06-23,FALSE,2018-04-03,dog,ready for review
+5ac3d10434f9f4bf20fd78d0,2018-06-23,FALSE,NA,dog,ready for review
+5b019ccdd40149fba8b38d45,2018-06-23,FALSE,2018-05-16,dog,"declaw only, adopted"
+5b2e887b49f4cedaee3cded6,2018-06-23,FALSE,2018-06-23,dog,adopted
+5afedf84ce5d6434580ca381,2018-06-23,TRUE,2018-05-18,dog,"adopted, returned, ready to adopt"
+5b2e73d868ffc50563690f32,2018-06-23,FALSE,2018-06-23,dog,adopted
+5b2c0daf3aacee4d18ea046b,2018-06-23,FALSE,2018-06-21,dog,adopted
+5abfffa7c11968cbdb09a344,2018-06-23,FALSE,2018-03-31,dog,"adopted, ready to adopt"
+5b258ba312e64e3ac2b02881,2018-06-23,FALSE,NA,dog,ready for review
+5b2e69b12aeafeb868c2eaf4,2018-06-23,FALSE,2018-06-23,dog,ready to adopt
+5b09b3fb3ca5198c80b3733f,2018-06-22,TRUE,2018-05-26,dog,"manager decision, not utd"
+5b27e36b11ea97b5e37a18b4,2018-06-22,TRUE,2018-06-17,dog,"questions, not utd, need vet info"
+5b1843fb60d48033d9a486b4,2018-06-22,TRUE,2018-06-06,dog,ready for review
+59c6858ce8aa4e6f43b82160,2018-06-22,FALSE,NA,dog,"returned, adopted, manager decision"
+5b2553b9926f931dcad37849,2018-06-22,FALSE,2018-06-16,dog,"ready for review, reviewed with handouts only"
+5b202d1ae3b82284b9ea6858,2018-06-21,FALSE,2018-06-12,dog,"rescue check, red flag, questions, pet policy, manager decision"
+5b2a3f3cf2a8173bd3a8c70b,2018-06-21,FALSE,2018-06-19,dog,denied
+5b2abf49a15df32d03a568e0,2018-06-21,FALSE,2018-06-20,dog,"ready to adopt, withdrawn"
+5b2ad1794df72fd2832c953f,2018-06-21,FALSE,2018-06-20,dog,ready to adopt
+5b23f19288874050bfe75bfb,2018-06-21,FALSE,2018-06-15,dog,not utd
+5b2028df73245b6de9f48676,2018-06-20,FALSE,2018-06-11,dog,"need vet info, need info, red flag, not utd"
+5ac004202664d4262e20bf58,2018-06-20,FALSE,NA,dog,"returned, adopted, red flag"
+57db03405a28ab5a661fe2d7,2018-06-19,TRUE,2018-05-28,dog,adopted
+5b26af12243d2db7159b7833,2018-06-19,FALSE,NA,dog,ready to adopt
+5abfa97304094e422f7ff44f,2018-06-19,TRUE,2018-04-04,dog,adopted
+5b23f9df6a27b1a228392ca8,2018-06-19,TRUE,2018-06-15,dog,"ready to adopt, reviewed with handouts only"
+5b24381f3796c6dfbedee19d,2018-06-17,FALSE,2018-06-15,dog,ready to adopt
+5b2423b48c87e6516f138905,2018-06-17,FALSE,2018-06-15,dog,adopted
+5b1d8dd58aae119127521268,2018-06-17,FALSE,2018-06-10,dog,"questions, need vet info, need info, red flag, pet policy"
+5b256b3f2572fcb463ef5d2e,2018-06-17,FALSE,2018-06-16,dog,"need to see id, need vet info"
+5b25670c252dcc660c33cafb,2018-06-17,TRUE,2018-06-16,dog,"ready for review, reviewed with handouts only"
+5b256107021eb5750387ec50,2018-06-17,FALSE,2018-06-16,dog,ready to adopt
+5b2171966cff1acdd3dcf5c8,2018-06-16,TRUE,2018-06-16,dog,"ready for review, ready to adopt"
+5b2024db62889dae57f2e382,2018-06-16,TRUE,2018-06-11,dog,ready for review
+5b1b05c3080f8b4d8929f717,2018-06-16,TRUE,2018-06-08,dog,ready to adopt
+5b1825d425b2cc325e64ee7a,2018-06-15,FALSE,2018-06-06,dog,ready to adopt
+5b2027e4b0022ef3aae02b61,2018-06-15,FALSE,2018-06-11,dog,ready for review
+5b1c48a263277dd6b67379d1,2018-06-15,FALSE,2018-06-09,dog,pet policy
+5b1ae5c49b6e2500e1541156,2018-06-15,TRUE,2018-06-08,dog,ready for review
+5b1c35e026c2d2e0ef650118,2018-06-15,FALSE,2018-06-09,dog,"need info, need vet info, adopted elsewhere"
+5b1837e19874516dcbb0c35b,2018-06-15,FALSE,2018-06-06,dog,"red flag, need vet info, questions, manager decision"
+5b17076d99203f1d00ecfecf,2018-06-15,FALSE,2018-06-05,dog,"questions, ready for review"
+5b185b7ffdbcfd82d5fed208,2018-06-15,FALSE,2018-06-14,dog,"ready to adopt, adopted elsewhere"
+5b1af49771ffc3402e940460,2018-06-15,FALSE,2018-06-08,dog,ready to adopt
+5ab3e4f0c2a4b880fc2e389b,2018-06-15,TRUE,2018-03-21,dog,adopted
+5b22ca002070dc429fc6b62e,2018-06-14,FALSE,2018-06-14,dog,ready to adopt
+5a738dd14d9a9b3d5f3768f8,2018-06-14,FALSE,2018-01-31,dog,adopted
+5b144a9a1f01e5a9e225a334,2018-06-13,FALSE,NA,dog,pet policy
+5b1ad4d96a515e6f54457935,2018-06-13,TRUE,2018-06-08,dog,ready for review
+5b1c3409780b24badf2fb1a2,2018-06-13,TRUE,2018-06-09,dog,"ready for review, adopted elsewhere"
+5a3adf6cae7f81f56a31a1ef,2018-06-13,FALSE,2018-04-25,dog,"not utd, adopted"
+5b152272e8745a25d7de08ce,2018-06-13,TRUE,2018-06-03,dog,ready for review
+5b1ef3d392a1a3bc6d7973ca,2018-06-13,FALSE,NA,dog,ready to adopt
+5b1c0fb98f0d049bdd46c44e,2018-06-13,FALSE,2018-06-09,dog,"ready to adopt, ready for review"
+5b1c3383a48724bc5be53af2,2018-06-13,FALSE,2018-06-09,dog,"not utd, need vet info"
+5b1e6d31d37dd00e77a471db,2018-06-13,TRUE,2018-06-10,dog,"questions, need vet info"
+5ae60866a4b4c05e33b831ea,2018-06-13,TRUE,2018-04-28,dog,adopted
+5b1e6d268bef9cba50fdf91f,2018-06-12,FALSE,2018-06-10,dog,not utd
+5a1aebbea3411a74a9e80822,2018-06-12,TRUE,2017-11-25,dog,"ready to adopt, dog meet"
+5b1e6d149aa9c2b600bf1667,2018-06-12,TRUE,2018-06-10,dog,"need info, need vet info, not utd"
+5b0ea371dd9a82de580cdde5,2018-06-12,TRUE,2018-05-29,dog,adopted
+5b1708d4a92cf9be762f01b8,2018-06-12,FALSE,NA,dog,"returned, ready to adopt"
+5aec9b6d5892b27ba6098be6,2018-06-12,FALSE,NA,dog,ready to adopt
+5aef3761f900b101e28704b7,2018-06-12,TRUE,2018-05-06,dog,adopted
+5ae4b40f43f4d5889838e8fd,2018-06-11,FALSE,2018-06-04,dog,"adopted, adoption follow up"
+5aeddd56d402a2394aee31fa,2018-06-10,FALSE,2018-06-09,dog,"adopted, returned"
+5b1ad2b9e22c593b7963ead3,2018-06-10,FALSE,NA,dog,ready to adopt
+5a92cd87c9a726f67d9234fe,2018-06-09,TRUE,2018-02-24,dog,"ready to adopt, reviewed with handouts only, serial no show"
+5b1c4e8f551f7a9c24893ce2,2018-06-09,FALSE,NA,dog,adopted
+5b1b0532ca825a801bad84ae,2018-06-09,FALSE,NA,dog,"need info, questions, need vet info"
+5b1980cd9e2235d2da42469c,2018-06-09,TRUE,2018-06-07,dog,"questions, not utd, need vet info"
+5b198ad35d5e5806657192ab,2018-06-09,TRUE,2018-06-09,dog,adopted
+5b106b7f98d32b3b15f51d7f,2018-06-08,FALSE,NA,dog,adopted
+5b1847a14ca166ae82f31e01,2018-06-08,FALSE,NA,dog,ready to adopt
+58d69536c40a284e2612cc45,2018-06-07,FALSE,2017-03-25,dog,ready to adopt
+5b05c48958f640b1297b3b1f,2018-06-07,TRUE,2018-05-23,dog,"ready to adopt, adopted"
+5b1979779119fdaddc423ee2,2018-06-07,FALSE,NA,dog,ready to adopt
+5b1522e62f044c7fad6d3cb8,2018-06-06,FALSE,2018-06-03,dog,ready for review
+5b12ed8e33670a4f08cb9877,2018-06-06,FALSE,NA,dog,NA
+58850ecb9d079d17d8e97bb9,2018-06-06,FALSE,2018-05-30,dog,"adopted, ready to adopt"
+5b1521b195665df1c0a58782,2018-06-06,TRUE,2018-06-02,dog,ready to adopt
+5ada6446a0478526e561bb70,2018-06-06,FALSE,2018-04-20,dog,adopted
+59e3b7df54bd3f164a383f59,2018-06-06,FALSE,NA,dog,"adopted, returned"
+5b144e6b92f47f484be5e862,2018-06-05,FALSE,2018-06-03,dog,"ready for review, adopted elsewhere"
+5b12ee97e623b96b9bdc4d14,2018-06-05,FALSE,2018-06-02,dog,ready for review
+5b12ecf7de3c25393d7bee45,2018-06-05,FALSE,2018-06-02,dog,"questions, need vet info, pet policy"
+5b144ac1d11129badc508553,2018-06-05,FALSE,NA,dog,not utd
+5b12b555e7a7d429c88a5103,2018-06-05,FALSE,2018-06-02,dog,ready for review
+5b12c7eafc974f4a240e33e7,2018-06-05,TRUE,2018-06-02,dog,ready to adopt
+5b106d339f61041600e348f9,2018-06-05,FALSE,2018-05-31,dog,"red flag, questions"
+5b106f12af775be9c95c1584,2018-06-05,FALSE,2018-05-31,dog,"reviewed with handouts only, ready for review"
+5b103503c79586f78eafb677,2018-06-05,FALSE,2018-05-31,dog,"need vet info, need info"
+5b0d89467bde3948a026d8a8,2018-06-05,FALSE,2018-05-29,dog,"need vet info, questions"
+5b144c15456301f8ef602c04,2018-06-05,FALSE,NA,dog,ready for review
+5ac934401359b6464e4d85d3,2018-06-05,FALSE,2018-06-04,dog,adopted
+5a8329c7de17478a78b0578a,2018-06-04,FALSE,2018-02-12,dog,adopted
+5898f5d1877182a15f17303c,2018-06-03,FALSE,NA,dog,ready to adopt
+5b106d771340a8709e1337c5,2018-06-03,FALSE,2018-05-31,dog,adopted
+5b12afbe2e6dc8515bc103c1,2018-06-03,TRUE,2018-06-02,dog,ready to adopt
+5a6e0a6575e835742049c595,2018-06-03,FALSE,NA,dog,adopted
+5ac95a5b2617ca5ca61a8bbd,2018-06-02,FALSE,2018-04-07,dog,ready to adopt
+5ab6e3679a12a9e6fc5077ed,2018-06-02,FALSE,2018-03-24,dog,ready to adopt
+5a7b6814dd232b48859e6768,2018-06-01,FALSE,2018-06-06,dog,"adopted, adoption follow up"
+5834857a5c8e543e3034298b,2018-07-31,FALSE,NA,dog,"adopted, red flag"
+5b53b556e23f4e5b52b43055,2018-07-31,FALSE,2018-07-21,dog,"need vet info, rescue check, denied"
+5b58c44a8c20a7477e84aa17,2018-07-30,FALSE,2018-07-25,dog,"questions, need vet info"
+5b5a2d133a1334ec57acb166,2018-07-28,FALSE,2018-07-25,dog,"reviewed with handouts only, ready to adopt"
+5b55dc75bfbf5f5bd8daade8,2018-07-28,TRUE,2018-07-22,dog,"needs review before approval, reviewed with handouts only"
+5b534cd9087e42afa97f25e7,2018-07-28,TRUE,2018-07-20,dog,"need vet info, need info, pet policy"
+58d97194f53a6277f8febb4d,2018-07-28,TRUE,2017-11-09,dog,"adopted, returned"
+5b5a2910f8f3a1958e82a422,2018-07-28,FALSE,2018-07-24,dog,"ready to adopt, reviewed with handouts only"
+5b579878b0e6a6ea9c671ffa,2018-07-27,TRUE,2018-07-24,dog,"ready to adopt, reviewed with handouts only"
+5a05e48c3380396b44b97779,2018-07-27,FALSE,2017-11-10,dog,ready for review
+5b4e75f7525785fab9756320,2018-07-26,TRUE,2018-07-17,dog,adopted
+5b4e40061f316734733d147b,2018-07-26,FALSE,2018-07-17,dog,questions
+5b55dbed2794fb0eb86683cc,2018-07-26,TRUE,2018-07-22,dog,"ready to adopt, reviewed with handouts only"
+5b539791d6d06f6bb356c102,2018-07-26,FALSE,2018-07-21,dog,"reviewed with handouts only, ready to adopt"
+5b53a01ec4dcfb4e2031f1b1,2018-07-26,FALSE,2018-07-21,dog,"need info, checks"
+5b525d38e23f4e5b529d5212,2018-07-26,FALSE,2018-07-20,dog,"ready for review, questions"
+5b523133d17d68b0075fe830,2018-07-26,FALSE,2018-07-20,dog,"need to see id, not utd"
+5b4f79dc000690b4cd60e3c2,2018-07-26,TRUE,2018-07-18,dog,"red flag, need vet info, need to see id, pet policy"
+5b5a04d370c84d9c9fcbfc84,2018-07-26,FALSE,NA,dog,"ready for review, reviewed with handouts only"
+5b578703536687a0fa8c170c,2018-07-26,FALSE,2018-07-19,dog,"ready to adopt, reviewed with handouts only"
+5b4f87900c1b5d8c9ddbdad0,2018-07-26,TRUE,2018-07-17,dog,"need vet info, need info"
+5b56394c4184b3462a8171d9,2018-07-26,TRUE,2018-07-23,dog,"ready to adopt, ready for review"
+5b4a89ac347d380a7882a834,2018-07-25,FALSE,2018-07-14,dog,"need vet info, need info"
+5b534d5096fac58b20e75d1a,2018-07-24,TRUE,2018-07-20,dog,not utd
+5b4d1b011356e47a045297a9,2018-07-24,FALSE,2018-07-16,dog,"reviewed with handouts only, adopted"
+5b1c35734a2742f7765a891e,2018-07-24,FALSE,2018-06-09,dog,ready to adopt
+5b4728151d6cf951523cbca0,2018-07-23,FALSE,2018-07-12,dog,questions
+5a0cac26b12fec855979ac93,2018-07-22,FALSE,NA,dog,ready to adopt
+5b48ccf747072e146edc7c66,2018-07-22,FALSE,2018-07-13,dog,ready to adopt
+5b3e348e12a048782c1a522b,2018-07-21,TRUE,2018-07-05,dog,adopted
+5b4f89086556702c979ef024,2018-07-21,FALSE,2018-07-18,dog,"reviewed with handouts only, ready to adopt"
+5b50955c80bf725af4771efc,2018-07-21,TRUE,2018-07-19,dog,adopted
+5b4f75b15d8440cda99214b6,2018-07-20,FALSE,2018-07-18,dog,ready to adopt
+5b4fb9bdfcab2b5b4503b6c7,2018-07-20,TRUE,2018-07-18,dog,ready to adopt
+5b4fb329349cdcbd9ff97c5e,2018-07-20,FALSE,2018-07-18,dog,not utd
+5b4f7172caa9e13512b456b9,2018-07-20,FALSE,2018-07-15,dog,"red flag, checks"
+5b4bc1b282e403d4f49460ee,2018-07-20,FALSE,2018-07-15,dog,"checks, need to see id"
+5b4e67d4e6455e557d537cef,2018-07-20,FALSE,2018-07-17,dog,"ready to adopt, reviewed with handouts only"
+5b4f82d5b9054e29082dfbbc,2018-07-20,FALSE,2018-07-17,dog,ready for review
+57a93cb2fc0b9d10e6c5bbbe,2018-07-20,FALSE,2018-07-16,dog,"ready for review, questions"
+5b47aa28857ca22a6c5bbb33,2018-07-20,FALSE,2018-07-12,dog,questions
+5b477770f5e45bcda1a5c18b,2018-07-20,FALSE,2018-07-11,dog,"ready for review, questions"
+5b43a3ee3e6fc30d5e34698b,2018-07-20,TRUE,2018-07-09,dog,ready for review
+5b43bcd44ef0b2232c3dc3bb,2018-07-20,TRUE,2018-07-09,dog,ready for review
+5b4e66e5e0f85a740703ac3c,2018-07-20,TRUE,2018-07-17,dog,ready for review
+5b38f25623029ff52de959e3,2018-07-19,TRUE,2018-06-30,dog,ready to adopt
+591c7470123cb16e993c4fc7,2018-07-19,FALSE,NA,dog,ready to adopt
+5b4648245f6798175c2ffdef,2018-07-19,FALSE,2018-07-11,dog,manager decision
+5b2e97250bb07dbe2fafbe9e,2018-07-18,TRUE,2018-06-23,dog,ready to adopt
+5b4a39749086da986ed5b503,2018-07-18,TRUE,2018-07-16,dog,adopted
+5b439db2791394849c60203b,2018-07-18,FALSE,NA,dog,"ready for review, ready to adopt"
+5b37d6f5fc00bf9a63270fc8,2018-07-18,FALSE,2018-06-30,dog,adopted
+5b4776838b92726071b9dac9,2018-07-17,TRUE,2018-07-12,dog,adopted elsewhere
+5b3faf347d721073e68f7aec,2018-07-16,TRUE,2018-07-06,dog,ready to adopt
+5acba8cf41d6bdb473a3613c,2018-07-16,TRUE,2018-04-08,dog,ready to adopt
+5b4b9491de7333d3896106fa,2018-07-15,FALSE,2018-07-15,dog,ready to adopt
+5b4110c55706cd2085c65775,2018-07-14,TRUE,2018-07-12,dog,adopted
+5b43a6fc6c612e319fbe39f7,2018-07-14,TRUE,2018-07-09,dog,ready to adopt
+5b4a47b7edd483c9e99079cd,2018-07-14,FALSE,2018-07-14,dog,ready to adopt
+5b426144f2bef0451285254e,2018-07-13,FALSE,2018-07-08,dog,"questions, checks"
+5b40e1cf990ac8fdb08e88fb,2018-07-13,FALSE,2018-07-06,dog,"ready for review, reviewed with handouts only"
+5b3e83382dc6b91c122b44cf,2018-07-13,FALSE,2018-07-05,dog,"red flag, need vet info, questions"
+5b37d40063eceb07b9684f23,2018-07-13,FALSE,2018-06-30,dog,"need to see id, pet policy, questions"
+5b364e0694016ce8e93c0c8d,2018-07-13,FALSE,2018-06-29,dog,ready for review
+5b3e60ff0f52f57b0f217048,2018-07-13,FALSE,2018-07-05,dog,ready to adopt
+5b1d84db97b1498000c19af9,2018-07-12,FALSE,2018-06-10,dog,adopted
+5b423925989d47659ada3f02,2018-07-11,TRUE,2018-07-07,dog,ready to adopt
+5b42390d02106c37f10ca565,2018-07-11,FALSE,NA,dog,"rescue check, checks, manager decision"
+5b44fabad0997cdd9f79f886,2018-07-11,FALSE,NA,dog,ready to adopt
+5b3125caa5cfccfcf5e4194c,2018-07-11,FALSE,NA,dog,adopted
+5b184acaa78400478c5cefdd,2018-07-10,FALSE,NA,dog,ready to adopt
+5b3fa813a57a66d3614c5bad,2018-07-10,TRUE,2018-07-05,dog,"questions, ready for review"
+5a68bf6bd0d50ce33facf776,2018-07-10,TRUE,2018-01-22,dog,ready to adopt
+5ae4cdbf48d97cfe807f96f7,2018-07-10,FALSE,2018-04-28,dog,ready for review
+5b40e18e4c7eb5e669d7928d,2018-07-09,TRUE,2018-07-06,dog,ready to adopt
+584727871eac94bf11937bb8,2018-07-09,FALSE,NA,dog,ready for review
+5b3bd6e46de6992b42e916fa,2018-07-09,FALSE,2018-07-03,dog,"ready for review, ready to adopt"
+5a9cad0aba9050ffa0a95651,2018-07-08,FALSE,NA,dog,adopted
+5a319fd4fa5d185a149f2b19,2018-07-08,FALSE,2017-12-13,dog,"ready for review, ready to adopt, dog meet"
+5b367ad71dddad431df59864,2018-07-08,FALSE,2018-06-29,dog,ready for review
+5b3bd3a51cae1b90886418b2,2018-07-07,FALSE,2018-07-03,dog,ready for review
+5b343d8f7507c6441d3f7ab0,2018-07-07,TRUE,2018-06-26,dog,adopted
+5acf7431edf000d6bd1173cd,2018-07-07,TRUE,2018-04-08,dog,adopted
+5b4107c4484601a308403cdf,2018-07-07,FALSE,NA,dog,ready to adopt
+5b2420d6746327dd8a3efe3c,2018-07-07,FALSE,NA,dog,adopted
+5b3bd8f4e0e99f0906da38cb,2018-07-06,FALSE,2018-07-03,dog,"questions, adopted elsewhere"
+598211ee6c9795df28fc94e0,2018-07-06,FALSE,2018-06-30,dog,adopted
+5b39331a018b9fe474b51532,2018-07-06,FALSE,2018-07-01,dog,"ready to adopt, reviewed with handouts only"
+5b37d4061e0282e5426c13d6,2018-07-06,FALSE,2018-06-30,dog,"pet policy, need vet info, need info"
+5a10d5185fb7036095135834,2018-07-06,FALSE,NA,dog,"need info, red flag, need vet info"
+5b3650341e6c6c9817b7b7cb,2018-07-06,TRUE,2018-06-29,dog,"ready to adopt, reviewed with handouts only"
+5b364ce6e617fa44e3410118,2018-07-06,FALSE,2018-06-29,dog,"ready to adopt, reviewed with handouts only"
+5b36436ed0a1281a5c0d4843,2018-07-06,TRUE,2018-06-29,dog,ready to adopt
+5b2d809106f5d3052a5d26ba,2018-07-06,FALSE,2018-06-22,dog,"need vet info, questions, red flag"
+5a44114f59c314b628f69c73,2018-07-06,FALSE,NA,dog,"adopted, ready to adopt"
+5b350e325ae399d90015feba,2018-07-06,TRUE,2018-06-27,dog,"ready for review, questions"
+5b3124ea22c8425fff0f2ff5,2018-07-06,TRUE,2018-06-24,dog,adopted
+5b37b662c9c4347dc38953e2,2018-07-05,FALSE,2018-06-30,dog,adopted
+5b202fa59c0f826f93526e20,2018-07-05,TRUE,2018-06-11,dog,"ready to adopt, reviewed with handouts only"
+586540225e1160802b583138,2018-07-05,FALSE,NA,dog,"red flag, questions, returned"
+5b29819373ac2ef6e8ce070a,2018-07-05,FALSE,2018-06-19,dog,"ready to adopt, reviewed with handouts only"
+5b343e46a44085a8c8e35618,2018-07-03,TRUE,2018-06-26,dog,ready for review
+5b32a1f812e5dc9753e31fe0,2018-07-03,TRUE,2018-06-26,dog,adopted
+5b35265957cf0a8fc01ca080,2018-07-02,TRUE,2018-06-27,dog,ready to adopt
+57acc2f1d4009ea56a2cb2be,2018-07-02,TRUE,2018-06-30,dog,"adopted, ready for review, ready to adopt"
+5b37f38c58d35249dfedf728,2018-07-01,FALSE,2018-06-30,dog,ready to adopt
+5b776cdbcdcf2602bae6e603,2018-08-31,TRUE,2018-08-17,dog,ready to adopt
+5b75693d52a832530af58064,2018-08-31,TRUE,2018-08-15,dog,adopted
+5b8486318a494f7dcae41b61,2018-08-31,FALSE,2018-08-27,dog,ready to adopt
+59036c5f46794c4625d06d21,2018-08-31,FALSE,NA,dog,ready for review
+5b735981b175b9105211dd7d,2018-08-30,FALSE,2018-08-14,dog,"reviewed with handouts only, ready to adopt"
+5b79afc7e5903a58f33f9f6e,2018-08-30,TRUE,2018-08-19,dog,ready to adopt
+5b78519160c5974a8f68050e,2018-08-29,FALSE,2018-08-18,dog,manager decision
+5b804a0ac2a89f127caf51a9,2018-08-27,TRUE,2018-08-24,dog,ready for review
+5b8069f2d959b358689e1a55,2018-08-26,TRUE,2018-08-24,dog,adopted
+5b5fbeef9db63ae14ffd3b88,2018-08-26,TRUE,2018-08-17,dog,adopted
+5b7c66fbe636d866d803c470,2018-08-26,FALSE,2018-08-18,dog,"reviewed with handouts only, ready to adopt"
+5b786f20b0b7251af77d7343,2018-08-26,FALSE,2018-08-20,dog,"foster to adopt, returned"
+5b809056d959b35868a3e9b3,2018-08-25,FALSE,2018-08-24,dog,adopted
+5b7d71d6682bfb2b6961626c,2018-08-25,FALSE,2018-08-11,dog,"need vet info, not utd"
+5b78630d064adf2d86a7a0c4,2018-08-24,FALSE,2018-08-18,dog,ready for review
+5b798c384eacbb3b51d24fe8,2018-08-24,FALSE,2018-08-18,dog,"reviewed with handouts only, ready to adopt"
+5b7847ad8b4ca8512d4b3b45,2018-08-24,FALSE,2018-08-18,dog,need vet info
+5b7893f55c92022c40698aec,2018-08-24,TRUE,2018-08-18,dog,"reviewed with handouts only, ready to adopt"
+5b7858abbf17606e94445c45,2018-08-24,FALSE,2018-08-18,dog,"reviewed with handouts only, ready to adopt"
+5b198a5752b6107699d1a29b,2018-08-24,TRUE,2018-06-07,dog,adopted
+5b785cb1020631243ed7c47d,2018-08-24,TRUE,2018-08-18,dog,"questions, ready for review"
+5b783e22bc27c516e302a5b2,2018-08-24,FALSE,2018-08-18,dog,not utd
+5b786bf752d2c66f38c83b61,2018-08-24,FALSE,2018-08-18,dog,"reviewed with handouts only, ready to adopt"
+5b7f372726bece4c71e027a3,2018-08-24,TRUE,2018-08-23,dog,"reviewed with handouts only, ready to adopt"
+5b7719726cb32b68177e77b5,2018-08-24,FALSE,2018-08-17,dog,need vet info
+5b773e8df100832c4ebe1a32,2018-08-24,FALSE,2018-08-17,dog,"questions, ready for review"
+5b745cbe941f8b4e3c720395,2018-08-24,FALSE,2018-08-15,dog,"ready to adopt, reviewed with handouts only"
+5b736b9aeb45d13577c1b668,2018-08-24,FALSE,2018-08-14,dog,pet policy
+5b7346b5468c603551fbd6c4,2018-08-24,FALSE,2018-08-14,dog,"ready to adopt, ready for review"
+5b7d7cfb87e1637b4b62ce7f,2018-08-24,FALSE,2018-08-20,dog,checks
+5b73031cef571c3d81286091,2018-08-24,FALSE,2018-08-14,dog,"need vet info, manager decision, need info"
+5b74d278fcb0ab18d2df5a54,2018-08-24,FALSE,2018-08-15,dog,ready for review
+5b7f38a5fb6086672f3afb48,2018-08-23,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+587a4d934bb899707cfeb35e,2018-08-23,FALSE,NA,dog,adopted
+5b75e48b48331553a9eb521f,2018-08-23,TRUE,2018-08-16,dog,ready to adopt
+5b783ac77f385816ca1ad5ac,2018-08-23,FALSE,2018-08-18,dog,need vet info
+5b7d84d58574421012d79962,2018-08-23,FALSE,2018-08-21,dog,"questions, ready for review"
+5b79894aeea5714951103a6b,2018-08-23,FALSE,2018-08-18,dog,ready for review
+5b783e7479271805a6b9e0f2,2018-08-23,FALSE,2018-08-18,dog,ready for review
+5b75f4f3d2ec3a72b23a2472,2018-08-23,FALSE,2018-08-16,dog,ready for review
+5b774e82654788236ad7daca,2018-08-23,FALSE,2018-08-17,dog,adopted
+5b78954bd80ca6544624ecab,2018-08-23,FALSE,2018-08-18,dog,ready for review
+5b5b91e10a376ddf76a98436,2018-08-23,TRUE,2018-07-27,dog,"ready for review, ready to adopt"
+5b785d4acaf0b64ec3c6f4d1,2018-08-23,FALSE,2018-08-18,dog,"ready for review, reviewed with handouts only"
+5b756beef2bcf0031a452f63,2018-08-23,FALSE,2018-08-15,dog,"ready for review, reviewed with handouts only"
+5b7c45744932712277b2c343,2018-08-23,FALSE,2018-08-20,dog,"ready for review, reviewed with handouts only"
+5b7d8291fe282e73e36ee409,2018-08-23,FALSE,2018-08-21,dog,"ready for review, reviewed with handouts only"
+5b74a63ed4215108366b285a,2018-08-22,FALSE,2018-08-14,dog,need to see id
+5b7c44f6498f0f37dd4cb717,2018-08-22,TRUE,2018-08-20,dog,adopted
+5b5b51a9ab49b9c364ef11b6,2018-08-22,FALSE,2018-07-26,dog,"ready to adopt, reviewed with handouts only"
+5b74af1d6366fd5811e90c4a,2018-08-22,FALSE,2018-08-15,dog,"need vet info, questions, need info"
+5af21f127e51796168f6fbcf,2018-08-21,FALSE,NA,dog,"ready to adopt, unsure foster or adopt, adopted"
+5aedef4c7efd4d020d3ef2ff,2018-08-20,TRUE,2018-08-20,dog,"adopted, returned"
+5b7303b9db7626051586772d,2018-08-20,TRUE,2018-08-12,dog,"questions, pet policy"
+5b7896edd404411acb68df1e,2018-08-19,TRUE,2018-08-18,dog,adopted
+5b789fd46d9ae42449a7be34,2018-08-19,TRUE,2018-08-18,dog,adopted
+5b787e94e599ce3f58188a3c,2018-08-19,TRUE,2018-08-18,dog,adopted
+5b7074448ad1fe8328421e8f,2018-08-19,TRUE,2018-08-12,dog,adopted
+58fa903a377ead9bc3a46d0d,2018-08-19,FALSE,2017-10-19,dog,"adopted, returned"
+5b783e0671afda4bb19f476c,2018-08-18,TRUE,2018-08-18,dog,adopted
+5b78887cafccb42c2ad78c27,2018-08-18,FALSE,NA,dog,ready for review
+5aaac8f50b412c67f07b642b,2018-08-18,FALSE,2018-03-15,dog,"need info, need vet info"
+5b7848653664b02dba486d34,2018-08-18,FALSE,NA,dog,ready for review
+5834d2b8e6b0fa43068aa0ba,2018-08-18,FALSE,2018-08-09,dog,"need info, need vet info, not utd"
+5b6f55d8bc271b67dfaee9f8,2018-08-17,FALSE,2018-08-11,dog,"reviewed with handouts only, ready to adopt"
+5b71e9f0e392dd89c3116e77,2018-08-17,FALSE,2018-08-13,dog,"reviewed with handouts only, ready to adopt"
+5b725b718208000bab41b8fb,2018-08-17,FALSE,2018-08-13,dog,"reviewed with handouts only, ready to adopt"
+5b69dc92a6fb3e3fba5909a0,2018-08-17,FALSE,2018-08-07,dog,"need vet info, need info"
+5b6e7dbdf5323e85a6d69b6f,2018-08-17,TRUE,2018-08-10,dog,"reviewed with handouts only, ready to adopt"
+5aea3b06a92d15431b5d6dd2,2018-08-16,TRUE,2018-05-02,dog,ready to adopt
+5b6f36f8d3ddb23dac2e2afd,2018-08-16,TRUE,2018-08-11,dog,"ready to adopt, reviewed with handouts only"
+5b6f6ae0712e6e7ca4eef461,2018-08-16,TRUE,2018-08-11,dog,need vet info
+5b576c538afe34bf769e70cc,2018-08-16,FALSE,2018-07-23,dog,"adopted, returned"
+5b69cfe80213e12822021b2f,2018-08-16,FALSE,2018-08-07,dog,"need vet info, need info"
+5b7078a42a442686bb6c1160,2018-08-16,FALSE,2018-08-12,dog,"ready to adopt, reviewed with handouts only"
+5b7039ba7be2628b4cbfccdf,2018-08-16,FALSE,2018-08-11,dog,"reviewed with handouts only, ready to adopt"
+5a60a0b2b153e1bf28c4af63,2018-08-16,FALSE,2018-08-11,dog,"adopted, ready for review"
+5b6e7edfa14dfd8acd6c263f,2018-08-16,FALSE,2018-08-10,dog,"reviewed with handouts only, ready to adopt"
+5b6e7d06a23a18479df25f31,2018-08-16,TRUE,2018-08-09,dog,"reviewed with handouts only, ready to adopt"
+5b2575be80a290b8d01b2e1c,2018-08-16,FALSE,2018-08-15,dog,ready for review
+5ace655b247e91a4dad8f7a0,2018-08-16,FALSE,2018-08-15,dog,"reviewed with handouts only, ready to adopt"
+5b65e60d0ac8a3569fa12552,2018-08-15,FALSE,2018-08-04,dog,"need vet info, need info"
+5b68b876128c184ea86944a0,2018-08-15,FALSE,NA,dog,"reviewed with handouts only, ready to adopt"
+5b674a7ea7aaa775cfd47385,2018-08-14,TRUE,2018-08-05,dog,"ready to adopt, reviewed with handouts only"
+5b661c772a853d7ab83307f7,2018-08-14,FALSE,2018-08-04,dog,ready to adopt
+5b6dafad7643be582b5ef6c8,2018-08-14,TRUE,2018-08-09,dog,ready for review
+5b6a0546e92f0f45b955f9eb,2018-08-14,TRUE,2018-08-07,dog,"need to see id, adopted elsewhere"
+5b662c60aaca93471455b5fb,2018-08-14,FALSE,2018-08-04,dog,"ready for review, reviewed with handouts only"
+5b6c977560364132a61079b5,2018-08-14,TRUE,2018-08-09,dog,ready to adopt
+5b6a10d8d599a717d57ad57c,2018-08-14,TRUE,2018-08-07,dog,"questions, need vet info, denied"
+5b6b3c698bfa7b80c5eeb75b,2018-08-14,FALSE,2018-08-08,dog,"ready to adopt, reviewed with handouts only"
+5b63601aabae4f56309cfe7e,2018-08-14,FALSE,2018-08-02,dog,ready to adopt
+5b708b07014faa540beec171,2018-08-12,FALSE,2018-08-12,dog,adopted
+5b6f4b4c1efe5d4fafa1465d,2018-08-12,TRUE,2018-08-11,dog,ready to adopt
+5b5fc30039f0c015d9d9f80e,2018-08-12,TRUE,2018-07-30,dog,adopted
+5ae21522f7305f8563cbb6fa,2018-08-11,FALSE,NA,dog,"reviewed with handouts only, adopted, returned"
+5b6f2d7375db1747ad7c7e76,2018-08-11,FALSE,NA,dog,adopted
+5b6e0e8b0b5db68645e32373,2018-08-11,TRUE,2018-08-10,dog,ready to adopt
+5b6f1e701be7a5362b6fae71,2018-08-11,TRUE,2018-08-11,dog,adopted
+5b662b3a90100e2e6a69adaf,2018-08-10,FALSE,2018-08-04,dog,"reviewed with handouts only, adopted"
+5b648fdc7008e63dbd263127,2018-08-10,TRUE,2018-08-03,dog,ready to adopt
+5b01ec6dd77ed47e51d91c91,2018-08-10,FALSE,2018-05-20,dog,"reviewed with handouts only, adopted"
+5b636466995d75908a324785,2018-08-09,FALSE,2018-08-02,dog,adopted
+5b5a01f747aed8a6519fbba2,2018-08-09,FALSE,2018-07-26,dog,ready for review
+5b5cd279a1ec3eeeb71c5fb0,2018-08-09,FALSE,2018-08-01,dog,"need vet info, questions"
+5b36a6b2dcf6322c7a48bf89,2018-08-09,FALSE,2018-06-29,dog,"reviewed with handouts only, ready to adopt"
+5b6a0ba1a3976b5f84a6fa12,2018-08-08,FALSE,2018-08-08,dog,adopted
+5b67692889d45b33a8909229,2018-08-08,FALSE,NA,dog,NA
+5b4d11b55f970126521e32a6,2018-08-07,FALSE,2018-07-16,dog,reviewed with handouts only
+5b631dd2d7bca8201702d2b4,2018-08-07,FALSE,2018-08-01,dog,"ready to adopt, reviewed with handouts only"
+5b65cf8a5435f243405c06fb,2018-08-07,TRUE,2018-08-04,dog,"ready to adopt, reviewed with handouts only"
+5b63731be5da191341788ec9,2018-08-07,FALSE,2018-08-02,dog,"need vet info, adopted elsewhere"
+5b60a44b6a8ac3cac617ff75,2018-08-07,FALSE,2018-07-31,dog,ready to adopt
+5b5f8e34395e7dc699f6a0eb,2018-08-07,FALSE,2018-07-30,dog,"need vet info, need info"
+5b5f983e0d017eff16660cb3,2018-08-07,TRUE,2018-07-30,dog,"ready to adopt, reviewed with handouts only"
+5b5fbf7ea2b22e67f693a892,2018-08-07,TRUE,2018-07-29,dog,"ready to adopt, reviewed with handouts only"
+5b5dfd0dc317b6139597f083,2018-08-07,FALSE,2018-07-29,dog,pet policy
+5b5cb88989dd3e610067bc53,2018-08-07,FALSE,2018-07-28,dog,"pet policy, ready for review"
+5b5b2cf2c354c9348a11d7d3,2018-08-07,FALSE,2018-07-26,dog,"red flag, need info, need vet info"
+5b68bd7cd1dcb779c0213aef,2018-08-06,FALSE,NA,dog,ready to adopt
+5b55dc43edba670f2dd37346,2018-08-06,FALSE,2018-07-22,dog,"ready for review, ready to adopt, adopted elsewhere"
+5b65ee883215ed34f480acd1,2018-08-06,FALSE,2018-08-04,dog,"ready to adopt, reviewed with handouts only"
+5b55db5f7e868f7736aed474,2018-08-06,FALSE,2018-07-22,dog,"reviewed with handouts only, adopted"
+5b1849ea41836a48f365f125,2018-08-04,FALSE,2018-06-06,dog,"ready to adopt, dog meet"
+5b5cac15df426177e88ab2ca,2018-08-04,TRUE,2018-07-28,dog,ready to adopt
+5b5a448c1fab748cd626f504,2018-08-03,FALSE,2018-07-26,dog,"ready to adopt, reviewed with handouts only"
+581e4c3fadb08acae128d60c,2018-08-03,TRUE,2018-07-26,dog,ready for review
+5afdbabc3dd2809bf8cc84d3,2018-08-03,FALSE,2018-05-17,dog,adopted
+5b623175eda8566a7d6037f6,2018-08-03,TRUE,2018-08-02,dog,adopted
+5b538d7a50fa25eb3fc80666,2018-08-03,TRUE,2018-07-21,dog,adopted
+5b5ca2872e2de7ad44a5fe36,2018-08-02,FALSE,2018-07-28,dog,ready for review
+5b637673760f0518a1ee9dd1,2018-08-02,FALSE,NA,dog,NA
+5b5b5fd94372b57c7fcc6ada,2018-08-02,FALSE,2018-07-26,dog,"need info, not utd"
+5b60a46b0a39c45b726cc3f7,2018-08-02,FALSE,2018-07-31,dog,ready for review
+5b5fbb38513fa7446b69fdca,2018-08-02,FALSE,2018-07-28,dog,"ready to adopt, reviewed with handouts only"
+5b53a6ed469a99efe08c7829,2018-08-02,FALSE,2018-07-21,dog,"not utd, needs review before approval"
+5b5a57569de7e3c9fd76e92e,2018-08-02,FALSE,2018-07-26,dog,ready for review
+5b631ba4e07f662187ffc982,2018-08-02,FALSE,NA,dog,"ready to adopt, ready for review"
+5b5b5c51a41f100f1b9c10eb,2018-08-01,TRUE,2018-07-27,dog,ready for review
+5b5a2c54060ed0eae98272db,2018-08-01,TRUE,2018-07-25,dog,"ready to adopt, reviewed with handouts only"
+5b538068b315ec6d2a0387d7,2018-08-01,TRUE,2018-07-21,dog,adopted
+5b95a04a2cd9a26ada5657bd,2018-09-30,TRUE,2018-09-08,dog,"need vet info, not utd"
+5bad92b7ed0fc70f0fadea88,2018-09-30,TRUE,2018-09-28,dog,need vet info
+5ba165ebe147530e573c928b,2018-09-30,FALSE,2018-09-18,dog,"need to see id, questions, adopted elsewhere"
+5babf45e48b7be51bdfe3187,2018-09-30,FALSE,2018-09-26,dog,pet policy
+5baa85233bee707a9f97536a,2018-09-30,FALSE,2018-09-25,dog,"need vet info, questions"
+5bb0e858ad14792f982be0c0,2018-09-30,FALSE,2018-09-29,dog,checks
+5baeaba455342656c68dab7c,2018-09-30,TRUE,2018-09-28,dog,ready to adopt
+5bae980204cd306fa27e3fff,2018-09-30,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5baad26812598857415fa42b,2018-09-30,TRUE,2018-09-30,dog,adopted
+5bac0df236290984f99f7ed6,2018-09-30,FALSE,2018-09-26,dog,ready for review
+5ba1934fab76f25b577475bb,2018-09-30,FALSE,2018-09-18,dog,"reviewed with handouts only, ready to adopt"
+5baac1b10812ec2ea96d9e24,2018-09-29,FALSE,2018-09-25,dog,"ready to adopt, reviewed with handouts only"
+5ba8054cc42d7444d9ddc632,2018-09-29,FALSE,2018-09-23,dog,"reviewed with handouts only, ready to adopt"
+5ba5b1f78b9b40433b4577a5,2018-09-29,FALSE,2018-09-22,dog,"checks, need to see id, need info, pet policy, questions"
+5ba2f41b18c706302168da86,2018-09-29,TRUE,2018-09-20,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5ba2adc9fa28ff6fa138a7d6,2018-09-29,FALSE,2018-09-19,dog,"red flag, need vet info, need info"
+5ba21083ab76f25b578ba9d5,2018-09-29,FALSE,2018-09-19,dog,"pet policy, need info, red flag"
+5ba181c4deff4b5c86b2b194,2018-09-29,FALSE,2018-09-18,dog,questions
+5ba13d3b7e0c8a5d18f59a3a,2018-09-29,FALSE,2018-09-18,dog,"reviewed with handouts only, ready to adopt, questions"
+5b9d383428cedc1e22f2a275,2018-09-29,FALSE,2018-09-15,dog,"pet policy, need vet info, need info"
+5b9cf6ddee640c4cb959572b,2018-09-29,FALSE,2018-09-15,dog,"pet policy, need vet info, questions, need to see id"
+5b9c2843b290fc0fec8371c7,2018-09-29,FALSE,2018-09-14,dog,"questions, pet policy"
+5b9c4d5a3d3c738f044dbe3f,2018-09-29,FALSE,2018-09-15,dog,"need vet info, rescue check"
+5b9ae24224751283ce9e3034,2018-09-29,FALSE,2018-09-13,dog,"ready for review, questions"
+5b98837de10eec68bd4d02b3,2018-09-29,TRUE,2018-09-12,dog,"questions, ready for review, adopted elsewhere"
+5b8862dfa3d53520e958a352,2018-09-29,FALSE,2018-08-30,dog,"ready to adopt, reviewed with handouts only"
+5b8db14f82a6d969470d3ee6,2018-09-29,FALSE,2018-09-03,dog,"red flag, rescue check"
+5b784ad441f63647fab31945,2018-09-29,FALSE,2018-08-18,dog,"ready to adopt, ready for review"
+5ba54d6976204a51c63f405e,2018-09-29,TRUE,2018-09-21,dog,ready to adopt
+5ba805ca5435ad2adb0d5970,2018-09-29,TRUE,2018-09-23,dog,"need info, not utd"
+5bae8735e1609266663e807f,2018-09-29,FALSE,NA,dog,denied
+5bae637edd9ed97fc6680d6c,2018-09-29,TRUE,2018-09-28,dog,"reviewed with handouts only, adopted"
+5bae649e450a04032380106d,2018-09-28,FALSE,2018-09-28,dog,ready for review
+5b983d0068abb26846598982,2018-09-28,FALSE,NA,dog,adopted
+5bad544f756b322bbd2c58a3,2018-09-27,FALSE,NA,dog,ready to adopt
+5b9bf7dcea6deb19d60b6227,2018-09-27,FALSE,2018-09-14,dog,"need to see id, ready for review"
+5ba2e2630edfb63e382f3197,2018-09-27,FALSE,2018-09-19,dog,"reviewed with handouts only, ready to adopt"
+5b53ace8c798f5efdb32e056,2018-09-27,FALSE,2018-07-21,dog,adopted
+5b36a6f8e33d5b6e7bcce6c9,2018-09-27,TRUE,2018-06-29,dog,ready to adopt
+5ba919d7e5bcd00d7e255892,2018-09-26,TRUE,2018-09-15,dog,checks
+5b9afedd4bcdf50beeb76fc8,2018-09-26,FALSE,2018-09-14,dog,ready for review
+5b9d3835cad7ac1e69166388,2018-09-26,TRUE,2018-09-15,dog,"questions, not utd, red flag"
+5b97f4f4f2d1303da2d63130,2018-09-26,FALSE,2018-09-10,dog,"questions, need info"
+5b967f35fe2dcb62e92236ce,2018-09-26,TRUE,2018-09-09,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5b96e724740be135cd2cb0c1,2018-09-26,FALSE,2018-09-09,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5b93e36b96d05a3095ed77ee,2018-09-25,TRUE,2018-09-08,dog,"need to see id, ready for review"
+5b981524f24a7b737d4b9a4a,2018-09-25,FALSE,2018-09-11,dog,NA
+5b98279dc57e766814cfd991,2018-09-25,FALSE,2018-09-11,dog,NA
+5b98838f4a573b7fbf40d611,2018-09-25,FALSE,2018-09-12,dog,NA
+5b97f4a18893920bfc209ca8,2018-09-25,FALSE,2018-09-10,dog,"need to see id, pet policy"
+5b980b72b325f689a8d12804,2018-09-25,FALSE,2018-09-11,dog,"reviewed with handouts only, ready to adopt, need to see id"
+5b967fb2e05c6e1b735bd380,2018-09-25,FALSE,2018-09-10,dog,"need vet info, need to see id"
+5b9431bf6cac18867f3fd573,2018-09-25,FALSE,2018-09-08,dog,"need to see id, need vet info, need info, not utd"
+5b93f952f2c93460c0a37452,2018-09-25,FALSE,2018-09-08,dog,"need info, need vet info, need to see id"
+5b954873d5f79c6dd9144f72,2018-09-25,FALSE,2018-09-09,dog,not utd
+5b954852e401970908ed13e8,2018-09-25,FALSE,2018-09-08,dog,"ready to adopt, reviewed with handouts only"
+5b93e358fc7ce630d06ace16,2018-09-25,TRUE,2018-09-08,dog,"need to see id, questions, need info, need vet info"
+5b92d6300ed67f1175dcef83,2018-09-25,FALSE,2018-09-07,dog,"need info, rescue check, need vet info"
+5ba7c4b758921443303bbb11,2018-09-25,FALSE,2018-09-22,dog,"checks, need info"
+5ba13d3c4be7ac7d510fea24,2018-09-25,FALSE,2018-09-18,dog,not utd
+5b9d7dbc064ed575052bee53,2018-09-25,FALSE,2018-09-15,dog,"reviewed with handouts only, ready to adopt"
+5b4fbb4c14ed80815a2af3d9,2018-09-24,FALSE,2018-07-18,dog,"ready to adopt, manager decision"
+5b60c185eba2246a5aa21f14,2018-09-22,TRUE,2018-07-31,dog,adopted
+5b9eccb6fc9b241e701bb195,2018-09-22,FALSE,2018-09-16,dog,"reviewed with handouts only, adopted"
+5b9e8d1e6612ce2d9ef47f3e,2018-09-22,TRUE,2018-09-16,dog,ready to adopt
+5b8afb25e82d6a05221ac168,2018-09-21,FALSE,2018-08-31,dog,"ready to adopt, adopted elsewhere"
+5b92d66bd23b52601b3a2385,2018-09-21,TRUE,2018-09-07,dog,"need vet info, questions, not utd"
+5b9d39d1f983638b7b816f6e,2018-09-21,FALSE,2018-09-15,dog,ready for review
+5b9c3e1e46473230c55243a7,2018-09-21,FALSE,2018-09-14,dog,"need to see id, need vet info, need info"
+5b92d5c1b89b865fa7f3e8b7,2018-09-21,TRUE,2018-09-06,dog,need vet info
+5b9d85207b695a61087b9c41,2018-09-21,FALSE,2018-09-15,dog,adopted elsewhere
+5b9d31afefb37906d4e77911,2018-09-21,FALSE,2018-09-15,dog,"reviewed with handouts only, ready to adopt"
+5b9166c2db10080b27e34555,2018-09-21,FALSE,2018-09-06,dog,"need to see id, ready to adopt"
+5b92d5a186050b153ba7eb37,2018-09-21,TRUE,2018-09-06,dog,"need vet info, need info, not utd"
+5b9e8f5e9da06f32c5f6a76c,2018-09-21,TRUE,2018-09-16,dog,ready to adopt
+5b9165d08dcf785a20cbc667,2018-09-21,TRUE,2018-09-06,dog,"questions, not utd"
+5ba3e87fddf947488a44143b,2018-09-21,TRUE,2018-09-20,dog,"need to see id, reviewed with handouts only, ready to adopt"
+5b89babccf7dc7213bb31199,2018-09-20,TRUE,2018-08-31,dog,pet policy
+5b9b09f50d62283243976b8e,2018-09-20,FALSE,2018-09-14,dog,checks
+5b99aadc9e29dc5aff0b376b,2018-09-20,TRUE,2018-09-12,dog,"need info, need to see id, need vet info"
+5b99aa8374d62705e0ec2efe,2018-09-20,FALSE,2018-09-12,dog,"need to see id, questions, need vet info, red flag"
+5b8db1065487ed334aac9f72,2018-09-20,TRUE,2018-09-03,dog,"need to see id, questions, need vet info"
+5b89ddd88b2285259eb43343,2018-09-20,FALSE,2018-08-31,dog,"checks, red flag, need to see id"
+5b99aac76eaa878fef09bdcf,2018-09-20,FALSE,2018-09-12,dog,"ready for review, need to see id"
+5b99aa98a936081f1100bab5,2018-09-20,FALSE,2018-09-12,dog,"ready for review, need to see id"
+5b9094c32e284d5b333aa550,2018-09-20,TRUE,2018-09-05,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5b8db18793e4a742a9d86155,2018-09-20,TRUE,2018-09-03,dog,ready for review
+5b92e859eacadc2a463ccc99,2018-09-20,TRUE,2018-09-07,dog,"questions, ready for review"
+5b92d5dfb9fbe073bef4b5ba,2018-09-19,FALSE,2018-09-06,dog,need vet info
+5b74d152c24aa28a94edb399,2018-09-19,FALSE,2018-08-15,dog,"reviewed with handouts only, adopted"
+5b969f9207c35e329e5bb91c,2018-09-19,FALSE,2018-09-13,dog,"denied, manager decision"
+5b92d647f56a1b35e9563184,2018-09-19,FALSE,2018-09-07,dog,ready to adopt
+5b9a7fa8a87ce444a0d6691a,2018-09-19,FALSE,2018-09-12,dog,"not utd, need info, red flag"
+5b9094ff7cdf3b0c55ac95cb,2018-09-19,TRUE,2018-09-05,dog,ready to adopt
+5b909558391e206a759c3d77,2018-09-19,FALSE,2018-09-05,dog,ready to adopt
+5b8dcdcc6d49224a8b0b447d,2018-09-18,FALSE,2018-09-03,dog,need vet info
+5b9165f7b3dd608c4c83099e,2018-09-18,TRUE,2018-09-06,dog,"pet policy, ready for review, withdrawn"
+5b90941639cccd595f1d9813,2018-09-18,FALSE,2018-09-04,dog,adopted
+5978d8f0446084620dafcdb0,2018-09-18,TRUE,2017-07-29,dog,adopted
+5b0870c1bffecbdd4f2174f6,2018-09-18,FALSE,2018-05-25,dog,"ready for review, adopted elsewhere"
+5b89e396cddac742c77ec9f4,2018-09-17,FALSE,2018-08-31,dog,"unsure foster or adopt, not utd"
+5a9bf93a681ae959fc5694bc,2018-09-17,FALSE,NA,dog,ready to adopt
+5b9d3bd07bffb35e3085135a,2018-09-17,FALSE,2018-09-15,dog,adopted
+5b9d31f62f29770cadc55f4d,2018-09-16,TRUE,2018-09-15,dog,ready for review
+5b9973f77b5d687ee536d7f6,2018-09-15,FALSE,2018-09-12,dog,"need to see id, reviewed with handouts only"
+5b9bfe9316fd886cdc894f13,2018-09-15,FALSE,2018-09-14,dog,"need to see id, need vet info, adopted elsewhere"
+5b99aaf4c9403c7c9186b581,2018-09-15,TRUE,2018-09-12,dog,adopted
+5b99aaadca4f27524cdbfa92,2018-09-15,FALSE,2018-09-12,dog,ready to adopt
+5b9c13bbee640c4cb94722be,2018-09-15,TRUE,2018-09-15,dog,adopted
+5b9bc49c4bc57c2502062137,2018-09-15,FALSE,2018-09-14,dog,adopted
+5b9a7953cc7ff92c9930ed2e,2018-09-14,FALSE,2018-09-13,dog,"reviewed with handouts only, ready to adopt"
+5b93e385a54f2a088db2b1f1,2018-09-14,FALSE,2018-09-08,dog,"reviewed with handouts only, adopted"
+5b92d6e85cc58230864fa519,2018-09-14,FALSE,2018-09-07,dog,"ready to adopt, reviewed with handouts only"
+59aeeb6aa65e5e8ca072e4b7,2018-09-14,TRUE,2017-09-03,dog,ready to adopt
+5b9acde4534a66721372b38e,2018-09-14,FALSE,2018-09-13,dog,"adopted elsewhere, ready to adopt"
+5b967f6baaaf96369ae62791,2018-09-14,FALSE,2018-09-09,dog,need vet info
+5b50f9ab8e716e1f43d15c10,2018-09-13,FALSE,2018-09-27,dog,"reviewed with handouts only, adopted"
+5b9a7efe8cb8570361522077,2018-09-13,TRUE,2018-09-11,dog,ready for review
+5b9543398cce9b5568250c44,2018-09-13,FALSE,2018-09-08,dog,"ready for review, ready to adopt"
+5b8461be82b09753912f4f4f,2018-09-13,FALSE,2018-08-27,dog,"need vet info, questions, need info"
+5b86f9227bc9c16f927f2945,2018-09-13,FALSE,2018-08-29,dog,ready to adopt
+5b967ff225f9c562af77e359,2018-09-13,TRUE,2018-09-10,dog,ready for review
+5b9541b79e588c7733a3e803,2018-09-13,FALSE,2018-09-08,dog,"reviewed with handouts only, ready to adopt"
+5b8afc2cca3eca85eecfc7e1,2018-09-13,FALSE,2018-08-31,dog,questions
+5b897a96e4d6a32da21f1b41,2018-09-12,TRUE,2018-08-31,dog,"need to see id, need vet info"
+5b896c127e327d85e1ef8be8,2018-09-12,TRUE,2018-08-31,dog,"need to see id, ready for review"
+5b808d6f9ce57807af235dff,2018-09-12,TRUE,2018-08-24,dog,ready for review
+5b7f25640fcbed05df6fd846,2018-09-12,TRUE,2018-08-23,dog,"need vet info, need to see id"
+5b9595de0614af538c7f9693,2018-09-12,FALSE,2018-09-08,dog,"ready for review, ready to adopt"
+5b8ed8cca4ee684f092344ed,2018-09-12,FALSE,2018-09-04,dog,"need vet info, questions"
+5b96d2d6d12a3d0c0a10fcae,2018-09-12,FALSE,2018-09-10,dog,"reviewed with handouts only, ready to adopt"
+5b945ccc92bc964244d386a4,2018-09-12,FALSE,2018-09-08,dog,"ready to adopt, reviewed with handouts only"
+5b92d6cc1e669e8b2aa57ddf,2018-09-12,FALSE,2018-09-07,dog,ready to adopt
+5b8a8e1b01f685222eae3f46,2018-09-12,FALSE,2018-09-01,dog,"ready to adopt, reviewed with handouts only"
+5b82f27fdc2810595b4553e3,2018-09-12,TRUE,2018-08-26,dog,"ready to adopt, reviewed with handouts only"
+5b819e17633ff64b567a7ba7,2018-09-12,TRUE,2018-08-25,dog,"reviewed with handouts only, ready to adopt"
+5b56113b6f0e3e09eb98dadb,2018-09-12,FALSE,2018-07-03,dog,"adopted, reviewed with handouts only, ready to adopt"
+5b9543df28c3325505d8f6ed,2018-09-12,FALSE,2018-09-08,dog,"questions, need vet info"
+5b9544424af74c65e60ddae6,2018-09-12,TRUE,2018-09-08,dog,"reviewed with handouts only, ready to adopt"
+5b95412b25e9983a7498dab4,2018-09-12,FALSE,2018-09-08,dog,"need info, need vet info"
+5b97fc68064b762a91f0b9a8,2018-09-11,FALSE,2018-09-10,dog,"need vet info, questions"
+5b1e6d1839b1866f1b893a54,2018-09-11,FALSE,2018-06-10,dog,adopted
+5b92d704d86e8338b9b03c39,2018-09-11,FALSE,2018-09-07,dog,ready for review
+5b885fd272399f15266d3b05,2018-09-11,TRUE,2018-08-30,dog,ready to adopt
+5b9095ba44fb0f74b36fe915,2018-09-11,FALSE,2018-09-05,dog,"red flag, need vet info, manager decision"
+5b9584d08685b304d6c957d1,2018-09-11,FALSE,2018-09-09,dog,"ready to adopt, reviewed with handouts only"
+5b92d5fe17852186991bf72c,2018-09-11,FALSE,2018-09-07,dog,"ready to adopt, reviewed with handouts only"
+5b9095306492373a295a6a68,2018-09-11,TRUE,2018-09-05,dog,"need vet info, not utd"
+5b954838c10baf36601215ce,2018-09-11,FALSE,2018-09-08,dog,ready for review
+5b905cd32d3fb20b2c3c4cd4,2018-09-11,FALSE,2018-09-05,dog,ready to adopt
+5b82ec198479c959271d18b8,2018-09-11,TRUE,2018-08-27,dog,"ready to adopt, adopted"
+5b9433859a7fec6016e564a4,2018-09-10,FALSE,2018-09-08,dog,adopted
+5b96a7d44af977672c066ce8,2018-09-10,FALSE,2018-09-10,dog,"ready to adopt, reviewed with handouts only"
+5b8eb4f35c79cb29b924a7fa,2018-09-10,FALSE,2018-09-04,dog,"ready to adopt, reviewed with handouts only"
+5b8b4b0ce21b413f6aa69dc6,2018-09-10,FALSE,2018-09-01,dog,"ready to adopt, reviewed with handouts only"
+59861522a98f4d17dd368f3a,2018-09-10,FALSE,2018-09-08,dog,"ready to adopt, reviewed with handouts only"
+5b8992c46cb890640b8a9448,2018-09-09,FALSE,2018-08-31,dog,"ready for review, adopted elsewhere"
+5b8de67163bd292758be2293,2018-09-09,TRUE,2018-09-04,dog,ready to adopt
+5b897b38b32b418a5c9528c3,2018-09-09,FALSE,2018-08-31,dog,"need to see id, ready to adopt"
+5b896a17a6b45a5d0c06de5a,2018-09-09,TRUE,2018-08-31,dog,reviewed with handouts only
+5b5fc592750336b374075bf2,2018-09-08,FALSE,2018-07-30,dog,adopted
+5b9285f4195a90366d1dd067,2018-09-08,FALSE,2018-09-06,dog,ready for review
+5b81c9df71329359740cf424,2018-09-08,FALSE,2018-08-25,dog,"need info, questions"
+5b7863165264464566df7c92,2018-09-08,FALSE,2018-08-18,dog,"manager decision, rescue check"
+5b6494d7689c9e0c60d153dd,2018-09-07,FALSE,2018-08-05,dog,"adopted, adoption follow up"
+5b5cd0fd7ad0fd8081ad206c,2018-09-07,TRUE,2018-07-27,dog,ready to adopt
+59ea191c40f7942eae8ee1d1,2018-09-07,TRUE,2018-09-06,dog,ready for review
+5b8043cc41c563096977842c,2018-09-06,FALSE,2018-08-24,dog,"ready to adopt, reviewed with handouts only"
+5b8ee2ef9d7137808ce71a17,2018-09-06,FALSE,2018-09-04,dog,"ready to adopt, reviewed with handouts only"
+5b5b5a0b16414ad74e244e41,2018-09-06,FALSE,2018-08-30,dog,"ready to adopt, approved with limitation"
+5b82f7cfb7d184701e0194fc,2018-09-05,TRUE,2018-08-26,dog,ready to adopt
+5b8ef4cbf381980ac0bd159f,2018-09-04,FALSE,2018-09-04,dog,"ready to adopt, reviewed with handouts only"
+5b340af9a75b9927d42d2a46,2018-09-04,FALSE,2018-07-13,dog,adopted
+5b7d7e42669ea81cebcf8edf,2018-09-04,FALSE,2018-08-21,dog,"ready to adopt, reviewed with handouts only"
+5b6c9a4ab5ec9714ab80e1ea,2018-09-04,FALSE,2018-08-31,dog,adopted
+5af745534556777f0c82b32d,2018-09-03,TRUE,2018-05-12,dog,"red flag, ready for review"
+5b8c0e12249a4d447651b946,2018-09-03,TRUE,2018-09-02,dog,adopted
+5b8c4db5b539d954dadfe2d0,2018-09-02,FALSE,2018-09-02,dog,questions
+5b8aea10c274ef260b923693,2018-09-02,FALSE,NA,dog,ready to adopt
+5b4243ab56a2f5edcaed8300,2018-09-02,FALSE,NA,dog,adopted
+5b86bef13e44514127943ba7,2018-09-01,FALSE,2018-08-29,dog,adopted
+5b7d751381c3475c147995a1,2018-09-01,TRUE,2018-08-19,dog,"need to see id, ready for review, adopted elsewhere"
+59694a45af179d65b75864d9,2018-09-01,TRUE,2018-08-30,dog,ready to adopt
+5bcd3a93ce58ef1d3b7a6694,2018-10-31,FALSE,2018-10-22,dog,"reviewed with handouts only, ready to adopt"
+5bd8b23c4ce1e35d92411f5b,2018-10-30,FALSE,2018-10-30,dog,"ready to adopt, reviewed with handouts only"
+5bd7ab0f5067ef2e8199db5f,2018-10-30,FALSE,2018-10-29,dog,"reviewed with handouts only, ready to adopt"
+5bd4e9996749dd302e0af84a,2018-10-30,FALSE,2018-10-27,dog,vet
+5bcb9f3da15b520f2bcc500d,2018-10-30,FALSE,2018-10-20,dog,"ready for review, not utd"
+5bbc0720c0f56f03a2a08d5b,2018-10-30,FALSE,2018-10-09,dog,"vet, need info"
+5bcccdf250d5f43c2a1997aa,2018-10-30,FALSE,2018-10-21,dog,"ready to adopt, reviewed with handouts only"
+5bba4b97e76da58789846572,2018-10-30,TRUE,2018-10-06,dog,ready to adopt
+5bd539c88f9d3559cfae275e,2018-10-30,FALSE,2018-10-28,dog,ready for review
+5bd7a5febe3d31791d369b20,2018-10-30,FALSE,NA,dog,"unsure foster or adopt, ready to adopt, reviewed with handouts only"
+5bcb869d664fa535f3c6cc82,2018-10-30,FALSE,2018-10-20,dog,"ready to adopt, reviewed with handouts only, ready for review"
+5bd73fd77c09704282f5e69f,2018-10-30,FALSE,2018-10-29,dog,"need info, vet, adopted elsewhere, withdrawn"
+5bd50660e94a794a19100056,2018-10-29,FALSE,NA,dog,adopted
+5bc93c2722d2fb6f478af587,2018-10-29,FALSE,2018-10-19,dog,"opa, adopted elsewhere"
+5b4faf22b1611ebf3745639d,2018-10-29,FALSE,2018-08-14,dog,adopted
+5bc94a1fa9636f1533de003f,2018-10-29,TRUE,2018-10-19,dog,ready to adopt
+5bcd0ad62a54ed589cdde38b,2018-10-29,FALSE,2018-10-21,dog,need vet info
+5bc92f867b67ab64d764186c,2018-10-29,TRUE,2018-10-19,dog,ready for review
+5bcccbad208d1735cbfc82f3,2018-10-29,TRUE,2018-10-21,dog,"pet policy, ready for review"
+5bce8d090bf7d841777c4aa3,2018-10-29,TRUE,2018-10-23,dog,ready to adopt
+5bd5f5723deab037db56fd22,2018-10-29,TRUE,2018-10-28,dog,ready to adopt
+5bd38aff56889b2c292ad464,2018-10-28,FALSE,2018-10-26,dog,adopted
+5bd4bf448984cb297f042f60,2018-10-28,TRUE,2018-10-27,dog,"ready to adopt, reviewed with handouts only"
+5bcf4c6c746a194a46d513c9,2018-10-28,FALSE,2018-10-23,dog,ready for review
+5bd01e5302ebcc13cda12380,2018-10-28,TRUE,2018-10-24,dog,ready for review
+59e3bb9ed6cd2d16c1aa19e0,2018-10-28,FALSE,2018-10-26,dog,adopted
+5bd383e71432c44f153fb7ac,2018-10-28,TRUE,2018-10-26,dog,adopted
+5bd0e71fad6acd3fb0390f5b,2018-10-27,FALSE,2018-10-24,dog,"ready for review, reviewed with handouts only"
+5b81dd5dc5c5b41cf9f094d0,2018-10-27,FALSE,2018-09-15,dog,foster to adopt
+5bac176390b4de5c3db7c62e,2018-10-27,TRUE,2018-09-26,dog,adopted
+5bcf7ff62ac38026171253e0,2018-10-27,FALSE,2018-10-23,dog,"ready to adopt, reviewed with handouts only"
+5bd0bf7f55bfe54c54dc9370,2018-10-26,TRUE,2018-10-24,dog,adopted
+5bcb68821afeca80b277a4da,2018-10-26,TRUE,2018-10-20,dog,"opa, need vet info, need info, adopted elsewhere"
+5bcba14fd2e58133c73c00ad,2018-10-26,FALSE,2018-10-20,dog,ready to adopt
+5bafc018e8e962449c3faf7f,2018-10-25,FALSE,2018-09-29,dog,"ready to adopt, reviewed with handouts only"
+5bd1f7c2df10cf3c8d2e1a6c,2018-10-25,FALSE,2018-10-25,dog,checks
+5b8ad99835306d043cef7d91,2018-10-24,FALSE,2018-09-01,dog,"ready for review, ready to adopt"
+5bc3bd5c2146a35590f025d7,2018-10-23,FALSE,NA,dog,"reviewed with handouts only, approved with limitation, adopted"
+59985fbfcbd182840c449ddd,2018-10-23,FALSE,NA,dog,"adopted, returned"
+598cad8768763f744d458583,2018-10-23,FALSE,NA,dog,"ready to adopt, ready for review"
+5bcb86b1b091e702cc4c34fd,2018-10-22,FALSE,2018-10-20,dog,vet
+5bcb7c421afeca80b2797896,2018-10-20,FALSE,2018-10-20,dog,"vet, questions"
+5bcb86ab3437023606ca7a3f,2018-10-20,FALSE,2018-10-20,dog,"red flag, vet, need info"
+5bc779ce6eb69922b72d9310,2018-10-19,FALSE,2018-10-17,dog,ready to adopt
+5ba534b20649d12e61181f73,2018-10-19,FALSE,2018-09-21,dog,ready to adopt
+5bbcbd8eb4d9a271bef0b46e,2018-10-19,FALSE,2018-10-09,dog,"need to see id, questions"
+5bc23d26afdc1b81c38a740c,2018-10-19,FALSE,2018-10-13,dog,"need info, vet, questions"
+5bc1391b2e57b4719d1d3d1b,2018-10-19,FALSE,2018-10-13,dog,withdrawn
+5bc13889dced6548232f04a1,2018-10-19,FALSE,2018-10-12,dog,"questions, opa, pet policy"
+5bc6f336c454cb6e12459142,2018-10-18,FALSE,NA,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bbbc85dac54a81429d3ba50,2018-10-18,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bc10319336c1e228c004ec0,2018-10-18,FALSE,NA,dog,not utd
+5bc35a3003fb2622e9b63ab0,2018-10-18,FALSE,2018-10-23,dog,"questions, vet, returned, not utd"
+5bc39f31686aae15ac621bfb,2018-10-18,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bc15d6f4dfdb984a2a24f0b,2018-10-18,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bbae8bf7a8a132b4c8ca6ad,2018-10-18,FALSE,NA,dog,ready to adopt
+5bac425eb6b3d7769ec22211,2018-10-18,TRUE,2018-09-27,dog,"need to see id, questions"
+5bbb3e2f4c514a2d06e9faeb,2018-10-18,FALSE,NA,dog,withdrawn
+5bbbd054698425878454060b,2018-10-18,FALSE,2018-10-23,dog,"questions, need vet info"
+5bbb64f35ea32f2d59542c87,2018-10-18,FALSE,2018-10-23,dog,need vet info
+5bc518068372033ecd5dd91a,2018-10-18,TRUE,2018-10-15,dog,ready to adopt
+5bc0e9fc9c58b108096caa06,2018-10-18,FALSE,NA,dog,ready for review
+5bc0d2c351d6b03582aacd18,2018-10-18,FALSE,2018-10-23,dog,need vet info
+5bc6495492c00e7b8fb1d07f,2018-10-18,TRUE,2018-10-16,dog,adopted
+5bc3b1b0c28f596750b76361,2018-10-18,FALSE,2018-10-23,dog,ready for review
+5bc3a6b061e609162003ebd4,2018-10-18,FALSE,2018-10-23,dog,ready for review
+5bc3a47f7017693eba945a85,2018-10-18,FALSE,NA,dog,red flag
+5bab836765f38f280e491e3d,2018-10-18,FALSE,2018-10-09,dog,adopted
+5bc39e1d83eee45a7fea7204,2018-10-18,FALSE,2018-10-23,dog,"not utd, vet"
+5b97f563f98c88842ad1dfbd,2018-10-17,FALSE,2018-09-11,dog,"ready to adopt, dog meet"
+5bc3afb1421163390a9ab3b0,2018-10-17,FALSE,NA,dog,adopted
+5ba2ad8439b55f279318c737,2018-10-17,FALSE,2018-09-19,dog,adopted
+5bc3a1dee184fb670338f9ab,2018-10-17,FALSE,2018-09-10,dog,"ready to adopt, reviewed with handouts only"
+5bc229eff7ca8c08ef2bee87,2018-10-16,FALSE,NA,dog,"need info, pet policy"
+5bc517ab12c90021bfe44a9a,2018-10-16,FALSE,2018-10-15,dog,"ready to adopt, reviewed with handouts only"
+5bc52b4d6f4016846f98a3f5,2018-10-16,FALSE,NA,dog,ready to adopt
+5bc3e70fcb013c3ddb5d5a6e,2018-10-16,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bc516a9ee4de27a95155632,2018-10-16,TRUE,2018-10-15,dog,ready to adopt
+5a0f0ab723945d97de5f454c,2018-10-16,FALSE,2018-09-27,dog,"adopted, adoption follow up, red flag"
+5b427831675e5a8e77ff21f2,2018-10-15,TRUE,2018-07-08,dog,ready to adopt
+5bba6aa156c8191925d5e2c6,2018-10-15,TRUE,2018-10-07,dog,ready to adopt
+5bad0ad12eddb00c9a8fda7b,2018-10-15,TRUE,2018-09-27,dog,"ready to adopt, reviewed with handouts only"
+5bc3712f61b89531c9707e54,2018-10-14,TRUE,2018-10-14,dog,adopted
+5bbb7a3f6c2b197d656ae60e,2018-10-14,TRUE,2018-10-08,dog,"questions, need info, opa, withdrawn"
+5a984d034705755409acf8a5,2018-10-14,FALSE,NA,dog,"red flag, need vet info, need info"
+5bc2402a86db8a0df1621eec,2018-10-13,FALSE,2018-10-13,dog,questions
+5bbf9b0000e49978ed00a401,2018-10-13,FALSE,2018-10-11,dog,"ready for review, questions, red flag"
+5bbf81ca182a7f1f68b3c99d,2018-10-13,FALSE,2018-10-11,dog,"questions, ready for review, red flag"
+5bbe6e0b548d0a019188dda0,2018-10-13,FALSE,2018-10-10,dog,"reviewed with handouts only, ready to adopt"
+5bbe0116cc2d785e32edabc9,2018-10-13,FALSE,2018-10-10,dog,"pet policy, questions, ready for review"
+5bbc083706bf5b87bad3dce6,2018-10-13,FALSE,2018-10-09,dog,"reviewed with handouts only, ready to adopt"
+5bbbe2eb0958c262c1cc3b73,2018-10-13,FALSE,2018-10-08,dog,questions
+5bba673c07949852620272a5,2018-10-13,FALSE,2018-10-07,dog,"reviewed with handouts only, ready to adopt"
+5bbb8b19590add4a3cb24603,2018-10-13,FALSE,2018-10-08,dog,ready for review
+5bba5b4736cf978f62736633,2018-10-13,FALSE,2018-10-07,dog,"reviewed with handouts only, ready to adopt"
+5bba5b48451a3d8d947603db,2018-10-13,FALSE,2018-10-07,dog,"questions, ready for review"
+5bba49c0cbcace4e9eb31ee3,2018-10-13,FALSE,2018-10-07,dog,checks
+5bb3d09d18acf15f43d92512,2018-10-13,FALSE,NA,dog,"reviewed with handouts only, ready to adopt, dog meet, adopted"
+5bbaa001b6660e31fd9f4745,2018-10-13,FALSE,2018-10-08,dog,"reviewed with handouts only, ready to adopt"
+5bb973866b5c6936f8158d75,2018-10-13,FALSE,2018-10-07,dog,"reviewed with handouts only, ready to adopt"
+5bb9566b24879418757a0cc9,2018-10-13,FALSE,2018-10-07,dog,"reviewed with handouts only, ready to adopt"
+5bbacc1ba60e9f3df52ca0f5,2018-10-13,FALSE,2018-10-08,dog,ready to adopt
+5bb8dd7006bf6b516572f550,2018-10-12,FALSE,2018-10-06,dog,ready for review
+5bb933f02271f34ca0145412,2018-10-12,FALSE,NA,dog,"need to see id, questions"
+5bb90e6641cc10874b0dcc68,2018-10-12,FALSE,2018-10-13,dog,"need to see id, approved with limitation, reviewed with handouts only, ready to adopt"
+5bb8f01891bb5a60aa0c5434,2018-10-12,FALSE,2018-10-13,dog,"ready to adopt, reviewed with handouts only"
+5bbfb15194be3683b3538aa4,2018-10-12,FALSE,2018-10-11,dog,"need to see id, ready to adopt"
+5bc001ab4bb23f39b5ad9230,2018-10-12,FALSE,NA,dog,not utd
+5bbd5e34a52c53725dc7ff6b,2018-10-12,TRUE,2018-10-10,dog,reviewed with handouts only
+5bbce49e7e60c73396c20ab9,2018-10-12,TRUE,2018-10-09,dog,ready to adopt
+5ba04c4329fc424da66ecdfe,2018-10-12,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5bbf8062618b9a41f46bda4d,2018-10-11,FALSE,2018-10-11,dog,"ready to adopt, reviewed with handouts only"
+5b909580532d8f17bd3385bd,2018-10-11,FALSE,2018-09-05,dog,ready to adopt
+5b5b97248bb586381dd974e5,2018-10-11,FALSE,2018-07-27,dog,ready for review
+5bae69b7278eb025294474f9,2018-10-10,TRUE,2018-09-28,dog,adopted
+5b9431ad199ce5236213767e,2018-10-10,TRUE,2018-09-08,dog,ready to adopt
+5b9d436dbed0b98f3047510e,2018-10-10,FALSE,2018-09-15,dog,ready to adopt
+5bbcc934a0f8cd837cfd0a86,2018-10-10,FALSE,NA,dog,adopted
+5bbc9df0e3a59e10e80654c4,2018-10-09,FALSE,NA,dog,NA
+5bb8da113da21635f379ecc5,2018-10-09,FALSE,2018-10-06,dog,vet
+5bbcd04476679d18fea2efe5,2018-10-09,TRUE,2018-10-09,dog,"reviewed with handouts only, ready to adopt"
+5bbcdfccc8ab660206ee55f8,2018-10-09,TRUE,2018-10-09,dog,"ready to adopt, reviewed with handouts only"
+5bba4ecc97fcff589c87f31c,2018-10-09,FALSE,2018-10-06,dog,vet
+5bba4de920aa792c0abc10ab,2018-10-09,FALSE,2018-10-06,dog,"checks, vet, need info"
+5bb8f014b33d330dd77c37d8,2018-10-09,FALSE,2018-10-06,dog,"reviewed with handouts only, ready to adopt"
+5bbaba23aeb96c5756469baf,2018-10-09,FALSE,2018-10-08,dog,"need info, not utd"
+5b06f03b1049ca01628e30c6,2018-10-09,FALSE,NA,dog,"adopted, returned"
+5bba4d3da85a0b525702bee7,2018-10-08,TRUE,2018-10-06,dog,pet policy
+5bb940fdb467378643f80dcd,2018-10-08,TRUE,2018-10-06,dog,adopted
+5bb7b7c73ebd176baea98d8c,2018-10-08,TRUE,2018-10-05,dog,ready to adopt
+5bb8e90712396f39206c202e,2018-10-07,FALSE,NA,dog,adopted
+5bb8c3df81a945736b257d21,2018-10-07,FALSE,2018-10-06,dog,vet
+5bb8d47d7852578f1cfdf135,2018-10-07,FALSE,NA,dog,adopted
+5ba7fee43df5ab4da9d63de4,2018-10-07,FALSE,2018-10-07,dog,adopted
+5ba1036f26964d38b7ea8892,2018-10-06,TRUE,2018-09-18,dog,"ready to adopt, adopted elsewhere"
+5bb8e5fd97ae903624f7d52f,2018-10-06,FALSE,2018-10-06,dog,"vet, need info"
+5ba2b81190e1a23f163b6d82,2018-10-06,TRUE,2018-09-19,dog,adopted
+5bb8845e76cad8781cd7572b,2018-10-06,FALSE,2018-10-06,dog,"need vet info, need to see id"
+5bb7810000229458d70c9cd9,2018-10-05,TRUE,2018-10-05,dog,"ready to adopt, dog meet"
+5b9165ae775b308ddc17f4cd,2018-10-05,TRUE,2018-09-06,dog,ready to adopt
+5bb4d147fe691b711d03b422,2018-10-05,FALSE,2018-09-24,dog,ready to adopt
+5bb658e41c514e01a809abc0,2018-10-05,FALSE,2018-10-03,dog,ready to adopt
+5b9d7b7c1aac98612cffb0f0,2018-10-05,FALSE,2018-10-08,dog,"ready to adopt, dog meet"
+5bb53eb6e86fb079266e41e4,2018-10-05,TRUE,2018-10-05,dog,ready to adopt
+5bb298f03664ab7dc9e087ad,2018-10-05,TRUE,2018-10-01,dog,ready to adopt
+5bb4cf928adf5551015b86de,2018-10-05,FALSE,2018-10-01,dog,"reviewed with handouts only, ready to adopt"
+5bb7583b7bc4fb0a15437a3e,2018-10-05,TRUE,2018-10-05,dog,ready to adopt
+5babfc04b9ee3072c67e2c58,2018-10-05,FALSE,2018-09-26,dog,ready to adopt
+5bb2af468cc5db27405a1927,2018-10-04,FALSE,2018-10-01,dog,"red flag, rescue check, vet"
+5ba512b924e0530d129b2e51,2018-10-04,TRUE,2018-09-21,dog,adopted
+5bb62fe01c66336e607ce403,2018-10-04,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5baff3206c87902f66b5e4e8,2018-10-04,TRUE,2018-09-29,dog,"ready to adopt, reviewed with handouts only"
+5b8ed8fb78b59521b7cca4ea,2018-10-04,FALSE,2018-09-04,dog,"approved with limitation, need to see id"
+5bb53f50c93e6018f6b375bf,2018-10-03,FALSE,NA,dog,NA
+5ba14569939af964aa7cf3a4,2018-10-03,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5ba2418573a979325520ec1b,2018-10-03,TRUE,2018-09-19,dog,ready to adopt
+5b9eb092734daa729e31fc23,2018-10-03,FALSE,2018-09-16,dog,"need info, approved with limitation, ready for review"
+5bb4d0ef5e8da87413a8ed6b,2018-10-03,FALSE,2018-09-23,dog,ready to adopt
+5bb4cfb2888a6f436b4ebafb,2018-10-03,FALSE,2018-10-01,dog,ready to adopt
+5bb4d18406bce666e280e182,2018-10-03,FALSE,2018-09-24,dog,"need to see id, opa, vet"
+5bb44134c552c55ea8ba984b,2018-10-03,TRUE,2018-10-03,dog,"need info, need to see id"
+5bb4cf46ac05a77d033a3e84,2018-10-03,TRUE,2018-09-30,dog,"reviewed with handouts only, ready to adopt"
+5bb4cf6f8adf5551015b7bf0,2018-10-03,FALSE,2018-10-01,dog,"questions, vet"
+5bb4cf08bef0f76cfe940c47,2018-10-03,FALSE,2018-09-30,dog,"need to see id, opa"
+5bb4d16ba0129e81e2884cb1,2018-10-03,TRUE,2018-09-24,dog,reviewed with handouts only
+5bb4ce7580d3d7670f21cd63,2018-10-03,TRUE,2018-09-27,dog,"reviewed with handouts only, ready to adopt"
+5bb4178229717e726dbf46fa,2018-10-03,FALSE,2018-10-03,dog,"questions, need vet info"
+5bb42ef4ec025e383a4dcfc2,2018-10-03,FALSE,2018-10-03,dog,"need to see id, pet policy, questions"
+5ad7add95acda5eb1413de8f,2018-10-03,TRUE,2018-04-18,dog,"adopted, denied"
+5bab9f6e0da29b5372d6edde,2018-10-03,TRUE,2018-09-26,dog,ready to adopt
+5bb3d82f86d7dd44005d343f,2018-10-03,FALSE,NA,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bb121d579b8a6538070e43f,2018-10-02,FALSE,2018-09-30,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5bb3d16bb4b26081637e1c81,2018-10-02,TRUE,2018-10-02,dog,"reviewed with handouts only, ready to adopt"
+5bb37e80cc90127fdc753aeb,2018-10-02,FALSE,2018-10-02,dog,ready to adopt
+5ba532505920a36ba415aefc,2018-10-02,FALSE,2018-09-21,dog,"reviewed with handouts only, ready to adopt"
+5b89761db0283b33787430c6,2018-10-02,FALSE,2018-08-31,dog,"ready to adopt, reviewed with handouts only"
+5bacfe3760198d4ba91819bc,2018-10-02,TRUE,2018-09-27,dog,"need to see id, red flag, questions"
+5bb1097a3bbb3b56a13acd30,2018-10-02,FALSE,2018-09-30,dog,"reviewed with handouts only, ready to adopt"
+5baea76e15a49362b7e1c049,2018-10-02,FALSE,2018-09-28,dog,"red flag, vet"
+5ba53ca4c06a1e7227861bb0,2018-10-02,TRUE,2018-09-21,dog,"ready to adopt, reviewed with handouts only"
+5bb2df2ad403a55359bc865a,2018-10-02,TRUE,2018-10-02,dog,ready to adopt
+5baa99b3d4c1a0724e1ba9e7,2018-10-02,FALSE,2018-09-25,dog,need vet info
+5ba6e57d817ad6316b7d36de,2018-10-02,FALSE,2018-09-23,dog,"questions, manager decision"
+5bad1ea2bcc23a16fecfe6e9,2018-10-02,FALSE,2018-09-27,dog,adopted
+59c0352ec455e27b3e22a7b9,2018-10-02,FALSE,2018-09-15,dog,"need to see id, checks"
+5bad5e964057996583a786cb,2018-10-01,FALSE,2018-09-26,dog,ready to adopt
+5bae72ceb974776329a98bf2,2018-10-01,TRUE,2018-09-28,dog,ready for review
+5baacc44c70aef7f682cf608,2018-10-01,TRUE,2018-09-25,dog,"questions, need vet info"
+5b97f5106e1a8a1edfe56f36,2018-10-01,FALSE,2018-09-10,dog,"need vet info, need to see id, need info"
+5bacf28fbf3383606de65d3a,2018-10-01,FALSE,2018-09-27,dog,"need to see id, need vet info, pet policy"
+5bad65ab78f3841f9672df7d,2018-10-01,TRUE,2018-09-27,dog,ready to adopt
+5baff4773d1df67f9a045d7d,2018-10-01,FALSE,2018-09-29,dog,"questions, need to see id, vet"
+5ba42c27f6adef149de4541f,2018-10-01,FALSE,2018-09-20,dog,"need vet info, adopted elsewhere"
+5ba3aa6d7e780c7333c92f19,2018-10-01,FALSE,2018-09-20,dog,"pet policy, questions"
+5b9d08e06595e86271d9be7b,2018-10-01,FALSE,2018-09-15,dog,ready to adopt
+5ba6f13ecdeee37c274e0e43,2018-10-01,FALSE,2018-09-23,dog,"need vet info, need to see id, adopted elsewhere"
+5b9d0f9ceab3f21be138e473,2018-10-01,FALSE,2018-09-15,dog,"need info, questions, red flag"
+5bac0b865df64c0c08f7e4e8,2018-10-01,TRUE,2018-09-26,dog,ready to adopt
+5bac348b9e1e63555317c4fd,2018-10-01,FALSE,2018-09-27,dog,need vet info
+5bac2eb8ed3dcf4334e1d78f,2018-10-01,FALSE,2018-09-27,dog,need vet info
+5b9db1089d8ee013842e3c9a,2018-10-01,FALSE,2018-09-16,dog,"need to see id, need vet info"
+5baae1ca6eaeed388161a362,2018-10-01,FALSE,2018-09-26,dog,need vet info
+5ba66d8a97560c83373ff20d,2018-10-01,FALSE,2018-09-22,dog,"need vet info, need to see id"
+5ba14a2d645434812f9b7c79,2018-10-01,FALSE,2018-09-18,dog,"ready to adopt, reviewed with handouts only"
+5bf322205c33793360459f99,2018-11-30,FALSE,2018-11-19,dog,"ready to adopt, reviewed with handouts only"
+5bfca5bcf3e65167cbc27714,2018-11-30,FALSE,2018-11-27,dog,"ready to adopt, reviewed with handouts only"
+5bfaeb0b473cfa1a0838ebab,2018-11-30,TRUE,2018-11-25,dog,"ready to adopt, reviewed with handouts only"
+5bf203056adee2861538a982,2018-11-30,FALSE,2018-11-18,dog,"ready to adopt, reviewed with handouts only"
+5bf1abe43ef8273792c17753,2018-11-30,FALSE,2018-11-18,dog,"ready to adopt, reviewed with handouts only"
+5bf1ad3fa4527b57dab9df05,2018-11-30,FALSE,2018-11-18,dog,"need vet info, pet policy, red flag, questions"
+5bf34f5ed89ab877769eaa93,2018-11-29,FALSE,2018-11-20,dog,"ready to adopt, reviewed with handouts only"
+5bf57edfe59bcc0ff6006b5b,2018-11-29,FALSE,2018-11-21,dog,"ready to adopt, reviewed with handouts only"
+5bf44d0e878bb3080a6fca6a,2018-11-29,FALSE,2018-11-20,dog,"ready to adopt, reviewed with handouts only"
+5bf414ce19497a47ca842ffa,2018-11-29,FALSE,2018-11-20,dog,"ready to adopt, reviewed with handouts only"
+5bf2f7b901afb6738a79c2b7,2018-11-29,FALSE,2018-11-19,dog,need vet info
+5bf0c847392a02077c47ba68,2018-11-29,FALSE,2018-11-18,dog,"ready to adopt, reviewed with handouts only"
+5befb86a0f62b9739c5a25e2,2018-11-29,FALSE,2018-11-17,dog,"ready to adopt, reviewed with handouts only"
+5beed2383f140a0fc41c3901,2018-11-29,FALSE,2018-11-16,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bee46bd6bb70c63c81c9b7c,2018-11-29,FALSE,2018-11-15,dog,"ready to adopt, reviewed with handouts only"
+5bedc3b056a9bd5c072b4576,2018-11-29,FALSE,2018-11-15,dog,"ready to adopt, reviewed with handouts only"
+5be71e5ff53b57548c572613,2018-11-29,FALSE,2018-11-10,dog,"opa, questions"
+5bedb22c09be4c0a81a06b53,2018-11-29,FALSE,2018-11-15,dog,"questions, opa, need vet info"
+5c003d76a0b08f28691a45a3,2018-11-29,FALSE,2018-11-29,dog,"ready for review, pet policy"
+5bcb385e19184a3e0af7ccf3,2018-11-29,FALSE,2018-10-20,dog,adopted
+5bec893bd85da6230c3c124b,2018-11-29,TRUE,2018-11-14,dog,"opa, ready to adopt, reviewed with handouts only"
+5be5b2247eb8784dd4e00994,2018-11-29,TRUE,2018-11-09,dog,"need vet info, red flag"
+59c53aa7ccb5f40a93ad0585,2018-11-29,FALSE,2017-09-23,dog,denied
+5bf888df655ec265833034cf,2018-11-29,TRUE,2018-11-23,dog,"ready to adopt, reviewed with handouts only"
+5bf6bb974a3c0c3a7457ce08,2018-11-28,FALSE,2018-11-21,dog,"ready to adopt, reviewed with handouts only"
+5bbf4b9fe141b7733cecb9e9,2018-11-28,FALSE,2018-10-11,dog,ready to adopt
+5bf0f41d5034314043f247b8,2018-11-28,FALSE,2018-11-18,dog,ready for review
+58ee55bfcfa1cbccf2a8888a,2018-11-28,TRUE,2017-04-12,dog,"ready to adopt, ready for review"
+5bf861b4ab5c3b3a226a1edb,2018-11-28,FALSE,2018-11-23,dog,"ready to adopt, reviewed with handouts only"
+5bf2e3cec80b798efec3746b,2018-11-27,TRUE,2018-11-19,dog,"need vet info, questions"
+5bf3547f318b1b17f81b0607,2018-11-27,TRUE,2018-11-19,dog,"vet, withdrawn"
+5beb16ff3317380553476e6b,2018-11-27,FALSE,2018-11-13,dog,"need to see id, questions, red flag"
+5bf4886087eb52556aea30c6,2018-11-27,FALSE,2018-11-20,dog,"ready to adopt, reviewed with handouts only"
+5bf4d3f90fab215aa7c57041,2018-11-26,FALSE,2018-11-21,dog,"ready to adopt, reviewed with handouts only"
+5bf6ff406b01be43d485fdb3,2018-11-26,FALSE,2018-11-22,dog,ready for review
+58e01a16b4a8b3e7744d4ea9,2018-11-25,FALSE,NA,dog,adopted
+5bfaca34b94e112792b31bd8,2018-11-25,TRUE,2018-11-25,dog,adopted
+5bf9c92c389344012cc08814,2018-11-24,FALSE,2018-11-24,dog,"ready to adopt, reviewed with handouts only"
+5be6fc4deb7e90384e76a78b,2018-11-24,FALSE,2018-11-10,dog,ready to adopt
+5bf58db0aa239f11117246d3,2018-11-24,TRUE,2018-11-20,dog,"need vet info, questions"
+5bed4849bffd6522e9e32f94,2018-11-24,FALSE,2018-11-15,dog,"ready to adopt, reviewed with handouts only"
+59f8b110c19682ae6e4eb154,2018-11-24,FALSE,2018-10-17,dog,"approved with limitation, returned, ready to adopt"
+5bdc5f589003c611a6e99b49,2018-11-24,FALSE,NA,dog,"reviewed with handouts only, adopted, returned"
+5be87d0db969eb17b26812d0,2018-11-23,FALSE,2018-11-10,dog,adopted
+5bf30187c78aba03b418cb60,2018-11-23,FALSE,2018-11-19,dog,"ready to adopt, reviewed with handouts only"
+5b745cd0205cb9771042e80e,2018-11-23,FALSE,2018-12-07,dog,"reviewed with handouts only, adopted, adoption follow up"
+5bf321bb3c5f5674b7f427ad,2018-11-23,TRUE,2018-11-19,dog,"reviewed with handouts only, ready to adopt"
+5bf34b82d08d8a641064cd91,2018-11-23,FALSE,NA,dog,"ready for review, ready to adopt"
+5bdc985aecb09f3bf5ca72e2,2018-11-22,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5be4e99e9a76eb7f4eb12217,2018-11-21,TRUE,2018-11-08,dog,"ready to adopt, reviewed with handouts only"
+5be4365a04ef4a3ab2891d5c,2018-11-20,FALSE,2018-11-08,dog,"questions, red flag"
+5bec432b2a405f7e7dd55508,2018-11-20,FALSE,NA,dog,"questions, ready for review"
+5beb7dfec58db86ce782308c,2018-11-20,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bea1d61151b5636318e3eee,2018-11-20,FALSE,NA,dog,"ready for review, ready to adopt"
+5be9dd3f75301b4e2794689d,2018-11-20,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5be84166a0359c3845a50c76,2018-11-20,FALSE,NA,dog,"opa, ready for review, reviewed with handouts only"
+5be6688b575b873bb33d592c,2018-11-20,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5be487f288baeb6ae019f58f,2018-11-20,FALSE,2018-11-08,dog,"questions, vet, red flag"
+5bf0ca79860872468398202f,2018-11-19,FALSE,2018-11-18,dog,"reviewed with handouts only, ready to adopt"
+5be60646060fb95e2c4be194,2018-11-19,FALSE,NA,dog,"adopted, red flag"
+5bf064229bcc38599f9618db,2018-11-19,TRUE,2018-11-17,dog,ready for review
+5bf08a2af04cdb49f445a809,2018-11-19,FALSE,2018-11-17,dog,"ready to adopt, reviewed with handouts only"
+5be89ea85f466882108b2a5f,2018-11-19,TRUE,2018-11-11,dog,"need info, pet policy"
+5bf0a710d856593678371bb8,2018-11-19,FALSE,2018-11-17,dog,vet
+5bccea432ccc8112987764c8,2018-11-19,FALSE,2018-10-21,dog,"reviewed with handouts only, ready to adopt"
+5babc24fae1a0a8b6391dff6,2018-11-19,TRUE,2018-09-21,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5be7c3437e80040e537cd702,2018-11-19,FALSE,2018-11-11,dog,ready for review
+5be06c438d87dd62848f744a,2018-11-18,TRUE,2018-11-05,dog,"ready to adopt, reviewed with handouts only"
+5becbd5dac1df362e412770d,2018-11-18,FALSE,2018-11-15,dog,"ready to adopt, reviewed with handouts only"
+5be99c3851d7ed46906524d7,2018-11-18,FALSE,2018-11-12,dog,"ready to adopt, reviewed with handouts only, approved with limitation"
+5be834a9e7b3da5f9778e6fb,2018-11-18,TRUE,2018-11-17,dog,"ready to adopt, dog meet"
+5bee4a066f2ffe712908b481,2018-11-17,FALSE,2018-11-16,dog,"ready to adopt, reviewed with handouts only"
+5bebd83ba481f8740f283384,2018-11-17,FALSE,2018-11-14,dog,"questions, vet"
+5beae962b762b02fc855045c,2018-11-17,FALSE,2018-11-13,dog,"ready to adopt, reviewed with handouts only"
+5be6eff7fde55b48baea9f62,2018-11-17,TRUE,2018-11-10,dog,adopted
+5bf0572fbfb2ea59dda7e1cc,2018-11-17,FALSE,2018-11-17,dog,"reviewed with handouts only, ready to adopt"
+5b8afbde6077047298f343c6,2018-11-17,TRUE,2018-08-31,dog,ready to adopt
+5bedebff0f55e436498c88e3,2018-11-16,FALSE,2018-11-15,dog,not utd
+5beb09f990576a14f53df91b,2018-11-16,FALSE,2018-11-13,dog,"ready to adopt, reviewed with handouts only"
+5bd64dd887f4546ea32274a2,2018-11-16,TRUE,2018-10-28,dog,ready to adopt
+5be8dd35983ab5106875b6ee,2018-11-16,FALSE,2018-11-12,dog,"ready to adopt, reviewed with handouts only"
+5be308bf469f9d3085580ca7,2018-11-16,FALSE,2018-11-07,dog,need vet info
+5bee0af72282df2be907244f,2018-11-16,FALSE,2018-11-16,dog,"manager decision, denied"
+5be729f1aefc2b2ad88289f9,2018-11-16,FALSE,2018-11-10,dog,"red flag, manager decision"
+5be735945ad73940de629f19,2018-11-16,FALSE,2018-11-10,dog,adopted
+5be87df4bede664ed8c7fcec,2018-11-16,TRUE,2018-11-10,dog,ready to adopt
+5be87e4361c3c25e54a87db0,2018-11-16,TRUE,2018-11-11,dog,ready to adopt
+5be37e97dc70b80bfcd36d66,2018-11-16,TRUE,2018-11-07,dog,"ready for review, red flag"
+5b93e3289f99003a0d7b86eb,2018-11-16,FALSE,2018-09-07,dog,"reviewed with handouts only, ready to adopt"
+5baead548d0e3b205d5ae894,2018-11-16,FALSE,NA,dog,adopted
+5beb3ab98ae8c42168541b01,2018-11-16,FALSE,2018-11-13,dog,"ready to adopt, reviewed with handouts only"
+5beaedbafa421c648bf75a5b,2018-11-16,FALSE,2018-11-13,dog,"checks, need info, questions, red flag"
+5beef7d8623e753b9409600c,2018-11-16,TRUE,2018-11-13,dog,ready to adopt
+5bdcbfd11a10c72dada53703,2018-11-16,TRUE,2018-11-02,dog,"need info, vet"
+5be877d0791d5460d90d75b3,2018-11-16,FALSE,2018-11-11,dog,"ready to adopt, reviewed with handouts only"
+5bee0fe5da966d449ba5ca75,2018-11-16,FALSE,2018-11-16,dog,checks
+5bd75d618f222e31bcecace2,2018-11-16,FALSE,NA,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bd89fd3a946ec64a4ea5a4c,2018-11-16,FALSE,NA,dog,"ready to adopt, reviewed with handouts only, need to see id"
+5be888b2626b095058704017,2018-11-16,FALSE,2018-11-16,dog,"ready to adopt, need to see id, reviewed with handouts only"
+5beb692572a46d334208785d,2018-11-16,FALSE,2018-11-14,dog,ready for review
+5be87900d8ecb50bb43e24e1,2018-11-15,FALSE,2018-11-11,dog,"ready to adopt, reviewed with handouts only, need to see id"
+5be4b6f166a09e3dcbbaac79,2018-11-15,FALSE,2018-11-08,dog,"ready to adopt, reviewed with handouts only"
+5bddf998f530112d6b7a0b0b,2018-11-15,FALSE,2018-11-03,dog,"questions, red flag, not utd"
+5be313fe931e205c344c91f0,2018-11-15,FALSE,2018-11-07,dog,"unsure foster or adopt, ready to adopt, reviewed with handouts only"
+5be1ed5ba343b37e454b2bba,2018-11-15,FALSE,2018-11-06,dog,"checks, need info, need to see id, questions, vet"
+5bde3084b73943029183b2b5,2018-11-15,FALSE,2018-11-03,dog,"questions, returned, red flag"
+5be25735339de62d5f3a3377,2018-11-15,FALSE,2018-11-07,dog,"ready to adopt, reviewed with handouts only"
+5be1ec5605c341299ddfe576,2018-11-15,TRUE,2018-11-06,dog,"need info, red flag"
+5be0db5c2873c26b2346bfa0,2018-11-15,FALSE,2018-11-06,dog,"questions, need vet info"
+5be1baebba34f233d7495a29,2018-11-15,FALSE,2018-11-06,dog,"ready to adopt, reviewed with handouts only"
+5be0a77798774369ae0b0fea,2018-11-15,FALSE,2018-11-05,dog,manager decision
+5be1171a5cc7ca39d65e11c8,2018-11-15,FALSE,2018-11-06,dog,vet
+5bec3876e8f1cb205aeb16fc,2018-11-15,FALSE,2018-11-14,dog,"reviewed with handouts only, ready to adopt"
+5be47cbe223f87870912370b,2018-11-15,FALSE,2018-11-08,dog,"questions, ready to adopt, reviewed with handouts only"
+5be8af6cf41fc840bcdc4d69,2018-11-15,FALSE,2018-11-11,dog,"ready to adopt, reviewed with handouts only"
+5be1d6e8a48d8615cdf1458a,2018-11-15,FALSE,2018-11-06,dog,"ready to adopt, reviewed with handouts only"
+5be5a3c632b8b982e9adde89,2018-11-15,FALSE,2018-11-09,dog,"ready to adopt, reviewed with handouts only"
+5be1eeaa41cbf8224f156b8c,2018-11-15,FALSE,2018-11-06,dog,"ready to adopt, reviewed with handouts only"
+5be89af0d7c2f15ead89b99c,2018-11-15,FALSE,2018-11-11,dog,vet
+5be7bcd73f56d068a2e1a65f,2018-11-15,FALSE,2018-11-11,dog,"ready to adopt, reviewed with handouts only"
+5be735553ab9131c935f24cc,2018-11-14,TRUE,2018-11-10,dog,adopted
+5bccd05d0f444a5808bb236c,2018-11-14,FALSE,NA,dog,"ready to adopt, adopted elsewhere"
+5be761f347dcff8449701b46,2018-11-14,TRUE,2018-11-10,dog,"ready to adopt, reviewed with handouts only"
+5be3800f2d6f497555d3deb6,2018-11-14,TRUE,2018-11-07,dog,"ready for review, ready to adopt"
+5bd4e87a5c36bc7dcf61465d,2018-11-13,TRUE,2018-10-27,dog,"reviewed with handouts only, adopted"
+5ba520b97c26894f9353584c,2018-11-13,FALSE,2018-09-21,dog,ready to adopt
+5be87db4f67bb28ca8920dcd,2018-11-12,TRUE,2018-11-09,dog,"need info, vet, adopted elsewhere"
+5be39c14473aee8fe2ea9658,2018-11-12,FALSE,2018-11-08,dog,"approved with limitation, ready to adopt, reviewed with handouts only"
+5be4843c8f9fed394a7166b1,2018-11-12,TRUE,2018-11-08,dog,need info
+5be2ef72866bd7339a8a859e,2018-11-12,FALSE,2018-11-12,dog,adopted
+5ab565649cb3988cb306e1aa,2018-11-11,FALSE,NA,dog,"ready for review, adopted"
+5bba1a1ca647d1017772a606,2018-11-11,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5bd9ce9a76fcfd0758376d96,2018-11-11,TRUE,2018-11-02,dog,"ready to adopt, reviewed with handouts only, dog meet"
+5bdfeff2b1bf5d8fb1cf37d8,2018-11-11,FALSE,2018-11-05,dog,not utd
+5b60bc482af9e4bca6c8ba1c,2018-11-11,FALSE,2018-08-08,dog,adopted
+5bdf16d7b400f71da8d587c5,2018-11-10,FALSE,2018-11-04,dog,"vet, need info, opa"
+5bd85f5558118b1cbf839dd1,2018-11-10,FALSE,2018-11-03,dog,vet
+5bdd27b32497db204eacf1da,2018-11-10,FALSE,2018-11-03,dog,ready to adopt
+5ba0629f89a33937294676b3,2018-11-10,FALSE,2018-09-18,dog,"need to see id, vet"
+5bbba18a56ea2f24cb3bd312,2018-11-10,TRUE,2018-10-08,dog,"reviewed with handouts only, ready to adopt"
+5bddf9a8c310e56b55a929a1,2018-11-10,FALSE,2018-11-03,dog,"ready to adopt, reviewed with handouts only"
+5bd3c3bbb93b0d6c00264490,2018-11-10,TRUE,2018-10-27,dog,adopted
+5bddec4908fc066463ad93e8,2018-11-09,FALSE,2018-11-03,dog,need vet info
+5be5f534db84dd38da07fd54,2018-11-09,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5be4b1da49f99031cc9978b9,2018-11-09,FALSE,2018-11-08,dog,"reviewed with handouts only, ready to adopt"
+5bdca591e90da48138cff06f,2018-11-09,FALSE,2018-11-02,dog,"ready to adopt, reviewed with handouts only"
+5be35731ad87751680e5f8b9,2018-11-09,TRUE,2018-11-07,dog,"reviewed with handouts only, ready to adopt"
+5bdcca81362d5b5ca6ceb395,2018-11-09,FALSE,2018-11-02,dog,"need to see id, denied"
+5be0ba33ee36424e4ffc2737,2018-11-09,TRUE,2018-11-05,dog,"ready to adopt, reviewed with handouts only"
+5b90945fbfcc9d7a0a38dfa9,2018-11-09,FALSE,2018-11-17,dog,adopted
+5bdefad3b0009a6fb1638a32,2018-11-08,FALSE,2018-11-04,dog,"ready to adopt, reviewed with handouts only"
+5bdd225c55dd8582bd8379d8,2018-11-08,FALSE,2018-11-03,dog,"ready to adopt, reviewed with handouts only"
+5bdd011f8346cb2cd5d023f7,2018-11-08,FALSE,2018-11-03,dog,"questions, opa"
+5bdcb3c53aafb916bb0a26a0,2018-11-08,FALSE,2018-11-02,dog,"need vet info, vet"
+5bdb7d813b0f4e6fb25af116,2018-11-08,FALSE,2018-11-01,dog,"ready to adopt, reviewed with handouts only"
+5bca137ea322ca6ca59192d7,2018-11-08,FALSE,2018-10-19,dog,"ready to adopt, reviewed with handouts only"
+5a35d274add83ad5316481f7,2018-11-08,TRUE,2018-11-02,dog,NA
+5bdf6b467ec2dd0883a6165b,2018-11-08,FALSE,2018-11-04,dog,"ready to adopt, reviewed with handouts only"
+5bdf574f2c93de6fe018f11d,2018-11-08,FALSE,2018-11-04,dog,"red flag, vet, questions, opa"
+5a73980fd94a851e04d758fe,2018-11-07,FALSE,2018-02-01,dog,"ready to adopt, dog meet"
+5be0993a4ab6a7431a69a10d,2018-11-06,FALSE,NA,dog,ready to adopt
+5bb8d0a9ce3e3a5d6a66797b,2018-11-06,TRUE,2018-11-06,dog,adopted
+5a933ecec1d9954e759ae1a5,2018-11-06,TRUE,2018-03-10,dog,returned
+5bdf659f2c88cd2a54463a7d,2018-11-06,TRUE,2018-11-04,dog,adopted
+5ba56357c974a866587e5a68,2018-11-06,FALSE,NA,dog,ready to adopt
+5bce5e4fd9c7643aa13107b7,2018-11-05,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5bd88906ed25543db8f027f5,2018-11-05,FALSE,2018-11-06,dog,adopted
+5b7d78f13c98de747baf49e7,2018-11-05,FALSE,2018-08-20,dog,"ready to adopt, reviewed with handouts only"
+5a5bf80bd4e6069c03845ee7,2018-11-04,TRUE,2018-11-03,dog,"ready to adopt, dog meet"
+5bdc929601c21b45bab9f061,2018-11-04,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5a10d5bc7a975401489fa491,2018-11-04,FALSE,2017-11-19,dog,questions
+5bdde55133ef7281e506ecf9,2018-11-03,TRUE,2018-11-03,dog,NA
+5bddd9a9503fab63339d7167,2018-11-03,TRUE,2018-11-03,dog,adopted
+5bda2726096216723ffc0ee8,2018-11-03,FALSE,2018-10-30,dog,"need info, checks"
+5bd0c2550b3bd2468b06ebe3,2018-11-03,FALSE,2018-10-30,dog,ready to adopt
+5bcca96052397647eb3fed20,2018-11-03,FALSE,2018-10-21,dog,"ready for review, questions"
+5bd1252962ff6e28c6df6a52,2018-11-03,FALSE,NA,dog,"ready to adopt, reviewed with handouts only, adopted elsewhere"
+5ba196beaaf729061885e038,2018-11-03,FALSE,2018-09-19,dog,"ready to adopt, reviewed with handouts only"
+5bcb86a404c1bc784fc19ad5,2018-11-02,FALSE,2018-10-20,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bd904fa380aca6651e945ca,2018-11-02,FALSE,NA,dog,adopted
+5bd76fd18042a43fdf874588,2018-11-02,TRUE,2018-10-28,dog,questions
+5bd8a6961b27bb7b3eef9362,2018-11-02,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bd62ac8f7059165379b4e78,2018-11-02,TRUE,2018-10-28,dog,ready to adopt
+5bd4a6e1e20792481cfc4f6b,2018-11-02,TRUE,2018-10-27,dog,ready to adopt
+5bd3a27292e1344299c8b008,2018-11-02,FALSE,2018-11-03,dog,ready for review
+5bd899cecb08a620d4519353,2018-11-01,FALSE,2018-11-08,dog,ready for review
+5bd0d05c2999424785c77df3,2018-11-01,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bdb370257b7c062a6cc8b9f,2018-11-01,FALSE,2018-11-09,dog,"ready to adopt, reviewed with handouts only"
+5bd8c160f6cb3c5a8f9b1d5f,2018-11-01,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bd88cb146bc007be39cb667,2018-11-01,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bd38bd3396a5f6438f54241,2018-11-01,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5bda7fe7d65bee113b7d41f6,2018-11-01,FALSE,2018-11-01,dog,"ready to adopt, reviewed with handouts only"
+5b562894a7b5562cb22e94fd,2018-11-01,FALSE,NA,dog,"adopted, returned"
+5bb620c5c4ad490da783993f,2018-11-01,FALSE,2018-10-26,dog,"need info, questions"
+5bccc0c4b5976e1ce8f96119,2018-11-01,FALSE,NA,dog,"questions, ready for review"
+5bc8d84311bac5500384aaa0,2018-11-01,FALSE,2018-11-06,dog,ready to adopt
+5bd0ce44c16f485dd84bb11e,2018-11-01,FALSE,2018-11-08,dog,"not utd, need vet info"
+5bd4ca4ba65c024f0d0b2904,2018-11-01,FALSE,2018-11-08,dog,vet
+5bce4fb12a257b24d6067370,2018-11-01,FALSE,2018-11-08,dog,"ready to adopt, reviewed with handouts only"
+5bcdb988b572d947bcd80b85,2018-11-01,FALSE,2018-11-08,dog,vet
+5bd34971d923b366c9ac8243,2018-11-01,FALSE,2018-11-08,dog,"questions, need info, pet policy, need vet info"
+5c202e6891133e05cfbd7ce7,2018-12-31,FALSE,2018-12-24,dog,ready for review
+5c2a64360d22c1109b1d04a1,2018-12-31,FALSE,2018-12-31,dog,approved
+5c146ac727892b1d34d98e58,2018-12-31,FALSE,2019-01-04,dog,"adoption follow up, adopted"
+5c1e2e31231f1572ce177131,2018-12-31,FALSE,2018-12-22,dog,"approved, reviewed with handouts only"
+5c28eb4e55fe440778fd04ad,2018-12-31,TRUE,2018-12-30,dog,adopted elsewhere
+5c26829dbe33875ec2900646,2018-12-30,FALSE,NA,dog,adopted
+5c0be125272faf6e5f0c3aa0,2018-12-30,FALSE,2018-12-08,dog,"reviewed with handouts only, ready to adopt"
+5c27a134912b5b4d954b6b01,2018-12-29,TRUE,2018-12-28,dog,approved
+5c26852d2c503c4db03e13a6,2018-12-29,FALSE,NA,dog,"approved, reviewed with handouts only"
+5c21a3d70214404753e48b46,2018-12-29,FALSE,NA,dog,"reviewed with handouts only, ready to adopt, dog meet"
+5c24637e06e87931dee84594,2018-12-29,FALSE,2018-12-27,dog,ready for review
+58b5f1d680fc1e41cb5c09da,2018-12-29,FALSE,2018-12-23,dog,"returned, adopted"
+5c23ae43a4d3390cf6519245,2018-12-28,FALSE,NA,dog,"approved, ready to adopt, reviewed with handouts only, adopted"
+5c255f98b242783a48e0033e,2018-12-28,TRUE,2018-12-27,dog,"need vet info, questions"
+5c23e072dab233013a76f431,2018-12-28,FALSE,2018-12-26,dog,"ready for review, questions, pet policy"
+5c23d2367bf6211276e5a030,2018-12-28,FALSE,2018-12-26,dog,"ready to adopt, reviewed with handouts only"
+5c2554fc667cce777a6558c0,2018-12-28,TRUE,2018-12-27,dog,vet
+5c257e09eedff4205e1d523f,2018-12-28,TRUE,2018-12-28,dog,"ready to adopt, approved, reviewed with handouts only"
+5c254f1f78b8068300f67779,2018-12-28,TRUE,2018-12-27,dog,"ready to adopt, approved, reviewed with handouts only"
+5c0b2759f949934e1c9b7f92,2018-12-27,FALSE,2018-12-08,dog,"reviewed with handouts only, adopted"
+5c1be0471b70c83b53f9cfbd,2018-12-27,FALSE,2018-12-20,dog,"not utd, withdrawn"
+5c2116da7e322534072ec1ac,2018-12-27,FALSE,2018-12-24,dog,"manager decision, not utd"
+5c1e7c6b2af5cf1dccaf839a,2018-12-27,TRUE,2018-12-22,dog,"ready to adopt, approved, reviewed with handouts only"
+5c1b0b87a1b6f02a8bc2835b,2018-12-27,FALSE,2018-12-20,dog,"ready to adopt, approved, reviewed with handouts only"
+5c047669bcab236a29416482,2018-12-27,FALSE,2018-12-03,dog,"ready to adopt, approved, reviewed with handouts only"
+5c23b70eafa256730d6d26c6,2018-12-27,FALSE,2018-12-24,dog,"need to see id, checks"
+5c1fc3b7fe022803b3806d99,2018-12-27,FALSE,2018-12-22,dog,"vet, need info"
+5c20714ca16de637d3683e4c,2018-12-27,FALSE,2018-12-24,dog,"need to see id, vet"
+5c1d93ef57f2c42896258c8e,2018-12-27,FALSE,2018-12-21,dog,"pet policy, ready to adopt, approved, reviewed with handouts only"
+5c1ab9f4e4f21382fb3ccb0d,2018-12-27,TRUE,2018-12-19,dog,"approved, ready to adopt, reviewed with handouts only"
+5c239051292860179188e463,2018-12-27,FALSE,2018-12-26,dog,"ready to adopt, reviewed with handouts only"
+5c24f502bd5e693974a31e1d,2018-12-27,FALSE,2018-12-27,dog,checks
+5c1d35c58de30c2da44d2d88,2018-12-27,FALSE,2018-12-21,dog,"questions, ready for review"
+5c185f35e4806a1968535651,2018-12-27,FALSE,2018-12-17,dog,"ready for review, questions"
+5c129e19dd35c624c163f5fa,2018-12-27,FALSE,2018-12-13,dog,"not utd, ready for review"
+5c055135ebe5ec80591dc59a,2018-12-27,FALSE,2018-12-03,dog,ready for review
+5c1be146806f4170929accba,2018-12-27,TRUE,2018-12-20,dog,"ready to adopt, approved, reviewed with handouts only"
+5c1dece657d432643f732abe,2018-12-27,FALSE,2018-12-22,dog,not utd
+5c181f7bd8297370ff759d99,2018-12-27,TRUE,2018-12-17,dog,"approved, ready to adopt, reviewed with handouts only, approved with limitation"
+5c16ea8ca56884754daba4e0,2018-12-27,FALSE,2018-12-16,dog,"ready to adopt, approved, reviewed with handouts only"
+5c1e9d898999e83fd18d72ea,2018-12-27,TRUE,2018-12-22,dog,"ready to adopt, approved, reviewed with handouts only"
+5c1c749495f3784764ea18c4,2018-12-27,FALSE,2018-12-21,dog,"questions, need to see id, vet"
+5c198ede2aba013e843c7cc7,2018-12-27,FALSE,2018-12-18,dog,"questions, ready for review"
+5c1b1c4048c2eb567fec77fc,2018-12-27,FALSE,2018-12-19,dog,"pet policy, questions"
+5c21208bddac1d69cba77142,2018-12-27,FALSE,NA,dog,"reviewed with handouts only, ready to adopt"
+5c2121db72efeb286374e4a2,2018-12-27,FALSE,2018-12-24,dog,ready for review
+5c1c76e8aa05ce7c405a796e,2018-12-27,FALSE,2018-12-21,dog,ready for review
+5c23bf117c30807b1939e6bf,2018-12-26,TRUE,2018-12-26,dog,adopted
+5c08a46e768bc65afb994d2e,2018-12-26,FALSE,2018-12-06,dog,adopted
+5b6c9c6843c45d02bec3d831,2018-12-26,FALSE,2018-08-09,dog,"adopted, red flag"
+5c1fbac0b9051601b49ab218,2018-12-23,TRUE,2018-12-22,dog,"ready to adopt, reviewed with handouts only"
+5c1eacfa8e506e8510d0fb9a,2018-12-22,FALSE,NA,dog,ready for review
+5c0d5416d00ae41dce388a0a,2018-12-22,TRUE,2018-12-09,dog,approved
+5c1819f98c891f188c37157a,2018-12-22,FALSE,2018-12-17,dog,"reviewed with handouts only, adopted"
+5c1e6c175b3913618027be75,2018-12-22,FALSE,NA,dog,"denied, red flag"
+5c1c478b5043936e8d8bb35d,2018-12-22,FALSE,2018-12-21,dog,checks
+5bbc2849169a74126e0c8d83,2018-12-22,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5c1d4b0ca37edf29b710ceec,2018-12-22,FALSE,2018-12-21,dog,adopted
+5c11872cd9d04a3df3fb3b92,2018-12-21,FALSE,2018-12-12,dog,"ready to adopt, reviewed with handouts only"
+5c1c28cdf6389a6945546064,2018-12-21,TRUE,2018-12-20,dog,"questions, need vet info"
+5c1d42f212dc746e2e1b009d,2018-12-21,FALSE,NA,dog,ready to adopt
+5c1bba2b0f81124cc3f8d2c3,2018-12-21,FALSE,2018-12-20,dog,"questions, vet"
+5b3fada1fa1b9969c8e405a6,2018-12-21,TRUE,2018-07-06,dog,"reviewed with handouts only, ready to adopt"
+5c1c3f488a89673959896677,2018-12-21,TRUE,2018-12-21,dog,ready to adopt
+5c056d33fcac384c28f78c5f,2018-12-21,TRUE,2018-12-13,dog,"ready to adopt, reviewed with handouts only"
+5c17a4435fd1396b156c9c3d,2018-12-21,FALSE,2018-12-17,dog,"reviewed with handouts only, adopted"
+5c029ea54ce2ae8473b8590b,2018-12-21,FALSE,2018-12-01,dog,ready to adopt
+5c1c2a01cf163d16d61d5313,2018-12-21,TRUE,2018-12-20,dog,"need to see id, ready for review"
+5c183860d221c385d98cf767,2018-12-21,TRUE,2018-12-15,dog,ready to adopt
+5c15b892c1aecb509d01646b,2018-12-21,TRUE,2018-12-16,dog,"ready for review, adopted elsewhere"
+5c0701dc8eebfe56401976e5,2018-12-21,TRUE,2018-12-04,dog,"ready to adopt, reviewed with handouts only, adopted elsewhere"
+5c1bfb9ac9afb655ae7b2758,2018-12-20,FALSE,NA,dog,ready to adopt
+5bf86be89e336d239fe28783,2018-12-20,TRUE,2018-11-23,dog,"ready to adopt, reviewed with handouts only"
+5c140d032405a1552ae0ffd7,2018-12-20,FALSE,2018-12-14,dog,"ready to adopt, reviewed with handouts only"
+5b9d7bdaa42b708b4e33935e,2018-12-20,FALSE,2018-09-15,dog,"ready to adopt, ready for review"
+5c19559632db8b63379e850b,2018-12-20,FALSE,2018-12-18,dog,"ready to adopt, reviewed with handouts only, manager decision"
+5c0c0fc56e7fdb51f048cc0a,2018-12-20,FALSE,2018-12-08,dog,"questions, pet policy, vet"
+5c16a6b2ef48fa45a99afca9,2018-12-19,TRUE,2018-12-16,dog,ready for review
+5b2ab261a7edf1c8bd6e721b,2018-12-19,FALSE,2018-06-25,dog,"serial no show, red flag, ready to adopt"
+5c0d7cf6bafa0d11df8e42c2,2018-12-19,FALSE,2018-12-09,dog,"ready to adopt, reviewed with handouts only, need info"
+5c10ad1fce4fc9550bee6e56,2018-12-19,TRUE,2018-12-19,dog,ready to adopt
+5c188954e45e9908caab5709,2018-12-19,FALSE,2018-12-18,dog,"ready to adopt, ready for review"
+5c040ab97fc4547a3be972bb,2018-12-19,FALSE,2018-12-02,dog,"reviewed with handouts only, adopted"
+5c116eaca0be692690e35b8b,2018-12-19,TRUE,2018-12-12,dog,"ready to adopt, reviewed with handouts only, adopted elsewhere"
+5c190cbb76be5a2ad379425a,2018-12-18,TRUE,2018-12-18,dog,questions
+5c0c2e22cc33c95cec08c8f6,2018-12-18,FALSE,2018-12-08,dog,ready to adopt
+5c07e5427da4996d2db589ed,2018-12-18,FALSE,2018-12-05,dog,"ready to adopt, reviewed with handouts only, adopted elsewhere"
+5c0b16d45b79a0199ee5961e,2018-12-18,TRUE,2018-12-08,dog,ready for review
+5a075c8197b283dea685c96e,2018-12-18,TRUE,2018-12-07,dog,"questions, rescue check, vet, manager decision"
+5c0d7e57a7b6a06ebb8795b6,2018-12-18,FALSE,2018-12-09,dog,"ready to adopt, reviewed with handouts only"
+5be89691a3539e0c3ebbabec,2018-12-17,FALSE,2018-11-11,dog,adopted
+5c0439aa0d5e63234588c9c6,2018-12-17,TRUE,2018-12-03,dog,"ready to adopt, reviewed with handouts only, adopted"
+5c074f34c2cc7487b2317dce,2018-12-17,TRUE,2018-12-13,dog,"ready to adopt, reviewed with handouts only, dog meet"
+5c15967fe4fa146bbdca1680,2018-12-17,FALSE,2018-12-16,dog,ready to adopt
+5c0cd4004b17a811b88d468e,2018-12-16,FALSE,2018-12-09,dog,"ready to adopt, reviewed with handouts only"
+5bf420aa62f6077c2049bf97,2018-12-16,FALSE,2018-11-20,dog,need vet info
+5c11463e66424e05e956fbc9,2018-12-16,TRUE,2018-12-12,dog,"reviewed with handouts only, adopted"
+5be8db16f1e30c5bce28cb3a,2018-12-16,FALSE,2018-11-12,dog,"ready to adopt, reviewed with handouts only, adopted"
+5b48d67c34e25c317d4013fe,2018-12-16,FALSE,NA,dog,adopted
+5c0aeb7607bfec6e61833d62,2018-12-16,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5c15684bda1a601d1936c779,2018-12-15,FALSE,2018-12-15,dog,"ready for review, questions"
+5a95f416509b381d926a67ea,2018-12-15,FALSE,NA,dog,"adopted, returned"
+5bb66ed9c4502589e6418488,2018-12-15,FALSE,2018-10-07,dog,adopted
+5c05a2b8841f8b625a9bf130,2018-12-15,TRUE,2018-12-03,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5c0aeddb82825612816829ca,2018-12-15,FALSE,2018-12-07,dog,"ready for review, ready to adopt"
+5c06c7f59974072df4f3685f,2018-12-15,FALSE,2018-12-03,dog,"ready for review, reviewed with handouts only"
+5c132badbc03aa73e2683503,2018-12-15,TRUE,2018-12-14,dog,ready to adopt
+5c099f7e8ddcf78fe9accf7d,2018-12-15,FALSE,2018-12-06,dog,"ready to adopt, reviewed with handouts only"
+5c0c2978d460e275e04bea49,2018-12-15,FALSE,2018-12-08,dog,"approved with limitation, ready to adopt, reviewed with handouts only"
+5c0964191101e47d010ec670,2018-12-15,FALSE,2018-12-06,dog,"ready for review, ready to adopt"
+5c12cf30d39dbe508fb02042,2018-12-15,FALSE,2018-12-13,dog,questions
+5c00b3816d41672f9787509a,2018-12-15,FALSE,2018-11-30,dog,"ready to adopt, adopted"
+5c0def51a07b784a80d1e5f5,2018-12-15,FALSE,2018-12-10,dog,"ready to adopt, reviewed with handouts only"
+5c0d71bfbf444c1de2509bce,2018-12-15,TRUE,2018-12-11,dog,"adopted, returned"
+5c0a3e1f02dc610199dcb412,2018-12-15,FALSE,2018-12-07,dog,"need vet info, questions, need info, red flag"
+5c1329697ab1888f55acacd9,2018-12-15,FALSE,2018-12-14,dog,"questions, ready for review"
+5c0ee442bd180076a5c64ceb,2018-12-15,FALSE,2018-12-10,dog,need vet info
+5c0ba6e3e03d705b7ee20db0,2018-12-15,FALSE,2018-12-08,dog,"vet, need vet info"
+5c06c8aac79e435d55198f3a,2018-12-15,FALSE,2018-12-03,dog,"opa, questions, need info, ready for review"
+5c1040d94f4ea6661ee2df16,2018-12-15,FALSE,2018-12-11,dog,"reviewed with handouts only, ready to adopt"
+5c13170dfa89da4eedf84b0c,2018-12-15,TRUE,2018-12-14,dog,"reviewed with handouts only, ready to adopt"
+5c0e768b5dd2e65d7118073d,2018-12-15,FALSE,2018-12-10,dog,"ready for review, ready to adopt"
+5bcd11dd5c83a35861b7c7c6,2018-12-15,FALSE,2018-10-21,dog,"reviewed with handouts only, ready to adopt"
+5bd72c303f4a1863c99161ee,2018-12-14,TRUE,2018-10-29,dog,adopted
+5c0fe6a0bb6043604c1c612e,2018-12-14,FALSE,2018-12-11,dog,"ready to adopt, reviewed with handouts only"
+5c13e6f46e82ec5ddddea34c,2018-12-14,FALSE,2018-12-14,dog,"ready for review, dog meet"
+5c13cf6c91f8861453d14574,2018-12-14,FALSE,2018-12-14,dog,"reviewed with handouts only, adopted"
+5c0c4b25bacbdb1cdb913c4b,2018-12-13,FALSE,2018-12-08,dog,"ready to adopt, reviewed with handouts only"
+5c0bd7848c62896293cac30f,2018-12-13,FALSE,2018-12-08,dog,"ready to adopt, reviewed with handouts only"
+5c0ad14c8fcc383d8d7a887e,2018-12-13,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5bfc1043b713fc38f1b537cd,2018-12-13,FALSE,2018-11-26,dog,"ready to adopt, reviewed with handouts only"
+5c09dc1c97ad087aa11211fe,2018-12-13,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5c12b51a46593d2d851fc212,2018-12-13,FALSE,2018-12-13,dog,"ready for review, ready to adopt"
+5bc232449e1e2f05eb45e982,2018-12-13,TRUE,2018-10-13,dog,ready to adopt
+5bfeeeafabfc31139105d001,2018-12-13,TRUE,2018-11-28,dog,"ready to adopt, reviewed with handouts only"
+5bfcbab0aa52131479df667c,2018-12-13,FALSE,2018-12-13,dog,"reviewed with handouts only, adopted, returned"
+5bed93197bb8401d4e4b552e,2018-12-13,FALSE,2018-11-15,dog,"need to see id, vet, questions"
+5c0ab1b64834266cc5982d5f,2018-12-13,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5c0fdb03742276693664c31e,2018-12-12,TRUE,2018-12-11,dog,"ready to adopt, reviewed with handouts only"
+5c100847c5497678ebd8a364,2018-12-12,TRUE,2018-12-11,dog,"ready to adopt, reviewed with handouts only"
+5c0ae5f65a538c199f9aff39,2018-12-12,FALSE,2018-12-07,dog,"reviewed with handouts only, ready to adopt"
+5c04b4b6a0d3ed69f48d1ebb,2018-12-12,FALSE,2018-12-03,dog,vet
+5c0f0217ef36692571b58494,2018-12-12,FALSE,2018-12-11,dog,vet
+5bf95ef998e5653106186b4c,2018-12-12,FALSE,2018-11-24,dog,"opa, questions, ready to adopt, reviewed with handouts only"
+5c085bd6b51d4e37b2c26f89,2018-12-12,TRUE,2018-12-05,dog,adopted
+5a7f404e61551ec3ee5f9cdd,2018-12-12,TRUE,2018-02-15,dog,not utd
+5c0e106c01a3824ad5b967f3,2018-12-12,FALSE,2018-12-10,dog,adopted
+5bf1b03d3ed8275a42570c6d,2018-12-11,FALSE,NA,dog,"ready for review, ready to adopt"
+5c01472e4b098b749c528c43,2018-12-11,FALSE,NA,dog,"adopted, returned"
+5c0e0a87077e6b6fb605fc09,2018-12-11,TRUE,2018-12-10,dog,"questions, need vet info"
+5c0c84b153acf16b57f4e876,2018-12-11,FALSE,2018-12-09,dog,ready for review
+5c0d71bbac3f7b5b8704f021,2018-12-11,TRUE,2018-12-09,dog,"pet policy, denied"
+5bfc6b8f50091b0a87c910da,2018-12-11,FALSE,2018-11-26,dog,"reviewed with handouts only, adopted"
+5b75fe1671b5d246e2cd07ed,2018-12-11,FALSE,NA,dog,"reviewed with handouts only, ready to adopt"
+5c0d8e57523a976e8b5334c4,2018-12-10,TRUE,2018-12-09,dog,"ready to adopt, reviewed with handouts only"
+5c0ab578e00bbd78c480af21,2018-12-10,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5c0e1afe8741794e34542829,2018-12-10,FALSE,2018-12-10,dog,"checks, ready for review, need to see id, pet policy"
+5c0d8aa43a3cc4758eead4fa,2018-12-10,FALSE,2018-12-09,dog,ready for review
+5c0c0acae21a781cc7acfe04,2018-12-10,FALSE,2018-12-10,dog,"ready for review, ready to adopt"
+5bfa33bc08a0a103cd6e4ef9,2018-12-10,FALSE,2018-11-25,dog,"need to see id, questions, ready for review"
+5c0c0722a39690640654b12f,2018-12-10,FALSE,2018-12-08,dog,"ready to adopt, reviewed with handouts only"
+5bf4a2da2da9082c0d51a3c8,2018-12-10,FALSE,2018-11-21,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5be9e5ca550502179575c496,2018-12-10,FALSE,2018-11-12,dog,"ready to adopt, reviewed with handouts only"
+5c09758c4ffde37759627773,2018-12-10,TRUE,2018-12-04,dog,"need to see id, not utd, questions"
+5c07d4c76a1a31668279af10,2018-12-10,FALSE,2018-12-05,dog,"reviewed with handouts only, ready to adopt"
+5c0c26ca74f5e875ef4bdb45,2018-12-10,FALSE,2018-12-08,dog,"reviewed with handouts only, ready to adopt"
+5c004acb3386c50da3ea576e,2018-12-09,FALSE,2018-11-29,dog,"reviewed with handouts only, adopted"
+5b954493ae6f642a27be5076,2018-12-09,FALSE,2018-11-11,dog,adopted
+5c09ccc56a4f9671631eb1e2,2018-12-09,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5c0bfab3aac8c84a098120ec,2018-12-09,TRUE,2018-12-08,dog,adopted
+5c0a9891009e734850731242,2018-12-09,FALSE,2018-12-07,dog,ready for review
+5c00baf2c1354c509479413c,2018-12-09,TRUE,2018-11-30,dog,"reviewed with handouts only, ready for review"
+5c0d5fd450e99c5aebaf4d8c,2018-12-09,FALSE,NA,dog,NA
+5c00500018016f4c5db55828,2018-12-09,FALSE,2018-11-29,dog,"ready to adopt, reviewed with handouts only"
+5a32e039000fd0795867bb0c,2018-12-09,FALSE,2017-12-14,dog,ready to adopt
+5c00d229e543e13868df40bd,2018-12-09,FALSE,2018-11-30,dog,ready to adopt
+5be89c3dba037711c1607cdf,2018-12-09,TRUE,2018-11-11,dog,adopted
+5c0acdd454a21916822f7c46,2018-12-08,FALSE,2018-12-06,dog,"need info, ready for review"
+5bfa175361f9f105aa552e92,2018-12-08,FALSE,2018-11-25,dog,"ready to adopt, reviewed with handouts only"
+59e949fa28c22e6ecad8c195,2018-12-08,FALSE,NA,dog,ready for review
+5c096f829367c12519c88b9c,2018-12-08,TRUE,2018-12-05,dog,ready to adopt
+5be37ee66f2e7c3de7845e00,2018-12-08,TRUE,2018-11-07,dog,ready to adopt
+5bf7fa0e4f2cb48c91b169f1,2018-12-08,FALSE,2018-11-23,dog,"ready to adopt, reviewed with handouts only, need to see id"
+5bf4b003cd831c7b058c73fc,2018-12-08,FALSE,2018-11-21,dog,"reviewed with handouts only, adopted"
+5bfdc96b9fbe9082a03aa941,2018-12-08,TRUE,2018-11-27,dog,ready for review
+5bfdba89533e7f70d7ee2bb2,2018-12-08,FALSE,2018-11-27,dog,adopted
+5c0bfcd347422d53a46b02c8,2018-12-08,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5c032e4e3b7ad8504f972b02,2018-12-08,TRUE,2018-12-01,dog,"questions, adopted elsewhere"
+5c02eb44df1d132e830bb435,2018-12-08,TRUE,2018-12-01,dog,ready to adopt
+5c0141974abf6c1d7e0d557f,2018-12-07,FALSE,2018-11-30,dog,"ready to adopt, reviewed with handouts only"
+5c06d82ef4677d470de00b4f,2018-12-07,FALSE,2018-12-04,dog,"ready to adopt, reviewed with handouts only"
+5c00b4ba20a846058ab4d594,2018-12-07,FALSE,2018-11-30,dog,"questions, vet"
+5bfd6fe6459c0127f14c7c53,2018-12-07,FALSE,2018-11-27,dog,"questions, ready to adopt, reviewed with handouts only"
+5bfc52e8586aef84a0c38fdf,2018-12-07,FALSE,2018-11-26,dog,"ready to adopt, reviewed with handouts only"
+5bfd88949623de81d19386b8,2018-12-07,FALSE,2018-11-27,dog,"ready to adopt, reviewed with handouts only"
+5bfffd0f3489ac44cf9a8013,2018-12-07,FALSE,2018-11-29,dog,"questions, need vet info"
+5c0200b6f464fb79ea844acf,2018-12-07,FALSE,2018-12-01,dog,"ready to adopt, reviewed with handouts only"
+5c0a7f269ea03f7d5ec0440d,2018-12-07,FALSE,2018-12-07,dog,"ready to adopt, reviewed with handouts only"
+5bfed149883ad98815f27b3b,2018-12-07,FALSE,2018-11-28,dog,"questions, need vet info, opa"
+5c0015fdfc830a56fe68532f,2018-12-07,FALSE,2018-11-29,dog,"ready to adopt, reviewed with handouts only"
+5c0033eefed5bc51d02947c7,2018-12-07,FALSE,2018-11-29,dog,"ready to adopt, reviewed with handouts only"
+5bf4d0a594440481c5ade6b8,2018-12-07,FALSE,2018-11-21,dog,"questions, ready for review"
+5c0476686b43b00a179413a3,2018-12-07,FALSE,2018-12-03,dog,"vet, need vet info"
+5c0472b6e3db65798b985f7a,2018-12-07,FALSE,2018-12-03,dog,"opa, vet"
+5c05b0fe6120da01404a98c6,2018-12-07,FALSE,2018-12-03,dog,"red flag, manager decision"
+5bfadd424ebe2b1c2f6350fe,2018-12-07,FALSE,2018-11-25,dog,"vet, adopted elsewhere"
+5c058aeec918a1559420dc03,2018-12-07,TRUE,2018-12-03,dog,ready to adopt
+5bfc59e6acc0468b43397ca2,2018-12-07,FALSE,2018-11-26,dog,"ready to adopt, reviewed with handouts only"
+5bfc023cedba384bb6a51f40,2018-12-07,FALSE,2018-11-26,dog,"questions, ready to adopt, reviewed with handouts only"
+5bf516b88933fa1d15153bbb,2018-12-07,FALSE,2018-11-21,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bf6106391b7142217314ee0,2018-12-07,FALSE,2018-11-22,dog,"ready to adopt, reviewed with handouts only"
+5bfd6a3fa2033c1bccfbbae8,2018-12-07,FALSE,2018-11-27,dog,"not utd, need vet info"
+5c09ae4c7810d484454fd2aa,2018-12-06,FALSE,2018-12-06,dog,"reviewed with handouts only, ready to adopt"
+5bf979a3e337692c17f666fc,2018-12-06,TRUE,2018-11-24,dog,"reviewed with handouts only, ready to adopt, adopted"
+5bf1a6c04b4d7563ac7bec43,2018-12-06,FALSE,2018-11-18,dog,"questions, vet, opa, ready to adopt, reviewed with handouts only"
+5bf49bfe652b6561262ff3d6,2018-12-06,FALSE,2018-11-20,dog,not utd
+5bfc550143052a7fb7b5ff9b,2018-12-06,FALSE,2018-11-26,dog,"pet policy, opa"
+5c0740b32a78a73be405d44a,2018-12-06,FALSE,2018-12-05,dog,"ready to adopt, reviewed with handouts only, need to see id"
+5c03512a57759a1d233e9015,2018-12-06,FALSE,NA,dog,"ready to adopt, reviewed with handouts only"
+5c082f268f717b5ce63256c3,2018-12-06,FALSE,2018-12-05,dog,"ready to adopt, reviewed with handouts only"
+5c0868232484bc5ca30005cb,2018-12-06,FALSE,NA,dog,"reviewed with handouts only, ready to adopt"
+5b9c13daec25be4859069c3e,2018-12-06,FALSE,2018-11-24,dog,"ready to adopt, reviewed with handouts only, ready for review"
+5bfc37101b81b25c949b40ac,2018-12-06,FALSE,2018-11-26,dog,vet
+5bfe9b92d634aa6d4ade4353,2018-12-06,TRUE,2018-11-28,dog,"ready to adopt, reviewed with handouts only"
+5bf337338866a1644af75260,2018-12-06,FALSE,2018-11-19,dog,"ready to adopt, reviewed with handouts only"
+5bf722b9f5ff5175063e121f,2018-12-06,TRUE,2018-11-22,dog,"ready to adopt, reviewed with handouts only"
+5b980b8b4aa1444cc794dd81,2018-12-06,FALSE,2018-09-11,dog,ready to adopt
+5c02a375a02c01831cbc2a72,2018-12-06,FALSE,2018-12-01,dog,"pet policy, questions"
+5bf9d107adb51a036bffe3f3,2018-12-06,FALSE,2018-11-24,dog,ready to adopt
+5c040e30e01cf02bd867f0c2,2018-12-06,FALSE,2018-12-02,dog,"ready to adopt, reviewed with handouts only"
+5a00a949dced11fc5f942d5c,2018-12-06,FALSE,2018-12-01,dog,"ready to adopt, reviewed with handouts only"
+5bff7ff910799451977521e1,2018-12-05,FALSE,2018-11-29,dog,"ready to adopt, reviewed with handouts only"
+5be75aeceebeac60c033aca3,2018-12-05,FALSE,2018-11-10,dog,"ready to adopt, reviewed with handouts only"
+5a9dcc32abe49b506d65c78d,2018-12-05,TRUE,2018-08-23,dog,"adopted, returned, red flag"
+5bf9bdf1477efa4a7847b2a0,2018-12-05,FALSE,2018-11-24,dog,adopted elsewhere
+5c018e772d1e4d018197fe6c,2018-12-05,FALSE,NA,dog,"reviewed with handouts only, adopted"
+5c019eb22efd941cf34c7176,2018-12-05,FALSE,2018-11-30,dog,adopted
+5c018565f179ea7e20d94996,2018-12-04,FALSE,2018-11-30,dog,need vet info
+5bf72d42a2bf5a510186294c,2018-12-04,TRUE,2018-11-22,dog,"reviewed with handouts only, ready to adopt, withdrawn"
+5be5f847d7c2f15ead784e13,2018-12-04,FALSE,2018-11-09,dog,ready to adopt
+5bfc13e0df96b668d2781336,2018-12-04,FALSE,2018-11-26,dog,"ready to adopt, reviewed with handouts only"
+5bfdeffa64dbf888a388232f,2018-12-03,FALSE,2018-11-28,dog,"reviewed with handouts only, ready to adopt"
+5be5a0593a4fcd2638760750,2018-12-03,TRUE,2018-11-09,dog,"red flag, vet, questions"
+5c032aefc88b1d549910adac,2018-12-03,FALSE,2018-12-02,dog,"red flag, need vet info"
+5bfd6c455572ed4f200b0f01,2018-12-03,FALSE,2018-11-27,dog,not utd
+5be1f4d1315f3d3393a9e4f2,2018-12-03,FALSE,2018-11-06,dog,"vet, questions"
+5bf3850976e9bf74a6dfcae4,2018-12-03,FALSE,2018-11-19,dog,pet policy
+5c016c481a39648dd3374097,2018-12-02,TRUE,2018-11-30,dog,"reviewed with handouts only, ready to adopt, dog meet"
+5c042229815d4f55e1a5453a,2018-12-02,FALSE,2018-12-02,dog,"questions, red flag"
+5bba511128d7a6871990aa30,2018-12-02,FALSE,2018-10-07,dog,"reviewed with handouts only, ready to adopt, adopted"
+5c0075562cc5020a04d936e7,2018-12-02,FALSE,2018-11-29,dog,"reviewed with handouts only, ready to adopt"
+5bf9d10839ae345759d626b1,2018-12-02,FALSE,2018-11-24,dog,"ready for review, questions"
+5bfd949ca5692a669705967c,2018-12-02,FALSE,2018-11-27,dog,"ready to adopt, reviewed with handouts only"
+5bfee888db6f960315d1f523,2018-12-02,FALSE,2018-11-28,dog,"ready to adopt, reviewed with handouts only"
+5bfc9e9252a0172671ce46ba,2018-12-02,TRUE,2018-11-27,dog,"reviewed with handouts only, ready to adopt"
+5bd6699801b2c48729051a4b,2018-12-02,FALSE,2018-10-29,dog,"reviewed with handouts only, ready to adopt, adopted elsewhere"
+5bfb080378e15c887f667be6,2018-12-01,FALSE,2018-11-25,dog,"ready to adopt, reviewed with handouts only"
+5bfa0607e0e6a45fbe6d7400,2018-12-01,TRUE,2018-11-25,dog,"reviewed with handouts only, ready to adopt"
+5bfab865a790108a1cb5b1c3,2018-12-01,FALSE,2018-11-25,dog,"ready to adopt, reviewed with handouts only"
+5bf9a5025d384c67926e7181,2018-12-01,FALSE,2018-11-24,dog,"ready for review, reviewed with handouts only"
+5bf5b71d67bfc80137db5fb0,2018-12-01,FALSE,2018-11-21,dog,"ready to adopt, reviewed with handouts only"
+5bf47c6349247b3383a3ba4a,2018-12-01,FALSE,2018-11-20,dog,ready to adopt
+5bf5e52a13bde054d70b8d16,2018-12-01,TRUE,2018-11-21,dog,"reviewed with handouts only, adopted"
+5c01c1b37c70ea7a35ab9219,2018-12-01,FALSE,2018-11-30,dog,ready for review
+5bf23b9e08c26b58c7595a93,2018-12-01,FALSE,2018-11-18,dog,"pet policy, ready for review, questions"
+5c00b270ea68014a1b12e755,2018-12-01,FALSE,2018-11-30,dog,"reviewed with handouts only, ready for review"
+5c004106abf8126b973f3cb9,2018-12-01,FALSE,2018-11-29,dog,"checks, questions, need vet info"
+5c0038b2a44d628e67238450,2018-12-01,TRUE,2018-11-29,dog,"ready to adopt, reviewed with handouts only"
+5bfff0fde6641e321d8c2ae4,2018-12-01,FALSE,2018-11-29,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bff55daf53eb741da1b1088,2018-12-01,FALSE,2018-11-29,dog,"questions, vet"
+5bfebdd10726c28222af3b14,2018-12-01,TRUE,2018-11-28,dog,"ready to adopt, reviewed with handouts only"
+5c000595cd1d4a212f69e1ae,2018-12-01,FALSE,2018-11-29,dog,"need to see id, ready to adopt, reviewed with handouts only"
+5bfecdcac3e8331b5d7ae727,2018-12-01,FALSE,2018-11-28,dog,"ready to adopt, reviewed with handouts only"
+5bfd95ed7839f4733c5f0352,2018-12-01,FALSE,2018-11-27,dog,"ready to adopt, reviewed with handouts only"
+5bf983b01c1ce15f4a8b35b8,2018-12-01,FALSE,2018-11-21,dog,"ready to adopt, dog meet"
+5bfee02bb148694e227b5051,2018-12-01,FALSE,2018-11-28,dog,"ready for review, pet policy"
+5bf1a4a9eafc6d18daa70bfb,2018-12-01,TRUE,2018-11-18,dog,"need vet info, questions"
+5bf5cd9304f22a40088d076b,2018-12-01,FALSE,2018-11-21,dog,"ready to adopt, reviewed with handouts only"
+5bfc315d1d67ce458bebcc45,2018-12-01,TRUE,2018-11-26,dog,adopted
