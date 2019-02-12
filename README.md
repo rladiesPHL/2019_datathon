@@ -35,9 +35,9 @@ Come up with your own questions and insights using the provided dataset.
 
 After the kickoff meetup, groups will work together using Slack and GitHub. R-Ladies organizers will check in with groups via Slack to help with progress and help where necessary. 
 
-**March 11 (week before conclusion meetup):** Submissions should be complete and presentations should be drafted for the conclusion meetup.
+**March 17 (week before conclusion meetup):** Submissions should be complete and presentations should be drafted for the conclusion meetup.
 
-**March 14, 6-8pm: Conclusion Meetup:** This will be the conclusion meetup event, where groups will present their results and discuss their experiences. Each team will have the freedom to choose a participant to present the team's results, or to request that an R-Ladies Philly organizer presents the team's results. The latter option requires some advance coordination.
+**March 26, 6-8pm: Conclusion Meetup:** This will be the conclusion meetup event, where groups will present their results and discuss their experiences. Each team will have the freedom to choose a participant to present the team's results, or to request that an R-Ladies Philly organizer presents the team's results. The latter option requires some advance coordination.
 
 ## Submission Format
 
