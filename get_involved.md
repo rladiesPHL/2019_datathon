@@ -9,6 +9,6 @@ If you weren't able to attend our [Kick-off Meetup](https://www.meetup.com/rladi
 5. If you haven’t already, join the [R-Ladies Philly slack](http://bit.ly/join-rladies-slack).
     + In the R-Ladies Philly slack, join the **#paws** channel (to join channels in slack, click on the *channels* title in the left side bar).
 6. Add your details under the team you want to join in [this google doc](https://docs.google.com/document/d/1EzzVXFIJ-_KdAwprpDXTcC0G8VYxp6nCOKoZnskgEII/edit#heading=h.46g28hd7gts9). Don't worry about group size; the more the merrier!
-7. Join your team’s specific slack channel (listed in google doc above) and introduce yourself to your team members! :smiley: Share your ideas or ask how you can get started.
+7. Join your team’s specific slack channel (listed in the google doc above) and introduce yourself to your team members! :smiley: Share your ideas or ask how you can get started.
 
-If you have any questions don't hestitate to get in touch. Send a message in the **#paws** slack channel or email the organisers (philly@rladies.org)!
+If you have any questions don't hesitate to get in touch. Send a message in the **#paws** slack channel or email the organisers (philly@rladies.org)!
