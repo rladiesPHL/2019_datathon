@@ -23,7 +23,14 @@ For this data challenge, PAWS has made 2018 data available containing adoption a
 
 ### 3. GIS data mining
 
-Explore questions regarding geographic information. 
+A few ideas:
+* 3.1 Are the people who want a dog for protection in areas that have higher crime?
+* 3.2 Are there geographic clusters of areas where pets are returned?  Are these areas in which the rental stock is comparatively high, compared to other areas in the metro area?
+* 3.3 What is the socioeconomic mileu of successful adopters?  Are people in poorer / richer / more unemployment / less unemployment / etc. more likely to be successful adopters?
+* 3.4 Are people from minority - rich tracts more likely to be red-flagged?
+* 3.5 Is there a high concentration of applications from areas with a high latino population?  Should PAWS invest in Spanish language translations of their materials?
+* 3.6 Do people in certain areas like certain breeds, sizes, colors of pets more? 
+* how far away are our dog adopters from public parks?  Does that affect success of adoption?
 
 ### 4. Other data mining
 
