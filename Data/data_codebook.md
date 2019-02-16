@@ -1,12 +1,12 @@
 # Codebook
 
-## cards data (dog_cards.csv and cat_cards.csv)
+## Cards data (dog_cards.csv and cat_cards.csv)
 
 - *id:* a unique ID
 - *dateLastActivity:* the last time an activity was recorded on the card
 - *dueComplete:* indicates whether the application is marked as complete or they lost contact with the applicant
 - *due:* indicates the date the application is marked as complete or they lost contact with the applicant
-- *animal_type:* cat, dog, or foster
+- *animal_type:* cat or dog
 - *label_names:* the label names indicate the last recorded status of the application
 
 ### Label names:
@@ -15,8 +15,8 @@ There are 37 unique label names which can be categorized as follows:
 * labels relating to application approval status:
     + *approved*
     + *ready to adopt*
-    + *ready for review* means ready to adopt but applicant needs to be given additional info to set up for success
-    + *reviewed with handouts only* ready to adopt, should be given a handout
+    + *ready for review* - means ready to adopt but applicant needs to be given additional info to set up for success
+    + *reviewed with handouts only* - ready to adopt, should be given a handout
     + *approved with limitation*
     + *needs review before approval*
     + *denied*
@@ -29,51 +29,51 @@ There are 37 unique label names which can be categorized as follows:
     + *vet check in process*
     + *need vet info*
     + *need roommates vet info*
-    + *not utd* applicant’s current animals are not up to date on vaccines
-    + *questions* follow up questions about pets they had before without explanation
-    + *not s n* KF thinks that this means applicant’s current animals are not spayed or neutered
-    + *dog meet* dog meet needs to occur before proceeding
-    + *need to see id* applicant didn’t provide their ID info on application
-    + *need info* need additional info
-    + *checks* checklist needs to be added and items gone through
+    + *not utd* - applicant’s current animals are not up to date on vaccines
+    + *questions* - follow up questions about pets they had before without explanation
+    + *not s n* - KF thinks that this means applicant’s current animals are not spayed or neutered
+    + *dog meet* - dog meet needs to occur before proceeding
+    + *need to see id* - applicant didn’t provide their ID info on application
+    + *need info* - need additional info
+    + *checks* - checklist needs to be added and items gone through
     + *needs app attached*
-    + *rescue check* check applicant’s name with other rescues
-    + *pet policy* pet policy needs to be confirmed
-    + *need written ll permission* need written landlord permission
-    + *opa* owner of property where applicant lives must be confirmed
-    + *need proof of ownership* applicant said they own their property but this info cannot be found publicly
-    + *landlord* must check with landlord
+    + *rescue check* - check applicant’s name with other rescues
+    + *pet policy* - pet policy needs to be confirmed
+    + *need written ll permission* - need written landlord permission
+    + *opa* - owner of property where applicant lives must be confirmed
+    + *need proof of ownership* - applicant said they own their property but this info cannot be found publicly
+    + *landlord* - must check with landlord
 
 * label relating to limitations of the application:
-    + *declaw only* will only adopt a declawed cat
-    + *red flag* some issue with applicant, might not be enough to disqualify but could require follow up
-    + *unsure foster or adopt* applicant might be ambivalent about fostering or adopting
-    + *foster to adopt* applicant will foster an animal until the animal can be fixed, when it is legal for PAWS to adopt out animal
+    + *declaw only* - will only adopt a declawed cat
+    + *red flag* - some issue with applicant, might not be enough to disqualify but could require follow up
+    + *unsure foster or adopt* - applicant might be ambivalent about fostering or adopting
+    + *foster to adopt* - applicant will foster an animal until the animal can be fixed, when it is legal for PAWS to adopt out animal
     + *serial no show*
 
 * labels relating to adoption status:
     + *adopted*
     + *adopted elsewhere*
-    + *adoption follow up* to be followed up with post-adoption
+    + *adoption follow up* - to be followed up with post-adoption
     + *returned*
 
-## _actions data
+## Actions data (dog_actions.csv and cat_actions.csv)
 
 - *type:* type of update done to the card. "createCard" (when the card was created) / "updateCheckItemStateOnCard" (when a checklist item was modified). PAWS use a fairly standardized checklist for going through the applications, so the timeline in which that checklist gets completed can be informative
 - *data.checkItem.state:* if a checklist item was modified, whether it was modified to "complete" or "incomplete"
 - *date:* the date when the action was taken
-- *data.card.id*
-- *animal_type_:* cat, dog or foster
-- *checklist_ACCT* Check with ACCT (Animal Care and Control Team)
-- *checklist_CHQ* Check with clinic HQ (the PAWS clinic uses a different software for logging clients than the adoptions process)
-- *checklist_LL* Check with property owner
-- *checklist_PP* Check with PetPoint
-- *checklist_SPCA* Check with SPCA (Society for the Prevention of Cruelty to Animals)
-- *checklist_TR* Check with Trello
-- *checklist_VET* Check with vet
-- *checklist_seq_num* indicates the number of the action on a given card, in a sequential order by date. "createCard" should always be the first entry; if it isn't, the entry isn't complete and we should not use it
+- *data.card.id:*
+- *animal_type_:* cat or dog
+- *checklist_ACCT:* Check with ACCT (Animal Care and Control Team)
+- *checklist_CHQ:* Check with clinic HQ (the PAWS clinic uses a different software for logging clients than the adoptions process)
+- *checklist_LL:* Check with property owner
+- *checklist_PP:* Check with PetPoint
+- *checklist_SPCA:* Check with SPCA (Society for the Prevention of Cruelty to Animals)
+- *checklist_TR:* Check with Trello
+- *checklist_VET:* Check with vet
+- *checklist_seq_num:* indicates the number of the action on a given card, in a sequential order by date. "createCard" should always be the first entry; if it isn't, the entry isn't complete and we should not use it
 
-## _apps data
+## Apps data (dog_apps.csv and cat_apps.csv)
 
 - *date_submitted:* date when the application was submitted
 - *ideal_adoption_timeline:* when the applicant would like to adopt
@@ -215,7 +215,7 @@ Note: dog and cat apps have different labels but mean the same thing (see duplic
 - *jumps-on-counters*
 - *too-playful*
 
-## petpoint data
+## Petpoint data (petpoint.csv)
 
 - *animal_type* 
 - *species*
