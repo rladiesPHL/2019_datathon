@@ -1,0 +1,52 @@
+---
+title: "GeoDataExploring"
+author: "Karla Fettich"
+date: "February 15, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rgdal)
+library(raster)
+library(tmap)
+library(dplyr)
+library(tidyr)
+
+```
+
+Ok. Let's see what we can do with these data. 
+
+## PetPoint
+
+```{r import datasets, include=FALSE}
+
+nj <- readOGR(dsn="./Analyses/3_GIS/tl_2018_34_tract")
+pa <- readOGR(dsn = "./Analyses/3_GIS/tl_2018_42_tract")
+pa_nj <- rbind(nj,pa)
+
+
+pp <- read.csv("./Data/petpoint.csv", stringsAsFactors = FALSE)
+pp <- pp[!is.na(pp$INTPTLON),]  # get rid of geo NAs
+pp.pa_nj <- pp[which(pp$GEOID %in% pa_nj$GEOID),]
+
+outcome.medianage.dog <- pp.pa_nj[pp.pa_nj$species == "Dog",] %>% 
+  group_by(GEOID) %>%
+  summarise(median_age=median(age_intake))
+
+outcome.medianage.cat <- pp.pa_nj[pp.pa_nj$species == "Cat",] %>% 
+  group_by(GEOID) %>%
+  summarise(median_age=median(age_intake))
+
+# outcome.medianage.dog <- spread(ooutcome.medianage.dog, key = age_group, value = n)
+
+acs_spatial <-
+  sp::merge(x = pa_nj, y = outcome.medianage.cat, by = "GEOID")
+acs_spatial <- acs_spatial[which(!is.na(acs_spatial$median_age)), ]
+
+tm_basemap("OpenStreetMap.BlackAndWhite") +
+tm_shape(acs_spatial) + tm_fill("median_age", palette = "Reds", alpha=0.85)
+
+```
+
