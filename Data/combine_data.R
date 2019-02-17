@@ -28,3 +28,21 @@ for (i in seq_along(csv_files)) {
     write_csv(get(file_name), paste0("./Data/all_", file_name, ".csv"))
     
 }
+
+actions_wide <-
+    actions %>% 
+    gather(item, result, checklist_ACCT:checklist_VET) %>% 
+    group_by(id = data.card.id) %>% 
+    mutate(date_start = min(date)) %>% 
+    filter(result == TRUE) %>%
+    group_by(id, item) %>% 
+    filter(date == max(date)) %>% 
+    ungroup() %>% 
+    mutate(wait = difftime(date, date_start, units = "days"),
+           wait = round(as.numeric(wait), 2)) %>% 
+    select(-c(date, checklist_seq_num, data.checkItem.state, type, result)) %>% 
+    distinct() %>% 
+    spread(item, wait) %>% 
+    mutate(wday_start = wday(date_start, label = TRUE, abbr = TRUE))
+
+write.csv(actions_wide, "./Data/actions_wide.csv")
