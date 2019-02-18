@@ -1,0 +1,149 @@
+---
+title: "Initial data exploration"
+author: "Amy Goodwin Davies"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(echo = T, message = F, warning = F, root.dir = "../../../")
+```
+
+Load packages
+
+```{r load_packages, echo = T,  message = F,  warning = F}
+library(tidyverse)
+library(lubridate)
+library(data.table)
+library(forcats)
+```
+
+Source helper function(s)
+
+```{r source_functions, echo = T,  message = F,  warning = F}
+source("Analyses/2_Applicants/helper_functions.R")
+```
+
+Load data
+
+```{r load_data, echo = T,  message = F,  warning = F}
+cat_actions <- read_csv("Data/cat_actions.csv")
+dog_actions <- read_csv("Data/dog_actions.csv")
+cat_cards <- read_csv("Data/cat_cards.csv")
+dog_cards <- read_csv("Data/dog_cards.csv")
+cat_apps <- read_csv("Data/cat_apps.csv")
+dog_apps <- read_csv("Data/dog_apps.csv")
+```
+
+## Actions
+
+Create checklist_names as a factor for each checklist name combination...
+
+```{r actions, echo = T,  message = F,  warning = F}
+actions <- rbind(cat_actions, dog_actions)
+actions$checklist_names <- ""
+actions$checklist_names <- as.character(actions$checklist_names)
+actions[actions$checklist_ACCT == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_ACCT == TRUE,]$checklist_names, "ACCT", sep = "/")
+actions[actions$checklist_CHQ == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_CHQ == TRUE,]$checklist_names, "CHQ", sep = "/")
+actions[actions$checklist_LL == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_LL == TRUE,]$checklist_names, "LL", sep = "/")
+actions[actions$checklist_PP == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_PP == TRUE,]$checklist_names, "PP", sep = "/")
+actions[actions$checklist_SPCA == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_SPCA == TRUE,]$checklist_names, "SPCA", sep = "/")
+actions[actions$checklist_TR == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_TR == TRUE,]$checklist_names, "TR", sep = "/")
+actions[actions$checklist_VET == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_VET == TRUE,]$checklist_names, "VET", sep = "/")
+actions[actions$checklist_ACCT == FALSE &
+          actions$checklist_CHQ == FALSE &
+          actions$checklist_LL == FALSE &
+          actions$checklist_PP == FALSE &
+          actions$checklist_SPCA == FALSE &
+          actions$checklist_TR == FALSE &
+          actions$checklist_VET == FALSE,]$checklist_names <- "OTHER"
+actions$checklist_names <- trimws(gsub("^/", " ", actions$checklist_names))
+actions$checklist_names <- as.factor(actions$checklist_names)
+summary(actions$checklist_names)
+ggplot(actions, aes(x = checklist_names, fill = checklist_names)) +
+  geom_bar(stat = "count") +
+  geom_text(aes(label = ..count..), vjust = -0.25, stat = "count", position = "identity", size = 2) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ animal_type) +
+  guides(fill=FALSE)
+  
+```
+
+Make wide version of data (each row corresponds to unique data.card.id)...
+
+* Why is the sequence numbering so strange? Did I make a mistake?
+
+```{r actions_2, echo = T,  message = F,  warning = F}
+actions_complete <- subset(actions, data.checkItem.state == "complete")
+wide_actions <- dcast(actions_complete, formula = data.card.id + animal_type ~ checklist_seq_num, value.var = c("checklist_names"))
+nrow(wide_actions) == length(unique(actions_complete$data.card.id))
+wide_actions <- wide_actions %>% mutate_if(is.character, as.factor)
+summary(wide_actions)
+summary(wide_actions$`1`)
+summary(wide_actions$`2`)
+summary(wide_actions$`3`)
+summary(wide_actions$`4`)
+summary(wide_actions$`5`)
+summary(wide_actions$`6`)
+summary(wide_actions$`7`)
+summary(wide_actions$`8`)
+summary(wide_actions$`9`)
+summary(wide_actions$`10`)
+summary(wide_actions$`11`)
+summary(wide_actions$`12`)
+summary(wide_actions$`13`)
+summary(wide_actions$`14`)
+summary(wide_actions$`15`)
+summary(wide_actions$`16`)
+```
+
+## Cards
+
+```{r cards, echo = T,  message = F,  warning = F}
+cards <- rbind(dog_cards, cat_cards)
+head(cards)
+length(unique(cards$id)) == nrow(cards)
+```
+
+Create boolean variables for each label name...
+
+```{r cards_2, echo = T,  message = F,  warning = F}
+all_label_names_string <- do.call(paste, c(as.list(cards$label_names), sep = ","))
+all_label_names <- unlist(strsplit(all_label_names_string, c(","))) 
+label_name_list <- unique(trimws(all_label_names))
+label_name_list <- label_name_list[label_name_list != ""]
+label_name_list <- label_name_list[label_name_list != "NA"]
+sort(label_name_list)
+length(label_name_list)
+cards <- tidy_paws_labels(cards, "label_names", label_name_list) # see function in helper_functions.R (this is slow and can be improved)
+summary(cards)
+cards_labels <- cards[!names(cards) %in% c("id", "dateLastActivity", "dueComplete", "due", "animal_type", "label_names")]
+cards_labels_summary <- as.data.frame(colSums(cards_labels))
+cards_labels_summary$label <- rownames(cards_labels_summary)
+colnames(cards_labels_summary)[1] <- "label_count"
+ggplot(cards_labels_summary, aes(x = fct_reorder(label, label_count), y = label_count, fill = label)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = label_count), vjust = -0.25, position = "identity", size = 2) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
+```
+
+## Apps
+
+```{r apps, echo = T,  message = F,  warning = F}
+apps <- rbind(cat_apps, dog_apps)
+apps$outcome_trello_id <- as.factor(apps$outcome_trello_id)
+apps_with_trello_id <- subset(apps, !is.na(apps$outcome_trello_id))
+nrow(apps_with_trello_id)
+length(unique(apps_with_trello_id$outcome_trello_id)) == nrow(apps_with_trello_id)
+length(unique(apps_with_trello_id$outcome_trello_id)) # some duplicates
+```
