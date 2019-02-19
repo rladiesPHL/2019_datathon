@@ -61,7 +61,7 @@ Monthly Budget Plots
     ## 2 dog                     2154.                      200
 
 Can see here that the median may be a more useful measure of center. The
-dog data is probably has more outliers that are skewing the mean, which
+dog data probably has more outliers that are skewing the mean, which
 can be further explored with a boxplot.
 
     # create box plot of budget_monthly by animal
@@ -183,8 +183,8 @@ do this, but gave it a shot.
     ## First want to organize only the data that we need before joining the two data sets
 
 
-    # get all the times when a card was created for cats
-    # from cat_actions, select date & id and filter by "createCard" type
+    # get all the times when a card was created
+    # from combined_actions, select date & id and filter by "createCard" type
     create_card <- actions_combined %>%
       select(type, date, data.card.id) %>%
       filter(type == "createCard")
@@ -194,7 +194,7 @@ do this, but gave it a shot.
 
     ## [1] 6892
 
-    # get all adoption outcome_date timestamps, for cats & dogs
+    # get all adoption outcome_date timestamps
     # from petpoint, select outcome_date & outcome_trello_id & animal_type and filter outcome_type by "Adoption"
     outcome_dates <- petpoint %>%
       select(outcome_type, outcome_date, outcome_trello_id, animal_type) %>%
