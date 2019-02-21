@@ -1,0 +1,203 @@
+GEO.id,Id
+GEO.id2,Id2
+GEO.display-label,Geography
+HC01_EST_VC02,Total; Estimate; Total households
+HC01_MOE_VC02,Total; Margin of Error; Total households
+HC02_EST_VC02,Married-couple family household; Estimate; Total households
+HC02_MOE_VC02,Married-couple family household; Margin of Error; Total households
+HC03_EST_VC02,"Male householder, no wife present, family household; Estimate; Total households"
+HC03_MOE_VC02,"Male householder, no wife present, family household; Margin of Error; Total households"
+HC04_EST_VC02,"Female householder, no husband present, family household; Estimate; Total households"
+HC04_MOE_VC02,"Female householder, no husband present, family household; Margin of Error; Total households"
+HC05_EST_VC02,Nonfamily household; Estimate; Total households
+HC05_MOE_VC02,Nonfamily household; Margin of Error; Total households
+HC01_EST_VC03,Total; Estimate; Average household size
+HC01_MOE_VC03,Total; Margin of Error; Average household size
+HC02_EST_VC03,Married-couple family household; Estimate; Average household size
+HC02_MOE_VC03,Married-couple family household; Margin of Error; Average household size
+HC03_EST_VC03,"Male householder, no wife present, family household; Estimate; Average household size"
+HC03_MOE_VC03,"Male householder, no wife present, family household; Margin of Error; Average household size"
+HC04_EST_VC03,"Female householder, no husband present, family household; Estimate; Average household size"
+HC04_MOE_VC03,"Female householder, no husband present, family household; Margin of Error; Average household size"
+HC05_EST_VC03,Nonfamily household; Estimate; Average household size
+HC05_MOE_VC03,Nonfamily household; Margin of Error; Average household size
+HC01_EST_VC06,Total; Estimate; FAMILIES - Total families
+HC01_MOE_VC06,Total; Margin of Error; FAMILIES - Total families
+HC02_EST_VC06,Married-couple family household; Estimate; FAMILIES - Total families
+HC02_MOE_VC06,Married-couple family household; Margin of Error; FAMILIES - Total families
+HC03_EST_VC06,"Male householder, no wife present, family household; Estimate; FAMILIES - Total families"
+HC03_MOE_VC06,"Male householder, no wife present, family household; Margin of Error; FAMILIES - Total families"
+HC04_EST_VC06,"Female householder, no husband present, family household; Estimate; FAMILIES - Total families"
+HC04_MOE_VC06,"Female householder, no husband present, family household; Margin of Error; FAMILIES - Total families"
+HC05_EST_VC06,Nonfamily household; Estimate; FAMILIES - Total families
+HC05_MOE_VC06,Nonfamily household; Margin of Error; FAMILIES - Total families
+HC01_EST_VC07,Total; Estimate; FAMILIES - Average family size
+HC01_MOE_VC07,Total; Margin of Error; FAMILIES - Average family size
+HC02_EST_VC07,Married-couple family household; Estimate; FAMILIES - Average family size
+HC02_MOE_VC07,Married-couple family household; Margin of Error; FAMILIES - Average family size
+HC03_EST_VC07,"Male householder, no wife present, family household; Estimate; FAMILIES - Average family size"
+HC03_MOE_VC07,"Male householder, no wife present, family household; Margin of Error; FAMILIES - Average family size"
+HC04_EST_VC07,"Female householder, no husband present, family household; Estimate; FAMILIES - Average family size"
+HC04_MOE_VC07,"Female householder, no husband present, family household; Margin of Error; FAMILIES - Average family size"
+HC05_EST_VC07,Nonfamily household; Estimate; FAMILIES - Average family size
+HC05_MOE_VC07,Nonfamily household; Margin of Error; FAMILIES - Average family size
+HC01_EST_VC10,Total; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC01_MOE_VC10,Total; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC02_EST_VC10,Married-couple family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC02_MOE_VC10,Married-couple family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC03_EST_VC10,"Male householder, no wife present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years"
+HC03_MOE_VC10,"Male householder, no wife present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years"
+HC04_EST_VC10,"Female householder, no husband present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years"
+HC04_MOE_VC10,"Female householder, no husband present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years"
+HC05_EST_VC10,Nonfamily household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC05_MOE_VC10,Nonfamily household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years
+HC01_EST_VC11,Total; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC01_MOE_VC11,Total; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC02_EST_VC11,Married-couple family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC02_MOE_VC11,Married-couple family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC03_EST_VC11,"Male householder, no wife present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only"
+HC03_MOE_VC11,"Male householder, no wife present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only"
+HC04_EST_VC11,"Female householder, no husband present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only"
+HC04_MOE_VC11,"Female householder, no husband present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only"
+HC05_EST_VC11,Nonfamily household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC05_MOE_VC11,Nonfamily household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years only
+HC01_EST_VC12,Total; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC01_MOE_VC12,Total; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC02_EST_VC12,Married-couple family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC02_MOE_VC12,Married-couple family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC03_EST_VC12,"Male householder, no wife present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years"
+HC03_MOE_VC12,"Male householder, no wife present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years"
+HC04_EST_VC12,"Female householder, no husband present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years"
+HC04_MOE_VC12,"Female householder, no husband present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years"
+HC05_EST_VC12,Nonfamily household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC05_MOE_VC12,Nonfamily household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - Under 6 years and 6 to 17 years
+HC01_EST_VC13,Total; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC01_MOE_VC13,Total; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC02_EST_VC13,Married-couple family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC02_MOE_VC13,Married-couple family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC03_EST_VC13,"Male householder, no wife present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only"
+HC03_MOE_VC13,"Male householder, no wife present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only"
+HC04_EST_VC13,"Female householder, no husband present, family household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only"
+HC04_MOE_VC13,"Female householder, no husband present, family household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only"
+HC05_EST_VC13,Nonfamily household; Estimate; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC05_MOE_VC13,Nonfamily household; Margin of Error; AGE OF OWN CHILDREN - Households with own children of the householder under 18 years - 6 to 17 years only
+HC01_EST_VC15,Total; Estimate; Total households
+HC01_MOE_VC15,Total; Margin of Error; Total households
+HC02_EST_VC15,Married-couple family household; Estimate; Total households
+HC02_MOE_VC15,Married-couple family household; Margin of Error; Total households
+HC03_EST_VC15,"Male householder, no wife present, family household; Estimate; Total households"
+HC03_MOE_VC15,"Male householder, no wife present, family household; Margin of Error; Total households"
+HC04_EST_VC15,"Female householder, no husband present, family household; Estimate; Total households"
+HC04_MOE_VC15,"Female householder, no husband present, family household; Margin of Error; Total households"
+HC05_EST_VC15,Nonfamily household; Estimate; Total households
+HC05_MOE_VC15,Nonfamily household; Margin of Error; Total households
+HC01_EST_VC17,Total; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC01_MOE_VC17,Total; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC02_EST_VC17,Married-couple family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC02_MOE_VC17,Married-couple family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC03_EST_VC17,"Male householder, no wife present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years"
+HC03_MOE_VC17,"Male householder, no wife present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years"
+HC04_EST_VC17,"Female householder, no husband present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years"
+HC04_MOE_VC17,"Female householder, no husband present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years"
+HC05_EST_VC17,Nonfamily household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC05_MOE_VC17,Nonfamily household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people under 18 years
+HC01_EST_VC18,Total; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC01_MOE_VC18,Total; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC02_EST_VC18,Married-couple family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC02_MOE_VC18,Married-couple family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC03_EST_VC18,"Male householder, no wife present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over"
+HC03_MOE_VC18,"Male householder, no wife present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over"
+HC04_EST_VC18,"Female householder, no husband present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over"
+HC04_MOE_VC18,"Female householder, no husband present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over"
+HC05_EST_VC18,Nonfamily household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC05_MOE_VC18,Nonfamily household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Households with one or more people 60 years and over
+HC01_EST_VC19,Total; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC01_MOE_VC19,Total; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC02_EST_VC19,Married-couple family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC02_MOE_VC19,Married-couple family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC03_EST_VC19,"Male householder, no wife present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone"
+HC03_MOE_VC19,"Male householder, no wife present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone"
+HC04_EST_VC19,"Female householder, no husband present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone"
+HC04_MOE_VC19,"Female householder, no husband present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone"
+HC05_EST_VC19,Nonfamily household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC05_MOE_VC19,Nonfamily household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone
+HC01_EST_VC20,Total; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC01_MOE_VC20,Total; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC02_EST_VC20,Married-couple family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC02_MOE_VC20,Married-couple family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC03_EST_VC20,"Male householder, no wife present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over"
+HC03_MOE_VC20,"Male householder, no wife present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over"
+HC04_EST_VC20,"Female householder, no husband present, family household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over"
+HC04_MOE_VC20,"Female householder, no husband present, family household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over"
+HC05_EST_VC20,Nonfamily household; Estimate; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC05_MOE_VC20,Nonfamily household; Margin of Error; Total households - SELECTED HOUSEHOLDS BY TYPE - Householder living alone - 65 years and over
+HC01_EST_VC23,Total; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC01_MOE_VC23,Total; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC02_EST_VC23,Married-couple family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC02_MOE_VC23,Married-couple family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC03_EST_VC23,"Male householder, no wife present, family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Same sex"
+HC03_MOE_VC23,"Male householder, no wife present, family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Same sex"
+HC04_EST_VC23,"Female householder, no husband present, family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Same sex"
+HC04_MOE_VC23,"Female householder, no husband present, family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Same sex"
+HC05_EST_VC23,Nonfamily household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC05_MOE_VC23,Nonfamily household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Same sex
+HC01_EST_VC24,Total; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC01_MOE_VC24,Total; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC02_EST_VC24,Married-couple family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC02_MOE_VC24,Married-couple family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC03_EST_VC24,"Male householder, no wife present, family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex"
+HC03_MOE_VC24,"Male householder, no wife present, family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex"
+HC04_EST_VC24,"Female householder, no husband present, family household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex"
+HC04_MOE_VC24,"Female householder, no husband present, family household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex"
+HC05_EST_VC24,Nonfamily household; Estimate; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC05_MOE_VC24,Nonfamily household; Margin of Error; UNMARRIED-PARTNER HOUSEHOLDS - Opposite sex
+HC01_EST_VC27,Total; Estimate; UNITS IN STRUCTURE - 1-unit structures
+HC01_MOE_VC27,Total; Margin of Error; UNITS IN STRUCTURE - 1-unit structures
+HC02_EST_VC27,Married-couple family household; Estimate; UNITS IN STRUCTURE - 1-unit structures
+HC02_MOE_VC27,Married-couple family household; Margin of Error; UNITS IN STRUCTURE - 1-unit structures
+HC03_EST_VC27,"Male householder, no wife present, family household; Estimate; UNITS IN STRUCTURE - 1-unit structures"
+HC03_MOE_VC27,"Male householder, no wife present, family household; Margin of Error; UNITS IN STRUCTURE - 1-unit structures"
+HC04_EST_VC27,"Female householder, no husband present, family household; Estimate; UNITS IN STRUCTURE - 1-unit structures"
+HC04_MOE_VC27,"Female householder, no husband present, family household; Margin of Error; UNITS IN STRUCTURE - 1-unit structures"
+HC05_EST_VC27,Nonfamily household; Estimate; UNITS IN STRUCTURE - 1-unit structures
+HC05_MOE_VC27,Nonfamily household; Margin of Error; UNITS IN STRUCTURE - 1-unit structures
+HC01_EST_VC28,Total; Estimate; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC01_MOE_VC28,Total; Margin of Error; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC02_EST_VC28,Married-couple family household; Estimate; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC02_MOE_VC28,Married-couple family household; Margin of Error; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC03_EST_VC28,"Male householder, no wife present, family household; Estimate; UNITS IN STRUCTURE - 2-or-more-unit structures"
+HC03_MOE_VC28,"Male householder, no wife present, family household; Margin of Error; UNITS IN STRUCTURE - 2-or-more-unit structures"
+HC04_EST_VC28,"Female householder, no husband present, family household; Estimate; UNITS IN STRUCTURE - 2-or-more-unit structures"
+HC04_MOE_VC28,"Female householder, no husband present, family household; Margin of Error; UNITS IN STRUCTURE - 2-or-more-unit structures"
+HC05_EST_VC28,Nonfamily household; Estimate; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC05_MOE_VC28,Nonfamily household; Margin of Error; UNITS IN STRUCTURE - 2-or-more-unit structures
+HC01_EST_VC29,Total; Estimate; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC01_MOE_VC29,Total; Margin of Error; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC02_EST_VC29,Married-couple family household; Estimate; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC02_MOE_VC29,Married-couple family household; Margin of Error; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC03_EST_VC29,"Male householder, no wife present, family household; Estimate; UNITS IN STRUCTURE - Mobile homes and all other types of units"
+HC03_MOE_VC29,"Male householder, no wife present, family household; Margin of Error; UNITS IN STRUCTURE - Mobile homes and all other types of units"
+HC04_EST_VC29,"Female householder, no husband present, family household; Estimate; UNITS IN STRUCTURE - Mobile homes and all other types of units"
+HC04_MOE_VC29,"Female householder, no husband present, family household; Margin of Error; UNITS IN STRUCTURE - Mobile homes and all other types of units"
+HC05_EST_VC29,Nonfamily household; Estimate; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC05_MOE_VC29,Nonfamily household; Margin of Error; UNITS IN STRUCTURE - Mobile homes and all other types of units
+HC01_EST_VC32,Total; Estimate; HOUSING TENURE - Owner-occupied housing units
+HC01_MOE_VC32,Total; Margin of Error; HOUSING TENURE - Owner-occupied housing units
+HC02_EST_VC32,Married-couple family household; Estimate; HOUSING TENURE - Owner-occupied housing units
+HC02_MOE_VC32,Married-couple family household; Margin of Error; HOUSING TENURE - Owner-occupied housing units
+HC03_EST_VC32,"Male householder, no wife present, family household; Estimate; HOUSING TENURE - Owner-occupied housing units"
+HC03_MOE_VC32,"Male householder, no wife present, family household; Margin of Error; HOUSING TENURE - Owner-occupied housing units"
+HC04_EST_VC32,"Female householder, no husband present, family household; Estimate; HOUSING TENURE - Owner-occupied housing units"
+HC04_MOE_VC32,"Female householder, no husband present, family household; Margin of Error; HOUSING TENURE - Owner-occupied housing units"
+HC05_EST_VC32,Nonfamily household; Estimate; HOUSING TENURE - Owner-occupied housing units
+HC05_MOE_VC32,Nonfamily household; Margin of Error; HOUSING TENURE - Owner-occupied housing units
+HC01_EST_VC33,Total; Estimate; HOUSING TENURE - Renter-occupied housing units
+HC01_MOE_VC33,Total; Margin of Error; HOUSING TENURE - Renter-occupied housing units
+HC02_EST_VC33,Married-couple family household; Estimate; HOUSING TENURE - Renter-occupied housing units
+HC02_MOE_VC33,Married-couple family household; Margin of Error; HOUSING TENURE - Renter-occupied housing units
+HC03_EST_VC33,"Male householder, no wife present, family household; Estimate; HOUSING TENURE - Renter-occupied housing units"
+HC03_MOE_VC33,"Male householder, no wife present, family household; Margin of Error; HOUSING TENURE - Renter-occupied housing units"
+HC04_EST_VC33,"Female householder, no husband present, family household; Estimate; HOUSING TENURE - Renter-occupied housing units"
+HC04_MOE_VC33,"Female householder, no husband present, family household; Margin of Error; HOUSING TENURE - Renter-occupied housing units"
+HC05_EST_VC33,Nonfamily household; Estimate; HOUSING TENURE - Renter-occupied housing units
+HC05_MOE_VC33,Nonfamily household; Margin of Error; HOUSING TENURE - Renter-occupied housing units
