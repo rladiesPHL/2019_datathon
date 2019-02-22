@@ -71,7 +71,7 @@ There are 37 unique label names which can be categorized as follows:
 - *checklist_SPCA:* Check with SPCA (Society for the Prevention of Cruelty to Animals)
 - *checklist_TR:* Check with Trello
 - *checklist_VET:* Check with vet
-- *checklist_seq_num:* indicates the number of the action on a given card, in a sequential order by date. "createCard" should always be the first entry; if it isn't, the entry isn't complete and we should not use it
+Note that *checklist_seq_num* has been removed.
 
 ## Apps data (dog_apps.csv and cat_apps.csv)
 
