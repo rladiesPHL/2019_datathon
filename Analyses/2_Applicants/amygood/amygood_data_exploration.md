@@ -13,6 +13,7 @@ library(tidyverse)
 library(lubridate)
 library(data.table)
 library(forcats)
+library(plyr)
 ```
 
 Source helper function(s)
@@ -85,12 +86,31 @@ ggplot(actions, aes(x = checklist_names, fill = checklist_names)) +
 
 Make wide version of data (each row corresponds to unique data.card.id)...
 
--   Why is the sequence numbering so strange? Did I make a mistake?
+-   Why is the sequence numbering so strange? Looks like the original "checklist\_seq\_num" was treated as a character at some point messing up the ordering.
 
 ``` r
-actions_complete <- subset(actions, data.checkItem.state == "complete")
-wide_actions <- dcast(actions_complete, formula = data.card.id + animal_type ~ checklist_seq_num, value.var = c("checklist_names"))
-nrow(wide_actions) == length(unique(actions_complete$data.card.id))
+actions <- arrange(actions, date)
+actions <- ddply(actions, .(data.card.id), mutate, new_checklist_seq_num = seq_along(date))
+ggplot(actions, aes(x = new_checklist_seq_num, y = checklist_seq_num, colour = data.checkItem.state)) +
+  geom_point() +
+  geom_jitter() +
+  facet_grid(. ~ type)
+```
+
+![](amygood_data_exploration_files/figure-markdown_github/actions_2-1.png)
+
+``` r
+ggplot(actions, aes(x = new_checklist_seq_num, y = as.character(checklist_seq_num), colour = data.checkItem.state)) +
+  geom_point() +
+  geom_jitter() +
+  facet_grid(. ~ type)
+```
+
+![](amygood_data_exploration_files/figure-markdown_github/actions_2-2.png)
+
+``` r
+wide_actions <- dcast(actions, formula = data.card.id + animal_type ~ new_checklist_seq_num, value.var = c("checklist_names"))
+nrow(wide_actions) == length(unique(actions$data.card.id))
 ```
 
     ## [1] TRUE
@@ -101,157 +121,159 @@ summary(wide_actions)
 ```
 
     ##                    data.card.id  animal_type       1              2       
-    ##  57acc2f1d4009ea56a2cb2be:   1   cat:4760    PP     : 116   VET    :  27  
-    ##  57b0d0a3c473065ae66852c6:   1   dog:1862    TR     : 103   LL     :  13  
-    ##  57bf545a4204dda43853983a:   1               VET    :  44   PP     :  12  
-    ##  57ed4d88d27ca2801d342858:   1               CHQ    :  24   CHQ    :  10  
-    ##  58027874ff46111221ad74ad:   1               LL     :  18   TR     :   9  
-    ##  581ce61069899a9f8c04e021:   1               (Other):   6   (Other):   9  
-    ##  (Other)                 :6616               NA's   :6311   NA's   :6542  
-    ##        3              4           5           6           7       
-    ##  VET    :  11   PP     :  10   ACCT:   1   CHQ :   5   ACCT:   1  
-    ##  PP     :   9   VET    :   9   CHQ :   5   LL  :   8   CHQ :   2  
-    ##  TR     :   9   LL     :   7   LL  :   8   PP  :   2   LL  :   2  
-    ##  LL     :   4   TR     :   6   PP  :   3   TR  :   3   TR  :   2  
-    ##  CHQ    :   3   CHQ    :   5   TR  :   7   VET :   6   VET :   5  
-    ##  (Other):   7   (Other):   2   VET :   7   NA's:6598   NA's:6610  
-    ##  NA's   :6579   NA's   :6583   NA's:6591                          
-    ##     8           9           10          11             12      
-    ##  CHQ :   3   LL  :   2   LL  :   1   CHQ :   1   PP     :2525  
-    ##  SPCA:   1   PP  :   1   TR  :   1   NA's:6621   TR     :2403  
-    ##  VET :   3   NA's:6619   NA's:6620               LL     : 596  
-    ##  NA's:6615                                       VET    : 525  
-    ##                                                  CHQ    : 481  
-    ##                                                  (Other):  25  
-    ##                                                  NA's   :  67  
-    ##     13             14             15             16             17      
-    ##  LL  :   1   TR     :2257   LL     :2058   LL     :1886   VET    :2288  
-    ##  NA's:6621   PP     :1971   CHQ    :1684   VET    :1550   LL     : 720  
-    ##              LL     : 946   TR     :1183   CHQ    :1433   CHQ    : 497  
-    ##              CHQ    : 923   PP     : 882   PP     : 597   PP     : 317  
-    ##              VET    : 322   VET    : 551   TR     : 454   TR     : 138  
-    ##              (Other):  17   (Other):  21   (Other):  51   (Other):  98  
-    ##              NA's   : 186   NA's   : 243   NA's   : 651   NA's   :2564  
-    ##        18             19             20      
-    ##  VET    : 292   VET    : 201   VET    :  50  
-    ##  LL     : 144   LL     :  85   PP     :  15  
-    ##  CHQ    : 100   PP     :  36   CHQ    :  13  
-    ##  PP     :  72   CHQ    :  28   LL     :  13  
-    ##  ACCT   :  35   TR     :  18   TR     :   8  
-    ##  (Other): 101   (Other):  37   (Other):  16  
-    ##  NA's   :5878   NA's   :6217   NA's   :6507
+    ##  57acc2f1d4009ea56a2cb2be:   1   cat:5226    OTHER  :6893   PP     :2532  
+    ##  57b0d0a3c473065ae66852c6:   1   dog:1983    PP     : 119   TR     :2408  
+    ##  57bf545a4204dda43853983a:   1               TR     : 104   LL     : 601  
+    ##  57ed4d88d27ca2801d342858:   1               VET    :  46   VET    : 528  
+    ##  58027874ff46111221ad74ad:   1               CHQ    :  24   CHQ    : 483  
+    ##  581ce61069899a9f8c04e021:   1               LL     :  18   (Other):  26  
+    ##  (Other)                 :7203               (Other):   5   NA's   : 631  
+    ##        3              4              5              6       
+    ##  TR     :2293   LL     :2070   LL     :1919   VET    :2347  
+    ##  PP     :2007   CHQ    :1689   VET    :1578   LL     : 799  
+    ##  LL     : 962   TR     :1194   CHQ    :1445   CHQ    : 512  
+    ##  CHQ    : 930   PP     : 921   PP     : 625   PP     : 356  
+    ##  VET    : 332   VET    : 568   TR     : 474   TR     : 148  
+    ##  (Other):  20   (Other):  23   (Other):  54   (Other):  99  
+    ##  NA's   : 665   NA's   : 744   NA's   :1114   NA's   :2948  
+    ##        7              8              9              10      
+    ##  VET    : 371   VET    : 211   VET    :  63   VET    :  29  
+    ##  LL     : 186   LL     :  99   LL     :  23   LL     :  15  
+    ##  CHQ    : 108   PP     :  50   PP     :  21   PP     :  15  
+    ##  PP     :  99   CHQ    :  40   TR     :  20   TR     :  15  
+    ##  TR     :  43   TR     :  22   CHQ    :  17   CHQ    :  14  
+    ##  (Other): 108   (Other):  44   (Other):  19   (Other):  10  
+    ##  NA's   :6294   NA's   :6743   NA's   :7046   NA's   :7111  
+    ##        11             12          13          14          15      
+    ##  VET    :  17   PP     :  10   ACCT:   1   CHQ :   5   ACCT:   1  
+    ##  PP     :  13   VET    :  10   CHQ :   5   LL  :   8   CHQ :   2  
+    ##  TR     :  11   LL     :   7   LL  :   9   PP  :   2   LL  :   3  
+    ##  CHQ    :   4   CHQ    :   6   PP  :   3   TR  :   3   TR  :   2  
+    ##  LL     :   4   TR     :   6   TR  :   8   VET :   6   VET :   5  
+    ##  (Other):   7   (Other):   2   VET :   7   NA's:7185   NA's:7196  
+    ##  NA's   :7153   NA's   :7168   NA's:7176                          
+    ##     16          17          18          19          20      
+    ##  CHQ :   4   LL  :   3   LL  :   1   CHQ :   1   LL  :   1  
+    ##  SPCA:   1   PP  :   1   TR  :   1   NA's:7208   NA's:7208  
+    ##  VET :   3   TR  :   1   VET :   1                          
+    ##  NA's:7201   NA's:7204   NA's:7206                          
+    ##                                                             
+    ##                                                             
+    ## 
 
 ``` r
 summary(wide_actions$`1`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
-    ##     4    24    18     1   116     1   103    44  6311
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET 
+    ##     4    24    18  6893   119     1   104    46
 
 ``` r
 summary(wide_actions$`2`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
-    ##     2    10    13     2    12     5     9    27  6542
+    ##   ACCT    CHQ CHQ/PP     LL  OTHER     PP   SPCA     TR    VET   NA's 
+    ##      6    483      1    601     13   2532      6   2408    528    631
 
 ``` r
 summary(wide_actions$`3`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
-    ##     2     3     4     3     9     2     9    11  6579
+    ##   ACCT    CHQ CHQ/PP     LL  OTHER     PP   SPCA     TR    VET   NA's 
+    ##      5    930      3    962     10   2007      2   2293    332    665
 
 ``` r
 summary(wide_actions$`4`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP    TR   VET  NA's 
-    ##     1     5     7     1    10     6     9  6583
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
+    ##     7  1689  2070    11   921     5  1194   568   744
 
 ``` r
 summary(wide_actions$`5`)
 ```
 
-    ## ACCT  CHQ   LL   PP   TR  VET NA's 
-    ##    1    5    8    3    7    7 6591
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
+    ##    29  1445  1919    14   625    11   474  1578  1114
 
 ``` r
 summary(wide_actions$`6`)
 ```
 
-    ##  CHQ   LL   PP   TR  VET NA's 
-    ##    5    8    2    3    6 6598
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
+    ##    35   512   799    27   356    37   148  2347  2948
 
 ``` r
 summary(wide_actions$`7`)
 ```
 
-    ## ACCT  CHQ   LL   TR  VET NA's 
-    ##    1    2    2    2    5 6610
+    ##      ACCT ACCT/SPCA       CHQ   CHQ/VET        LL     LL/PP     OTHER 
+    ##        35         1       108         1       186         3        34 
+    ##        PP      SPCA        TR       VET      NA's 
+    ##        99        34        43       371      6294
 
 ``` r
 summary(wide_actions$`8`)
 ```
 
-    ##  CHQ SPCA  VET NA's 
-    ##    3    1    3 6615
+    ##  ACCT   CHQ    LL LL/PP OTHER    PP  SPCA    TR   VET  NA's 
+    ##    17    40    99     1    13    50    13    22   211  6743
 
 ``` r
 summary(wide_actions$`9`)
 ```
 
-    ##   LL   PP NA's 
-    ##    2    1 6619
+    ##  ACCT   CHQ    LL LL/PP OTHER    PP  SPCA    TR   VET  NA's 
+    ##     7    17    23     1     7    21     4    20    63  7046
 
 ``` r
 summary(wide_actions$`10`)
 ```
 
-    ##   LL   TR NA's 
-    ##    1    1 6620
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
+    ##     2    14    15     3    15     5    15    29  7111
 
 ``` r
 summary(wide_actions$`11`)
 ```
 
-    ##  CHQ NA's 
-    ##    1 6621
+    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
+    ##     2     4     4     3    13     2    11    17  7153
 
 ``` r
 summary(wide_actions$`12`)
 ```
 
-    ##   ACCT    CHQ CHQ/PP     LL  OTHER     PP   SPCA     TR    VET   NA's 
-    ##      6    481      1    596     13   2525      5   2403    525     67
+    ##  ACCT   CHQ    LL OTHER    PP    TR   VET  NA's 
+    ##     1     6     7     1    10     6    10  7168
 
 ``` r
 summary(wide_actions$`13`)
 ```
 
-    ##   LL NA's 
-    ##    1 6621
+    ## ACCT  CHQ   LL   PP   TR  VET NA's 
+    ##    1    5    9    3    8    7 7176
 
 ``` r
 summary(wide_actions$`14`)
 ```
 
-    ##   ACCT    CHQ CHQ/PP     LL  OTHER     PP   SPCA     TR    VET   NA's 
-    ##      4    923      3    946      8   1971      2   2257    322    186
+    ##  CHQ   LL   PP   TR  VET NA's 
+    ##    5    8    2    3    6 7185
 
 ``` r
 summary(wide_actions$`15`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
-    ##     7  1684  2058     9   882     5  1183   551   243
+    ## ACCT  CHQ   LL   TR  VET NA's 
+    ##    1    2    3    2    5 7196
 
 ``` r
 summary(wide_actions$`16`)
 ```
 
-    ##  ACCT   CHQ    LL OTHER    PP  SPCA    TR   VET  NA's 
-    ##    29  1433  1886    11   597    11   454  1550   651
+    ##  CHQ SPCA  VET NA's 
+    ##    4    1    3 7201
 
 Cards
 -----
@@ -335,90 +357,90 @@ summary(cards)
     ##  3rd Qu.:2018-10-12                                        
     ##  Max.   :2019-01-26                                        
     ##  NA's   :2974                                              
-    ##  ready_for_review  not_utd        need_info       need_vet_info  
-    ##  Mode :logical    Mode :logical   Mode :logical   Mode :logical  
-    ##  FALSE:8764       FALSE:9637      FALSE:9572      FALSE:9685     
-    ##  TRUE :1225       TRUE :352       TRUE :417       TRUE :304      
-    ##                                                                  
-    ##                                                                  
-    ##                                                                  
-    ##                                                                  
-    ##  questions       ready_to_adopt  withdrawn        adopted       
-    ##  Mode :logical   Mode :logical   Mode :logical   Mode :logical  
-    ##  FALSE:9220      FALSE:7935      FALSE:9941      FALSE:8740     
-    ##  TRUE :769       TRUE :2054      TRUE :48        TRUE :1249     
-    ##                                                                 
-    ##                                                                 
-    ##                                                                 
-    ##                                                                 
-    ##   returned       pet_policy      adopted_elsewhere need_to_see_id 
-    ##  Mode :logical   Mode :logical   Mode :logical     Mode :logical  
-    ##  FALSE:9741      FALSE:9770      FALSE:9818        FALSE:9733     
-    ##  TRUE :248       TRUE :219       TRUE :171         TRUE :256      
-    ##                                                                   
-    ##                                                                   
-    ##                                                                   
-    ##                                                                   
-    ##    denied         red_flag        dog_meet       manager_decision
-    ##  Mode :logical   Mode :logical   Mode :logical   Mode :logical   
-    ##  FALSE:9854      FALSE:9465      FALSE:9960      FALSE:9827      
-    ##  TRUE :135       TRUE :524       TRUE :29        TRUE :162       
-    ##                                                                  
-    ##                                                                  
-    ##                                                                  
-    ##                                                                  
-    ##  rescue_check    approved_with_limitation  approved      
-    ##  Mode :logical   Mode :logical            Mode :logical  
-    ##  FALSE:9910      FALSE:9933               FALSE:9827     
-    ##  TRUE :79        TRUE :56                 TRUE :162      
-    ##                                                          
-    ##                                                          
-    ##                                                          
-    ##                                                          
-    ##  reviewed_with_handouts_only    vet             opa         
-    ##  Mode :logical               Mode :logical   Mode :logical  
-    ##  FALSE:9057                  FALSE:9421      FALSE:9948     
-    ##  TRUE :932                   TRUE :568       TRUE :41       
+    ##  ready_for_review not_utd        need_info      need_vet_info 
+    ##  Mode:logical     Mode:logical   Mode:logical   Mode:logical  
+    ##  TRUE:1225        TRUE:352       TRUE:417       TRUE:304      
+    ##  NA's:8764        NA's:9637      NA's:9572      NA's:9685     
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##  questions      ready_to_adopt withdrawn      adopted       
+    ##  Mode:logical   Mode:logical   Mode:logical   Mode:logical  
+    ##  TRUE:769       TRUE:2054      TRUE:48        TRUE:1249     
+    ##  NA's:9220      NA's:7935      NA's:9941      NA's:8740     
     ##                                                             
     ##                                                             
     ##                                                             
     ##                                                             
-    ##    checks        unsure_foster_or_adopt adoption_follow_up
-    ##  Mode :logical   Mode :logical          Mode :logical     
-    ##  FALSE:9875      FALSE:9979             FALSE:9864        
-    ##  TRUE :114       TRUE :10               TRUE :125         
-    ##                                                           
-    ##                                                           
-    ##                                                           
-    ##                                                           
-    ##  needs_app_attached declaw_only     serial_no_show  foster_to_adopt
-    ##  Mode :logical      Mode :logical   Mode :logical   Mode :logical  
-    ##  FALSE:9988         FALSE:9896      FALSE:9986      FALSE:9983     
-    ##  TRUE :1            TRUE :93        TRUE :3         TRUE :6        
-    ##                                                                    
-    ##                                                                    
-    ##                                                                    
-    ##                                                                    
+    ##  returned       pet_policy     adopted_elsewhere need_to_see_id
+    ##  Mode:logical   Mode:logical   Mode:logical      Mode:logical  
+    ##  TRUE:248       TRUE:219       TRUE:171          TRUE:256      
+    ##  NA's:9741      NA's:9770      NA's:9818         NA's:9733     
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##   denied        red_flag       dog_meet       manager_decision
+    ##  Mode:logical   Mode:logical   Mode:logical   Mode:logical    
+    ##  TRUE:135       TRUE:524       TRUE:29        TRUE:162        
+    ##  NA's:9854      NA's:9465      NA's:9960      NA's:9827       
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##  rescue_check   approved_with_limitation approved      
+    ##  Mode:logical   Mode:logical             Mode:logical  
+    ##  TRUE:79        TRUE:56                  TRUE:162      
+    ##  NA's:9910      NA's:9933                NA's:9827     
+    ##                                                        
+    ##                                                        
+    ##                                                        
+    ##                                                        
+    ##  reviewed_with_handouts_only   vet            opa           checks       
+    ##  Mode:logical                Mode:logical   Mode:logical   Mode:logical  
+    ##  TRUE:932                    TRUE:568       TRUE:41        TRUE:114      
+    ##  NA's:9057                   NA's:9421      NA's:9948      NA's:9875     
+    ##                                                                          
+    ##                                                                          
+    ##                                                                          
+    ##                                                                          
+    ##  unsure_foster_or_adopt adoption_follow_up needs_app_attached
+    ##  Mode:logical           Mode:logical       Mode:logical      
+    ##  TRUE:10                TRUE:125           TRUE:1            
+    ##  NA's:9979              NA's:9864          NA's:9988         
+    ##                                                              
+    ##                                                              
+    ##                                                              
+    ##                                                              
+    ##  declaw_only    serial_no_show foster_to_adopt
+    ##  Mode:logical   Mode:logical   Mode:logical   
+    ##  TRUE:93        TRUE:3         TRUE:6         
+    ##  NA's:9896      NA's:9986      NA's:9983      
+    ##                                               
+    ##                                               
+    ##                                               
+    ##                                               
     ##  needs_review_before_approval do_not_follow_up need_written_ll_permission
-    ##  Mode :logical                Mode :logical    Mode :logical             
-    ##  FALSE:9987                   FALSE:9985       FALSE:9980                
-    ##  TRUE :2                      TRUE :4          TRUE :9                   
+    ##  Mode:logical                 Mode:logical     Mode:logical              
+    ##  TRUE:2                       TRUE:4           TRUE:9                    
+    ##  NA's:9987                    NA's:9985        NA's:9980                 
     ##                                                                          
     ##                                                                          
     ##                                                                          
     ##                                                                          
-    ##  need_proof_of_ownership  not_s_n         landlord      
-    ##  Mode :logical           Mode :logical   Mode :logical  
-    ##  FALSE:9977              FALSE:9984      FALSE:9980     
-    ##  TRUE :12                TRUE :5         TRUE :9        
-    ##                                                         
-    ##                                                         
-    ##                                                         
-    ##                                                         
+    ##  need_proof_of_ownership not_s_n        landlord      
+    ##  Mode:logical            Mode:logical   Mode:logical  
+    ##  TRUE:12                 TRUE:5         TRUE:9        
+    ##  NA's:9977               NA's:9984      NA's:9980     
+    ##                                                       
+    ##                                                       
+    ##                                                       
+    ##                                                       
     ##  vet_check_in_process need_roommates_vet_info
-    ##  Mode :logical        Mode :logical          
-    ##  FALSE:9985           FALSE:9984             
-    ##  TRUE :4              TRUE :5                
+    ##  Mode:logical         Mode:logical           
+    ##  TRUE:4               TRUE:5                 
+    ##  NA's:9985            NA's:9984              
     ##                                              
     ##                                              
     ##                                              
@@ -426,9 +448,52 @@ summary(cards)
 
 ``` r
 cards_labels <- cards[!names(cards) %in% c("id", "dateLastActivity", "dueComplete", "due", "animal_type", "label_names")]
-cards_labels_summary <- as.data.frame(colSums(cards_labels))
+cards_labels_summary <- as.data.frame(colSums(cards_labels, na.rm = TRUE))
 cards_labels_summary$label <- rownames(cards_labels_summary)
 colnames(cards_labels_summary)[1] <- "label_count"
+cards_labels_summary
+```
+
+    ##                              label_count                        label
+    ## ready_for_review                    1225             ready_for_review
+    ## not_utd                              352                      not_utd
+    ## need_info                            417                    need_info
+    ## need_vet_info                        304                need_vet_info
+    ## questions                            769                    questions
+    ## ready_to_adopt                      2054               ready_to_adopt
+    ## withdrawn                             48                    withdrawn
+    ## adopted                             1249                      adopted
+    ## returned                             248                     returned
+    ## pet_policy                           219                   pet_policy
+    ## adopted_elsewhere                    171            adopted_elsewhere
+    ## need_to_see_id                       256               need_to_see_id
+    ## denied                               135                       denied
+    ## red_flag                             524                     red_flag
+    ## dog_meet                              29                     dog_meet
+    ## manager_decision                     162             manager_decision
+    ## rescue_check                          79                 rescue_check
+    ## approved_with_limitation              56     approved_with_limitation
+    ## approved                             162                     approved
+    ## reviewed_with_handouts_only          932  reviewed_with_handouts_only
+    ## vet                                  568                          vet
+    ## opa                                   41                          opa
+    ## checks                               114                       checks
+    ## unsure_foster_or_adopt                10       unsure_foster_or_adopt
+    ## adoption_follow_up                   125           adoption_follow_up
+    ## needs_app_attached                     1           needs_app_attached
+    ## declaw_only                           93                  declaw_only
+    ## serial_no_show                         3               serial_no_show
+    ## foster_to_adopt                        6              foster_to_adopt
+    ## needs_review_before_approval           2 needs_review_before_approval
+    ## do_not_follow_up                       4             do_not_follow_up
+    ## need_written_ll_permission             9   need_written_ll_permission
+    ## need_proof_of_ownership               12      need_proof_of_ownership
+    ## not_s_n                                5                      not_s_n
+    ## landlord                               9                     landlord
+    ## vet_check_in_process                   4         vet_check_in_process
+    ## need_roommates_vet_info                5      need_roommates_vet_info
+
+``` r
 ggplot(cards_labels_summary, aes(x = fct_reorder(label, label_count), y = label_count, fill = label)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = label_count), vjust = -0.25, position = "identity", size = 2) +

@@ -2,7 +2,7 @@
 title: "Initial data exploration"
 author: "Amy Goodwin Davies"
 always_allow_html: yes
-output: 
+output:
   github_document:
     toc: true
 ---
@@ -18,6 +18,7 @@ library(tidyverse)
 library(lubridate)
 library(data.table)
 library(forcats)
+library(plyr)
 ```
 
 Source helper function(s)
@@ -80,12 +81,21 @@ ggplot(actions, aes(x = checklist_names, fill = checklist_names)) +
 
 Make wide version of data (each row corresponds to unique data.card.id)...
 
-* Why is the sequence numbering so strange? Did I make a mistake?
+* Why is the sequence numbering so strange? Looks like the original "checklist_seq_num" was treated as a character at some point messing up the ordering.
 
 ```{r actions_2, echo = T,  message = F,  warning = F}
-actions_complete <- subset(actions, data.checkItem.state == "complete")
-wide_actions <- dcast(actions_complete, formula = data.card.id + animal_type ~ checklist_seq_num, value.var = c("checklist_names"))
-nrow(wide_actions) == length(unique(actions_complete$data.card.id))
+actions <- arrange(actions, date)
+actions <- ddply(actions, .(data.card.id), mutate, new_checklist_seq_num = seq_along(date))
+ggplot(actions, aes(x = new_checklist_seq_num, y = checklist_seq_num, colour = data.checkItem.state)) +
+  geom_point() +
+  geom_jitter() +
+  facet_grid(. ~ type)
+ggplot(actions, aes(x = new_checklist_seq_num, y = as.character(checklist_seq_num), colour = data.checkItem.state)) +
+  geom_point() +
+  geom_jitter() +
+  facet_grid(. ~ type)
+wide_actions <- dcast(actions, formula = data.card.id + animal_type ~ new_checklist_seq_num, value.var = c("checklist_names"))
+nrow(wide_actions) == length(unique(actions$data.card.id))
 wide_actions <- wide_actions %>% mutate_if(is.character, as.factor)
 summary(wide_actions)
 summary(wide_actions$`1`)
@@ -127,9 +137,10 @@ length(label_name_list)
 cards <- tidy_paws_labels(cards, "label_names", label_name_list) # see function in helper_functions.R (this is slow and can be improved)
 summary(cards)
 cards_labels <- cards[!names(cards) %in% c("id", "dateLastActivity", "dueComplete", "due", "animal_type", "label_names")]
-cards_labels_summary <- as.data.frame(colSums(cards_labels))
+cards_labels_summary <- as.data.frame(colSums(cards_labels, na.rm = TRUE))
 cards_labels_summary$label <- rownames(cards_labels_summary)
 colnames(cards_labels_summary)[1] <- "label_count"
+cards_labels_summary
 ggplot(cards_labels_summary, aes(x = fct_reorder(label, label_count), y = label_count, fill = label)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = label_count), vjust = -0.25, position = "identity", size = 2) +
