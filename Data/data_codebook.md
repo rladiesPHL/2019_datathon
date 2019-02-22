@@ -71,6 +71,7 @@ There are 37 unique label names which can be categorized as follows:
 - *checklist_SPCA:* Check with SPCA (Society for the Prevention of Cruelty to Animals)
 - *checklist_TR:* Check with Trello
 - *checklist_VET:* Check with vet
+
 Note that *checklist_seq_num* has been removed.
 
 ## Apps data (dog_apps.csv and cat_apps.csv)
