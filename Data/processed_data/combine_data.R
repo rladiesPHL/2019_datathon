@@ -29,6 +29,10 @@ for (i in seq_along(csv_files)) {
     
 }
 
+# actions <-
+#     read_csv(file = "./Data/processed_data/all_actions.csv")
+
+
 actions_wide <-
     actions %>% 
     gather(item, result, checklist_ACCT:checklist_VET) %>% 
