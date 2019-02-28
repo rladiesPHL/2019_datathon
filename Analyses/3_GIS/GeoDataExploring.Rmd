@@ -1,7 +1,7 @@
 ---
-title: "GeoDataExploring"
+title: "Missed Connections Analysis"
 author: "Karla Fettich"
-date: "February 15, 2019"
+date: "February 27, 2019"
 output: html_document
 ---
 
@@ -10,8 +10,10 @@ output: html_document
 # load all packages needed
 
 rm(list = ls())
-knitr::opts_chunk$set(echo = TRUE)
+wd <- "/home/karla/Documents/RLadies/joys_fork/2019_datathon"
 
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = wd)
 library(rgdal)
 library(raster)
 library(tmap)
@@ -20,185 +22,228 @@ library(tidyr)
 
 ```
 
-Ok. Let's see what we can do with these data. 
+Here, I'll try to understand what happens to the applications that don't end up adopting. Are there some areas that submit an unusually high number of applications that don't end up adopting? 
 
 ## Load datasets
 
-```{r import datasets}
+### Shape files
+
+First, I'll import the geo data for NJ and PA.
+
+```{r import shape files}
 
 # load geo data for nj & pa
 
-nj <- readOGR(dsn="./Analyses/3_GIS/tl_2018_34_tract")
-pa <- readOGR(dsn = "./Analyses/3_GIS/tl_2018_42_tract")
+nj <- shapefile("./Analyses/3_GIS/tl_2018_34_tract/tl_2018_34_tract.shp")
+pa <- shapefile("./Analyses/3_GIS/tl_2018_42_tract/tl_2018_42_tract.shp")
 pa_nj <- rbind(nj,pa)
 
-# load PetPoint
+summary(pa_nj)
+```
+
+
+### Petpoint 
+
+Then, I'll import PetPoint data. I am going to get rid of petpoint entries that don't have a GEOID, because these are animals that either got euthanized, or got adopted outside the area of interest (PA and NJ). 
+
+```{r import petpoint data}
 
 pp <- read.csv("./Data/petpoint.csv", stringsAsFactors = FALSE)
-pp <- pp[!is.na(pp$INTPTLON),]  # get rid of geo NAs
-pp.pa_nj <- pp[which(pp$GEOID %in% pa_nj$GEOID),]
+pp %>% 
+  filter(is.na(INTPTLON)) %>%
+  group_by(outcome_type) %>%
+  summarise(n = n())
+```
 
-# load application data dogs
+Everything except the "Adoption" line in this list is not informative for this analysis, so we can remove these. Let's take a closer look at the Adoptions to make sure we're not missing anything. 
+
+```{r closer look at adoptions line}
+pp %>% 
+  filter(is.na(INTPTLON), outcome_type=="Adoption") %>%
+  group_by(outcome_state) %>%
+  summarise(n = n())
+```
+
+All these adoptions are from states other than NJ and PA; also, the numbers are fairly low (except DE and NY, which are also low in comparison). So we can remove all these entries from analysis.
+
+```{r keep clean pp dataset}
+pp <- pp[which(!is.na(pp$INTPTLON)),]
+```
+
+### Applications data
+
+I'll now load the applications data for both cats and dogs. We'll also look at these datasets the same way as for petpoint - getting rid of applications that don't have GEOIDs and assessing why those might be missing.
+
+```{r import dog applications data}
 
 dogs <- read.csv("./Data/dog_apps.csv", stringsAsFactors = FALSE)
+dogs %>% 
+  filter(is.na(INTPTLON)) %>%
+  group_by(State) %>%
+  summarise(n = n())
 dogs <- dogs[!is.na(dogs$INTPTLON),]  # get rid of geo NAs
-dogs.pa_nj <- dogs[which(dogs$GEOID %in% pa_nj$GEOID),]
+```
 
-# load cards for dogs
+We have 2 PA applicants that have missing geo data. Since it's a low number, I will leave this as missing (can't re-do the GEO matching so we'll just have to run it as is). Everyone else is from states outside PA and NJ. 
+
+```{r import cat applications data}
+cats <- read.csv("./Data/cat_apps.csv", stringsAsFactors = FALSE)
+cats %>% 
+  filter(is.na(INTPTLON)) %>%
+  group_by(State) %>%
+  summarise(n = n())
+cats <- cats[!is.na(cats$INTPTLON),]  # get rid of geo NAs
+```
+For cats, we have 7 PA applicants with missing geo info. Ok. 
+
+### Cards data
+
+Next, we will import cards data, and merge it to the dogapps by trello ID. We don't want to keep all entries, but rather only the applications that were submitted, that also have cards created. Then, we want to merge that dataset (applications that have a trello card) with the petpoint dataset so that for those applications that have a petpoint outcome, this is recorded. We again don't want to keep all the records here because the goal is to get the most complete data possible for each application. 
+
+```{r import cards data dogs}
 
 dogcards <- read.csv("./Data/dog_cards.csv", stringsAsFactors = FALSE)
-dogs.pa_nj <- merge(dogs.pa_nj, dogcards, by.x="outcome_trello_id", by.y="id")
-dogs.pa_nj <- merge(dogs.pa_nj, pp.pa_nj, by="outcome_trello_id")
+dogs.pa_nj <- merge(dogs, dogcards, by.x="outcome_trello_id", by.y="id", all=TRUE)
+dogs.pa_nj <- merge(dogs.pa_nj, pp, by="outcome_trello_id",all=TRUE)
 dogs.pa_nj <- dogs.pa_nj[dogs.pa_nj$species=="Dog",]
+```
 
+From the `r nrow(dogs)` applications submitted by people living in PA and NJ between `r min(dogs$date_submitted)` and `r max(dogs$date_submitted)`, `r nrow(dogs.pa_nj)` can be traced all the way through to a successful adoption in PetPoint.
+
+```{r import cards data cats}
+
+catcards <- read.csv("./Data/cat_cards.csv", stringsAsFactors = FALSE)
+cats.pa_nj <- merge(cats, catcards, by.x="outcome_trello_id", by.y="id", all=TRUE)
+cats.pa_nj <- merge(cats.pa_nj, pp, by="outcome_trello_id",all=TRUE)
+cats.pa_nj <- cats.pa_nj[cats.pa_nj$species=="Cat",]
+```
+
+From the `r nrow(cats)` applications submitted by people living in PA and NJ between `r min(cats$date_submitted)` and `r max(cats$date_submitted)`, `r nrow(cats.pa_nj)` can be traced all the way through to a successful adoption in PetPoint.
+
+Before processing, let's correct the time format on date of application submission, and date of outcome, and let's also calculate the time difference between when an application was submitted and when the animal got adopted.
+
+```{r correct time formats and calculate time from application to adoption}
 dogs.pa_nj$outcome_date <- as.POSIXlt(dogs.pa_nj$outcome_date, format="%m/%d/%Y %H:%M %p")
 dogs.pa_nj$date_submitted <- as.POSIXlt(dogs.pa_nj$date_submitted, format="%m/%d/%Y")
 dogs.pa_nj$time_to_adoption <- as.numeric(difftime(dogs.pa_nj$outcome_date,
                                         dogs.pa_nj$date_submitted,
-                                        units="weeks"))
+                                        units="days"))
 
+
+cats.pa_nj$outcome_date <- as.POSIXlt(cats.pa_nj$outcome_date, format="%m/%d/%Y %H:%M %p")
+cats.pa_nj$date_submitted <- as.POSIXlt(cats.pa_nj$date_submitted, format="%m/%d/%Y")
+cats.pa_nj$time_to_adoption <- as.numeric(difftime(cats.pa_nj$outcome_date,
+                                        cats.pa_nj$date_submitted,
+                                        units="days"))
 ```
 
-## Exploratory analyses
+For dogs, the time from application to adoption ranged between `r round(min(dogs.pa_nj$time_to_adoption), digits=2)` days and `r round(max(dogs.pa_nj$time_to_adoption), digits=2)` days, while for cats, this time ranged between `r round(min(cats.pa_nj$time_to_adoption), digits=2)` and `r round(max(cats.pa_nj$time_to_adoption), digits=2)`.
 
-Where do adopters from Grays Ferry come from?
+### Actions data
 
-```{r explore}
+We'll now load actions data, and mark the first and last event in the app processing timeline, and merge them with cards.
 
-# Grays Ferry
+```{r load actions data}
 
-pp.gf <- pp.pa_nj[pp.pa_nj$species=="Dog" & pp.pa_nj$outcome_sitename=="Grays Ferry Avenue",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n())
+dogactions <- read.csv("./Data/dog_actions.csv", stringsAsFactors = FALSE)
 
-pp.gf.spatial <-
-  sp::merge(x = pa_nj, y = pp.gf, by = "GEOID")
-pp.gf.spatial <- pp.gf.spatial[which(!is.na(pp.gf.spatial$n)), ]
+# find first and last event in app processing
+dogactions$date <- strptime(dogactions$date, format="%Y-%m-%dT%H:%M:%SZ")
+dogactions$startend <- NA
+dogactions <- dogactions[order(dogactions$data.card.id,dogactions$date, decreasing = TRUE),]
+dogactions$startend[!duplicated(dogactions$data.card.id)] <- "last"        # last event
+dogactions <- dogactions[order(dogactions$data.card.id,dogactions$date),]
+dogactions$startend[!duplicated(dogactions$data.card.id)] <- "first"        # first event
 
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.gf.spatial) + 
-  tm_fill("n", palette = "Reds", alpha=0.85)
+touchpoints <- dogactions[,c("data.card.id","type")] %>% 
+  group_by(data.card.id) %>%
+  summarise(n=n())   # number of times somebody touched an application
 
-# PAC
+dogactions$date <- as.character(dogactions$date)
+dogactions.use <- reshape(dogactions[!is.na(dogactions$startend),c("data.card.id", "date","startend")], idvar = "data.card.id", timevar = "startend", direction = "wide")
+dogactions.use <- merge(dogactions.use, touchpoints, by="data.card.id")
+dogactions.use$date.first <- as.POSIXlt(dogactions.use$date.first, origin="1970-01-01")
+dogactions.use$date.last <- as.POSIXlt(dogactions.use$date.last, origin="1970-01-01")
+dogactions.use$timetoprocess <- round(as.numeric(difftime(dogactions.use$date.last, dogactions.use$date.first, units="hours")), digits=2)   # calciulate how many hours it takes for staff to process an application
 
-pp.pac <- pp.pa_nj[pp.pa_nj$species=="Dog" & pp.pa_nj$outcome_sitename=="PAC",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n())
-
-pp.pac.spatial <-
-  sp::merge(x = pa_nj, y = pp.pac, by = "GEOID")
-pp.pac.spatial <- pp.pac.spatial[which(!is.na(pp.pac.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.pac.spatial) + 
-  tm_fill("n", palette = "Reds", alpha=0.85)
-
-# Grant Avenue
-
-pp.ne <- pp.pa_nj[pp.pa_nj$species=="Dog" & pp.pa_nj$outcome_sitename=="Grant Avenue",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n())
-
-pp.ne.spatial <-
-  sp::merge(x = pa_nj, y = pp.ne, by = "GEOID")
-pp.ne.spatial <- pp.ne.spatial[which(!is.na(pp.ne.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.ne.spatial) + 
-  tm_fill("n", palette = "Reds", alpha=0.85)
-
-# PAWS Foster Program
-
-pp.foster <- pp.pa_nj[pp.pa_nj$species=="Dog" & pp.pa_nj$outcome_sitename=="PAWS Foster Program",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n())
-
-pp.foster.spatial <-
-  sp::merge(x = pa_nj, y = pp.foster, by = "GEOID")
-pp.foster.spatial <- pp.foster.spatial[which(!is.na(pp.foster.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.foster.spatial) + 
-  tm_fill("n", palette = "Reds", alpha=0.85)
-
-# PAWS Offsite Adoptions
-
-pp.offsite <- pp.pa_nj[pp.pa_nj$species=="Dog" & pp.pa_nj$outcome_sitename=="PAWS Offsite Adoptions",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n())
-
-pp.offsite.spatial <-
-  sp::merge(x = pa_nj, y = pp.offsite, by = "GEOID")
-pp.offsite.spatial <- pp.offsite.spatial[which(!is.na(pp.offsite.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.offsite.spatial) + 
-  tm_fill("n", palette = "Reds", alpha=0.85)
-
+dogcards <- merge(dogcards, dogactions.use, by.x="id",by.y="data.card.id")
 ```
 
-Let's import household data.
+```{r load cat actions data}
 
-```{r veteran info}
-hh <- read.csv("/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/households_and_families/ACS_17_5YR_S1101_with_ann.csv",
-                 stringsAsFactors = FALSE)
+catactions <- read.csv("./Data/cat_actions.csv", stringsAsFactors = FALSE)
+
+# find first and last event in app processing
+catactions$date <- strptime(catactions$date, format="%Y-%m-%dT%H:%M:%SZ")
+catactions$startend <- NA
+catactions <- catactions[order(catactions$data.card.id,catactions$date, decreasing = TRUE),]
+catactions$startend[!duplicated(catactions$data.card.id)] <- "last"        # last event
+catactions <- catactions[order(catactions$data.card.id,catactions$date),]
+catactions$startend[!duplicated(catactions$data.card.id)] <- "first"        # first event
+
+touchpoints <- catactions[,c("data.card.id","type")] %>% 
+  group_by(data.card.id) %>%
+  summarise(n=n())   # number of times somebody touched an application
+
+catactions$date <- as.character(catactions$date)
+catactions.use <- reshape(catactions[!is.na(catactions$startend),c("data.card.id", "date","startend")], idvar = "data.card.id", timevar = "startend", direction = "wide")
+catactions.use <- merge(catactions.use, touchpoints, by="data.card.id")
+catactions.use$date.first <- as.POSIXlt(catactions.use$date.first, origin="1970-01-01")
+catactions.use$date.last <- as.POSIXlt(catactions.use$date.last, origin="1970-01-01")
+catactions.use$timetoprocess <- round(as.numeric(difftime(catactions.use$date.last, catactions.use$date.first, units="hours")), digits=2)   # calculate how many hours it takes for staff to process an application
+
+catcards <- merge(catcards, catactions.use, by.x="id",by.y="data.card.id")
+```
+
+### Census data
+
+```{r import household data}
+hh <- read.csv("./Analyses/3_GIS/households_and_families/ACS_17_5YR_S1101_with_ann.csv", stringsAsFactors = FALSE)
 hh$GEO.id2 <- as.numeric(hh$GEO.id2)
-pp.pa_nj.hh <- merge(pp.pa_nj, hh, by.x="GEOID", by.y="GEO.id2")
-pp.pa_nj.hh$HC01_EST_VC03 <- as.numeric(pp.pa_nj.hh$HC01_EST_VC03) # estimated average household size
-pp.pa_nj.hh$HC01_EST_VC28 <- as.numeric(pp.pa_nj.hh$HC01_EST_VC28) # estimate of units in structure, where multiple units
-pp.pa_nj.hh$HC01_EST_VC02 <- as.numeric(pp.pa_nj.hh$HC01_EST_VC02) # total households
-
-pp.hh <- pp.pa_nj.hh[pp.pa_nj.hh$species=="Dog",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n(), 
-            est.hh.size=median(HC01_EST_VC03),
-            est.units = median(HC01_EST_VC28),
-            est.households = median(HC01_EST_VC02))
-
-pp.hh.spatial <-
-  sp::merge(x = pa_nj, y = pp.hh, by = "GEOID")
-pp.hh.spatial <- pp.hh.spatial[which(!is.na(pp.hh.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.hh.spatial) + 
-  tm_fill("est.households", palette = "Reds", alpha=0.85)
-
-cor.test(pp.hh.spatial$n, pp.hh.spatial$est.hh.size)
-# the smaller the median households in the area, the more dog adopters
-
-cor.test(pp.hh.spatial$n, pp.hh.spatial$est.units)
-# the more units in structure, the more dog adopters
-
-# let's see if this makes a difference by location; 
-
-## Old City
-
-pp.hh.loc <- pp.pa_nj.hh[pp.pa_nj.hh$species=="Dog" & pp.pa_nj.hh$outcome_sitename == "Grant Avenue",] %>% 
-  group_by(GEOID) %>%
-  summarise(n=n(), 
-            est.hh.size=median(HC01_EST_VC03),
-            est.units = median(HC01_EST_VC28),
-            est.households = median(HC01_EST_VC02))
-
-pp.hh.loc.spatial <-
-  sp::merge(x = pa_nj, y = pp.hh.loc, by = "GEOID")
-pp.hh.loc.spatial <- pp.hh.loc.spatial[which(!is.na(pp.hh.loc.spatial$n)), ]
-
-tmap_mode("view")
-tm_basemap("OpenStreetMap.BlackAndWhite") +
-  tm_shape(pp.hh.loc.spatial) + 
-  tm_fill("est.households", palette = "Reds", alpha=0.85)
-
-cor.test(pp.hh.loc.spatial$n, pp.hh.loc.spatial$est.hh.size)
-cor.test(pp.hh.loc.spatial$n, pp.hh.loc.spatial$est.units)
-cor.test(pp.hh.loc.spatial$n, pp.hh.loc.spatial$est.households)
+pp.hh <- merge(pp, hh, by.x="GEOID", by.y="GEO.id2")
+pp.hh$HC01_EST_VC03 <- as.numeric(pp.hh$HC01_EST_VC03) # estimated average household size
+pp.hh$HC01_EST_VC28 <- as.numeric(pp.hh$HC01_EST_VC28) # estimate of units in structure, where multiple units
+pp.hh$HC01_EST_VC02 <- as.numeric(pp.hh$HC01_EST_VC02) # total households
 
 ```
 
-Ok; next we'll look at successful applications (either adopted or approved to adopt) and correlations to household variables.
+## Analyses
+
+I'm going to draw up some maps of missed connections.
+
+```{r time-to-process}
+
+pp <- pp[which(!is.na(pp$outcome_trello_id)),]
+missed.connections <- dogs
+missed.connections <- missed.connections[!missed.connections$outcome_trello_id %in% pp$outcome_trello_id,]
+
+missed.connections <- missed.connections[,c("outcome_trello_id","GEOID")]
+missed.connections.loc <- missed.connections[,c("GEOID","outcome_trello_id")] %>% 
+  group_by(GEOID) %>%
+  summarise(n=n())
+missed.connections.loc.spatial <-
+  sp::merge(x = pa_nj, y =missed.connections.loc, by = "GEOID")
+missed.connections.loc.spatial <- missed.connections.loc.spatial[which(!is.na(missed.connections.loc.spatial$n)), ]
+tm_basemap("OpenStreetMap.BlackAndWhite") +
+  tm_shape(missed.connections.loc.spatial) + 
+  tm_fill("n", palette = "Oranges", alpha=0.85)
+
+# cats
+
+missed.connections <- cats
+missed.connections <- missed.connections[!missed.connections$outcome_trello_id %in% pp$outcome_trello_id,]
+
+missed.connections <- missed.connections[,c("outcome_trello_id","GEOID")]
+missed.connections.loc <- missed.connections[,c("GEOID","outcome_trello_id")] %>% 
+  group_by(GEOID) %>%
+  summarise(n=n())
+missed.connections.loc.spatial <-
+  sp::merge(x = pa_nj, y =missed.connections.loc, by = "GEOID")
+missed.connections.loc.spatial <- missed.connections.loc.spatial[which(!is.na(missed.connections.loc.spatial$n)), ]
+tm_basemap("OpenStreetMap.BlackAndWhite") +
+  tm_shape(missed.connections.loc.spatial) + 
+  tm_fill("n", palette = "Oranges", alpha=0.85)
+
+
+```
+
