@@ -23,6 +23,7 @@ library(skimr)
 library(stringr)
 library(data.table)
 library(tidyr)
+
 ```
 
 ## Read in Data  
@@ -44,7 +45,7 @@ dog_apps <- readr::read_csv(file = "Data/dog_apps.csv") %>%
 dog_cards <- readr::read_csv(file = "Data/dog_cards.csv") %>%
   mutate(animal_type = "dog")
 
-pp <-  readr::read_csv(file = "Data/petpoint.csv")
+pets <-  readr::read_csv(file = "Data/petpoint.csv")
 
  
 #combine
@@ -341,4 +342,106 @@ actions_collapsed <- actions_raw %>%
 kable(head(actions_collapsed, 15))
 
 ```
+
+
+## Looking into Successful/Unsuccessful Apps
+```{r combine}
+
+#get list of IDs where adoption was successful
+successful_ids <- pets %>%
+  filter(outcome_type == "Adoption") %>%
+  pull(outcome_trello_id)
+
+#create indicator based on those IDs and check distribution: ~ 75% of apps in the sample are unsuccessful 
+apps_raw <- apps_raw %>%
+  mutate(successful = ifelse(outcome_trello_id %in% successful_ids, 1, 0)) 
+
+apps_raw %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  group_by(successful) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count / sum(count))
+```
+
+possible analysis idea - why are so many unsuccessful? can we ID what part of the process apps get caught up? if so we can inform PAWS where they can provide applicants w/ extra support/materials (i.e. vet info)  
+
+```{r}
+#checking proportions of successful/unsuccessfuly between cats/dogs: cats about even, dogs overwhelmingly unsuccessful (only about 12% of dog apps are successful in the sample)
+non_blank_apps <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))
+
+prop.table(table(apps_raw$successful[!(is.na(apps_raw$outcome_trello_id))],
+                 apps_raw$animal_type[!(is.na(apps_raw$outcome_trello_id))]), 
+           margin = 2)
+```
+
+given the large disparity, maybe dog applications have the largest potential for improvement? It seems like a lot of the unsuccessful dog apps were approved and ready...
+
+
+```{r}
+
+#get labels for unsuccessful dog apps
+unsuccessful <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))%>%
+  filter(animal_type == "dog") %>%
+  filter(successful == 0) %>%
+  left_join(., cards_raw, by = c("outcome_trello_id" = "id"))
+
+unsuccessful %>% 
+  group_by(label_names) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  head(10)
+
+```
+
+
+**What is the time spent on successfull vs unsuccessful apps?**   
+Could have some missing data issues here since we define the timeframe as card create date, and there are many cards with no `createCard` row
+
+possible analysis idea - processing apps take a lot of time, can we quickly flag an app?  
+
+```{r}
+
+create_card <- actions_raw %>%
+  filter(type == "createCard")
+
+apps_raw <- apps_raw %>%
+  left_join(., create_card, by = c("outcome_trello_id" = "data.card.id")) 
+
+timeframe <- apps_raw %>%
+  left_join(., cards_raw, by = c("outcome_trello_id" = "id")) %>%
+  mutate(timeframe = difftime(dateLastActivity, date, units = "days"))
+
+timeframe %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  group_by(successful, animal_type) %>%
+  summarise(mean_days = mean(timeframe, na.rm = T))
+  
+
+```
+
+## Ideal Dataset
+just my initial thoughts, interested in the approach others are thinking of as well!
+
+ * Would be at the application level (1 row per application)
+ * Needs outcome ID (in order to join to other datasets)
+ * Would have a card assocoated with each app in order to have a label associated with each app
+ * need a `createCard` date in the actions dataset
+ * needs all action checklist items in 1 row
+ * Includes sucessful adoption indicator
+ 
+ ![](Untitled.jpg)
+
+```{r combining}
+has_id <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))
+
+has_card <- has_id %>%
+  inner_join(., cards_raw, by = c("outcome_trello_id" = "id"))
+
+has_create_date <- has_card %>%
+  inner_join(., created, by = c("outcome_trello_id" = "data.card.id")) 
+```
+
 
