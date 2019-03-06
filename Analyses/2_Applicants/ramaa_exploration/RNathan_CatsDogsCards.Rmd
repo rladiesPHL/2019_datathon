@@ -63,44 +63,16 @@ cards %>% group_by(animal_type) %>% summarise(n=n(),
 
 
 ```
+
+
 ```{r}
 extractFromString = function(str1) {
-  #paste("hhh")
-  #str(str1)
-  #print(str1)
-   if(!is.na(str1) & is.character(str1)) {
-     if(str_detect(str1,",")) {
-       sl = str_split(str1,",")
-       #print("found comma")
-     } else {
-       #print ("no comma")
-       return(str1)
-     }
-    #print(str1)
-    l = length(sl[[1]])
-    last = str_trim(sl[[1]][l])
-    #print(last)
-    return (last) #(list(l,last))
-   }
-  return (NULL) #(list(NULL,NULL))
+  sl = str_split(str1,",")
+  l = length(sl[[1]])
+  last = str_trim(sl[[1]][l])
+  return (unlist(last)) #(list(l,last))
 }
-str1 = "checks, need to see id, need info"
-ret=extractFromString(str1)
-#ret[[1]]
-#ret[[2]]
-str(ret)
-
-dummy=function(x) {x}
-d=dummy(str1)
-str(d)
-```
-
-```{r}
-library(purrr)
 cards$lastLabel = sapply(cards$label_names, FUN=function(x) extractFromString(x))
-#cards %>% mutate(l=unlist(sapply(label_names, FUN=function(x) extractFromString(x)))) %>% View()
-#cards %>% mutate (ld=dummy(label_names))
-#cards %>% mutate(l=map(label_names,extractFromString))
-cards
-
+cards$numlabels = sapply(cards$label_names, FUN=function(x) length(str_split(x,",")[[1]]))
+str(cards)
 ```
