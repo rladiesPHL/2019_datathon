@@ -73,6 +73,6 @@ extractFromString = function(str1) {
   return (unlist(last)) #(list(l,last))
 }
 cards$lastLabel = sapply(cards$label_names, FUN=function(x) extractFromString(x))
-cards$numlabels = sapply(cards$label_names, FUN=function(x) length(str_split(x,",")[[1]]))
+cards$numlabels = sapply(cards$label_names, FUN=function(x) ifelse(is.na(x),0,length(str_split(x,",")[[1]])))
 str(cards)
 ```
