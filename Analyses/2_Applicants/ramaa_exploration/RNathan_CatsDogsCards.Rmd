@@ -47,7 +47,15 @@ cards %>% group_by(animal_type) %>% skim() %>%
   kable(caption="Missing Entries in cards")
 cards %>% group_by(animal_type) %>% summarise(n=n(), 
                                               missing_due=sum(is.na(due)),missing_due_percent = 100*missing_due/n,
-                                              missing_labels=sum(is.na(due)),missing_labels_percent = 100*missing_labels/n)
+                                            missing_labels=sum(is.na(due)),missing_labels_percent = 100*missing_labels/n)
+
+## Check for duplicate ids
+numNonUniquesIDs = cards %>% 
+   filter(!is.na(id)) %>% 
+   select(id) %>% 
+   group_by(id) %>% 
+   summarise(dupcount=n()) %>%
+  filter(dupcount > 1)
 
 #plot the due Complete by  animal type
  cards%>% ggplot(mapping=aes(x=dueComplete,col=animal_type,fill=animal_type)) + 

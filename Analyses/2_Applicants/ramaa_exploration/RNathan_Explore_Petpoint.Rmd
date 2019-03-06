@@ -37,31 +37,30 @@ Questions:
 
 4. There are 308 trello_ids where there is more than one duplicate of outcome_trello_id. On checking, we find 242 entries with 2 duplicates, 10 ids with three dupliates, 2 ids with 4 duplciates each, and 1 id with 5 duplicates
 
-
+#### Process the data file
 ```{r petpoint,echo = FALSE}
 petpoint = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/petpoint.csv")
 paste("First read in:")
 dim(petpoint)
 
 # Are there any duplicates in the data?
-which(duplicated(petpoint[,-1]))
+sum(duplicated(petpoint[,-1]))
 #remove the duplicates
-petpoint <- petpoint[-which(duplicated(petpoint[,-1])),]
+#petpoint <- petpoint[-which(duplicated(petpoint[,-1])),]
+petpoint <- petpoint[,-1] %>% distinct()
 paste("after removing duplicates")
 dim(petpoint)
 
  # Are there any duplicates of outcome_trello_id where outcome_trello_id is  id for matching with cards and actions datasets
- numNonUniquesIDs = petpoint %>% filter(!is.na(outcome_trello_id)) %>% select(outcome_trello_id) %>% group_by(outcome_trello_id) %>% summarise(dupcount=n())
+ numNonUniquesIDs = petpoint %>% 
+   filter(!is.na(outcome_trello_id)) %>% 
+   select(outcome_trello_id) %>% 
+   group_by(outcome_trello_id) %>% 
+   summarise(dupcount=n())
+paste("Frequency of non unique trello IDs")
 table(numNonUniquesIDs$dupcount)
-#find the one with 5 duplicate outcome_trello_id
-fivecount=numNonUniquesIDs %>% filter(dupcount == 5)
-#get more details about animal details - outcome type and outcome date for this duplicat trello_id
-petpoint %>% semi_join(fivecount) %>% select(outcome_trello_id,outcome_type, outcome_date) %>% arrange(outcome_date)
 
-#find the one with 2 duplicate outcome_trello_id
-twocount=numNonUniquesIDs %>% filter(dupcount == 2)
-#get more details about animal details - outcome type and outcome date for this duplicat trello_id
-petpoint %>% semi_join(twocount) %>% select(outcome_trello_id,species,gender,primary_breed,outcome_type, outcome_date) %>% arrange(outcome_trello_id, outcome_date)
+
 ```
 
 #### Data Transformations
@@ -74,12 +73,27 @@ petpoint <- petpoint %>%
          outcome_date=mdy_hm(outcome_date,tz="America/New_York")
   )
 
+#Find the entries that have incorrect format of zipcode
+paste("Initial Number of invalid zipcode entries:",petpoint %>%  filter(nchar(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>% dim())
+petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP)
+
+# convert zipcode from integer to character format and add a zero at the beginning when length is less than 5
+petpoint <- petpoint %>% 
+  mutate(outcome_ZIP=as.character(outcome_ZIP)) %>% 
+  mutate(outcome_ZIP=ifelse(str_length(outcome_ZIP)<5,str_c("0",outcome_ZIP),outcome_ZIP))
+  
+#Recheck if there are still any  entries that have incorrect format of zipcode
+paste("After correction: Number of invalid zipcode entries:",petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>% dim())
+petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP)
+
+#convert any remaining columns from character type to factor type
 petpoint <- petpoint %>% mutate_if(sapply(petpoint,is.character),as.factor)
+
 str(petpoint)
 skim(petpoint)
 ```
 
-#### Missing data and data anomalies
+####  Checks for Missing data and data anomalies
 ```{r,echo = FALSE}
 # find number of missing data in each column
 print("Missing Entries")
@@ -87,18 +101,39 @@ petpoint %>% skim() %>%
   filter(stat == "missing") %>% filter(value > 0) %>% 
   kable(caption="Missing Entries in Petpoint.csv")
 
-#Find the entries that have incorrect format of zipcode
-paste("Number of invalid zipcode entries:",petpoint %>%  filter(nchar(outcome_ZIP) < 5) %>% length())
-# what is the distribution of invalid zipcodes
-petpoint %>%  filter(nchar(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>% table
-#petpoint %>%  filter(nchar(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>%
-#  group_by(outcome_ZIP) %>% summarise(count=n()) %>%
-  #kable(caption="Frequency of invalid zipcodes") %>%
-  #kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+#check primary breed names
+paste( "Primary Breeds")
+unique(petpoint$primary_breed)
+paste("Secondary breeds:")
+unique(petpoint$secondary_breed)
+paste("Markings:")
+unique(petpoint$markings)
+paste("Species:")
+unique(petpoint$species)
 
 #are the intake age ranges valid?
 table(petpoint$age_intake)
 print("There are 12 entries with age = -1 months and 312 entries with age=0 months")
+
+
+#find the one with 5 duplicate outcome_trello_id
+fivecount=numNonUniquesIDs %>% 
+  filter(dupcount == 5)
+
+#get more details about animal details - outcome type and outcome date for this duplicat trello_id
+petpoint %>% semi_join(fivecount) %>% 
+  select(outcome_trello_id,outcome_type, outcome_date) %>% 
+  arrange(outcome_date)
+
+#find the one with 2 duplicate outcome_trello_id
+twocount=numNonUniquesIDs %>% 
+  filter(dupcount == 2)
+
+#get more details about animal details - outcome type and outcome date for this duplicat trello_id
+petpoint %>% semi_join(twocount) %>% 
+  select(outcome_trello_id,species,gender,primary_breed,outcome_type, outcome_date) %>% 
+  arrange(outcome_trello_id, outcome_date)
+
 
 ## This is to be sure that I did not introduce any duplicates
 paste("After all processing:")
@@ -121,6 +156,13 @@ petpoint %>% ggplot(mapping=aes(x=age_group,fill=age_group)) +
      geom_bar() +
      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     labs(title = "Distribution of Species") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ #Distribution of agency name
+ petpoint%>% ggplot(mapping=aes(x=agency_name,fill=agency_name)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Agency Name") +
   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
  
 #plot the intake asilomar
