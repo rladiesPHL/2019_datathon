@@ -7,33 +7,35 @@ output:
     toc: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_knit$set(echo = T, message = F, warning = F, root.dir = "../../../")
 ```
 
-```{r packages, echo = T,  message = F,  warning = F}
+```{r packages, echo = T,  message = F,  warning = T}
 library(tidyverse)
 library(lubridate)
 library(plyr)
 ```
 
-```{r scipen, echo = T,  message = F,  warning = F}
+```{r scipen, echo = T,  message = F,  warning = T}
 # Turn off scientific notation ----
 options(scipen=999)
 ```
 
-```{r source_functions, echo = T,  message = F,  warning = F}
+```{r source_functions, echo = T,  message = F,  warning = T}
 # Source helper function(s) ----
 source("Analyses/2_Applicants/helper_functions.R")
 ```
 
-```{r read_data, echo = T,  message = F,  warning = F}
+```{r read_data, echo = T,  message = F,  warning = T}
 # Read data ----
-cat_apps <- read_csv("Data/cat_apps.csv")
-dog_apps <- read_csv("Data/dog_apps.csv")
+cat_apps <- read_csv("Data/cat_apps.csv", col_types = cols(
+    ZIP = col_character()))
+dog_apps <- read_csv("Data/dog_apps.csv", col_types = cols(
+    ZIP = col_character()))
 ```
 
-```{r structure, echo = T,  message = F,  warning = F}
+```{r structure, echo = T,  message = F,  warning = T}
 # Structure ----
 colnames(cat_apps)
 nrow(cat_apps)
@@ -56,13 +58,12 @@ head(apps)
 # str(apps)
 summary(apps)
 ```
-
-```{r begin_cleaning, echo = T,  message = F,  warning = F}
+```{r begin_cleaning, echo = T,  message = F,  warning = T}
 # Cleaning up each variable ----
 apps_clean <- apps
 ```
 
-```{r animal_type, echo = T,  message = F,  warning = F}
+```{r animal_type, echo = T,  message = F,  warning = T}
 # .... apps_clean$animal_type ----
 str(apps_clean$animal_type)
 unique(apps_clean$animal_type)
@@ -70,21 +71,20 @@ apps_clean$animal_type <- as.factor(apps_clean$animal_type)
 summary(apps_clean$animal_type)
 ```
 
-```{r X1, echo = T,  message = F,  warning = F}
+```{r X1, echo = T,  message = F,  warning = T}
 # .... apps_clean$X1 ----
 str(apps_clean$X1)
 unique(apps_clean$X1)[1:5]
-plot(apps_clean$X1)
 apps_clean <- subset(apps_clean, select = -c(X1))
 colnames(apps_clean)
 ```
 
-```{r duplicates, echo = T,  message = F,  warning = F}
+```{r duplicates, echo = T,  message = F,  warning = T}
 # Duplicates ----
 all(duplicated(apps_clean) == FALSE)
 ```
 
-```{r date_submitted, echo = T,  message = F,  warning = F}
+```{r date_submitted, echo = T,  message = F,  warning = T}
 # .... apps_clean$date_submitted ----
 str(apps_clean$date_submitted)
 apps_clean$date_submitted <- mdy(apps_clean$date_submitted)
@@ -92,7 +92,7 @@ str(apps_clean$date_submitted)
 ggplot(apps_clean, aes(x = date_submitted)) +
   geom_histogram(binwidth = 1)
 ```
-```{r ideal_adoption_timeline, echo = T,  message = F,  warning = F}
+```{r ideal_adoption_timeline, echo = T,  message = F,  warning = T}
 # .... apps_clean$ideal_adoption_timeline ----
 str(apps_clean$ideal_adoption_timeline)
 unique(apps_clean$ideal_adoption_timeline)
@@ -102,31 +102,32 @@ apps_clean$ideal_adoption_timeline <- as.factor(apps_clean$ideal_adoption_timeli
 str(apps_clean$ideal_adoption_timeline)
 summary(apps_clean$ideal_adoption_timeline)
 ```
-
-```{r reason_for_adoption, echo = T,  message = F,  warning = F}
+```{r reason_for_adoption, echo = T,  message = T,  warning = T}
 # .... apps_clean$reason_for_adoption ----
+apps_clean <- apps
 str(apps_clean$reason_for_adoption)
 summary(apps_clean$reason_for_adoption)
 unique(apps_clean$reason_for_adoption)
-reason_for_adoption_tidy <- tidy_labelnames(apps_clean, "reason_for_adoption")
+apps_clean$reason_for_adoption <- gsub("it-s-a-surprise", "a-surprise", apps_clean$reason_for_adoption)
+reason_for_adoption_tidy <- tidy_elements(apps_clean, "reason_for_adoption")
 apps_clean <- reason_for_adoption_tidy$output_df
-reason_for_adoption_labelnames <- reason_for_adoption_tidy$labelnames
+reason_for_adoption_elements <- reason_for_adoption_tidy$elements
 reason_for_adoption_new_colnames <- reason_for_adoption_tidy$new_colnames
-reason_for_adoption_labelnames_summary <- reason_for_adoption_tidy$labelnames_summary
-ggplot(reason_for_adoption_labelnames_summary, aes(x = fct_reorder(reason_for_adoption, count), y = count)) +
+reason_for_adoption_elements_summary <- reason_for_adoption_tidy$elements_summary
+ggplot(reason_for_adoption_elements_summary, aes(x = fct_reorder(reason_for_adoption, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r specific_animal, echo = T,  message = F,  warning = F}
+```{r specific_animal, echo = T,  message = F,  warning = T}
 # .... apps_clean$specific_animal ----
 str(apps_clean$specific_animal) # boolean
 summary(apps_clean$specific_animal)
 ```
 
-```{r adults_in_home, echo = T,  message = F,  warning = F}
+```{r adults_in_home, echo = T,  message = F,  warning = T}
 # .... apps_clean$adults_in_home ----
 summary(apps_clean$adults_in_home) # should change to numeric
 apps_clean$adults_in_home <- gsub("-", "", apps_clean$adults_in_home) # get rid of "-"
@@ -138,7 +139,7 @@ ggplot(apps_clean, aes(x = adults_in_home)) + # weird outliers
 str(apps_clean$adults_in_home)
 ```
 
-```{r children_in_home, echo = T,  message = F,  warning = F}
+```{r children_in_home, echo = T,  message = F,  warning = T}
 # .... apps_clean$children_in_home ----
 summary(apps_clean$children_in_home) # should change to numeric
 apps_clean$children_in_home <- gsub("-", "", apps_clean$children_in_home) # get rid of "-"
@@ -150,42 +151,43 @@ ggplot(apps_clean, aes(x = children_in_home)) + # weird outliers
 str(apps_clean$children_in_home)
 ```
 
-```{r all_household_agree, echo = T,  message = F,  warning = F}
+```{r all_household_agree, echo = T,  message = F,  warning = T}
 # .... apps_clean$all_household_agree ----
 str(apps_clean$all_household_agree)
 summary(apps_clean$all_household_agree)
 unique(apps_clean$all_household_agree)
 apps_clean$all_household_agree <- gsub("it-s-a-surprise", "a-surprise", apps_clean$all_household_agree)
-all_household_agree_tidy <- tidy_labelnames(apps_clean, "all_household_agree")
+get_unique_elements(apps_clean, "all_household_agree")
+all_household_agree_tidy <- tidy_elements(apps_clean, "all_household_agree")
 apps_clean <- all_household_agree_tidy$output_df
-all_household_agree_labelnames <- all_household_agree_tidy$labelnames
+all_household_agree_elements <- all_household_agree_tidy$elements
 all_household_agree_new_colnames <- all_household_agree_tidy$new_colnames
-all_household_agree_labelnames_summary <- all_household_agree_tidy$labelnames_summary
-ggplot(all_household_agree_labelnames_summary, aes(x = fct_reorder(all_household_agree, count), y = count)) +
+all_household_agree_elements_summary <- all_household_agree_tidy$elements_summary
+ggplot(all_household_agree_elements_summary, aes(x = fct_reorder(all_household_agree, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r allergies, echo = T,  message = F,  warning = F}
+```{r allergies, echo = T,  message = F,  warning = T}
 # .... apps_clean$allergies ----
 str(apps_clean$allergies)
 summary(apps_clean$allergies)
 unique(apps_clean$allergies)
-allergies_tidy <- tidy_labelnames(apps_clean, "allergies")
+allergies_tidy <- tidy_elements(apps_clean, "allergies")
 apps_clean <- allergies_tidy$output_df
-allergies_labelnames <- allergies_tidy$labelnames
+allergies_elements <- allergies_tidy$elements
 allergies_new_colnames <- allergies_tidy$new_colnames
-allergies_labelnames_summary <- allergies_tidy$labelnames_summary
-ggplot(allergies_labelnames_summary, aes(x = fct_reorder(allergies, count), y = count)) +
+allergies_elements_summary <- allergies_tidy$elements_summary
+ggplot(allergies_elements_summary, aes(x = fct_reorder(allergies, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r home_owner, echo = T,  message = F,  warning = F}
+```{r home_owner, echo = T,  message = F,  warning = T}
 # .... apps_clean$home_owner ----
 str(apps_clean$home_owner)
 summary(apps_clean$home_owner)
@@ -194,7 +196,7 @@ apps_clean$home_owner <- as.factor(apps_clean$home_owner)
 summary(apps_clean$home_owner)
 ```
 
-```{r home_pet_policy, echo = T,  message = F,  warning = F}
+```{r home_pet_policy, echo = T,  message = F,  warning = T}
 # .... apps_clean$home_pet_policy ----
 str(apps_clean$home_pet_policy)
 summary(apps_clean$home_pet_policy)
@@ -208,24 +210,24 @@ apps_clean$home_pet_policy <- as.factor(apps_clean$home_pet_policy)
 summary(apps_clean$home_pet_policy)
 ```
 
-```{r experience, echo = T,  message = F,  warning = F}
+```{r experience, echo = T,  message = F,  warning = T}
 # .... apps_clean$experience ----
 str(apps_clean$experience)
 summary(apps_clean$experience)
 length(unique(apps_clean$experience))
-experience_tidy <- tidy_labelnames(apps_clean, "experience")
+experience_tidy <- tidy_elements(apps_clean, "experience")
 apps_clean <- experience_tidy$output_df
-experience_labelnames <- experience_tidy$labelnames
+experience_elements <- experience_tidy$elements
 experience_new_colnames <- experience_tidy$new_colnames
-experience_labelnames_summary <- experience_tidy$labelnames_summary
-ggplot(experience_labelnames_summary, aes(x = fct_reorder(experience, count), y = count)) +
+experience_elements_summary <- experience_tidy$elements_summary
+ggplot(experience_elements_summary, aes(x = fct_reorder(experience, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r budget_monthly, echo = T,  message = F,  warning = F}
+```{r budget_monthly, echo = T,  message = F,  warning = T}
 # .... apps_clean$budget_monthly ----
 str(apps_clean$budget_monthly)
 summary(apps_clean$budget_monthly)
@@ -238,7 +240,7 @@ ggplot(apps_clean, aes(x = budget_monthly)) +
 unique(apps_clean$budget_monthly)
 ```
 
-```{r budget_emergency, echo = T,  message = F,  warning = F}
+```{r budget_emergency, echo = T,  message = F,  warning = T}
 # .... apps_clean$budget_emergency ----
 str(apps_clean$budget_emergency)
 summary(apps_clean$budget_emergency)
@@ -251,7 +253,7 @@ ggplot(apps_clean, aes(x = budget_monthly)) +
 unique(apps_clean$budget_emergency)
 ```
 
-```{r home_alone_avg, echo = T,  message = F,  warning = F}
+```{r home_alone_avg, echo = T,  message = F,  warning = T}
 # .... apps_clean$home_alone_avg ----
 str(apps_clean$home_alone_avg)
 summary(apps_clean$home_alone_avg)
@@ -263,7 +265,7 @@ ggplot(apps_clean, aes(x = home_alone_avg)) +
 unique(apps_clean$home_alone_avg)
 ```
 
-```{r home_alone_max, echo = T,  message = F,  warning = F}
+```{r home_alone_max, echo = T,  message = F,  warning = T}
 # .... apps_clean$home_alone_max ----
 str(apps_clean$home_alone_max)
 summary(apps_clean$home_alone_max)
@@ -275,7 +277,7 @@ ggplot(apps_clean, aes(x = home_alone_max)) +
 unique(apps_clean$home_alone_max)
 ```
 
-```{r pet_kept, echo = T,  message = F,  warning = F}
+```{r pet_kept, echo = T,  message = F,  warning = T}
 # .... apps_clean$pet_kept ----
 str(apps_clean$pet_kept)
 summary(apps_clean$pet_kept)
@@ -283,70 +285,70 @@ length(unique(apps_clean$pet_kept))
 apps_clean$pet_kept <- gsub("unsupervised-access-to-my-yard-9doggie-door-etc",
                             "unsupervised-access-to-my-yard-doggie-door-etc",
                             apps_clean$pet_kept)
-pet_kept_tidy <- tidy_labelnames(apps_clean, "pet_kept")
+pet_kept_tidy <- tidy_elements(apps_clean, "pet_kept")
 apps_clean <- pet_kept_tidy$output_df
-pet_kept_labelnames <- pet_kept_tidy$labelnames
+pet_kept_elements <- pet_kept_tidy$elements
 pet_kept_new_colnames <- pet_kept_tidy$new_colnames
-pet_kept_labelnames_summary <- pet_kept_tidy$labelnames_summary
-ggplot(pet_kept_labelnames_summary, aes(x = fct_reorder(pet_kept, count), y = count)) +
+pet_kept_elements_summary <- pet_kept_tidy$elements_summary
+ggplot(pet_kept_elements_summary, aes(x = fct_reorder(pet_kept, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r exercise, echo = T,  message = F,  warning = F}
+```{r exercise, echo = T,  message = F,  warning = T}
 # .... apps_clean$exercise ----
 str(apps_clean$exercise)
 summary(apps_clean$exercise)
 length(unique(apps_clean$exercise))
-exercise_tidy <- tidy_labelnames(apps_clean, "exercise")
+exercise_tidy <- tidy_elements(apps_clean, "exercise")
 apps_clean <- exercise_tidy$output_df
-exercise_labelnames <- exercise_tidy$labelnames
+exercise_elements <- exercise_tidy$elements
 exercise_new_colnames <- exercise_tidy$new_colnames
-exercise_labelnames_summary <- exercise_tidy$labelnames_summary
-ggplot(exercise_labelnames_summary, aes(x = fct_reorder(exercise, count), y = count)) +
+exercise_elements_summary <- exercise_tidy$elements_summary
+ggplot(exercise_elements_summary, aes(x = fct_reorder(exercise, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r return_pet, echo = T,  message = F,  warning = F}
+```{r return_pet, echo = T,  message = F,  warning = T}
 # .... apps_clean$return_pet ----
 str(apps_clean$return_pet)
 summary(apps_clean$return_pet)
 length(unique(apps_clean$return_pet))
-return_pet_tidy <- tidy_labelnames(apps_clean, "return_pet")
+return_pet_tidy <- tidy_elements(apps_clean, "return_pet")
 apps_clean <- return_pet_tidy$output_df
-return_pet_labelnames <- return_pet_tidy$labelnames
+return_pet_elements <- return_pet_tidy$elements
 return_pet_new_colnames <- return_pet_tidy$new_colnames
-return_pet_labelnames_summary <- return_pet_tidy$labelnames_summary
-ggplot(return_pet_labelnames_summary, aes(x = fct_reorder(return_pet, count), y = count)) +
+return_pet_elements_summary <- return_pet_tidy$elements_summary
+ggplot(return_pet_elements_summary, aes(x = fct_reorder(return_pet, count), y = count)) + 
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r how_heard, echo = T,  message = F,  warning = F}
+```{r how_heard, echo = T,  message = F,  warning = T}
 # .... apps_clean$how_heard ----
 str(apps_clean$how_heard)
 summary(apps_clean$how_heard)
 unique(apps_clean$how_heard)
-how_heard_tidy <- tidy_labelnames(apps_clean, "how_heard")
+how_heard_tidy <- tidy_elements(apps_clean, "how_heard")
 apps_clean <- how_heard_tidy$output_df
-how_heard_labelnames <- how_heard_tidy$labelnames
+how_heard_elements <- how_heard_tidy$elements
 how_heard_new_colnames <- how_heard_tidy$new_colnames
-how_heard_labelnames_summary <- how_heard_tidy$labelnames_summary
-ggplot(how_heard_labelnames_summary, aes(x = fct_reorder(how_heard, count), y = count)) +
+how_heard_elements_summary <- how_heard_tidy$elements_summary
+ggplot(how_heard_elements_summary, aes(x = fct_reorder(how_heard, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   guides(fill=FALSE)
 ```
 
-```{r id, echo = T,  message = F,  warning = F}
+```{r id, echo = T,  message = F,  warning = T}
 # .... apps_clean$outcome_trello_id ----
 str(apps_clean$outcome_trello_id)
 summary(apps_clean$outcome_trello_id)
@@ -361,7 +363,7 @@ id_summary_2 <- ddply(id_summary, .(id_count), summarise,
 id_summary_2
 ```
 
-```{r geo_variables, echo = T,  message = F,  warning = F}
+```{r geo_variables, echo = T,  message = F,  warning = T}
 # .... apps_clean$STATEFP ----
 str(apps_clean$STATEFP)
 summary(apps_clean$STATEFP)
@@ -447,25 +449,39 @@ ggplot(apps_clean, aes(x = INTPTLON)) +
   geom_histogram(binwidth = 0.1)
 ```
 
-```{r city, echo = T,  message = F,  warning = F}
+```{r city, echo = T,  message = F,  warning = T}
 # .... apps_clean$City ---- 
 str(apps_clean$City)
 summary(apps_clean$City)
 apps_clean$City <- toupper(apps_clean$City)
-apps_clean$City <- gsub("[.]|[,]| PA", "", apps_clean$City)
+apps_clean$City <- gsub("[.]|[,]| PA$", "", apps_clean$City)
 apps_clean$City <- trimws(gsub("  ", " ", apps_clean$City))
 apps_clean$City <- gsub("MT ", "MOUNT ", apps_clean$City)
 apps_clean$City <- gsub("19010", "BRYN MAWR", apps_clean$City)
 apps_clean$City <- gsub("ABINGDON", "ABINGTON", apps_clean$City)
+apps_clean$City <- gsub("CHETSER", "CHESTER", apps_clean$City)
+apps_clean$City <- gsub("ROYERFORD", "ROYERSFORD", apps_clean$City)
+apps_clean$City <- gsub("NORTH WHALES", "NORTH WALES", apps_clean$City)
+apps_clean$City <- gsub("MONTGOMERY VALLAGE", "MONTGOMERY VILLAGE", apps_clean$City)
 apps_clean$City <- gsub("E LANSDOWNE", "EAST LANSDOWNE", apps_clean$City)
-apps_clean$City <- gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA", "PHILADELPHIA", apps_clean$City)
+apps_clean$City <- gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA|PHIALADELPHIA|PHIALDELPHIA|PHILDELPHIA", "PHILADELPHIA", apps_clean$City)
 apps_clean[startsWith(apps_clean$City, "PHILA"),]$City <- "PHILADELPHIA"
-sort(unique(apps_clean$City)) # can do more cleaning here... some more spelling variation issues
+sort(unique(apps_clean$City))
 apps_clean$City <- as.factor(apps_clean$City)
 summary(apps_clean$City)
+apps_clean %>% 
+  group_by(City) %>% 
+  tally() %>% 
+  ungroup(City) %>% 
+  filter(n > 5 ) %>% 
+  ggplot(aes(x = fct_reorder(City, n), y = n)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+  geom_text(aes(label = n), vjust = 0.25, hjust = -0.25, position = "identity", size = 2.5) +
+  guides(fill=FALSE)
 ```
 
-```{r state, echo = T,  message = F,  warning = F}
+```{r state, echo = T,  message = F,  warning = T}
 # .... apps_clean$State ----
 str(apps_clean$State)
 summary(apps_clean$State)
@@ -475,26 +491,25 @@ summary(apps_clean$State)
 ```
 
 
-```{r zip, echo = T,  message = F,  warning = F}
+```{r zip, echo = T,  message = F,  warning = T}
 # .... apps_clean$ZIP ----
 str(apps_clean$ZIP)
 summary(apps_clean$ZIP)
-unique(apps_clean$ZIP)
+apps_clean$ZIP <- if_else(nchar(apps_clean$ZIP) == 4,
+                          paste0("0",apps_clean$ZIP),
+                          apps_clean$ZIP)
 apps_clean$ZIP <- str_extract(apps_clean$ZIP, "^.{5}")
 length(unique(apps_clean$ZIP))
 apps_clean$ZIP <- as.factor(apps_clean$ZIP)
 summary(apps_clean$ZIP)
 ```
 
-```{r duplicates_2, echo = T,  message = F,  warning = F}
+```{r duplicates_2, echo = T,  message = F,  warning = T}
 # Duplicates ----
 all(duplicated(apps_clean) == FALSE)
-# one duplicate:
-apps_clean[apps_clean$GEOID == apps_clean[duplicated(apps_clean),]$GEOID &
-             apps_clean$date_submitted == apps_clean[duplicated(apps_clean),]$date_submitted,]
 ```
 
-```{r structure_2, echo = T,  message = F,  warning = F}
+```{r structure_2, echo = T,  message = F,  warning = T}
 # Structure ----
 colnames(apps_clean)
 nrow(apps_clean)
@@ -503,7 +518,7 @@ str(apps_clean)
 summary(apps_clean)
 ```
 
-```{r write_data, echo = T,  message = F,  warning = F}
+```{r write_data, echo = T,  message = F,  warning = T}
 # Write cleaned data ----
 write_csv(apps_clean, "Analyses/2_Applicants/amygood/output/apps_clean.csv")
 ```

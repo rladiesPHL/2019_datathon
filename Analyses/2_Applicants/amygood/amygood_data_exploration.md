@@ -2,11 +2,12 @@ Initial data exploration
 ================
 Amy Goodwin Davies
 
+-   [Our questions:](#our-questions)
 -   [Actions](#actions)
 -   [Cards](#cards)
--   [Apps](#apps)
 
-Basic questions:
+Our questions:
+==============
 
 -   2.1 How long does each step of an application take? (by animal species and PAWS location where available); i.e., from date of processing start, through checking off each checklist item, to the date and time when an animal was adopted.
 -   2.2 What are the applicant and animal characteristics that predict a speedy adoption?
@@ -38,12 +39,24 @@ dog_actions <- read_csv("Data/dog_actions.csv")
 cat_cards <- read_csv("Data/cat_cards.csv")
 dog_cards <- read_csv("Data/dog_cards.csv")
 cat_apps <- read_csv("Data/cat_apps.csv")
+```
+
+    ## Warning: Missing column names filled in: 'X1' [1]
+
+``` r
 dog_apps <- read_csv("Data/dog_apps.csv")
+```
+
+    ## Warning: Missing column names filled in: 'X1' [1]
+
+``` r
 petpoint <- read_csv("Data/petpoint.csv")
 ```
 
+    ## Warning: Missing column names filled in: 'X1' [1]
+
 Actions
--------
+=======
 
 Create checklist\_names as a factor for each checklist name combination...
 
@@ -113,7 +126,7 @@ wide_actions <- wide_actions %>% mutate_if(is.character, as.factor)
 ```
 
 Cards
------
+=====
 
 ``` r
 cards <- rbind(dog_cards, cat_cards)
@@ -158,12 +171,12 @@ length(unique(cards$label_names))
     ## [1] 819
 
 ``` r
-label_names_tidy <- tidy_labelnames(cards, "label_names") # slow...
+label_names_tidy <- tidy_elements(cards, "label_names") # slow...
 cards <- label_names_tidy$output_df
-label_names_labelnames <- label_names_tidy$labelnames
+label_names_elements <- label_names_tidy$elements
 label_names_new_colnames <- label_names_tidy$new_colnames
-label_names_labelnames_summary <- label_names_tidy$labelnames_summary
-ggplot(label_names_labelnames_summary, aes(x = fct_reorder(label_names, count), y = count)) +
+label_names_elements_summary <- label_names_tidy$elements_summary
+ggplot(label_names_elements_summary, aes(x = fct_reorder(label_names, count), y = count)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -173,7 +186,7 @@ ggplot(label_names_labelnames_summary, aes(x = fct_reorder(label_names, count), 
 ![](amygood_data_exploration_files/figure-markdown_github/cards_2-1.png)
 
 ``` r
-label_names_labelnames
+label_names_elements
 ```
 
     ##  [1] "ready for review"             "not utd"                     
@@ -241,6 +254,3 @@ label_names_new_colnames
 ``` r
 write_csv(cards, "Analyses/2_Applicants/amygood/output/cards_edited.csv")
 ```
-
-Apps
-----
