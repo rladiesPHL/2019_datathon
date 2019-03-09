@@ -1,0 +1,86 @@
+---
+title: "PAWS - CARDS"
+author: "Ramaa Nathan"
+date: "3/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+
+#### Data Fields
+1. id: a unique ID
+2. dateLastActivity: the last time an activity was recorded on the card
+3. dueComplete: indicates whether the application is marked as complete or they lost contact with the applicant
+4. due: indicates the date the application is marked as complete or they lost contact with the applicant animal_type: cat or dog
+5. label_names: the label names indicate the last recorded status of the application
+
+
+```{r cars}
+cat_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_cards.csv")
+dog_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_cards.csv")
+cat_cards <- cat_cards %>% mutate(animal_type="cats");
+dog_cards <- dog_cards %>% mutate(animal_type="dogs");
+str(cat_cards)
+str(dog_cards)
+
+#create one dataframe
+cards <- bind_rows(cat_cards,dog_cards)
+str(cards)
+cards <- cards %>% mutate (animal_type=factor(animal_type))
+
+#check for duplicates
+# Are there any duplicates in the data?
+anyDuplicated(cards)
+
+# find number of missing data in each column
+print("Missing Entries")
+cards %>% group_by(animal_type) %>% skim() %>% 
+  filter(stat == "missing", stat== "n") %>% filter(value > 0) %>% 
+  kable(caption="Missing Entries in cards")
+cards %>% group_by(animal_type) %>% summarise(n=n(), 
+                                              missing_due=sum(is.na(due)),missing_due_percent = 100*missing_due/n,
+                                            missing_labels=sum(is.na(due)),missing_labels_percent = 100*missing_labels/n)
+
+## Check for duplicate ids
+numNonUniquesIDs = cards %>% 
+   filter(!is.na(id)) %>% 
+   select(id) %>% 
+   group_by(id) %>% 
+   summarise(dupcount=n()) %>%
+  filter(dupcount > 1)
+
+#plot the due Complete by  animal type
+ cards%>% ggplot(mapping=aes(x=dueComplete,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = "Due Complete by Animal Type")  +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1),col="black")
+ 
+ # Compare dateLastActivity and due
+ # When a process is completed leading to adoption, the due date should correspond to 
+ #check records when dueComplete is true
+ #cards %>% filter(dueComplete == TRUE) %>% table(label_names)
+
+
+```
+
+
+```{r}
+extractFromString = function(str1) {
+  sl = str_split(str1,",")
+  l = length(sl[[1]])
+  last = str_trim(sl[[1]][l])
+  return (unlist(last)) #(list(l,last))
+}
+cards$lastLabel = sapply(cards$label_names, FUN=function(x) extractFromString(x))
+cards$numlabels = sapply(cards$label_names, FUN=function(x) ifelse(is.na(x),0,length(str_split(x,",")[[1]])))
+str(cards)
+```
