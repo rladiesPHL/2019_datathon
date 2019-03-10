@@ -8,7 +8,6 @@ tidy_elements <- function(df, colname) {
                                          paste0(elements[i], ",")) |
                               str_detect(output_df[[colname]],
                                          paste0(elements[i], "$"))
-    # output_df[is.na(output_df[new_colname]),][new_colname] <- FALSE
   }
   new_colnames <- setdiff(colnames(output_df), colnames(df))
   elements_summary <- get_elements_summary(output_df, colname, new_colnames)

@@ -1936,7 +1936,6 @@ apps_clean$City <- gsub("[.]|[,]| PA$", "", apps_clean$City)
 apps_clean$City <- trimws(gsub("  ", " ", apps_clean$City))
 apps_clean$City <- gsub("MT ", "MOUNT ", apps_clean$City)
 apps_clean$City <- gsub("19010", "BRYN MAWR", apps_clean$City)
-apps_clean$City <- gsub("ABINGDON", "ABINGTON", apps_clean$City)
 apps_clean$City <- gsub("CHETSER", "CHESTER", apps_clean$City)
 apps_clean$City <- gsub("ROYERFORD", "ROYERSFORD", apps_clean$City)
 apps_clean$City <- gsub("NORTH WHALES", "NORTH WALES", apps_clean$City)
@@ -1947,146 +1946,164 @@ apps_clean[startsWith(apps_clean$City, "PHILA"),]$City <- "PHILADELPHIA"
 sort(unique(apps_clean$City))
 ```
 
-    ##   [1] "ABINGTON"            "ABSECON"             "ALDAN"              
-    ##   [4] "ALLENTOWN"           "ALPHA"               "AMBLER"             
-    ##   [7] "ANDALUSIA"           "ARDMORE"             "ATGLEN"             
-    ##  [10] "ATLANTA"             "AUDUBON"             "AVENEL"             
-    ##  [13] "AVONDALE"            "BALA CYNWYD"         "BALTIMORE"          
-    ##  [16] "BARRINGTON"          "BAYVILLE"            "BEL AIR"            
-    ##  [19] "BELLEVILLE"          "BELLMAWR"            "BENSALEM"           
-    ##  [22] "BERLIN"              "BLACKWOOD"           "BLOOMFIELD"         
-    ##  [25] "BLOOMSBURY"          "BLUE BELL"           "BORDENTOWN"         
-    ##  [28] "BOULDER"             "BRIDGEPORT"          "BRIGHTON"           
-    ##  [31] "BRISTOL"             "BROOKHAVEN"          "BROOKLYN"           
-    ##  [34] "BROOMALL"            "BRYN ATHYN"          "BRYN MAWR"          
-    ##  [37] "BUCKINGHAM"          "BUENA"               "BUFFALO"            
-    ##  [40] "BURLINGTON"          "CAMDEN"              "CATAWISSA"          
-    ##  [43] "CHALFONT"            "CHARLOTTE"           "CHELTENHAM"         
-    ##  [46] "CHERRY HILL"         "CHESTER"             "CHESTERFIELD"       
-    ##  [49] "CINNAMINSON"         "CLAYMONT"            "CLIFTON HEIGHTS"    
-    ##  [52] "COATESVILLE"         "COCKEYSVILLE"        "COLLEGEVILLE"       
-    ##  [55] "COLLINGDALE"         "COLLINGSWOOD"        "COLUMBUS"           
-    ##  [58] "CONSHOHOCKEN"        "COPLAY"              "CRESCO"             
-    ##  [61] "CROYDON"             "CRUM LYNNE"          "CRYSTAL LAKE"       
-    ##  [64] "DALLAS"              "DARBY"               "DELANCO"            
-    ##  [67] "DELRAN"              "DEPTFORD"            "DEVON"              
-    ##  [70] "DOWNINGTOWN"         "DOYLESTOWN"          "DRESHER"            
-    ##  [73] "DREXEL HILL"         "EAGLEVILLE"          "EAST LANSDOWNE"     
-    ##  [76] "EAST WINDSOR"        "EASTON"              "EFFORT"             
-    ##  [79] "EGG HARBOR"          "ELIZABETHTOWN"       "ELKINS PARK"        
-    ##  [82] "ELLICOTT CITY"       "ELVERSON"            "EMMAUS"             
-    ##  [85] "ENGLEWOOD"           "EWING"               "EXTON"              
-    ##  [88] "FAIRLESSHILLS"       "FEASTERVILLE"        "FLEMINGTON"         
-    ##  [91] "FLOURTOWN"           "FOLCROFT"            "FOLSOM"             
-    ##  [94] "FORDS"               "FORKED RIVER"        "FORT WASHINGTON"    
-    ##  [97] "GALLOWAY"            "GLASSBORO"           "GLEN BURNIE"        
-    ## [100] "GLEN MILLS"          "GLENDORA"            "GLENOLDEN"          
-    ## [103] "GLENSIDE"            "HADDON TOWNSHIP"     "HADDONFEILD"        
-    ## [106] "HAFIELD"             "HAINESPORT"          "HAMILTON"           
-    ## [109] "HAMILTON TOWNSHIP"   "HARLEYSVILLE"        "HATBORO"            
-    ## [112] "HATFIELD"            "HAVERTOWN"           "HOLLAND"            
-    ## [115] "HONEY BROOK"         "HORSHAM"             "HUNTINGDON VALLEY"  
-    ## [118] "ISELIN"              "JACKSON"             "JENKINTOWN"         
-    ## [121] "KING OF PRUSSIA"     "LAFAYETTE AHILL"     "LAFAYETTE HILL"     
-    ## [124] "LANCASTER"           "LANGHORNE"           "LANSDALE"           
-    ## [127] "LANSDOWNE"           "LAUREL"              "LAWNSIDE"           
-    ## [130] "LAWRENCE TOWNSHIP"   "LEIGHTON"            "LESTER"             
-    ## [133] "LEVITTOWN"           "LEWES"               "LEWISBURG"          
-    ## [136] "LEWISTOWN"           "LINDENWOLD"          "LINWOOD"            
-    ## [139] "LITITZ"              "LITTLE EGG HARBOR"   "LOS ANGELES"        
-    ## [142] "MAGNOLIA"            "MAHANOY PLANE"       "MANDEVILLE"         
-    ## [145] "MANTUA"              "MAPLE SHADE"         "MAPLEWOOD"          
-    ## [148] "MARIETTA"            "MARLBORO"            "MARLTON"            
-    ## [151] "MEDFORD"             "MEDIA"               "MILFORD"            
-    ## [154] "MILLBOURNE"          "MILTON"              "MONT CLARE"         
-    ## [157] "MONTGOMERY VILLAGE"  "MOORESTOWN"          "MORRISVILLE"        
-    ## [160] "MORTON"              "MOUNT EPHRAIM"       "MOUNT HOLLY"        
-    ## [163] "MOUNT LAUREL"        "MOUNTAIN TOP"        "NARBERTH"           
-    ## [166] "NATIONAL PARK"       "NEW BRIGHTON"        "NEWARK"             
-    ## [169] "NEWFIELD"            "NEWTOWN"             "NORRISTOWN"         
-    ## [172] "NORTH BRUNSWICK"     "NORTH WALES"         "NORTHAMPTON"        
-    ## [175] "NORWOOD"             "ORELAND"             "PALMYRA"            
-    ## [178] "PATERSON"            "PENNSAUKEN"          "PERKASIE"           
-    ## [181] "PH3"                 "PHIA"                "PHILADELPHIA"       
-    ## [184] "PHOENIXVILLE"        "PHUK"                "PITCAIRN"           
-    ## [187] "PLYMOUTH MEETING"    "PORT DEPOSIT"        "POTTSTOWN"          
-    ## [190] "PRINCETON"           "QUAKERTOWN"          "READING"            
-    ## [193] "REISTERSTOWN"        "RICHBORO"            "RICHLANDTOWN"       
-    ## [196] "RIEGELSVILLE"        "ROBBINSVILLE"        "ROCKLEDGE"          
-    ## [199] "ROSEDALE"            "ROSLYN"              "ROYERSFORD"         
-    ## [202] "RUNNEMEDE"           "SCHWENKSVILLE"       "SECANE"             
-    ## [205] "SEEKONK"             "SELLERSVILLE"        "SEWELL"             
-    ## [208] "SHARON HILL"         "SICKLERVILLE"        "SKIPPACK"           
-    ## [211] "SOUTHHAMPTON"        "SOUTHWICK"           "SPRINGFIELD"        
-    ## [214] "ST DAVIDA"           "STATEN ISLAND"       "SWARTHMORE"         
-    ## [217] "TOMS RIVER"          "TRAPPE"              "TRENTON"            
-    ## [220] "TREVOSE"             "TURNERSVILLE"        "UPPER DARBY"        
-    ## [223] "VILLAS"              "VOORHEES"            "WALLINGFORD"        
-    ## [226] "WAPPINGERS FALLS"    "WARMINSTER"          "WARRINGTON"         
-    ## [229] "WASHINGTON CROSSING" "WATERBURY"           "WATERFORD WORKS"    
-    ## [232] "WAYNE"               "WERNERSVILLE"        "WEST CALDWELL"      
-    ## [235] "WEST CHESTER"        "WEST DEPTFORD"       "WESTWOOD"           
-    ## [238] "WILDWOOD"            "WILLIAMSTOWN"        "WILLOW GROVE"       
-    ## [241] "WILMINGTON"          "WOODBURY HEIGHTS"    "WOODLYN"            
-    ## [244] "WRIGHTSTOWN"         "WYNCOTE"             "WYNDMOOR"           
-    ## [247] "WYNNEWOOD"           "Y"                   "YARDLEY"            
-    ## [250] "YEADON"              "YORK"
+    ##   [1] "ABINGDON"            "ABINGTON"            "ABSECON"            
+    ##   [4] "ALDAN"               "ALLENTOWN"           "ALPHA"              
+    ##   [7] "AMBLER"              "ANDALUSIA"           "ARDMORE"            
+    ##  [10] "ATGLEN"              "ATLANTA"             "AUDUBON"            
+    ##  [13] "AVENEL"              "AVONDALE"            "BALA CYNWYD"        
+    ##  [16] "BALTIMORE"           "BARRINGTON"          "BAYVILLE"           
+    ##  [19] "BEL AIR"             "BELLEVILLE"          "BELLMAWR"           
+    ##  [22] "BENSALEM"            "BERLIN"              "BLACKWOOD"          
+    ##  [25] "BLOOMFIELD"          "BLOOMSBURY"          "BLUE BELL"          
+    ##  [28] "BORDENTOWN"          "BOULDER"             "BRIDGEPORT"         
+    ##  [31] "BRIGHTON"            "BRISTOL"             "BROOKHAVEN"         
+    ##  [34] "BROOKLYN"            "BROOMALL"            "BRYN ATHYN"         
+    ##  [37] "BRYN MAWR"           "BUCKINGHAM"          "BUENA"              
+    ##  [40] "BUFFALO"             "BURLINGTON"          "CAMDEN"             
+    ##  [43] "CATAWISSA"           "CHALFONT"            "CHARLOTTE"          
+    ##  [46] "CHELTENHAM"          "CHERRY HILL"         "CHESTER"            
+    ##  [49] "CHESTERFIELD"        "CINNAMINSON"         "CLAYMONT"           
+    ##  [52] "CLIFTON HEIGHTS"     "COATESVILLE"         "COCKEYSVILLE"       
+    ##  [55] "COLLEGEVILLE"        "COLLINGDALE"         "COLLINGSWOOD"       
+    ##  [58] "COLUMBUS"            "CONSHOHOCKEN"        "COPLAY"             
+    ##  [61] "CRESCO"              "CROYDON"             "CRUM LYNNE"         
+    ##  [64] "CRYSTAL LAKE"        "DALLAS"              "DARBY"              
+    ##  [67] "DELANCO"             "DELRAN"              "DEPTFORD"           
+    ##  [70] "DEVON"               "DOWNINGTOWN"         "DOYLESTOWN"         
+    ##  [73] "DRESHER"             "DREXEL HILL"         "EAGLEVILLE"         
+    ##  [76] "EAST LANSDOWNE"      "EAST WINDSOR"        "EASTON"             
+    ##  [79] "EFFORT"              "EGG HARBOR"          "ELIZABETHTOWN"      
+    ##  [82] "ELKINS PARK"         "ELLICOTT CITY"       "ELVERSON"           
+    ##  [85] "EMMAUS"              "ENGLEWOOD"           "EWING"              
+    ##  [88] "EXTON"               "FAIRLESSHILLS"       "FEASTERVILLE"       
+    ##  [91] "FLEMINGTON"          "FLOURTOWN"           "FOLCROFT"           
+    ##  [94] "FOLSOM"              "FORDS"               "FORKED RIVER"       
+    ##  [97] "FORT WASHINGTON"     "GALLOWAY"            "GLASSBORO"          
+    ## [100] "GLEN BURNIE"         "GLEN MILLS"          "GLENDORA"           
+    ## [103] "GLENOLDEN"           "GLENSIDE"            "HADDON TOWNSHIP"    
+    ## [106] "HADDONFEILD"         "HAFIELD"             "HAINESPORT"         
+    ## [109] "HAMILTON"            "HAMILTON TOWNSHIP"   "HARLEYSVILLE"       
+    ## [112] "HATBORO"             "HATFIELD"            "HAVERTOWN"          
+    ## [115] "HOLLAND"             "HONEY BROOK"         "HORSHAM"            
+    ## [118] "HUNTINGDON VALLEY"   "ISELIN"              "JACKSON"            
+    ## [121] "JENKINTOWN"          "KING OF PRUSSIA"     "LAFAYETTE AHILL"    
+    ## [124] "LAFAYETTE HILL"      "LANCASTER"           "LANGHORNE"          
+    ## [127] "LANSDALE"            "LANSDOWNE"           "LAUREL"             
+    ## [130] "LAWNSIDE"            "LAWRENCE TOWNSHIP"   "LEIGHTON"           
+    ## [133] "LESTER"              "LEVITTOWN"           "LEWES"              
+    ## [136] "LEWISBURG"           "LEWISTOWN"           "LINDENWOLD"         
+    ## [139] "LINWOOD"             "LITITZ"              "LITTLE EGG HARBOR"  
+    ## [142] "LOS ANGELES"         "MAGNOLIA"            "MAHANOY PLANE"      
+    ## [145] "MANDEVILLE"          "MANTUA"              "MAPLE SHADE"        
+    ## [148] "MAPLEWOOD"           "MARIETTA"            "MARLBORO"           
+    ## [151] "MARLTON"             "MEDFORD"             "MEDIA"              
+    ## [154] "MILFORD"             "MILLBOURNE"          "MILTON"             
+    ## [157] "MONT CLARE"          "MONTGOMERY VILLAGE"  "MOORESTOWN"         
+    ## [160] "MORRISVILLE"         "MORTON"              "MOUNT EPHRAIM"      
+    ## [163] "MOUNT HOLLY"         "MOUNT LAUREL"        "MOUNTAIN TOP"       
+    ## [166] "NARBERTH"            "NATIONAL PARK"       "NEW BRIGHTON"       
+    ## [169] "NEWARK"              "NEWFIELD"            "NEWTOWN"            
+    ## [172] "NORRISTOWN"          "NORTH BRUNSWICK"     "NORTH WALES"        
+    ## [175] "NORTHAMPTON"         "NORWOOD"             "ORELAND"            
+    ## [178] "PALMYRA"             "PATERSON"            "PENNSAUKEN"         
+    ## [181] "PERKASIE"            "PH3"                 "PHIA"               
+    ## [184] "PHILADELPHIA"        "PHOENIXVILLE"        "PHUK"               
+    ## [187] "PITCAIRN"            "PLYMOUTH MEETING"    "PORT DEPOSIT"       
+    ## [190] "POTTSTOWN"           "PRINCETON"           "QUAKERTOWN"         
+    ## [193] "READING"             "REISTERSTOWN"        "RICHBORO"           
+    ## [196] "RICHLANDTOWN"        "RIEGELSVILLE"        "ROBBINSVILLE"       
+    ## [199] "ROCKLEDGE"           "ROSEDALE"            "ROSLYN"             
+    ## [202] "ROYERSFORD"          "RUNNEMEDE"           "SCHWENKSVILLE"      
+    ## [205] "SECANE"              "SEEKONK"             "SELLERSVILLE"       
+    ## [208] "SEWELL"              "SHARON HILL"         "SICKLERVILLE"       
+    ## [211] "SKIPPACK"            "SOUTHHAMPTON"        "SOUTHWICK"          
+    ## [214] "SPRINGFIELD"         "ST DAVIDA"           "STATEN ISLAND"      
+    ## [217] "SWARTHMORE"          "TOMS RIVER"          "TRAPPE"             
+    ## [220] "TRENTON"             "TREVOSE"             "TURNERSVILLE"       
+    ## [223] "UPPER DARBY"         "VILLAS"              "VOORHEES"           
+    ## [226] "WALLINGFORD"         "WAPPINGERS FALLS"    "WARMINSTER"         
+    ## [229] "WARRINGTON"          "WASHINGTON CROSSING" "WATERBURY"          
+    ## [232] "WATERFORD WORKS"     "WAYNE"               "WERNERSVILLE"       
+    ## [235] "WEST CALDWELL"       "WEST CHESTER"        "WEST DEPTFORD"      
+    ## [238] "WESTWOOD"            "WILDWOOD"            "WILLIAMSTOWN"       
+    ## [241] "WILLOW GROVE"        "WILMINGTON"          "WOODBURY HEIGHTS"   
+    ## [244] "WOODLYN"             "WRIGHTSTOWN"         "WYNCOTE"            
+    ## [247] "WYNDMOOR"            "WYNNEWOOD"           "Y"                  
+    ## [250] "YARDLEY"             "YEADON"              "YORK"
 
 ``` r
 apps_clean$City <- as.factor(apps_clean$City)
 summary(apps_clean$City)
 ```
 
-    ##      PHILADELPHIA            CAMDEN          BENSALEM          GLENSIDE 
-    ##              1344                14                12                12 
-    ##             DARBY       UPPER DARBY       ELKINS PARK         LANSDOWNE 
-    ##                11                11                 9                 9 
-    ##      WEST CHESTER        WILMINGTON         HAVERTOWN         BRYN MAWR 
-    ##                 9                 9                 8                 7 
-    ##      COLLINGSWOOD         LEVITTOWN          WYNDMOOR         BLACKWOOD 
-    ##                 7                 7                 7                 6 
-    ##       CHERRY HILL           HATBORO             MEDIA         POTTSTOWN 
-    ##                 6                 6                 6                 6 
-    ##            YEADON            AMBLER        CHELTENHAM       COATESVILLE 
-    ##                 6                 5                 5                 5 
-    ##      COLLEGEVILLE       COLLINGDALE HUNTINGDON VALLEY    LAFAYETTE HILL 
-    ##                 5                 5                 5                 5 
-    ##          LANSDALE       MORRISVILLE        NORRISTOWN      PHOENIXVILLE 
-    ##                 5                 5                 5                 5 
-    ##         WYNNEWOOD           AUDUBON        BROOKHAVEN   CLIFTON HEIGHTS 
-    ##                 5                 4                 4                 4 
-    ##       DREXEL HILL         GLASSBORO         GLENOLDEN           HOLLAND 
-    ##                 4                 4                 4                 4 
-    ##        JENKINTOWN          NARBERTH            NEWARK       NORTH WALES 
-    ##                 4                 4                 4                 4 
-    ##        PENNSAUKEN           TRENTON          VOORHEES           ARDMORE 
-    ##                 4                 4                 4                 3 
-    ##         BLUE BELL           BRISTOL      CONSHOHOCKEN        DOYLESTOWN 
-    ##                 3                 3                 3                 3 
-    ##      FEASTERVILLE            FOLSOM   HADDON TOWNSHIP          HAMILTON 
-    ##                 3                 3                 3                 3 
-    ##         LANGHORNE        MOORESTOWN       MOUNT HOLLY      MOUNT LAUREL 
-    ##                 3                 3                 3                 3 
-    ##           NEWTOWN        QUAKERTOWN        ROYERSFORD      WILLOW GROVE 
-    ##                 3                 3                 3                 3 
-    ##          ABINGTON         ALLENTOWN       BALA CYNWYD        BRIDGEPORT 
-    ##                 2                 2                 2                 2 
-    ##       CINNAMINSON          DEPTFORD       DOWNINGTOWN        EAGLEVILLE 
-    ##                 2                 2                 2                 2 
-    ##    EAST LANSDOWNE     ELIZABETHTOWN             EXTON        FLEMINGTON 
-    ##                 2                 2                 2                 2 
-    ##         FLOURTOWN        HAINESPORT      HARLEYSVILLE           HORSHAM 
-    ##                 2                 2                 2                 2 
-    ##   KING OF PRUSSIA           LINWOOD           MARLTON            MORTON 
-    ##                 2                 2                 2                 2 
-    ##          NEWFIELD           NORWOOD           PALMYRA  PLYMOUTH MEETING 
-    ##                 2                 2                 2                 2 
-    ##            SECANE      SELLERSVILLE            SEWELL       SHARON HILL 
-    ##                 2                 2                 2                 2 
-    ##      SICKLERVILLE        SWARTHMORE           TREVOSE      TURNERSVILLE 
-    ##                 2                 2                 2                 2 
-    ##       WALLINGFORD  WAPPINGERS FALLS        WARMINSTER           (Other) 
-    ##                 2                 2                 2               158
+    ##        PHILADELPHIA              CAMDEN            BENSALEM 
+    ##                1344                  14                  12 
+    ##            GLENSIDE               DARBY         UPPER DARBY 
+    ##                  12                  11                  11 
+    ##         ELKINS PARK           LANSDOWNE        WEST CHESTER 
+    ##                   9                   9                   9 
+    ##          WILMINGTON           HAVERTOWN           BRYN MAWR 
+    ##                   9                   8                   7 
+    ##        COLLINGSWOOD           LEVITTOWN            WYNDMOOR 
+    ##                   7                   7                   7 
+    ##           BLACKWOOD         CHERRY HILL             HATBORO 
+    ##                   6                   6                   6 
+    ##               MEDIA           POTTSTOWN              YEADON 
+    ##                   6                   6                   6 
+    ##              AMBLER          CHELTENHAM         COATESVILLE 
+    ##                   5                   5                   5 
+    ##        COLLEGEVILLE         COLLINGDALE   HUNTINGDON VALLEY 
+    ##                   5                   5                   5 
+    ##      LAFAYETTE HILL            LANSDALE         MORRISVILLE 
+    ##                   5                   5                   5 
+    ##          NORRISTOWN        PHOENIXVILLE           WYNNEWOOD 
+    ##                   5                   5                   5 
+    ##             AUDUBON          BROOKHAVEN     CLIFTON HEIGHTS 
+    ##                   4                   4                   4 
+    ##         DREXEL HILL           GLASSBORO           GLENOLDEN 
+    ##                   4                   4                   4 
+    ##             HOLLAND          JENKINTOWN            NARBERTH 
+    ##                   4                   4                   4 
+    ##              NEWARK         NORTH WALES          PENNSAUKEN 
+    ##                   4                   4                   4 
+    ##             TRENTON            VOORHEES             ARDMORE 
+    ##                   4                   4                   3 
+    ##           BLUE BELL             BRISTOL        CONSHOHOCKEN 
+    ##                   3                   3                   3 
+    ##          DOYLESTOWN        FEASTERVILLE              FOLSOM 
+    ##                   3                   3                   3 
+    ##     HADDON TOWNSHIP            HAMILTON           LANGHORNE 
+    ##                   3                   3                   3 
+    ##          MOORESTOWN         MOUNT HOLLY        MOUNT LAUREL 
+    ##                   3                   3                   3 
+    ##             NEWTOWN          QUAKERTOWN          ROYERSFORD 
+    ##                   3                   3                   3 
+    ##        WILLOW GROVE           ALLENTOWN         BALA CYNWYD 
+    ##                   3                   2                   2 
+    ##          BRIDGEPORT         CINNAMINSON            DEPTFORD 
+    ##                   2                   2                   2 
+    ##         DOWNINGTOWN          EAGLEVILLE      EAST LANSDOWNE 
+    ##                   2                   2                   2 
+    ##       ELIZABETHTOWN               EXTON          FLEMINGTON 
+    ##                   2                   2                   2 
+    ##           FLOURTOWN          HAINESPORT        HARLEYSVILLE 
+    ##                   2                   2                   2 
+    ##             HORSHAM     KING OF PRUSSIA             LINWOOD 
+    ##                   2                   2                   2 
+    ##             MARLTON              MORTON            NEWFIELD 
+    ##                   2                   2                   2 
+    ##             NORWOOD             PALMYRA    PLYMOUTH MEETING 
+    ##                   2                   2                   2 
+    ##              SECANE        SELLERSVILLE              SEWELL 
+    ##                   2                   2                   2 
+    ##         SHARON HILL        SICKLERVILLE          SWARTHMORE 
+    ##                   2                   2                   2 
+    ##             TREVOSE        TURNERSVILLE         WALLINGFORD 
+    ##                   2                   2                   2 
+    ##    WAPPINGERS FALLS          WARMINSTER WASHINGTON CROSSING 
+    ##                   2                   2                   2 
+    ##             (Other) 
+    ##                 158
 
 ``` r
 apps_clean %>% 
@@ -2421,7 +2438,7 @@ str(apps_clean)
     ##  $ AWATER                                                 : Factor w/ 295 levels "0","57","408",..: 1 51 1 1 1 171 121 1 250 1 ...
     ##  $ INTPTLAT                                               : num  39.9 40 40 39.9 40 ...
     ##  $ INTPTLON                                               : num  -75.2 -75.2 -75.2 -75.2 -75.1 ...
-    ##  $ City                                                   : Factor w/ 251 levels "ABINGTON","ABSECON",..: 183 183 183 183 183 183 183 96 92 183 ...
+    ##  $ City                                                   : Factor w/ 252 levels "ABINGDON","ABINGTON",..: 184 184 184 184 184 184 184 97 93 184 ...
     ##  $ State                                                  : Factor w/ 14 levels "CA","CO","CT",..: 14 14 14 14 14 14 14 14 14 14 ...
     ##  $ ZIP                                                    : Factor w/ 304 levels "01077","01945",..: 200 196 197 231 222 217 195 161 159 234 ...
     ##  $ animal_type                                            : chr  "cat" "cat" "cat" "cat" ...
