@@ -7,6 +7,7 @@ Amy Goodwin Davies
     -   [Label names relating to issues with the application](#label-names-relating-to-issues-with-the-application)
     -   [Label names relating to limitations of the application](#label-names-relating-to-limitations-of-the-application)
     -   [Label names relating to adoption status](#label-names-relating-to-adoption-status)
+-   [To do](#to-do)
 
 ``` r
 library(tidyverse)
@@ -456,3 +457,9 @@ all(label_names_new_colnames %in%
 ```
 
     ## [1] TRUE
+
+To do
+=====
+
+-   Relationship between cards label\_names and actions checklist items
+-   Positive/negative within each category

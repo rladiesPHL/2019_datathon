@@ -296,3 +296,8 @@ checking...
 all(label_names_new_colnames %in%
         c(approval_indicators, issues_indicators, limitations_indicators, adoption_status_indicators))
 ```
+
+# To do
+
+* Relationship between cards label_names and actions checklist items
+* Positive/negative within each category
