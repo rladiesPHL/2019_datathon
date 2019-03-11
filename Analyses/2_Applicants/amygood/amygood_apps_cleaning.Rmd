@@ -277,7 +277,7 @@ unique(apps_clean$budget_monthly)
 apps_clean$budget_monthly <- as.numeric(as.character(apps_clean$budget_monthly))
 ggplot(apps_clean, aes(x = budget_monthly)) +
   geom_histogram(binwidth = 50) +
-  xlim(0,5000)
+  xlim(0,50000)
 apps_clean$budget_monthly <- replace(apps_clean$budget_monthly,
                                        apps_clean$budget_monthly > 5000,
                                        NA)
@@ -299,8 +299,8 @@ apps_clean$budget_emergency <- gsub("^-", "", apps_clean$budget_emergency)
 unique(apps_clean$budget_emergency)
 apps_clean$budget_emergency <- as.numeric(as.character(apps_clean$budget_emergency))
 ggplot(apps_clean, aes(x = budget_emergency)) +
-  geom_histogram(binwidth = 50) +
-  xlim(0,5000)
+  geom_histogram(binwidth = 50)+
+  xlim(0,100000)
 apps_clean$budget_emergency <- replace(apps_clean$budget_emergency,
                                        apps_clean$budget_emergency > 10000,
                                        NA)

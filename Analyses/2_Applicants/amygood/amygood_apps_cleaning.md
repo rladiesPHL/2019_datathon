@@ -1136,10 +1136,10 @@ unique(apps_clean$budget_monthly)
 apps_clean$budget_monthly <- as.numeric(as.character(apps_clean$budget_monthly))
 ggplot(apps_clean, aes(x = budget_monthly)) +
   geom_histogram(binwidth = 50) +
-  xlim(0,5000)
+  xlim(0,50000)
 ```
 
-    ## Warning: Removed 6 rows containing non-finite values (stat_bin).
+    ## Warning: Removed 3 rows containing non-finite values (stat_bin).
 
 ![](amygood_apps_cleaning_files/figure-markdown_github/budget_monthly-1.png)
 
@@ -1312,11 +1312,11 @@ unique(apps_clean$budget_emergency)
 ``` r
 apps_clean$budget_emergency <- as.numeric(as.character(apps_clean$budget_emergency))
 ggplot(apps_clean, aes(x = budget_emergency)) +
-  geom_histogram(binwidth = 50) +
-  xlim(0,5000)
+  geom_histogram(binwidth = 50)+
+  xlim(0,100000)
 ```
 
-    ## Warning: Removed 83 rows containing non-finite values (stat_bin).
+    ## Warning: Removed 6 rows containing non-finite values (stat_bin).
 
 ![](amygood_apps_cleaning_files/figure-markdown_github/budget_emergency-1.png)
 
