@@ -4,7 +4,7 @@ Each of the datasets were originally separated into `cats_` and `dogs_`. The fil
 * `all_apps` - the combination of `cat_apps` and `dog_apps`
 * `all_actons` - the combination of `cat_actions` and `dog_actions`
 * `all_cards` - the combination of `cat_cards` and `dog_cards`
-* `master_animal` - joins apps and `actions_wide` to the `petpoint` dataset. Comma separated columns have been converted to 0/1 indicators and indicator category values have been colsolidated. See `master_animal_trajectory.R` to see the code.
+* `master_animal` - joins `all_apps` and `actions_wide` to the `petpoint` dataset. Comma separated columns have been converted to 0/1 indicators and indicator category values have been colsolidated. See `master_animal_trajectory.R` to see the code.
 
 <br>
 The `actions` dataset originally had a line for each checklist action. A new csv was created called `actions_wide` that pivots the data into one row per `id`. The new dataset uses the minimum date as the start date and calculates the distance in days to the last entry for each checklist item. The day of week was also included to see if any delays exist due to the weekend.  
