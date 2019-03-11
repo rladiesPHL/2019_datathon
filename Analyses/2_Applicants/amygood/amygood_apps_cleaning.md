@@ -504,11 +504,10 @@ unique(apps_clean$animal_type)
 
 ``` r
 apps_clean$animal_type <- as.factor(apps_clean$animal_type)
-summary(apps_clean$animal_type)
+dput(summary(apps_clean$animal_type))
 ```
 
-    ##  cat  dog 
-    ## 1269  638
+    ## c(cat = 1269L, dog = 638L)
 
 ``` r
 # .... apps_clean$X1 ----
@@ -570,11 +569,25 @@ str(apps_clean$date_submitted)
     ##  Date[1:1907], format: "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" "2018-12-31" ...
 
 ``` r
+ggplot(apps_clean, aes(x = wday(date_submitted, label = TRUE))) +
+  geom_bar()
+```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/date_submitted-1.png)
+
+``` r
+ggplot(apps_clean, aes(x = month(date_submitted, label = TRUE))) +
+  geom_bar()
+```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/date_submitted-2.png)
+
+``` r
 ggplot(apps_clean, aes(x = date_submitted)) +
   geom_histogram(binwidth = 1)
 ```
 
-![](amygood_apps_cleaning_files/figure-markdown_github/date_submitted-1.png)
+![](amygood_apps_cleaning_files/figure-markdown_github/date_submitted-3.png)
 
 ``` r
 summary(apps_clean$date_submitted)
@@ -584,6 +597,12 @@ summary(apps_clean$date_submitted)
     ## "2018-08-30" "2018-09-29" "2018-11-02" "2018-10-30" "2018-11-29" 
     ##         Max. 
     ## "2018-12-31"
+
+``` r
+paste(min(apps_clean$date_submitted), max(apps_clean$date_submitted), sep = " to ")
+```
+
+    ## [1] "2018-08-30 to 2018-12-31"
 
 ``` r
 # .... apps_clean$ideal_adoption_timeline ----
@@ -620,6 +639,12 @@ summary(apps_clean$ideal_adoption_timeline)
 
     ##        few-months         few-weeks one-month-or-more             today 
     ##               102               381               629               795
+
+``` r
+dput(levels(apps_clean$ideal_adoption_timeline))
+```
+
+    ## c("few-months", "few-weeks", "one-month-or-more", "today")
 
 ``` r
 # .... apps_clean$reason_for_adoption ----
@@ -666,38 +691,40 @@ unique(apps_clean$reason_for_adoption)
 
 ``` r
 apps_clean$reason_for_adoption <- gsub("it-s-a-surprise", "a-surprise", apps_clean$reason_for_adoption)
-get_unique_elements(apps_clean, "reason_for_adoption")
+dput(get_unique_elements(apps_clean, "reason_for_adoption"))
 ```
 
-    ## [1] "myself"     "other"      "my-kids"    "mouser"     "gift"      
-    ## [6] "protection"
+    ## c("myself", "other", "my-kids", "mouser", "gift", "protection"
+    ## )
 
 ``` r
-# reason_for_adoption_tidy <- tidy_elements(apps_clean, "reason_for_adoption")
-# apps_clean <- reason_for_adoption_tidy$output_df
-# reason_for_adoption_elements <- reason_for_adoption_tidy$elements
-# reason_for_adoption_new_colnames <- reason_for_adoption_tidy$new_colnames
-# reason_for_adoption_elements_summary <- reason_for_adoption_tidy$elements_summary
-# ggplot(reason_for_adoption_elements_summary, aes(x = fct_reorder(reason_for_adoption, count), y = count)) +
-#   geom_bar(stat = "identity") +
-#   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-#   guides(fill=FALSE)
+reason_for_adoption_tidy <- tidy_elements(apps_clean, "reason_for_adoption")
+apps_clean <- reason_for_adoption_tidy$output_df
+reason_for_adoption_elements <- reason_for_adoption_tidy$elements
+reason_for_adoption_new_colnames <- reason_for_adoption_tidy$new_colnames
+reason_for_adoption_elements_summary <- reason_for_adoption_tidy$elements_summary
+ggplot(reason_for_adoption_elements_summary, aes(x = fct_reorder(reason_for_adoption, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
 ```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/reason_for_adoption-1.png)
 
 ``` r
 # .... apps_clean$specific_animal ----
-str(apps_clean$specific_animal) # boolean
+str(apps_clean$specific_animal)
 ```
 
     ##  logi [1:1907] FALSE FALSE TRUE TRUE TRUE TRUE ...
 
 ``` r
-summary(apps_clean$specific_animal)
+dput(summary(apps_clean$specific_animal))
 ```
 
-    ##    Mode   FALSE    TRUE 
-    ## logical     839    1068
+    ## structure(c(Mode = "logical", `FALSE` = "839", `TRUE` = "1068"
+    ## ), class = c("summaryDefault", "table"))
 
 ``` r
 # .... apps_clean$adults_in_home ----
@@ -708,7 +735,7 @@ summary(apps_clean$adults_in_home) # should change to numeric
     ##      1907 character character
 
 ``` r
-apps_clean$adults_in_home <- gsub("-", "", apps_clean$adults_in_home) # get rid of "-"
+apps_clean$adults_in_home <- gsub("^-", "", apps_clean$adults_in_home) # get rid of "-"
 apps_clean$adults_in_home <- word(apps_clean$adults_in_home,1) # get first word
 unique(apps_clean$adults_in_home)
 ```
@@ -743,10 +770,19 @@ ggplot(apps_clean, aes(x = adults_in_home)) +
 ![](amygood_apps_cleaning_files/figure-markdown_github/adults_in_home-2.png)
 
 ``` r
-str(apps_clean$adults_in_home)
+summary(apps_clean$adults_in_home)
 ```
 
-    ##  num [1:1907] 1 1 1 1 1 0 1 1 3 2 ...
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##   0.000   0.000   1.000   1.112   1.000  15.000       5
+
+``` r
+dput(summary(apps_clean$adults_in_home))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 0, Median = 1, Mean = 1.11198738170347, 
+    ## `3rd Qu.` = 1, Max. = 15, `NA's` = 5), class = c("summaryDefault", 
+    ## "table"))
 
 -   Remove negative numbers and greater than 15
 
@@ -759,7 +795,7 @@ summary(apps_clean$children_in_home) # should change to numeric
     ## -47.0000   0.0000   0.0000   0.4342   1.0000   9.0000
 
 ``` r
-apps_clean$children_in_home <- gsub("-", "", apps_clean$children_in_home) # get rid of "-"
+apps_clean$children_in_home <- gsub("^-", "", apps_clean$children_in_home) # get rid of "-"
 apps_clean$children_in_home <- word(apps_clean$children_in_home,1) # get first word
 unique(apps_clean$children_in_home)
 ```
@@ -788,10 +824,19 @@ ggplot(apps_clean, aes(x = children_in_home)) +
 ![](amygood_apps_cleaning_files/figure-markdown_github/children_in_home-2.png)
 
 ``` r
-str(apps_clean$children_in_home)
+summary(apps_clean$children_in_home)
 ```
 
-    ##  num [1:1907] 0 0 0 0 0 0 0 0 1 0 ...
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##  0.0000  0.0000  0.0000  0.6226  1.0000  9.0000      10
+
+``` r
+dput(summary(apps_clean$children_in_home))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 0, Median = 0, Mean = 0.622561939905113, 
+    ## `3rd Qu.` = 1, Max. = 9, `NA's` = 10), class = c("summaryDefault", 
+    ## "table"))
 
 -   Remove negative numbers and greater than 15
 
@@ -820,23 +865,25 @@ unique(apps_clean$all_household_agree)
 
 ``` r
 apps_clean$all_household_agree <- gsub("it-s-a-surprise", "a-surprise", apps_clean$all_household_agree)
-get_unique_elements(apps_clean, "all_household_agree")
+dput(get_unique_elements(apps_clean, "all_household_agree"))
 ```
 
-    ## [1] "yes"        "a-surprise" "no"
+    ## c("yes", "a-surprise", "no")
 
 ``` r
-# all_household_agree_tidy <- tidy_elements(apps_clean, "all_household_agree")
-# apps_clean <- all_household_agree_tidy$output_df
-# all_household_agree_elements <- all_household_agree_tidy$elements
-# all_household_agree_new_colnames <- all_household_agree_tidy$new_colnames
-# all_household_agree_elements_summary <- all_household_agree_tidy$elements_summary
-# ggplot(all_household_agree_elements_summary, aes(x = fct_reorder(all_household_agree, count), y = count)) +
-#   geom_bar(stat = "identity") +
-#   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-#   guides(fill=FALSE)
+all_household_agree_tidy <- tidy_elements(apps_clean, "all_household_agree")
+apps_clean <- all_household_agree_tidy$output_df
+all_household_agree_elements <- all_household_agree_tidy$elements
+all_household_agree_new_colnames <- all_household_agree_tidy$new_colnames
+all_household_agree_elements_summary <- all_household_agree_tidy$elements_summary
+ggplot(all_household_agree_elements_summary, aes(x = fct_reorder(all_household_agree, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
 ```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/all_household_agree-1.png)
 
 ``` r
 # .... apps_clean$allergies ----
@@ -864,23 +911,26 @@ unique(apps_clean$allergies)
     ## [11] "very-allergic,no-allergies"    "very-allergic,mildly-allergic"
 
 ``` r
-get_unique_elements(apps_clean, "allergies")
+dput(get_unique_elements(apps_clean, "allergies"))
 ```
 
-    ## [1] "mildly-allergic" "no-allergies"    "not-sure"        "very-allergic"
+    ## c("mildly-allergic", "no-allergies", "not-sure", "very-allergic"
+    ## )
 
 ``` r
-# allergies_tidy <- tidy_elements(apps_clean, "allergies")
-# apps_clean <- allergies_tidy$output_df
-# allergies_elements <- allergies_tidy$elements
-# allergies_new_colnames <- allergies_tidy$new_colnames
-# allergies_elements_summary <- allergies_tidy$elements_summary
-# ggplot(allergies_elements_summary, aes(x = fct_reorder(allergies, count), y = count)) +
-#   geom_bar(stat = "identity") +
-#   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-#   guides(fill=FALSE)
+allergies_tidy <- tidy_elements(apps_clean, "allergies")
+apps_clean <- allergies_tidy$output_df
+allergies_elements <- allergies_tidy$elements
+allergies_new_colnames <- allergies_tidy$new_colnames
+allergies_elements_summary <- allergies_tidy$elements_summary
+ggplot(allergies_elements_summary, aes(x = fct_reorder(allergies, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
 ```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/allergies-1.png)
 
 ``` r
 # .... apps_clean$home_owner ----
@@ -915,12 +965,11 @@ summary(apps_clean$home_owner)
     ##                     227                     887                      27
 
 ``` r
-levels(apps_clean$home_owner)
+dput(levels(apps_clean$home_owner))
 ```
 
-    ## [1] "company"                 "family-friend"          
-    ## [3] "family-member-or-friend" "landlord"               
-    ## [5] "myself"
+    ## c("company", "family-friend", "family-member-or-friend", "landlord", 
+    ## "myself")
 
 ``` r
 # .... apps_clean$home_pet_policy ----
@@ -998,17 +1047,19 @@ dput(get_unique_elements(apps_clean, "experience"))
     ## "bred-sold")
 
 ``` r
-# experience_tidy <- tidy_elements(apps_clean, "experience")
-# apps_clean <- experience_tidy$output_df
-# experience_elements <- experience_tidy$elements
-# experience_new_colnames <- experience_tidy$new_colnames
-# experience_elements_summary <- experience_tidy$elements_summary
-# ggplot(experience_elements_summary, aes(x = fct_reorder(experience, count), y = count)) +
-#   geom_bar(stat = "identity") +
-#   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-#   guides(fill=FALSE)
+experience_tidy <- tidy_elements(apps_clean, "experience")
+apps_clean <- experience_tidy$output_df
+experience_elements <- experience_tidy$elements
+experience_new_colnames <- experience_tidy$new_colnames
+experience_elements_summary <- experience_tidy$elements_summary
+ggplot(experience_elements_summary, aes(x = fct_reorder(experience, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
 ```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/experience-1.png)
 
 ``` r
 # .... apps_clean$budget_monthly ----
@@ -1093,8 +1144,8 @@ ggplot(apps_clean, aes(x = budget_monthly)) +
 ![](amygood_apps_cleaning_files/figure-markdown_github/budget_monthly-1.png)
 
 ``` r
-apps_clean$adults_in_home <- replace(apps_clean$adults_in_home,
-                                       apps_clean$adults_in_home > 5000,
+apps_clean$budget_monthly <- replace(apps_clean$budget_monthly,
+                                       apps_clean$budget_monthly > 5000,
                                        NA)
 ggplot(apps_clean, aes(x = budget_monthly)) +
   geom_histogram(binwidth = 50) +
@@ -1109,20 +1160,24 @@ ggplot(apps_clean, aes(x = budget_monthly)) +
 unique(apps_clean$budget_monthly)
 ```
 
-    ##  [1]     150.00     120.00     125.00      75.00     200.00     600.00
-    ##  [7]     100.00     300.00      50.00    3000.00     250.00     260.00
-    ## [13]     500.00      70.00      40.00       0.50      80.00      60.00
-    ## [19]     400.00    1000.00     110.00     700.00      65.00      30.00
-    ## [25]     240.00     210.00      85.00     350.00      35.00      12.00
-    ## [31]     650.00     250.20    5000.00       0.00     490.00      99.00
-    ## [37]      90.00     450.00     640.00     800.00    1500.00    3500.00
-    ## [43]       0.30      25.00     140.00     280.00       3.00     510.00
-    ## [49]    2000.00      20.00     220.00     180.00     105.00     160.00
-    ## [55]     115.00       0.06  100150.00    1100.00    1200.00     750.00
-    ## [61]     860.00     175.00       0.05     170.00    4000.00     204.00
-    ## [67]   10000.00       1.00    9000.00      45.00     550.00     230.00
-    ## [73]     900.00     245.00  150159.00     380.00     130.00       0.08
-    ## [79]     460.00 1000000.00     890.00     320.00    8000.00
+    ##  [1]  150.00  120.00  125.00   75.00  200.00  600.00  100.00  300.00
+    ##  [9]   50.00 3000.00  250.00  260.00  500.00   70.00   40.00    0.50
+    ## [17]   80.00   60.00  400.00 1000.00  110.00  700.00   65.00   30.00
+    ## [25]  240.00  210.00   85.00  350.00   35.00   12.00  650.00  250.20
+    ## [33] 5000.00    0.00  490.00   99.00   90.00  450.00  640.00  800.00
+    ## [41] 1500.00 3500.00    0.30   25.00  140.00  280.00    3.00  510.00
+    ## [49] 2000.00   20.00  220.00  180.00  105.00  160.00  115.00    0.06
+    ## [57]      NA 1100.00 1200.00  750.00  860.00  175.00    0.05  170.00
+    ## [65] 4000.00  204.00    1.00   45.00  550.00  230.00  900.00  245.00
+    ## [73]  380.00  130.00    0.08  460.00  890.00  320.00
+
+``` r
+dput(summary(apps_clean$budget_monthly))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 100, Median = 200, Mean = 259.200783798001, 
+    ## `3rd Qu.` = 300, Max. = 5000, `NA's` = 6), class = c("summaryDefault", 
+    ## "table"))
 
 ``` r
 # .... apps_clean$budget_emergency ----
@@ -1266,15 +1321,15 @@ ggplot(apps_clean, aes(x = budget_emergency)) +
 ![](amygood_apps_cleaning_files/figure-markdown_github/budget_emergency-1.png)
 
 ``` r
-apps_clean$adults_in_home <- replace(apps_clean$adults_in_home,
-                                       apps_clean$adults_in_home > 5000,
+apps_clean$budget_emergency <- replace(apps_clean$budget_emergency,
+                                       apps_clean$budget_emergency > 10000,
                                        NA)
 ggplot(apps_clean, aes(x = budget_emergency)) +
   geom_histogram(binwidth = 50) +
-  xlim(0,5000)
+  xlim(0,10000)
 ```
 
-    ## Warning: Removed 83 rows containing non-finite values (stat_bin).
+    ## Warning: Removed 21 rows containing non-finite values (stat_bin).
 
 ![](amygood_apps_cleaning_files/figure-markdown_github/budget_emergency-2.png)
 
@@ -1282,34 +1337,27 @@ ggplot(apps_clean, aes(x = budget_emergency)) +
 unique(apps_clean$budget_emergency)
 ```
 
-    ##   [1]          1000.0           220.0          3000.0           500.0
-    ##   [5]          2000.0         10000.0          5000.0           100.0
-    ##   [9]           300.0           350.0            70.0           150.0
-    ##  [13]           200.0          2500.0           800.0          1400.0
-    ##  [17]          1500.0           250.0          1200.0           700.0
-    ##  [21]           600.0          7500.0           750.0           400.0
-    ##  [25]            30.0            40.0           109.0           550.0
-    ##  [29]           130.0           125.0          4000.0          9800.0
-    ##  [33]        300500.0           440.0          7000.0           490.0
-    ##  [37]           540.0           230.0          6500.0            12.0
-    ##  [41]           480.0          2100.0         60025.0           160.0
-    ##  [45]          3500.0             0.6           450.0            60.0
-    ##  [49]           900.0 1000000000000.0          8000.0           410.0
-    ##  [53]          6000.0            77.0         20000.0          1700.0
-    ##  [57]          2800.0         15000.0         10500.0             0.0
-    ##  [61]            25.0             0.2           340.0            45.0
-    ##  [65]            75.0            50.0        100000.0           260.0
-    ##  [69]             5.0           890.0           650.0          3900.0
-    ##  [73]            90.0           280.0           590.0          9000.0
-    ##  [77]             0.8         90000.0          3600.0            20.0
-    ##  [81]        200400.0           860.0             1.0          1800.0
-    ##  [85]           190.0           710.0          1009.0           140.0
-    ##  [89]            10.0            80.0           850.0           204.0
-    ##  [93]          1100.0           740.0         25000.0           770.0
-    ##  [97]           470.0           830.0         39500.0         11900.0
-    ## [101]           790.0       1000000.0           950.0          1300.0
-    ## [105]       2202000.0         50000.0          1600.0          1900.0
-    ## [109]           555.0          5200.0          6600.0
+    ##  [1]  1000.0   220.0  3000.0   500.0  2000.0 10000.0  5000.0   100.0
+    ##  [9]   300.0   350.0    70.0   150.0   200.0  2500.0   800.0  1400.0
+    ## [17]  1500.0   250.0  1200.0   700.0   600.0  7500.0   750.0   400.0
+    ## [25]    30.0    40.0   109.0   550.0   130.0   125.0  4000.0  9800.0
+    ## [33]      NA   440.0  7000.0   490.0   540.0   230.0  6500.0    12.0
+    ## [41]   480.0  2100.0   160.0  3500.0     0.6   450.0    60.0   900.0
+    ## [49]  8000.0   410.0  6000.0    77.0  1700.0  2800.0     0.0    25.0
+    ## [57]     0.2   340.0    45.0    75.0    50.0   260.0     5.0   890.0
+    ## [65]   650.0  3900.0    90.0   280.0   590.0  9000.0     0.8  3600.0
+    ## [73]    20.0   860.0     1.0  1800.0   190.0   710.0  1009.0   140.0
+    ## [81]    10.0    80.0   850.0   204.0  1100.0   740.0   770.0   470.0
+    ## [89]   830.0   790.0   950.0  1300.0  1600.0  1900.0   555.0  5200.0
+    ## [97]  6600.0
+
+``` r
+dput(summary(apps_clean$budget_emergency))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 400, Median = 1000, Mean = 1495.23255567338, 
+    ## `3rd Qu.` = 2000, Max. = 10000, `NA's` = 21), class = c("summaryDefault", 
+    ## "table"))
 
 ``` r
 # .... apps_clean$home_alone_avg ----
@@ -1349,6 +1397,14 @@ unique(apps_clean$home_alone_avg)
 ```
 
     ##  [1]  6  4 NA  7 10  8  0  3  2  5  9 13  1 11 12 24
+
+``` r
+dput(summary(apps_clean$home_alone_avg))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 4, Median = 6, Mean = 5.70357393132446, 
+    ## `3rd Qu.` = 8, Max. = 24, `NA's` = 480), class = c("summaryDefault", 
+    ## "table"))
 
 ``` r
 # .... apps_clean$home_alone_max ----
@@ -1392,6 +1448,14 @@ unique(apps_clean$home_alone_max)
     ## [24] 13 30 23
 
 ``` r
+dput(summary(apps_clean$home_alone_max))
+```
+
+    ## structure(c(Min. = 0, `1st Qu.` = 5, Median = 8, Mean = 7.47844522968198, 
+    ## `3rd Qu.` = 9, Max. = 48, `NA's` = 492), class = c("summaryDefault", 
+    ## "table"))
+
+``` r
 # .... apps_clean$pet_kept ----
 str(apps_clean$pet_kept)
 ```
@@ -1423,17 +1487,19 @@ dput(get_unique_elements(apps_clean, "pet_kept"))
     ## "other", "unsupervised-access-to-my-yard-doggie-door-etc")
 
 ``` r
-# pet_kept_tidy <- tidy_elements(apps_clean, "pet_kept")
-# apps_clean <- pet_kept_tidy$output_df
-# pet_kept_elements <- pet_kept_tidy$elements
-# pet_kept_new_colnames <- pet_kept_tidy$new_colnames
-# pet_kept_elements_summary <- pet_kept_tidy$elements_summary
-# ggplot(pet_kept_elements_summary, aes(x = fct_reorder(pet_kept, count), y = count)) +
-#   geom_bar(stat = "identity") +
-#   geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-#   guides(fill=FALSE)
+pet_kept_tidy <- tidy_elements(apps_clean, "pet_kept")
+apps_clean <- pet_kept_tidy$output_df
+pet_kept_elements <- pet_kept_tidy$elements
+pet_kept_new_colnames <- pet_kept_tidy$new_colnames
+pet_kept_elements_summary <- pet_kept_tidy$elements_summary
+ggplot(pet_kept_elements_summary, aes(x = fct_reorder(pet_kept, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
 ```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/pet_kept-1.png)
 
 ``` r
 # .... apps_clean$exercise ----
@@ -1456,6 +1522,14 @@ length(unique(apps_clean$exercise))
     ## [1] 180
 
 ``` r
+dput(get_unique_elements(apps_clean, "exercise"))
+```
+
+    ## c("toy-mice", "wand-toys", "other-pets", "not-much", "other-cats", 
+    ## "walks-on-leash", "playing-in-my-yard", "another-pet", "jogging-together", 
+    ## "dog-parks", "walks-off-leash")
+
+``` r
 exercise_tidy <- tidy_elements(apps_clean, "exercise")
 apps_clean <- exercise_tidy$output_df
 exercise_elements <- exercise_tidy$elements
@@ -1469,6 +1543,48 @@ ggplot(exercise_elements_summary, aes(x = fct_reorder(exercise, count), y = coun
 ```
 
 ![](amygood_apps_cleaning_files/figure-markdown_github/exercise-1.png)
+
+``` r
+# .... apps_clean$needs ----
+str(apps_clean$needs)
+```
+
+    ##  chr [1:1907] "nail-clip,scratching-post" "scratching-post,nail-clip" ...
+
+``` r
+summary(apps_clean$needs)
+```
+
+    ##    Length     Class      Mode 
+    ##      1907 character character
+
+``` r
+length(unique(apps_clean$needs))
+```
+
+    ## [1] 48
+
+``` r
+dput(get_unique_elements(apps_clean, "needs"))
+```
+
+    ## c("nail-clip", "scratching-post", "not-sure", "other", "declaw", 
+    ## "professional-groomer", "groom-myself", "no-grooming")
+
+``` r
+needs_tidy <- tidy_elements(apps_clean, "needs")
+apps_clean <- needs_tidy$output_df
+needs_elements <- needs_tidy$elements
+needs_new_colnames <- needs_tidy$new_colnames
+needs_elements_summary <- needs_tidy$elements_summary
+ggplot(needs_elements_summary, aes(x = fct_reorder(needs, count), y = count)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
+```
+
+![](amygood_apps_cleaning_files/figure-markdown_github/needs-1.png)
 
 ``` r
 # .... apps_clean$return_pet ----
@@ -1489,6 +1605,16 @@ length(unique(apps_clean$return_pet))
 ```
 
     ## [1] 152
+
+``` r
+dput(get_unique_elements(apps_clean, "return_pet"))
+```
+
+    ## c("none", "new-baby", "not-enough-time", "becomes-aggressive", 
+    ## "allergies-appear", "other", "vet-becomes-expensive", "moving-too-far", 
+    ## "litter-box-issues", "not-allowed-new-living-space", "scratches-furniture", 
+    ## "pet-sheds", "jumps-on-counters", "too-playful", "not-housebroken", 
+    ## "destructive", "jumps-on-furniture")
 
 ``` r
 return_pet_tidy <- tidy_elements(apps_clean, "return_pet")
@@ -1541,6 +1667,13 @@ unique(apps_clean$how_heard)
     ## [31] "website,twitter"        "email,other"           
     ## [33] "event,website"          "facebook,insta"        
     ## [35] "facebook,other,insta"
+
+``` r
+dput(get_unique_elements(apps_clean, "how_heard"))
+```
+
+    ## c("other", "website", "twitter", "email", "event", "insta", "facebook"
+    ## )
 
 ``` r
 how_heard_tidy <- tidy_elements(apps_clean, "how_heard")
@@ -2115,6 +2248,9 @@ apps_clean$City <- gsub("MONTGOMERY VALLAGE", "MONTGOMERY VILLAGE", apps_clean$C
 apps_clean$City <- gsub("E LANSDOWNE", "EAST LANSDOWNE", apps_clean$City)
 apps_clean$City <- gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA|PHIALADELPHIA|PHIALDELPHIA|PHILDELPHIA", "PHILADELPHIA", apps_clean$City)
 apps_clean[startsWith(apps_clean$City, "PHILA"),]$City <- "PHILADELPHIA"
+apps_clean$City <- replace(apps_clean$City,
+                           apps_clean$City %in% c("Y"),
+                           NA)
 sort(unique(apps_clean$City))
 ```
 
@@ -2200,82 +2336,64 @@ sort(unique(apps_clean$City))
     ## [238] "WESTWOOD"            "WILDWOOD"            "WILLIAMSTOWN"       
     ## [241] "WILLOW GROVE"        "WILMINGTON"          "WOODBURY HEIGHTS"   
     ## [244] "WOODLYN"             "WRIGHTSTOWN"         "WYNCOTE"            
-    ## [247] "WYNDMOOR"            "WYNNEWOOD"           "Y"                  
-    ## [250] "YARDLEY"             "YEADON"              "YORK"
+    ## [247] "WYNDMOOR"            "WYNNEWOOD"           "YARDLEY"            
+    ## [250] "YEADON"              "YORK"
 
 ``` r
 apps_clean$City <- as.factor(apps_clean$City)
 summary(apps_clean$City)
 ```
 
-    ##        PHILADELPHIA              CAMDEN            BENSALEM 
-    ##                1344                  14                  12 
-    ##            GLENSIDE               DARBY         UPPER DARBY 
-    ##                  12                  11                  11 
-    ##         ELKINS PARK           LANSDOWNE        WEST CHESTER 
-    ##                   9                   9                   9 
-    ##          WILMINGTON           HAVERTOWN           BRYN MAWR 
-    ##                   9                   8                   7 
-    ##        COLLINGSWOOD           LEVITTOWN            WYNDMOOR 
-    ##                   7                   7                   7 
-    ##           BLACKWOOD         CHERRY HILL             HATBORO 
-    ##                   6                   6                   6 
-    ##               MEDIA           POTTSTOWN              YEADON 
-    ##                   6                   6                   6 
-    ##              AMBLER          CHELTENHAM         COATESVILLE 
-    ##                   5                   5                   5 
-    ##        COLLEGEVILLE         COLLINGDALE   HUNTINGDON VALLEY 
-    ##                   5                   5                   5 
-    ##      LAFAYETTE HILL            LANSDALE         MORRISVILLE 
-    ##                   5                   5                   5 
-    ##          NORRISTOWN        PHOENIXVILLE           WYNNEWOOD 
-    ##                   5                   5                   5 
-    ##             AUDUBON          BROOKHAVEN     CLIFTON HEIGHTS 
-    ##                   4                   4                   4 
-    ##         DREXEL HILL           GLASSBORO           GLENOLDEN 
-    ##                   4                   4                   4 
-    ##             HOLLAND          JENKINTOWN            NARBERTH 
-    ##                   4                   4                   4 
-    ##              NEWARK         NORTH WALES          PENNSAUKEN 
-    ##                   4                   4                   4 
-    ##             TRENTON            VOORHEES             ARDMORE 
-    ##                   4                   4                   3 
-    ##           BLUE BELL             BRISTOL        CONSHOHOCKEN 
-    ##                   3                   3                   3 
-    ##          DOYLESTOWN        FEASTERVILLE              FOLSOM 
-    ##                   3                   3                   3 
-    ##     HADDON TOWNSHIP            HAMILTON           LANGHORNE 
-    ##                   3                   3                   3 
-    ##          MOORESTOWN         MOUNT HOLLY        MOUNT LAUREL 
-    ##                   3                   3                   3 
-    ##             NEWTOWN          QUAKERTOWN          ROYERSFORD 
-    ##                   3                   3                   3 
-    ##        WILLOW GROVE           ALLENTOWN         BALA CYNWYD 
-    ##                   3                   2                   2 
-    ##          BRIDGEPORT         CINNAMINSON            DEPTFORD 
-    ##                   2                   2                   2 
-    ##         DOWNINGTOWN          EAGLEVILLE      EAST LANSDOWNE 
-    ##                   2                   2                   2 
-    ##       ELIZABETHTOWN               EXTON          FLEMINGTON 
-    ##                   2                   2                   2 
-    ##           FLOURTOWN          HAINESPORT        HARLEYSVILLE 
-    ##                   2                   2                   2 
-    ##             HORSHAM     KING OF PRUSSIA             LINWOOD 
-    ##                   2                   2                   2 
-    ##             MARLTON              MORTON            NEWFIELD 
-    ##                   2                   2                   2 
-    ##             NORWOOD             PALMYRA    PLYMOUTH MEETING 
-    ##                   2                   2                   2 
-    ##              SECANE        SELLERSVILLE              SEWELL 
-    ##                   2                   2                   2 
-    ##         SHARON HILL        SICKLERVILLE          SWARTHMORE 
-    ##                   2                   2                   2 
-    ##             TREVOSE        TURNERSVILLE         WALLINGFORD 
-    ##                   2                   2                   2 
-    ##    WAPPINGERS FALLS          WARMINSTER WASHINGTON CROSSING 
-    ##                   2                   2                   2 
-    ##             (Other) 
-    ##                 158
+    ##      PHILADELPHIA            CAMDEN          BENSALEM          GLENSIDE 
+    ##              1344                14                12                12 
+    ##             DARBY       UPPER DARBY       ELKINS PARK         LANSDOWNE 
+    ##                11                11                 9                 9 
+    ##      WEST CHESTER        WILMINGTON         HAVERTOWN         BRYN MAWR 
+    ##                 9                 9                 8                 7 
+    ##      COLLINGSWOOD         LEVITTOWN          WYNDMOOR         BLACKWOOD 
+    ##                 7                 7                 7                 6 
+    ##       CHERRY HILL           HATBORO             MEDIA         POTTSTOWN 
+    ##                 6                 6                 6                 6 
+    ##            YEADON            AMBLER        CHELTENHAM       COATESVILLE 
+    ##                 6                 5                 5                 5 
+    ##      COLLEGEVILLE       COLLINGDALE HUNTINGDON VALLEY    LAFAYETTE HILL 
+    ##                 5                 5                 5                 5 
+    ##          LANSDALE       MORRISVILLE        NORRISTOWN      PHOENIXVILLE 
+    ##                 5                 5                 5                 5 
+    ##         WYNNEWOOD           AUDUBON        BROOKHAVEN   CLIFTON HEIGHTS 
+    ##                 5                 4                 4                 4 
+    ##       DREXEL HILL         GLASSBORO         GLENOLDEN           HOLLAND 
+    ##                 4                 4                 4                 4 
+    ##        JENKINTOWN          NARBERTH            NEWARK       NORTH WALES 
+    ##                 4                 4                 4                 4 
+    ##        PENNSAUKEN           TRENTON          VOORHEES           ARDMORE 
+    ##                 4                 4                 4                 3 
+    ##         BLUE BELL           BRISTOL      CONSHOHOCKEN        DOYLESTOWN 
+    ##                 3                 3                 3                 3 
+    ##      FEASTERVILLE            FOLSOM   HADDON TOWNSHIP          HAMILTON 
+    ##                 3                 3                 3                 3 
+    ##         LANGHORNE        MOORESTOWN       MOUNT HOLLY      MOUNT LAUREL 
+    ##                 3                 3                 3                 3 
+    ##           NEWTOWN        QUAKERTOWN        ROYERSFORD      WILLOW GROVE 
+    ##                 3                 3                 3                 3 
+    ##         ALLENTOWN       BALA CYNWYD        BRIDGEPORT       CINNAMINSON 
+    ##                 2                 2                 2                 2 
+    ##          DEPTFORD       DOWNINGTOWN        EAGLEVILLE    EAST LANSDOWNE 
+    ##                 2                 2                 2                 2 
+    ##     ELIZABETHTOWN             EXTON        FLEMINGTON         FLOURTOWN 
+    ##                 2                 2                 2                 2 
+    ##        HAINESPORT      HARLEYSVILLE           HORSHAM   KING OF PRUSSIA 
+    ##                 2                 2                 2                 2 
+    ##           LINWOOD           MARLTON            MORTON          NEWFIELD 
+    ##                 2                 2                 2                 2 
+    ##           NORWOOD           PALMYRA  PLYMOUTH MEETING            SECANE 
+    ##                 2                 2                 2                 2 
+    ##      SELLERSVILLE            SEWELL       SHARON HILL      SICKLERVILLE 
+    ##                 2                 2                 2                 2 
+    ##        SWARTHMORE           TREVOSE      TURNERSVILLE       WALLINGFORD 
+    ##                 2                 2                 2                 2 
+    ##  WAPPINGERS FALLS        WARMINSTER           (Other)              NA's 
+    ##                 2                 2               159                 1
 
 ``` r
 apps_clean %>% 
@@ -2375,92 +2493,291 @@ summary(apps_clean$ZIP)
     ##       4
 
 ``` r
+# .... apps_clean$X1 ----
+str(apps_clean$X1)
+```
+
+    ##  int [1:1907] 1 2 3 4 5 6 7 8 9 10 ...
+
+``` r
+unique(apps_clean$X1)[1:5]
+```
+
+    ## [1] 1 2 3 4 5
+
+``` r
+apps_clean <- subset(apps_clean, select = -c(X1))
+```
+
+``` r
 # Duplicates ----
 all(duplicated(apps_clean) == FALSE)
 ```
 
-    ## [1] TRUE
+    ## [1] FALSE
+
+``` r
+nrow(apps_clean[duplicated(apps_clean),])
+```
+
+    ## [1] 1
+
+``` r
+nrow(apps_clean[is.na(apps_clean$outcome_trello_id) & apps_clean$date_submitted == "12/18/2018" & apps_clean$GEOID == "34021002800",])
+```
+
+    ## [1] 2
 
 ``` r
 # Structure ----
-colnames(apps_clean)
+colSums(is.na(apps_clean))
 ```
 
-    ##  [1] "X1"                                     
-    ##  [2] "date_submitted"                         
-    ##  [3] "ideal_adoption_timeline"                
-    ##  [4] "reason_for_adoption"                    
-    ##  [5] "specific_animal"                        
-    ##  [6] "adults_in_home"                         
-    ##  [7] "children_in_home"                       
-    ##  [8] "all_household_agree"                    
-    ##  [9] "allergies"                              
-    ## [10] "home_owner"                             
-    ## [11] "home_pet_policy"                        
-    ## [12] "experience"                             
-    ## [13] "budget_monthly"                         
-    ## [14] "budget_emergency"                       
-    ## [15] "home_alone_avg"                         
-    ## [16] "home_alone_max"                         
-    ## [17] "pet_kept"                               
-    ## [18] "exercise"                               
-    ## [19] "needs"                                  
-    ## [20] "return_pet"                             
-    ## [21] "how_heard"                              
-    ## [22] "outcome_trello_id"                      
-    ## [23] "STATEFP"                                
-    ## [24] "COUNTYFP"                               
-    ## [25] "TRACTCE"                                
-    ## [26] "GEOID"                                  
-    ## [27] "NAME"                                   
-    ## [28] "NAMELSAD"                               
-    ## [29] "MTFCC"                                  
-    ## [30] "FUNCSTAT"                               
-    ## [31] "ALAND"                                  
-    ## [32] "AWATER"                                 
-    ## [33] "INTPTLAT"                               
-    ## [34] "INTPTLON"                               
-    ## [35] "City"                                   
-    ## [36] "State"                                  
-    ## [37] "ZIP"                                    
-    ## [38] "animal_type"                            
-    ## [39] "exercise_toy_mice"                      
-    ## [40] "exercise_wand_toys"                     
-    ## [41] "exercise_other_pets"                    
-    ## [42] "exercise_not_much"                      
-    ## [43] "exercise_other_cats"                    
-    ## [44] "exercise_walks_on_leash"                
-    ## [45] "exercise_playing_in_my_yard"            
-    ## [46] "exercise_another_pet"                   
-    ## [47] "exercise_jogging_together"              
-    ## [48] "exercise_dog_parks"                     
-    ## [49] "exercise_walks_off_leash"               
-    ## [50] "return_pet_none"                        
-    ## [51] "return_pet_new_baby"                    
-    ## [52] "return_pet_not_enough_time"             
-    ## [53] "return_pet_becomes_aggressive"          
-    ## [54] "return_pet_allergies_appear"            
-    ## [55] "return_pet_other"                       
-    ## [56] "return_pet_vet_becomes_expensive"       
-    ## [57] "return_pet_moving_too_far"              
-    ## [58] "return_pet_litter_box_issues"           
-    ## [59] "return_pet_not_allowed_new_living_space"
-    ## [60] "return_pet_scratches_furniture"         
-    ## [61] "return_pet_pet_sheds"                   
-    ## [62] "return_pet_jumps_on_counters"           
-    ## [63] "return_pet_too_playful"                 
-    ## [64] "return_pet_not_housebroken"             
-    ## [65] "return_pet_destructive"                 
-    ## [66] "return_pet_jumps_on_furniture"          
-    ## [67] "how_heard_other"                        
-    ## [68] "how_heard_website"                      
-    ## [69] "how_heard_twitter"                      
-    ## [70] "how_heard_email"                        
-    ## [71] "how_heard_event"                        
-    ## [72] "how_heard_insta"                        
-    ## [73] "how_heard_facebook"
+    ##                                          date_submitted 
+    ##                                                       0 
+    ##                                 ideal_adoption_timeline 
+    ##                                                       0 
+    ##                                     reason_for_adoption 
+    ##                                                      47 
+    ##                                         specific_animal 
+    ##                                                       0 
+    ##                                          adults_in_home 
+    ##                                                       5 
+    ##                                        children_in_home 
+    ##                                                      10 
+    ##                                     all_household_agree 
+    ##                                                       0 
+    ##                                               allergies 
+    ##                                                       0 
+    ##                                              home_owner 
+    ##                                                      27 
+    ##                                         home_pet_policy 
+    ##                                                    1177 
+    ##                                              experience 
+    ##                                                       0 
+    ##                                          budget_monthly 
+    ##                                                       6 
+    ##                                        budget_emergency 
+    ##                                                      21 
+    ##                                          home_alone_avg 
+    ##                                                     480 
+    ##                                          home_alone_max 
+    ##                                                     492 
+    ##                                                pet_kept 
+    ##                                                      30 
+    ##                                                exercise 
+    ##                                                      48 
+    ##                                                   needs 
+    ##                                                      48 
+    ##                                              return_pet 
+    ##                                                       0 
+    ##                                               how_heard 
+    ##                                                     920 
+    ##                                       outcome_trello_id 
+    ##                                                     276 
+    ##                                                 STATEFP 
+    ##                                                      53 
+    ##                                                COUNTYFP 
+    ##                                                      53 
+    ##                                                 TRACTCE 
+    ##                                                      53 
+    ##                                                   GEOID 
+    ##                                                      53 
+    ##                                                    NAME 
+    ##                                                      53 
+    ##                                                NAMELSAD 
+    ##                                                      53 
+    ##                                                   MTFCC 
+    ##                                                      53 
+    ##                                                FUNCSTAT 
+    ##                                                      53 
+    ##                                                   ALAND 
+    ##                                                      53 
+    ##                                                  AWATER 
+    ##                                                      53 
+    ##                                                INTPTLAT 
+    ##                                                      53 
+    ##                                                INTPTLON 
+    ##                                                      53 
+    ##                                                    City 
+    ##                                                       1 
+    ##                                                   State 
+    ##                                                       0 
+    ##                                                     ZIP 
+    ##                                                       4 
+    ##                                             animal_type 
+    ##                                                       0 
+    ##                              reason_for_adoption_myself 
+    ##                                                      47 
+    ##                               reason_for_adoption_other 
+    ##                                                      47 
+    ##                             reason_for_adoption_my_kids 
+    ##                                                      47 
+    ##                              reason_for_adoption_mouser 
+    ##                                                      47 
+    ##                                reason_for_adoption_gift 
+    ##                                                      47 
+    ##                          reason_for_adoption_protection 
+    ##                                                      47 
+    ##                                 all_household_agree_yes 
+    ##                                                       0 
+    ##                          all_household_agree_a_surprise 
+    ##                                                       0 
+    ##                                  all_household_agree_no 
+    ##                                                       0 
+    ##                               allergies_mildly_allergic 
+    ##                                                       0 
+    ##                                  allergies_no_allergies 
+    ##                                                       0 
+    ##                                      allergies_not_sure 
+    ##                                                       0 
+    ##                                 allergies_very_allergic 
+    ##                                                       0 
+    ##                             experience_euthanized_a_pet 
+    ##                                                       0 
+    ##                             experience_grew_up_with_pet 
+    ##                                                       0 
+    ##                         experience_given_pet_to_another 
+    ##                                                       0 
+    ##                             experience_pet_died_in_care 
+    ##                                                       0 
+    ##                           experience_currently_have_pet 
+    ##                                                       0 
+    ##       experience_currently_pets_in_my_home_but_not_mine 
+    ##                                                       0 
+    ##           experience_lived_wit_previous_housemates_pets 
+    ##                                                       0 
+    ##       experience_never_lived_with_or_owned_a_pet_before 
+    ##                                                       0 
+    ##                                 experience_pet_ran_away 
+    ##                                                       0 
+    ##                     experience_given_a_pet_to_a_shelter 
+    ##                                                       0 
+    ##                              experience_bred_sold_a_pet 
+    ##                                                       0 
+    ##                             experience_given_to_shelter 
+    ##                                                       0 
+    ##                                  experience_had_pet_die 
+    ##                                                       0 
+    ##                                   experience_euthanized 
+    ##                                                       0 
+    ##                                 experience_grew_up_with 
+    ##                                                       0 
+    ##                         experience_never_lived_or_owned 
+    ##                                                       0 
+    ##                     experience_lived_with_housemate_pet 
+    ##                                                       0 
+    ##                             experience_given_to_another 
+    ##                                                       0 
+    ##                                    experience_bred_sold 
+    ##                                                       0 
+    ##                                    pet_kept_inside_only 
+    ##                                                      30 
+    ##                                  pet_kept_leash_harness 
+    ##                                                      30 
+    ##                        pet_kept_inside_with_yard_access 
+    ##                                                      30 
+    ##                                 pet_kept_inside_outside 
+    ##                                                      30 
+    ##                                   pet_kept_outside_only 
+    ##                                                      30 
+    ##                          pet_kept_supervised_in_my_yard 
+    ##                                                      30 
+    ##                                          pet_kept_crate 
+    ##                                                      30 
+    ##                                          pet_kept_other 
+    ##                                                      30 
+    ## pet_kept_unsupervised_access_to_my_yard_doggie_door_etc 
+    ##                                                      30 
+    ##                                       exercise_toy_mice 
+    ##                                                      48 
+    ##                                      exercise_wand_toys 
+    ##                                                      48 
+    ##                                     exercise_other_pets 
+    ##                                                      48 
+    ##                                       exercise_not_much 
+    ##                                                      48 
+    ##                                     exercise_other_cats 
+    ##                                                      48 
+    ##                                 exercise_walks_on_leash 
+    ##                                                      48 
+    ##                             exercise_playing_in_my_yard 
+    ##                                                      48 
+    ##                                    exercise_another_pet 
+    ##                                                      48 
+    ##                               exercise_jogging_together 
+    ##                                                      48 
+    ##                                      exercise_dog_parks 
+    ##                                                      48 
+    ##                                exercise_walks_off_leash 
+    ##                                                      48 
+    ##                                         needs_nail_clip 
+    ##                                                      48 
+    ##                                   needs_scratching_post 
+    ##                                                      48 
+    ##                                          needs_not_sure 
+    ##                                                      48 
+    ##                                             needs_other 
+    ##                                                      48 
+    ##                                            needs_declaw 
+    ##                                                      48 
+    ##                              needs_professional_groomer 
+    ##                                                      48 
+    ##                                      needs_groom_myself 
+    ##                                                      48 
+    ##                                       needs_no_grooming 
+    ##                                                      48 
+    ##                                         return_pet_none 
+    ##                                                       0 
+    ##                                     return_pet_new_baby 
+    ##                                                       0 
+    ##                              return_pet_not_enough_time 
+    ##                                                       0 
+    ##                           return_pet_becomes_aggressive 
+    ##                                                       0 
+    ##                             return_pet_allergies_appear 
+    ##                                                       0 
+    ##                                        return_pet_other 
+    ##                                                       0 
+    ##                        return_pet_vet_becomes_expensive 
+    ##                                                       0 
+    ##                               return_pet_moving_too_far 
+    ##                                                       0 
+    ##                            return_pet_litter_box_issues 
+    ##                                                       0 
+    ##                 return_pet_not_allowed_new_living_space 
+    ##                                                       0 
+    ##                          return_pet_scratches_furniture 
+    ##                                                       0 
+    ##                                    return_pet_pet_sheds 
+    ##                                                       0 
+    ##                            return_pet_jumps_on_counters 
+    ##                                                       0 
+    ##                                  return_pet_too_playful 
+    ##                                                       0 
+    ##                              return_pet_not_housebroken 
+    ##                                                       0 
+    ##                                  return_pet_destructive 
+    ##                                                       0 
+    ##                           return_pet_jumps_on_furniture 
+    ##                                                       0 
+    ##                                         how_heard_other 
+    ##                                                     920 
+    ##                                       how_heard_website 
+    ##                                                     920 
+    ##                                       how_heard_twitter 
+    ##                                                     920 
+    ##                                         how_heard_email 
+    ##                                                     920 
+    ##                                         how_heard_event 
+    ##                                                     920 
+    ##                                         how_heard_insta 
+    ##                                                     920 
+    ##                                      how_heard_facebook 
+    ##                                                     920
 
 ``` r
+# Structure ----
 nrow(apps_clean)
 ```
 
@@ -2470,16 +2787,16 @@ nrow(apps_clean)
 head(apps_clean)
 ```
 
-    ## # A tibble: 6 x 73
-    ##      X1 date_submitted ideal_adoption_~ reason_for_adop~ specific_animal
-    ##   <int> <chr>          <chr>            <chr>            <lgl>          
-    ## 1     1 12/31/2018     today            myself,other     FALSE          
-    ## 2     2 12/31/2018     today            myself           FALSE          
-    ## 3     3 12/31/2018     today            myself           TRUE           
-    ## 4     4 12/31/2018     today            myself           TRUE           
-    ## 5     5 12/31/2018     one-month-or-mo~ myself           TRUE           
-    ## 6     6 12/30/2018     today            myself           TRUE           
-    ## # ... with 68 more variables: adults_in_home <dbl>,
+    ## # A tibble: 6 x 121
+    ##   date_submitted ideal_adoption_~ reason_for_adop~ specific_animal
+    ##   <chr>          <chr>            <chr>            <lgl>          
+    ## 1 12/31/2018     today            myself,other     FALSE          
+    ## 2 12/31/2018     today            myself           FALSE          
+    ## 3 12/31/2018     today            myself           TRUE           
+    ## 4 12/31/2018     today            myself           TRUE           
+    ## 5 12/31/2018     one-month-or-mo~ myself           TRUE           
+    ## 6 12/30/2018     today            myself           TRUE           
+    ## # ... with 117 more variables: adults_in_home <dbl>,
     ## #   children_in_home <dbl>, all_household_agree <chr>, allergies <chr>,
     ## #   home_owner <fct>, home_pet_policy <fct>, experience <chr>,
     ## #   budget_monthly <dbl>, budget_emergency <dbl>, home_alone_avg <dbl>,
@@ -2488,229 +2805,197 @@ head(apps_clean)
     ## #   STATEFP <fct>, COUNTYFP <fct>, TRACTCE <fct>, GEOID <fct>, NAME <fct>,
     ## #   NAMELSAD <fct>, MTFCC <fct>, FUNCSTAT <fct>, ALAND <fct>,
     ## #   AWATER <fct>, INTPTLAT <dbl>, INTPTLON <dbl>, City <fct>, State <fct>,
-    ## #   ZIP <fct>, animal_type <chr>, exercise_toy_mice <lgl>,
-    ## #   exercise_wand_toys <lgl>, exercise_other_pets <lgl>,
-    ## #   exercise_not_much <lgl>, exercise_other_cats <lgl>,
-    ## #   exercise_walks_on_leash <lgl>, exercise_playing_in_my_yard <lgl>,
-    ## #   exercise_another_pet <lgl>, exercise_jogging_together <lgl>,
-    ## #   exercise_dog_parks <lgl>, exercise_walks_off_leash <lgl>,
+    ## #   ZIP <fct>, animal_type <chr>, reason_for_adoption_myself <lgl>,
+    ## #   reason_for_adoption_other <lgl>, reason_for_adoption_my_kids <lgl>,
+    ## #   reason_for_adoption_mouser <lgl>, reason_for_adoption_gift <lgl>,
+    ## #   reason_for_adoption_protection <lgl>, all_household_agree_yes <lgl>,
+    ## #   all_household_agree_a_surprise <lgl>, all_household_agree_no <lgl>,
+    ## #   allergies_mildly_allergic <lgl>, allergies_no_allergies <lgl>,
+    ## #   allergies_not_sure <lgl>, allergies_very_allergic <lgl>,
+    ## #   experience_euthanized_a_pet <lgl>, experience_grew_up_with_pet <lgl>,
+    ## #   experience_given_pet_to_another <lgl>,
+    ## #   experience_pet_died_in_care <lgl>,
+    ## #   experience_currently_have_pet <lgl>,
+    ## #   experience_currently_pets_in_my_home_but_not_mine <lgl>,
+    ## #   experience_lived_wit_previous_housemates_pets <lgl>,
+    ## #   experience_never_lived_with_or_owned_a_pet_before <lgl>,
+    ## #   experience_pet_ran_away <lgl>,
+    ## #   experience_given_a_pet_to_a_shelter <lgl>,
+    ## #   experience_bred_sold_a_pet <lgl>, experience_given_to_shelter <lgl>,
+    ## #   experience_had_pet_die <lgl>, experience_euthanized <lgl>,
+    ## #   experience_grew_up_with <lgl>, experience_never_lived_or_owned <lgl>,
+    ## #   experience_lived_with_housemate_pet <lgl>,
+    ## #   experience_given_to_another <lgl>, experience_bred_sold <lgl>,
+    ## #   pet_kept_inside_only <lgl>, pet_kept_leash_harness <lgl>,
+    ## #   pet_kept_inside_with_yard_access <lgl>, pet_kept_inside_outside <lgl>,
+    ## #   pet_kept_outside_only <lgl>, pet_kept_supervised_in_my_yard <lgl>,
+    ## #   pet_kept_crate <lgl>, pet_kept_other <lgl>,
+    ## #   pet_kept_unsupervised_access_to_my_yard_doggie_door_etc <lgl>,
+    ## #   exercise_toy_mice <lgl>, exercise_wand_toys <lgl>,
+    ## #   exercise_other_pets <lgl>, exercise_not_much <lgl>,
+    ## #   exercise_other_cats <lgl>, exercise_walks_on_leash <lgl>,
+    ## #   exercise_playing_in_my_yard <lgl>, exercise_another_pet <lgl>,
+    ## #   exercise_jogging_together <lgl>, exercise_dog_parks <lgl>,
+    ## #   exercise_walks_off_leash <lgl>, needs_nail_clip <lgl>,
+    ## #   needs_scratching_post <lgl>, needs_not_sure <lgl>, needs_other <lgl>,
+    ## #   needs_declaw <lgl>, needs_professional_groomer <lgl>,
+    ## #   needs_groom_myself <lgl>, needs_no_grooming <lgl>,
     ## #   return_pet_none <lgl>, return_pet_new_baby <lgl>,
     ## #   return_pet_not_enough_time <lgl>, return_pet_becomes_aggressive <lgl>,
     ## #   return_pet_allergies_appear <lgl>, return_pet_other <lgl>,
-    ## #   return_pet_vet_becomes_expensive <lgl>,
-    ## #   return_pet_moving_too_far <lgl>, return_pet_litter_box_issues <lgl>,
-    ## #   return_pet_not_allowed_new_living_space <lgl>,
-    ## #   return_pet_scratches_furniture <lgl>, return_pet_pet_sheds <lgl>,
-    ## #   return_pet_jumps_on_counters <lgl>, return_pet_too_playful <lgl>,
-    ## #   return_pet_not_housebroken <lgl>, return_pet_destructive <lgl>,
-    ## #   return_pet_jumps_on_furniture <lgl>, how_heard_other <lgl>,
-    ## #   how_heard_website <lgl>, how_heard_twitter <lgl>,
-    ## #   how_heard_email <lgl>, how_heard_event <lgl>, how_heard_insta <lgl>,
-    ## #   how_heard_facebook <lgl>
+    ## #   return_pet_vet_becomes_expensive <lgl>, ...
 
 ``` r
 str(apps_clean)
 ```
 
-    ## Classes 'tbl_df', 'tbl' and 'data.frame':    1907 obs. of  73 variables:
-    ##  $ X1                                     : int  1 2 3 4 5 6 7 8 9 10 ...
-    ##  $ date_submitted                         : chr  "12/31/2018" "12/31/2018" "12/31/2018" "12/31/2018" ...
-    ##  $ ideal_adoption_timeline                : chr  "today" "today" "today" "today" ...
-    ##  $ reason_for_adoption                    : chr  "myself,other" "myself" "myself" "myself" ...
-    ##  $ specific_animal                        : logi  FALSE FALSE TRUE TRUE TRUE TRUE ...
-    ##  $ adults_in_home                         : num  1 1 1 1 1 0 1 1 3 2 ...
-    ##  $ children_in_home                       : num  0 0 0 0 0 0 0 0 1 0 ...
-    ##  $ all_household_agree                    : chr  "yes" "yes" "yes" "yes" ...
-    ##  $ allergies                              : chr  "mildly-allergic" "no-allergies" "no-allergies" "no-allergies" ...
-    ##  $ home_owner                             : Factor w/ 5 levels "company","family-friend",..: 1 1 5 3 5 5 1 5 1 3 ...
-    ##  $ home_pet_policy                        : Factor w/ 5 levels "havent-asked",..: 4 1 NA NA NA NA 4 NA 4 NA ...
-    ##  $ experience                             : chr  "euthanized-a-pet,grew-up-with-pet" "given-pet-to-another" "given-pet-to-another,pet-died-in-care,euthanized-a-pet,grew-up-with-pet,currently-have-pet,currently-pets-in-my"| __truncated__ "euthanized-a-pet,grew-up-with-pet,currently-have-pet,lived-wit-previous-housemates-pets" ...
-    ##  $ budget_monthly                         : num  150 120 125 150 75 200 600 100 300 100 ...
-    ##  $ budget_emergency                       : num  1000 220 3000 500 1000 2000 10000 5000 500 2000 ...
-    ##  $ home_alone_avg                         : num  6 4 NA 7 10 8 0 8 NA 10 ...
-    ##  $ home_alone_max                         : num  6 6 3 10 12 18 8 9 NA 10 ...
-    ##  $ pet_kept                               : chr  "inside-only,leash-harness" "inside-only" "inside-only" "leash-harness" ...
-    ##  $ exercise                               : chr  "toy-mice,wand-toys" "wand-toys,toy-mice" "toy-mice,wand-toys,other-pets" "other-pets,toy-mice" ...
-    ##  $ needs                                  : chr  "nail-clip,scratching-post" "scratching-post,nail-clip" "nail-clip,scratching-post" "scratching-post" ...
-    ##  $ return_pet                             : chr  "none" "new-baby,not-enough-time" "none,becomes-aggressive" "none" ...
-    ##  $ how_heard                              : chr  NA NA "other" "website" ...
-    ##  $ outcome_trello_id                      : chr  NA NA "5bfecbeaf9c3e187eb632753" NA ...
-    ##  $ STATEFP                                : Factor w/ 2 levels "34","42": 2 2 2 2 2 2 2 2 2 2 ...
-    ##  $ COUNTYFP                               : Factor w/ 30 levels "1","3","5","7",..: 27 27 27 27 27 27 27 24 18 27 ...
-    ##  $ TRACTCE                                : Factor w/ 676 levels "100","200","300",..: 7 8 100 85 196 215 146 449 550 44 ...
-    ##  $ GEOID                                  : Factor w/ 693 levels "34001010501",..: 372 373 452 438 532 550 486 315 227 405 ...
-    ##  $ NAME                                   : Factor w/ 676 levels "1","2","3","4.01",..: 7 8 100 85 196 215 146 449 550 44 ...
-    ##  $ NAMELSAD                               : Factor w/ 676 levels "1","10.01","10.02",..: 550 604 657 637 146 245 91 206 483 366 ...
-    ##  $ MTFCC                                  : Factor w/ 1 level "G5020": 1 1 1 1 1 1 1 1 1 1 ...
-    ##  $ FUNCSTAT                               : Factor w/ 1 level "S": 1 1 1 1 1 1 1 1 1 1 ...
-    ##  $ ALAND                                  : Factor w/ 693 levels "99957","105511",..: 8 31 37 205 218 367 259 638 447 91 ...
-    ##  $ AWATER                                 : Factor w/ 295 levels "0","57","408",..: 1 51 1 1 1 171 121 1 250 1 ...
-    ##  $ INTPTLAT                               : num  39.9 40 40 39.9 40 ...
-    ##  $ INTPTLON                               : num  -75.2 -75.2 -75.2 -75.2 -75.1 ...
-    ##  $ City                                   : Factor w/ 252 levels "ABINGDON","ABINGTON",..: 184 184 184 184 184 184 184 97 93 184 ...
-    ##  $ State                                  : Factor w/ 14 levels "CA","CO","CT",..: 14 14 14 14 14 14 14 14 14 14 ...
-    ##  $ ZIP                                    : Factor w/ 304 levels "01077","01945",..: 200 196 197 231 222 217 195 161 159 234 ...
-    ##  $ animal_type                            : chr  "cat" "cat" "cat" "cat" ...
-    ##  $ exercise_toy_mice                      : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
-    ##  $ exercise_wand_toys                     : logi  TRUE TRUE TRUE FALSE TRUE TRUE ...
-    ##  $ exercise_other_pets                    : logi  FALSE FALSE TRUE TRUE TRUE TRUE ...
-    ##  $ exercise_not_much                      : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_other_cats                    : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_walks_on_leash                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_playing_in_my_yard            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_another_pet                   : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_jogging_together              : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_dog_parks                     : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ exercise_walks_off_leash               : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_none                        : logi  TRUE FALSE TRUE TRUE FALSE FALSE ...
-    ##  $ return_pet_new_baby                    : logi  FALSE TRUE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_not_enough_time             : logi  FALSE TRUE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_becomes_aggressive          : logi  FALSE FALSE TRUE FALSE TRUE TRUE ...
-    ##  $ return_pet_allergies_appear            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_other                       : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_vet_becomes_expensive       : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_moving_too_far              : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_litter_box_issues           : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_not_allowed_new_living_space: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_scratches_furniture         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_pet_sheds                   : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_jumps_on_counters           : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_too_playful                 : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_not_housebroken             : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_destructive                 : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ return_pet_jumps_on_furniture          : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-    ##  $ how_heard_other                        : logi  NA NA TRUE FALSE TRUE FALSE ...
-    ##  $ how_heard_website                      : logi  NA NA FALSE TRUE FALSE TRUE ...
-    ##  $ how_heard_twitter                      : logi  NA NA FALSE FALSE FALSE FALSE ...
-    ##  $ how_heard_email                        : logi  NA NA FALSE FALSE FALSE FALSE ...
-    ##  $ how_heard_event                        : logi  NA NA FALSE FALSE FALSE FALSE ...
-    ##  $ how_heard_insta                        : logi  NA NA FALSE FALSE FALSE FALSE ...
-    ##  $ how_heard_facebook                     : logi  NA NA FALSE FALSE FALSE FALSE ...
-    ##  - attr(*, "spec")=List of 2
-    ##   ..$ cols   :List of 37
-    ##   .. ..$ X1                     : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ date_submitted         : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ ideal_adoption_timeline: list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ reason_for_adoption    : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ specific_animal        : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_logical" "collector"
-    ##   .. ..$ adults_in_home         : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ children_in_home       : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ all_household_agree    : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ allergies              : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ home_owner             : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ home_pet_policy        : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ experience             : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ budget_monthly         : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ budget_emergency       : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ home_alone_avg         : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ home_alone_max         : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ pet_kept               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ exercise               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ needs                  : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ return_pet             : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ how_heard              : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ outcome_trello_id      : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ STATEFP                : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ COUNTYFP               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ TRACTCE                : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ GEOID                  : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
-    ##   .. ..$ NAME                   : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
-    ##   .. ..$ NAMELSAD               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ MTFCC                  : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ FUNCSTAT               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ ALAND                  : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ AWATER                 : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-    ##   .. ..$ INTPTLAT               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
-    ##   .. ..$ INTPTLON               : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
-    ##   .. ..$ City                   : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ State                  : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   .. ..$ ZIP                    : list()
-    ##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-    ##   ..$ default: list()
-    ##   .. ..- attr(*, "class")= chr  "collector_guess" "collector"
-    ##   ..- attr(*, "class")= chr "col_spec"
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    1907 obs. of  121 variables:
+    ##  $ date_submitted                                         : chr  "12/31/2018" "12/31/2018" "12/31/2018" "12/31/2018" ...
+    ##  $ ideal_adoption_timeline                                : chr  "today" "today" "today" "today" ...
+    ##  $ reason_for_adoption                                    : chr  "myself,other" "myself" "myself" "myself" ...
+    ##  $ specific_animal                                        : logi  FALSE FALSE TRUE TRUE TRUE TRUE ...
+    ##  $ adults_in_home                                         : num  1 1 1 1 1 0 1 1 3 2 ...
+    ##  $ children_in_home                                       : num  0 0 0 0 0 0 0 0 1 0 ...
+    ##  $ all_household_agree                                    : chr  "yes" "yes" "yes" "yes" ...
+    ##  $ allergies                                              : chr  "mildly-allergic" "no-allergies" "no-allergies" "no-allergies" ...
+    ##  $ home_owner                                             : Factor w/ 5 levels "company","family-friend",..: 1 1 5 3 5 5 1 5 1 3 ...
+    ##  $ home_pet_policy                                        : Factor w/ 5 levels "havent-asked",..: 4 1 NA NA NA NA 4 NA 4 NA ...
+    ##  $ experience                                             : chr  "euthanized-a-pet,grew-up-with-pet" "given-pet-to-another" "given-pet-to-another,pet-died-in-care,euthanized-a-pet,grew-up-with-pet,currently-have-pet,currently-pets-in-my"| __truncated__ "euthanized-a-pet,grew-up-with-pet,currently-have-pet,lived-wit-previous-housemates-pets" ...
+    ##  $ budget_monthly                                         : num  150 120 125 150 75 200 600 100 300 100 ...
+    ##  $ budget_emergency                                       : num  1000 220 3000 500 1000 2000 10000 5000 500 2000 ...
+    ##  $ home_alone_avg                                         : num  6 4 NA 7 10 8 0 8 NA 10 ...
+    ##  $ home_alone_max                                         : num  6 6 3 10 12 18 8 9 NA 10 ...
+    ##  $ pet_kept                                               : chr  "inside-only,leash-harness" "inside-only" "inside-only" "leash-harness" ...
+    ##  $ exercise                                               : chr  "toy-mice,wand-toys" "wand-toys,toy-mice" "toy-mice,wand-toys,other-pets" "other-pets,toy-mice" ...
+    ##  $ needs                                                  : chr  "nail-clip,scratching-post" "scratching-post,nail-clip" "nail-clip,scratching-post" "scratching-post" ...
+    ##  $ return_pet                                             : chr  "none" "new-baby,not-enough-time" "none,becomes-aggressive" "none" ...
+    ##  $ how_heard                                              : chr  NA NA "other" "website" ...
+    ##  $ outcome_trello_id                                      : chr  NA NA "5bfecbeaf9c3e187eb632753" NA ...
+    ##  $ STATEFP                                                : Factor w/ 2 levels "34","42": 2 2 2 2 2 2 2 2 2 2 ...
+    ##  $ COUNTYFP                                               : Factor w/ 30 levels "1","3","5","7",..: 27 27 27 27 27 27 27 24 18 27 ...
+    ##  $ TRACTCE                                                : Factor w/ 676 levels "100","200","300",..: 7 8 100 85 196 215 146 449 550 44 ...
+    ##  $ GEOID                                                  : Factor w/ 693 levels "34001010501",..: 372 373 452 438 532 550 486 315 227 405 ...
+    ##  $ NAME                                                   : Factor w/ 676 levels "1","2","3","4.01",..: 7 8 100 85 196 215 146 449 550 44 ...
+    ##  $ NAMELSAD                                               : Factor w/ 676 levels "1","10.01","10.02",..: 550 604 657 637 146 245 91 206 483 366 ...
+    ##  $ MTFCC                                                  : Factor w/ 1 level "G5020": 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ FUNCSTAT                                               : Factor w/ 1 level "S": 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ ALAND                                                  : Factor w/ 693 levels "99957","105511",..: 8 31 37 205 218 367 259 638 447 91 ...
+    ##  $ AWATER                                                 : Factor w/ 295 levels "0","57","408",..: 1 51 1 1 1 171 121 1 250 1 ...
+    ##  $ INTPTLAT                                               : num  39.9 40 40 39.9 40 ...
+    ##  $ INTPTLON                                               : num  -75.2 -75.2 -75.2 -75.2 -75.1 ...
+    ##  $ City                                                   : Factor w/ 251 levels "ABINGDON","ABINGTON",..: 184 184 184 184 184 184 184 97 93 184 ...
+    ##  $ State                                                  : Factor w/ 14 levels "CA","CO","CT",..: 14 14 14 14 14 14 14 14 14 14 ...
+    ##  $ ZIP                                                    : Factor w/ 304 levels "01077","01945",..: 200 196 197 231 222 217 195 161 159 234 ...
+    ##  $ animal_type                                            : chr  "cat" "cat" "cat" "cat" ...
+    ##  $ reason_for_adoption_myself                             : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+    ##  $ reason_for_adoption_other                              : logi  TRUE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ reason_for_adoption_my_kids                            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ reason_for_adoption_mouser                             : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ reason_for_adoption_gift                               : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ reason_for_adoption_protection                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ all_household_agree_yes                                : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+    ##  $ all_household_agree_a_surprise                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ all_household_agree_no                                 : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ allergies_mildly_allergic                              : logi  TRUE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ allergies_no_allergies                                 : logi  FALSE TRUE TRUE TRUE TRUE TRUE ...
+    ##  $ allergies_not_sure                                     : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ allergies_very_allergic                                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_euthanized_a_pet                            : logi  TRUE FALSE TRUE TRUE FALSE FALSE ...
+    ##  $ experience_grew_up_with_pet                            : logi  TRUE FALSE TRUE TRUE TRUE FALSE ...
+    ##  $ experience_given_pet_to_another                        : logi  FALSE TRUE TRUE FALSE FALSE FALSE ...
+    ##  $ experience_pet_died_in_care                            : logi  FALSE FALSE TRUE FALSE FALSE FALSE ...
+    ##  $ experience_currently_have_pet                          : logi  FALSE FALSE TRUE TRUE TRUE TRUE ...
+    ##  $ experience_currently_pets_in_my_home_but_not_mine      : logi  FALSE FALSE TRUE FALSE FALSE FALSE ...
+    ##  $ experience_lived_wit_previous_housemates_pets          : logi  FALSE FALSE FALSE TRUE FALSE FALSE ...
+    ##  $ experience_never_lived_with_or_owned_a_pet_before      : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_pet_ran_away                                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_given_a_pet_to_a_shelter                    : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_bred_sold_a_pet                             : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_given_to_shelter                            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_had_pet_die                                 : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_euthanized                                  : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_grew_up_with                                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_never_lived_or_owned                        : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_lived_with_housemate_pet                    : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_given_to_another                            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ experience_bred_sold                                   : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_inside_only                                   : logi  TRUE TRUE TRUE FALSE TRUE TRUE ...
+    ##  $ pet_kept_leash_harness                                 : logi  TRUE FALSE FALSE TRUE FALSE FALSE ...
+    ##  $ pet_kept_inside_with_yard_access                       : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_inside_outside                                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_outside_only                                  : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_supervised_in_my_yard                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_crate                                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_other                                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ pet_kept_unsupervised_access_to_my_yard_doggie_door_etc: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_toy_mice                                      : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+    ##  $ exercise_wand_toys                                     : logi  TRUE TRUE TRUE FALSE TRUE TRUE ...
+    ##  $ exercise_other_pets                                    : logi  FALSE FALSE TRUE TRUE TRUE TRUE ...
+    ##  $ exercise_not_much                                      : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_other_cats                                    : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_walks_on_leash                                : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_playing_in_my_yard                            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_another_pet                                   : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_jogging_together                              : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_dog_parks                                     : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ exercise_walks_off_leash                               : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_nail_clip                                        : logi  TRUE TRUE TRUE FALSE TRUE TRUE ...
+    ##  $ needs_scratching_post                                  : logi  TRUE TRUE TRUE TRUE TRUE FALSE ...
+    ##  $ needs_not_sure                                         : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_other                                            : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_declaw                                           : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_professional_groomer                             : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_groom_myself                                     : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ needs_no_grooming                                      : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
+    ##  $ return_pet_none                                        : logi  TRUE FALSE TRUE TRUE FALSE FALSE ...
+    ##  $ return_pet_new_baby                                    : logi  FALSE TRUE FALSE FALSE FALSE FALSE ...
+    ##   [list output truncated]
 
 ``` r
 summary(apps_clean)
 ```
 
-    ##        X1         date_submitted     ideal_adoption_timeline
-    ##  Min.   :   1.0   Length:1907        Length:1907            
-    ##  1st Qu.: 239.0   Class :character   Class :character       
-    ##  Median : 477.0   Mode  :character   Mode  :character       
-    ##  Mean   : 529.4                                             
-    ##  3rd Qu.: 792.5                                             
-    ##  Max.   :1269.0                                             
-    ##                                                             
-    ##  reason_for_adoption specific_animal adults_in_home   children_in_home
-    ##  Length:1907         Mode :logical   Min.   : 0.000   Min.   :0.0000  
-    ##  Class :character    FALSE:839       1st Qu.: 0.000   1st Qu.:0.0000  
-    ##  Mode  :character    TRUE :1068      Median : 1.000   Median :0.0000  
-    ##                                      Mean   : 1.112   Mean   :0.6226  
-    ##                                      3rd Qu.: 1.000   3rd Qu.:1.0000  
-    ##                                      Max.   :15.000   Max.   :9.0000  
-    ##                                      NA's   :5        NA's   :10      
-    ##  all_household_agree  allergies                           home_owner 
-    ##  Length:1907         Length:1907        company                :530  
-    ##  Class :character    Class :character   family-friend          : 98  
-    ##  Mode  :character    Mode  :character   family-member-or-friend:138  
-    ##                                         landlord               :227  
-    ##                                         myself                 :887  
-    ##                                         NA's                   : 27  
-    ##                                                                      
-    ##             home_pet_policy  experience        budget_monthly     
-    ##  havent-asked       : 103   Length:1907        Min.   :      0.0  
-    ##  no-but-pets-allowed:  64   Class :character   1st Qu.:    100.0  
-    ##  not-yet            :  14   Mode  :character   Median :    200.0  
-    ##  yes                : 421                      Mean   :    928.2  
-    ##  yes-with-pet-policy: 128                      3rd Qu.:    300.0  
-    ##  NA's               :1177                      Max.   :1000000.0  
-    ##                                                                   
-    ##  budget_emergency        home_alone_avg   home_alone_max  
-    ##  Min.   :            0   Min.   : 0.000   Min.   : 0.000  
-    ##  1st Qu.:          400   1st Qu.: 4.000   1st Qu.: 5.000  
-    ##  Median :         1000   Median : 6.000   Median : 8.000  
-    ##  Mean   :    524388695   Mean   : 5.704   Mean   : 7.478  
-    ##  3rd Qu.:         2000   3rd Qu.: 8.000   3rd Qu.: 9.000  
-    ##  Max.   :1000000000000   Max.   :24.000   Max.   :48.000  
-    ##                          NA's   :480      NA's   :492     
-    ##    pet_kept           exercise            needs          
+    ##  date_submitted     ideal_adoption_timeline reason_for_adoption
+    ##  Length:1907        Length:1907             Length:1907        
+    ##  Class :character   Class :character        Class :character   
+    ##  Mode  :character   Mode  :character        Mode  :character   
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##  specific_animal adults_in_home   children_in_home all_household_agree
+    ##  Mode :logical   Min.   : 0.000   Min.   :0.0000   Length:1907        
+    ##  FALSE:839       1st Qu.: 0.000   1st Qu.:0.0000   Class :character   
+    ##  TRUE :1068      Median : 1.000   Median :0.0000   Mode  :character   
+    ##                  Mean   : 1.112   Mean   :0.6226                      
+    ##                  3rd Qu.: 1.000   3rd Qu.:1.0000                      
+    ##                  Max.   :15.000   Max.   :9.0000                      
+    ##                  NA's   :5        NA's   :10                          
+    ##   allergies                           home_owner 
+    ##  Length:1907        company                :530  
+    ##  Class :character   family-friend          : 98  
+    ##  Mode  :character   family-member-or-friend:138  
+    ##                     landlord               :227  
+    ##                     myself                 :887  
+    ##                     NA's                   : 27  
+    ##                                                  
+    ##             home_pet_policy  experience        budget_monthly  
+    ##  havent-asked       : 103   Length:1907        Min.   :   0.0  
+    ##  no-but-pets-allowed:  64   Class :character   1st Qu.: 100.0  
+    ##  not-yet            :  14   Mode  :character   Median : 200.0  
+    ##  yes                : 421                      Mean   : 259.2  
+    ##  yes-with-pet-policy: 128                      3rd Qu.: 300.0  
+    ##  NA's               :1177                      Max.   :5000.0  
+    ##                                                NA's   :6       
+    ##  budget_emergency home_alone_avg   home_alone_max     pet_kept        
+    ##  Min.   :    0    Min.   : 0.000   Min.   : 0.000   Length:1907       
+    ##  1st Qu.:  400    1st Qu.: 4.000   1st Qu.: 5.000   Class :character  
+    ##  Median : 1000    Median : 6.000   Median : 8.000   Mode  :character  
+    ##  Mean   : 1495    Mean   : 5.704   Mean   : 7.478                     
+    ##  3rd Qu.: 2000    3rd Qu.: 8.000   3rd Qu.: 9.000                     
+    ##  Max.   :10000    Max.   :24.000   Max.   :48.000                     
+    ##  NA's   :21       NA's   :480      NA's   :492                        
+    ##    exercise            needs            return_pet       
     ##  Length:1907        Length:1907        Length:1907       
     ##  Class :character   Class :character   Class :character  
     ##  Mode  :character   Mode  :character   Mode  :character  
@@ -2718,62 +3003,214 @@ summary(apps_clean)
     ##                                                          
     ##                                                          
     ##                                                          
-    ##   return_pet         how_heard         outcome_trello_id  STATEFP    
-    ##  Length:1907        Length:1907        Length:1907        34  : 146  
-    ##  Class :character   Class :character   Class :character   42  :1708  
-    ##  Mode  :character   Mode  :character   Mode  :character   NA's:  53  
-    ##                                                                      
-    ##                                                                      
-    ##                                                                      
-    ##                                                                      
-    ##     COUNTYFP       TRACTCE             GEOID           NAME     
-    ##  101    :1332   9000   :  25   42101009000:  25   90     :  25  
-    ##  91     : 139   3100   :  23   42101003100:  23   31     :  23  
-    ##  45     : 109   8701   :  20   42101008701:  20   87.01  :  20  
-    ##  17     :  72   3002   :  18   42101003002:  18   30.02  :  18  
-    ##  7      :  58   8702   :  15   42101008702:  15   87.02  :  15  
-    ##  (Other): 144   (Other):1753   (Other)    :1753   (Other):1753  
-    ##  NA's   :  53   NA's   :  53   NA's       :  53   NA's   :  53  
-    ##     NAMELSAD      MTFCC      FUNCSTAT        ALAND          AWATER    
-    ##  90     :  25   G5020:1854   S   :1854   434900 :  25   0      :1333  
-    ##  31     :  23   NA's :  53   NA's:  53   395908 :  23   30728  :  13  
-    ##  87.01  :  20                            259546 :  20   32791  :  13  
-    ##  30.02  :  18                            226951 :  18   56473  :  10  
-    ##  87.02  :  15                            283544 :  15   7087   :   9  
-    ##  (Other):1753                            (Other):1753   (Other): 476  
-    ##  NA's   :  53                            NA's   :  53   NA's   :  53  
-    ##     INTPTLAT        INTPTLON                City          State     
-    ##  Min.   :38.99   Min.   :-80.31   PHILADELPHIA:1344   PA     :1711  
-    ##  1st Qu.:39.94   1st Qu.:-75.22   CAMDEN      :  14   NJ     : 147  
-    ##  Median :39.97   Median :-75.17   BENSALEM    :  12   DE     :  17  
-    ##  Mean   :40.01   Mean   :-75.17   GLENSIDE    :  12   MD     :  11  
-    ##  3rd Qu.:40.04   3rd Qu.:-75.12   DARBY       :  11   NY     :   9  
-    ##  Max.   :41.37   Max.   :-73.96   UPPER DARBY :  11   MA     :   4  
-    ##  NA's   :53      NA's   :53       (Other)     : 503   (Other):   8  
-    ##       ZIP       animal_type        exercise_toy_mice exercise_wand_toys
-    ##  19104  : 125   Length:1907        Mode :logical     Mode :logical     
-    ##  19143  :  99   Class :character   FALSE:709         FALSE:856         
-    ##  19146  :  80   Mode  :character   TRUE :1150        TRUE :1003        
-    ##  19147  :  63                      NA's :48          NA's :48          
-    ##  19148  :  60                                                          
-    ##  (Other):1476                                                          
-    ##  NA's   :   4                                                          
-    ##  exercise_other_pets exercise_not_much exercise_other_cats
-    ##  Mode :logical       Mode :logical     Mode :logical      
-    ##  FALSE:1797          FALSE:1658        FALSE:1415         
-    ##  TRUE :62            TRUE :201         TRUE :444          
-    ##  NA's :48            NA's :48          NA's :48           
+    ##   how_heard         outcome_trello_id  STATEFP        COUNTYFP   
+    ##  Length:1907        Length:1907        34  : 146   101    :1332  
+    ##  Class :character   Class :character   42  :1708   91     : 139  
+    ##  Mode  :character   Mode  :character   NA's:  53   45     : 109  
+    ##                                                    17     :  72  
+    ##                                                    7      :  58  
+    ##                                                    (Other): 144  
+    ##                                                    NA's   :  53  
+    ##     TRACTCE             GEOID           NAME         NAMELSAD   
+    ##  9000   :  25   42101009000:  25   90     :  25   90     :  25  
+    ##  3100   :  23   42101003100:  23   31     :  23   31     :  23  
+    ##  8701   :  20   42101008701:  20   87.01  :  20   87.01  :  20  
+    ##  3002   :  18   42101003002:  18   30.02  :  18   30.02  :  18  
+    ##  8702   :  15   42101008702:  15   87.02  :  15   87.02  :  15  
+    ##  (Other):1753   (Other)    :1753   (Other):1753   (Other):1753  
+    ##  NA's   :  53   NA's       :  53   NA's   :  53   NA's   :  53  
+    ##    MTFCC      FUNCSTAT        ALAND          AWATER        INTPTLAT    
+    ##  G5020:1854   S   :1854   434900 :  25   0      :1333   Min.   :38.99  
+    ##  NA's :  53   NA's:  53   395908 :  23   30728  :  13   1st Qu.:39.94  
+    ##                           259546 :  20   32791  :  13   Median :39.97  
+    ##                           226951 :  18   56473  :  10   Mean   :40.01  
+    ##                           283544 :  15   7087   :   9   3rd Qu.:40.04  
+    ##                           (Other):1753   (Other): 476   Max.   :41.37  
+    ##                           NA's   :  53   NA's   :  53   NA's   :53     
+    ##     INTPTLON                City          State           ZIP      
+    ##  Min.   :-80.31   PHILADELPHIA:1344   PA     :1711   19104  : 125  
+    ##  1st Qu.:-75.22   CAMDEN      :  14   NJ     : 147   19143  :  99  
+    ##  Median :-75.17   BENSALEM    :  12   DE     :  17   19146  :  80  
+    ##  Mean   :-75.17   GLENSIDE    :  12   MD     :  11   19147  :  63  
+    ##  3rd Qu.:-75.12   DARBY       :  11   NY     :   9   19148  :  60  
+    ##  Max.   :-73.96   (Other)     : 513   MA     :   4   (Other):1476  
+    ##  NA's   :53       NA's        :   1   (Other):   8   NA's   :   4  
+    ##  animal_type        reason_for_adoption_myself reason_for_adoption_other
+    ##  Length:1907        Mode :logical              Mode :logical            
+    ##  Class :character   FALSE:214                  FALSE:1771               
+    ##  Mode  :character   TRUE :1646                 TRUE :89                 
+    ##                     NA's :47                   NA's :47                 
+    ##                                                                         
+    ##                                                                         
+    ##                                                                         
+    ##  reason_for_adoption_my_kids reason_for_adoption_mouser
+    ##  Mode :logical               Mode :logical             
+    ##  FALSE:1431                  FALSE:1755                
+    ##  TRUE :429                   TRUE :105                 
+    ##  NA's :47                    NA's :47                  
+    ##                                                        
+    ##                                                        
+    ##                                                        
+    ##  reason_for_adoption_gift reason_for_adoption_protection
+    ##  Mode :logical            Mode :logical                 
+    ##  FALSE:1793               FALSE:1840                    
+    ##  TRUE :67                 TRUE :20                      
+    ##  NA's :47                 NA's :47                      
+    ##                                                         
+    ##                                                         
+    ##                                                         
+    ##  all_household_agree_yes all_household_agree_a_surprise
+    ##  Mode :logical           Mode :logical                 
+    ##  FALSE:49                FALSE:1820                    
+    ##  TRUE :1858              TRUE :87                      
+    ##                                                        
+    ##                                                        
+    ##                                                        
+    ##                                                        
+    ##  all_household_agree_no allergies_mildly_allergic allergies_no_allergies
+    ##  Mode :logical          Mode :logical             Mode :logical         
+    ##  FALSE:1901             FALSE:1764                FALSE:183             
+    ##  TRUE :6                TRUE :143                 TRUE :1724            
+    ##                                                                         
+    ##                                                                         
+    ##                                                                         
+    ##                                                                         
+    ##  allergies_not_sure allergies_very_allergic experience_euthanized_a_pet
+    ##  Mode :logical      Mode :logical           Mode :logical              
+    ##  FALSE:1847         FALSE:1892              FALSE:1554                 
+    ##  TRUE :60           TRUE :15                TRUE :353                  
+    ##                                                                        
+    ##                                                                        
+    ##                                                                        
+    ##                                                                        
+    ##  experience_grew_up_with_pet experience_given_pet_to_another
+    ##  Mode :logical               Mode :logical                  
+    ##  FALSE:918                   FALSE:1817                     
+    ##  TRUE :989                   TRUE :90                       
+    ##                                                             
+    ##                                                             
+    ##                                                             
+    ##                                                             
+    ##  experience_pet_died_in_care experience_currently_have_pet
+    ##  Mode :logical               Mode :logical                
+    ##  FALSE:1753                  FALSE:1214                   
+    ##  TRUE :154                   TRUE :693                    
     ##                                                           
     ##                                                           
     ##                                                           
-    ##  exercise_walks_on_leash exercise_playing_in_my_yard exercise_another_pet
-    ##  Mode :logical           Mode :logical               Mode :logical       
-    ##  FALSE:1255              FALSE:1473                  FALSE:1551          
-    ##  TRUE :604               TRUE :386                   TRUE :308           
-    ##  NA's :48                NA's :48                    NA's :48            
+    ##                                                           
+    ##  experience_currently_pets_in_my_home_but_not_mine
+    ##  Mode :logical                                    
+    ##  FALSE:1873                                       
+    ##  TRUE :34                                         
+    ##                                                   
+    ##                                                   
+    ##                                                   
+    ##                                                   
+    ##  experience_lived_wit_previous_housemates_pets
+    ##  Mode :logical                                
+    ##  FALSE:1438                                   
+    ##  TRUE :469                                    
+    ##                                               
+    ##                                               
+    ##                                               
+    ##                                               
+    ##  experience_never_lived_with_or_owned_a_pet_before experience_pet_ran_away
+    ##  Mode :logical                                     Mode :logical          
+    ##  FALSE:1821                                        FALSE:1843             
+    ##  TRUE :86                                          TRUE :64               
+    ##                                                                           
+    ##                                                                           
+    ##                                                                           
+    ##                                                                           
+    ##  experience_given_a_pet_to_a_shelter experience_bred_sold_a_pet
+    ##  Mode :logical                       Mode :logical             
+    ##  FALSE:1868                          FALSE:1902                
+    ##  TRUE :39                            TRUE :5                   
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##                                                                
+    ##  experience_given_to_shelter experience_had_pet_die experience_euthanized
+    ##  Mode :logical               Mode :logical          Mode :logical        
+    ##  FALSE:1877                  FALSE:1820             FALSE:1715           
+    ##  TRUE :30                    TRUE :87               TRUE :192            
     ##                                                                          
     ##                                                                          
     ##                                                                          
+    ##                                                                          
+    ##  experience_grew_up_with experience_never_lived_or_owned
+    ##  Mode :logical           Mode :logical                  
+    ##  FALSE:1409              FALSE:1870                     
+    ##  TRUE :498               TRUE :37                       
+    ##                                                         
+    ##                                                         
+    ##                                                         
+    ##                                                         
+    ##  experience_lived_with_housemate_pet experience_given_to_another
+    ##  Mode :logical                       Mode :logical              
+    ##  FALSE:1789                          FALSE:1869                 
+    ##  TRUE :118                           TRUE :38                   
+    ##                                                                 
+    ##                                                                 
+    ##                                                                 
+    ##                                                                 
+    ##  experience_bred_sold pet_kept_inside_only pet_kept_leash_harness
+    ##  Mode :logical        Mode :logical        Mode :logical         
+    ##  FALSE:1900           FALSE:74             FALSE:1812            
+    ##  TRUE :7              TRUE :1803           TRUE :65              
+    ##                       NA's :30             NA's :30              
+    ##                                                                  
+    ##                                                                  
+    ##                                                                  
+    ##  pet_kept_inside_with_yard_access pet_kept_inside_outside
+    ##  Mode :logical                    Mode :logical          
+    ##  FALSE:1816                       FALSE:1851             
+    ##  TRUE :61                         TRUE :26               
+    ##  NA's :30                         NA's :30               
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##  pet_kept_outside_only pet_kept_supervised_in_my_yard pet_kept_crate 
+    ##  Mode :logical         Mode :logical                  Mode :logical  
+    ##  FALSE:1858            FALSE:1743                     FALSE:1818     
+    ##  TRUE :19              TRUE :134                      TRUE :59       
+    ##  NA's :30              NA's :30                       NA's :30       
+    ##                                                                      
+    ##                                                                      
+    ##                                                                      
+    ##  pet_kept_other  pet_kept_unsupervised_access_to_my_yard_doggie_door_etc
+    ##  Mode :logical   Mode :logical                                          
+    ##  FALSE:1855      FALSE:1861                                             
+    ##  TRUE :22        TRUE :16                                               
+    ##  NA's :30        NA's :30                                               
+    ##                                                                         
+    ##                                                                         
+    ##                                                                         
+    ##  exercise_toy_mice exercise_wand_toys exercise_other_pets
+    ##  Mode :logical     Mode :logical      Mode :logical      
+    ##  FALSE:709         FALSE:856          FALSE:1797         
+    ##  TRUE :1150        TRUE :1003         TRUE :62           
+    ##  NA's :48          NA's :48           NA's :48           
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##  exercise_not_much exercise_other_cats exercise_walks_on_leash
+    ##  Mode :logical     Mode :logical       Mode :logical          
+    ##  FALSE:1658        FALSE:1415          FALSE:1255             
+    ##  TRUE :201         TRUE :444           TRUE :604              
+    ##  NA's :48          NA's :48            NA's :48               
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##  exercise_playing_in_my_yard exercise_another_pet
+    ##  Mode :logical               Mode :logical       
+    ##  FALSE:1473                  FALSE:1551          
+    ##  TRUE :386                   TRUE :308           
+    ##  NA's :48                    NA's :48            
+    ##                                                  
+    ##                                                  
+    ##                                                  
     ##  exercise_jogging_together exercise_dog_parks exercise_walks_off_leash
     ##  Mode :logical             Mode :logical      Mode :logical           
     ##  FALSE:1650                FALSE:1464         FALSE:1707              
@@ -2782,54 +3219,78 @@ summary(apps_clean)
     ##                                                                       
     ##                                                                       
     ##                                                                       
-    ##  return_pet_none return_pet_new_baby return_pet_not_enough_time
-    ##  Mode :logical   Mode :logical       Mode :logical             
-    ##  FALSE:770       FALSE:1895          FALSE:1878                
-    ##  TRUE :1137      TRUE :12            TRUE :29                  
-    ##                                                                
-    ##                                                                
-    ##                                                                
-    ##                                                                
-    ##  return_pet_becomes_aggressive return_pet_allergies_appear
-    ##  Mode :logical                 Mode :logical              
-    ##  FALSE:1311                    FALSE:1698                 
-    ##  TRUE :596                     TRUE :209                  
-    ##                                                           
-    ##                                                           
-    ##                                                           
-    ##                                                           
-    ##  return_pet_other return_pet_vet_becomes_expensive
-    ##  Mode :logical    Mode :logical                   
-    ##  FALSE:1844       FALSE:1820                      
-    ##  TRUE :63         TRUE :87                        
-    ##                                                   
-    ##                                                   
-    ##                                                   
-    ##                                                   
-    ##  return_pet_moving_too_far return_pet_litter_box_issues
-    ##  Mode :logical             Mode :logical               
-    ##  FALSE:1847                FALSE:1838                  
-    ##  TRUE :60                  TRUE :69                    
-    ##                                                        
-    ##                                                        
-    ##                                                        
-    ##                                                        
-    ##  return_pet_not_allowed_new_living_space return_pet_scratches_furniture
-    ##  Mode :logical                           Mode :logical                 
-    ##  FALSE:1882                              FALSE:1890                    
-    ##  TRUE :25                                TRUE :17                      
-    ##                                                                        
-    ##                                                                        
-    ##                                                                        
-    ##                                                                        
-    ##  return_pet_pet_sheds return_pet_jumps_on_counters return_pet_too_playful
-    ##  Mode :logical        Mode :logical                Mode :logical         
-    ##  FALSE:1895           FALSE:1900                   FALSE:1905            
-    ##  TRUE :12             TRUE :7                      TRUE :2               
-    ##                                                                          
-    ##                                                                          
-    ##                                                                          
-    ##                                                                          
+    ##  needs_nail_clip needs_scratching_post needs_not_sure  needs_other    
+    ##  Mode :logical   Mode :logical         Mode :logical   Mode :logical  
+    ##  FALSE:1226      FALSE:768             FALSE:1718      FALSE:1817     
+    ##  TRUE :633       TRUE :1091            TRUE :141       TRUE :42       
+    ##  NA's :48        NA's :48              NA's :48        NA's :48       
+    ##                                                                       
+    ##                                                                       
+    ##                                                                       
+    ##  needs_declaw    needs_professional_groomer needs_groom_myself
+    ##  Mode :logical   Mode :logical              Mode :logical     
+    ##  FALSE:1813      FALSE:1378                 FALSE:1560        
+    ##  TRUE :46        TRUE :481                  TRUE :299         
+    ##  NA's :48        NA's :48                   NA's :48          
+    ##                                                               
+    ##                                                               
+    ##                                                               
+    ##  needs_no_grooming return_pet_none return_pet_new_baby
+    ##  Mode :logical     Mode :logical   Mode :logical      
+    ##  FALSE:1829        FALSE:770       FALSE:1895         
+    ##  TRUE :30          TRUE :1137      TRUE :12           
+    ##  NA's :48                                             
+    ##                                                       
+    ##                                                       
+    ##                                                       
+    ##  return_pet_not_enough_time return_pet_becomes_aggressive
+    ##  Mode :logical              Mode :logical                
+    ##  FALSE:1878                 FALSE:1311                   
+    ##  TRUE :29                   TRUE :596                    
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##                                                          
+    ##  return_pet_allergies_appear return_pet_other
+    ##  Mode :logical               Mode :logical   
+    ##  FALSE:1698                  FALSE:1844      
+    ##  TRUE :209                   TRUE :63        
+    ##                                              
+    ##                                              
+    ##                                              
+    ##                                              
+    ##  return_pet_vet_becomes_expensive return_pet_moving_too_far
+    ##  Mode :logical                    Mode :logical            
+    ##  FALSE:1820                       FALSE:1847               
+    ##  TRUE :87                         TRUE :60                 
+    ##                                                            
+    ##                                                            
+    ##                                                            
+    ##                                                            
+    ##  return_pet_litter_box_issues return_pet_not_allowed_new_living_space
+    ##  Mode :logical                Mode :logical                          
+    ##  FALSE:1838                   FALSE:1882                             
+    ##  TRUE :69                     TRUE :25                               
+    ##                                                                      
+    ##                                                                      
+    ##                                                                      
+    ##                                                                      
+    ##  return_pet_scratches_furniture return_pet_pet_sheds
+    ##  Mode :logical                  Mode :logical       
+    ##  FALSE:1890                     FALSE:1895          
+    ##  TRUE :17                       TRUE :12            
+    ##                                                     
+    ##                                                     
+    ##                                                     
+    ##                                                     
+    ##  return_pet_jumps_on_counters return_pet_too_playful
+    ##  Mode :logical                Mode :logical         
+    ##  FALSE:1900                   FALSE:1905            
+    ##  TRUE :7                      TRUE :2               
+    ##                                                     
+    ##                                                     
+    ##                                                     
+    ##                                                     
     ##  return_pet_not_housebroken return_pet_destructive
     ##  Mode :logical              Mode :logical         
     ##  FALSE:1867                 FALSE:1875            
@@ -2862,6 +3323,132 @@ summary(apps_clean)
     ##                    
     ##                    
     ## 
+
+``` r
+colnames(apps_clean)
+```
+
+    ##   [1] "date_submitted"                                         
+    ##   [2] "ideal_adoption_timeline"                                
+    ##   [3] "reason_for_adoption"                                    
+    ##   [4] "specific_animal"                                        
+    ##   [5] "adults_in_home"                                         
+    ##   [6] "children_in_home"                                       
+    ##   [7] "all_household_agree"                                    
+    ##   [8] "allergies"                                              
+    ##   [9] "home_owner"                                             
+    ##  [10] "home_pet_policy"                                        
+    ##  [11] "experience"                                             
+    ##  [12] "budget_monthly"                                         
+    ##  [13] "budget_emergency"                                       
+    ##  [14] "home_alone_avg"                                         
+    ##  [15] "home_alone_max"                                         
+    ##  [16] "pet_kept"                                               
+    ##  [17] "exercise"                                               
+    ##  [18] "needs"                                                  
+    ##  [19] "return_pet"                                             
+    ##  [20] "how_heard"                                              
+    ##  [21] "outcome_trello_id"                                      
+    ##  [22] "STATEFP"                                                
+    ##  [23] "COUNTYFP"                                               
+    ##  [24] "TRACTCE"                                                
+    ##  [25] "GEOID"                                                  
+    ##  [26] "NAME"                                                   
+    ##  [27] "NAMELSAD"                                               
+    ##  [28] "MTFCC"                                                  
+    ##  [29] "FUNCSTAT"                                               
+    ##  [30] "ALAND"                                                  
+    ##  [31] "AWATER"                                                 
+    ##  [32] "INTPTLAT"                                               
+    ##  [33] "INTPTLON"                                               
+    ##  [34] "City"                                                   
+    ##  [35] "State"                                                  
+    ##  [36] "ZIP"                                                    
+    ##  [37] "animal_type"                                            
+    ##  [38] "reason_for_adoption_myself"                             
+    ##  [39] "reason_for_adoption_other"                              
+    ##  [40] "reason_for_adoption_my_kids"                            
+    ##  [41] "reason_for_adoption_mouser"                             
+    ##  [42] "reason_for_adoption_gift"                               
+    ##  [43] "reason_for_adoption_protection"                         
+    ##  [44] "all_household_agree_yes"                                
+    ##  [45] "all_household_agree_a_surprise"                         
+    ##  [46] "all_household_agree_no"                                 
+    ##  [47] "allergies_mildly_allergic"                              
+    ##  [48] "allergies_no_allergies"                                 
+    ##  [49] "allergies_not_sure"                                     
+    ##  [50] "allergies_very_allergic"                                
+    ##  [51] "experience_euthanized_a_pet"                            
+    ##  [52] "experience_grew_up_with_pet"                            
+    ##  [53] "experience_given_pet_to_another"                        
+    ##  [54] "experience_pet_died_in_care"                            
+    ##  [55] "experience_currently_have_pet"                          
+    ##  [56] "experience_currently_pets_in_my_home_but_not_mine"      
+    ##  [57] "experience_lived_wit_previous_housemates_pets"          
+    ##  [58] "experience_never_lived_with_or_owned_a_pet_before"      
+    ##  [59] "experience_pet_ran_away"                                
+    ##  [60] "experience_given_a_pet_to_a_shelter"                    
+    ##  [61] "experience_bred_sold_a_pet"                             
+    ##  [62] "experience_given_to_shelter"                            
+    ##  [63] "experience_had_pet_die"                                 
+    ##  [64] "experience_euthanized"                                  
+    ##  [65] "experience_grew_up_with"                                
+    ##  [66] "experience_never_lived_or_owned"                        
+    ##  [67] "experience_lived_with_housemate_pet"                    
+    ##  [68] "experience_given_to_another"                            
+    ##  [69] "experience_bred_sold"                                   
+    ##  [70] "pet_kept_inside_only"                                   
+    ##  [71] "pet_kept_leash_harness"                                 
+    ##  [72] "pet_kept_inside_with_yard_access"                       
+    ##  [73] "pet_kept_inside_outside"                                
+    ##  [74] "pet_kept_outside_only"                                  
+    ##  [75] "pet_kept_supervised_in_my_yard"                         
+    ##  [76] "pet_kept_crate"                                         
+    ##  [77] "pet_kept_other"                                         
+    ##  [78] "pet_kept_unsupervised_access_to_my_yard_doggie_door_etc"
+    ##  [79] "exercise_toy_mice"                                      
+    ##  [80] "exercise_wand_toys"                                     
+    ##  [81] "exercise_other_pets"                                    
+    ##  [82] "exercise_not_much"                                      
+    ##  [83] "exercise_other_cats"                                    
+    ##  [84] "exercise_walks_on_leash"                                
+    ##  [85] "exercise_playing_in_my_yard"                            
+    ##  [86] "exercise_another_pet"                                   
+    ##  [87] "exercise_jogging_together"                              
+    ##  [88] "exercise_dog_parks"                                     
+    ##  [89] "exercise_walks_off_leash"                               
+    ##  [90] "needs_nail_clip"                                        
+    ##  [91] "needs_scratching_post"                                  
+    ##  [92] "needs_not_sure"                                         
+    ##  [93] "needs_other"                                            
+    ##  [94] "needs_declaw"                                           
+    ##  [95] "needs_professional_groomer"                             
+    ##  [96] "needs_groom_myself"                                     
+    ##  [97] "needs_no_grooming"                                      
+    ##  [98] "return_pet_none"                                        
+    ##  [99] "return_pet_new_baby"                                    
+    ## [100] "return_pet_not_enough_time"                             
+    ## [101] "return_pet_becomes_aggressive"                          
+    ## [102] "return_pet_allergies_appear"                            
+    ## [103] "return_pet_other"                                       
+    ## [104] "return_pet_vet_becomes_expensive"                       
+    ## [105] "return_pet_moving_too_far"                              
+    ## [106] "return_pet_litter_box_issues"                           
+    ## [107] "return_pet_not_allowed_new_living_space"                
+    ## [108] "return_pet_scratches_furniture"                         
+    ## [109] "return_pet_pet_sheds"                                   
+    ## [110] "return_pet_jumps_on_counters"                           
+    ## [111] "return_pet_too_playful"                                 
+    ## [112] "return_pet_not_housebroken"                             
+    ## [113] "return_pet_destructive"                                 
+    ## [114] "return_pet_jumps_on_furniture"                          
+    ## [115] "how_heard_other"                                        
+    ## [116] "how_heard_website"                                      
+    ## [117] "how_heard_twitter"                                      
+    ## [118] "how_heard_email"                                        
+    ## [119] "how_heard_event"                                        
+    ## [120] "how_heard_insta"                                        
+    ## [121] "how_heard_facebook"
 
 ``` r
 # Write cleaned data ----
