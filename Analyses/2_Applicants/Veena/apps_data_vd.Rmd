@@ -1,6 +1,6 @@
 ---
 title: "apps_data_vd"
-output: html_document
+output: html
 ---
 
 ```{r setup, include=FALSE}
@@ -35,4 +35,10 @@ dplyr::count(dataCleaned, reason_for_adoption)
 ```{r cars}
 #frequency of different all_household_agree types
 dplyr::count(dataCleaned, all_household_agree)
+
+dplyr::count(dataCleaned, home_alone_max) #not sure what this field represents
+
+dplyr::count(dataCleaned, exercise) 
+
 ```
+
