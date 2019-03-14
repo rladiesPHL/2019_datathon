@@ -101,6 +101,16 @@ cards %>% filter(dueComplete) %>%
     labs(title = "Distribution of lastLabel when dueComplete = TRUE") +
   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
 cards %>% filter(dueComplete) %>% select(lastLabel) %>% table(useNA="always") %>% sort(decreasing = T)
+
+#Distribution of lastLabel 
+cards %>% filter(!is.na(label_names)) %>% 
+  ggplot(mapping=aes(x=lastLabel,fill=lastLabel)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of lastLabel") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+cards %>% select(lastLabel) %>% table(useNA="always") %>% sort(decreasing = T)
+
 ```
 Observation: dueComplete=FALSE even when the last status of the applications ends in adoption (712 cases) or ready to adopt(981). 
 Observation: dueComplete=TRUE even when the application status is one of  denied(52), red flag(55), etc. 
@@ -119,7 +129,7 @@ Basically, we expect dateLastActivity to be always later than or equal to the du
 cards %>% filter(dueComplete & due>dateLastActivity) %>% select(due,dateLastActivity,lastLabel)
 cards %>% filter(!dueComplete & due>dateLastActivity) %>% select(due,dateLastActivity,lastLabel)
 ```
-Observation: There are 7 cases when dueComplete is TRUE and due date is later then dateLastActivity. There are 51 cases where dueCompelte is FALSE and the due date is later than dateLastActivity
+Observation: There are 7 cases when dueComplete is TRUE and due date is later then dateLastActivity. There are 51 cases where dueComplete is FALSE and the due date is later than dateLastActivity
 
 #### Distribution of number of labels by type of last label
 ```{r}
