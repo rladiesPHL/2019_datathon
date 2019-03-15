@@ -38,11 +38,11 @@ coverage_table <- table(is.na(c(dog_applicants$GEOID, cat_applicants$GEOID)))
 coverage <- coverage_table[1]/(coverage_table[1]+coverage_table[2])*100
 ```
 
-We have `r round(coverage,2)`% coverage.  We have `rcoverage_table[1]+coverage_table[2]` total addresses, of which `r coverage_table[1]` have a GEOID (Census Tract), and `r coverage_table[2]` are missing that data.
+We have `r round(coverage,2)`% coverage.  We have `r coverage_table[1]+coverage_table[2]` total addresses, of which `r coverage_table[1]` have a GEOID (Census Tract), and `r coverage_table[2]` are missing that data.
 
 ## Get Census Data
 
-Now we have to think about what Census Bureau data to obtain.  Large metropolitan areas get attention from the American Community Survey, which happens with much greater frequency than the decennial (every ten years) census, so it's more up to date.  But, it's also an estimate, as it's a survey that obtains data from a selection of the population.  We know that some of our adopters do *not* come from the Philly area and in fact live in rural areas.  So the ACS might not be the right choice.
+Now we have to think about what Census Bureau data to obtain.  Large metropolitan areas get attention from the one-year American Community Survey, which happens with much greater frequency than the decennial (every ten years) census, so it's more up to date.  But, it's also an estimate, as it's a survey that obtains data from a selection of the population.  We know that some of our adopters do *not* come from the Philly area and in fact live in rural areas.  So the ACS one-year might not be the right choice.  Luckily, the five-year ACS is another option -- it covers the entire nation, and has larger sample sizes, so lower margin of error.
 
 In order not to use my Census API key, I use the American Fact Finder (<https://factfinder.census.org>) to select economic data (Income/Earnings (Household)) for all census tracts in NJ and PA. We get many (1600+) matching datasets.  I have used the DPO3 dataset ("Selected Economic Characteristics" from the American Community Survey before), so I open the 2017 version of that data, transpose rows and columns, and download it (I leave the optional checkboxes unchecked).
 
@@ -124,46 +124,11 @@ names(adopter_economic_characteristics) <- c('GEOID',
                                              'tract_poverty_pct')
 ```
 
-Great, now we can do things like merge that selected data into our cat and dog applicants!
+
+## Save Data for Further Use
+
+Let's save our data for downline use...
 
 ```{r}
-cat_applicants <- merge(x = cat_applicants, 
-                        y = adopter_economic_characteristics,
-                        by = "GEOID",
-                        all.x = TRUE)
-dog_applicants <- merge(x = dog_applicants, 
-                        y = adopter_economic_characteristics,
-                        by = "GEOID",
-                        all.x = TRUE)
-```
-
-## Analyzing Our Adopters
-
-Let's take a quick box plot of the median household income of our cat adopters (understood in aggregate):
-
-```{r}
-library(ggplot2)
-ggplot(cat_applicants,aes(y=tract_median_income)) +
-  geom_boxplot() 
-```
-
-And our dog adopters:
-
-```{r}
-ggplot(dog_applicants,aes(y=tract_median_income)) +
-  geom_boxplot() 
-```
-
-In order to combine plots and compare cats vs dogs side-by-side, we should combine our data:
-
-```{r}
-all_applicants <- rbind(cat_applicants %>% mutate(pet = "cat"), 
-                      dog_applicants %>% mutate(pet = "dog"))
-```
-
-Now we can do a side by side box plot:
-
-```{r}
-ggplot(all_applicants,aes(x=pet, y=tract_median_income)) +
-  geom_boxplot() 
+write.csv(adopter_economic_characteristics, "CensusData/census_tracts_economics.csv", row.names = FALSE)
 ```

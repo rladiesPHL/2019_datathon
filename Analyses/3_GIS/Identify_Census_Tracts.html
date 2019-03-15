@@ -282,6 +282,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -289,14 +292,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -313,11 +376,11 @@ $(document).ready(function () {
 </div>
 
 
-<div id="what-census-tracts-do-we-have" class="section level1">
-<h1>What Census Tracts Do We Have?</h1>
+<div id="what-census-tracts-do-we-have" class="section level2">
+<h2>What Census Tracts Do We Have?</h2>
 <p>We want to know this so that we can obtain the correct info from the Census Bureau.</p>
-<pre class="r"><code>dog_applicants &lt;- read.csv('../../Data/dog_apps.csv')
-cat_applicants &lt;- read.csv('../../Data/cat_apps.csv')
+<pre class="r"><code>dog_applicants &lt;- read.csv(&#39;../../Data/dog_apps.csv&#39;)
+cat_applicants &lt;- read.csv(&#39;../../Data/cat_apps.csv&#39;)
 geoids &lt;- unique(c(dog_applicants$GEOID, cat_applicants$GEOID))</code></pre>
 <p>We have 694 unique census tracts represented!</p>
 <p>How is our coverage of census tracts? After all, we only geocoded PA and NJ. Was that a mistake?</p>
@@ -325,20 +388,20 @@ geoids &lt;- unique(c(dog_applicants$GEOID, cat_applicants$GEOID))</code></pre>
                                as.character(cat_applicants$State)))</code></pre>
 <p>We have the following states represented: PA, NJ, MS, NY, MD, DE, GA, CA, CT, IL, CO, MA, LA, NC</p>
 <p>And how many times are we lacking the geocode?</p>
-<p>We have 97.22% coverage. We have <code>rcoverage_table[1]+coverage_table[2]</code> total addresses, of which 1854 have a GEOID (Census Tract), and 53 are missing that data.</p>
+<p>We have 97.22% coverage. We have 1907 total addresses, of which 1854 have a GEOID (Census Tract), and 53 are missing that data.</p>
 </div>
-<div id="get-census-data" class="section level1">
-<h1>Get Census Data</h1>
-<p>Now we have to think about what Census Bureau data to obtain. Large metropolitan areas get attention from the American Community Survey, which happens with much greater frequency than the decennial (every ten years) census, so it’s more up to date. But, it’s also an estimate, as it’s a survey that obtains data from a selection of the population. We know that some of our adopters do <em>not</em> come from the Philly area and in fact live in rural areas. So the ACS might not be the right choice.</p>
+<div id="get-census-data" class="section level2">
+<h2>Get Census Data</h2>
+<p>Now we have to think about what Census Bureau data to obtain. Large metropolitan areas get attention from the one-year American Community Survey, which happens with much greater frequency than the decennial (every ten years) census, so it’s more up to date. But, it’s also an estimate, as it’s a survey that obtains data from a selection of the population. We know that some of our adopters do <em>not</em> come from the Philly area and in fact live in rural areas. So the ACS one-year might not be the right choice. Luckily, the five-year ACS is another option – it covers the entire nation, and has larger sample sizes, so lower margin of error.</p>
 <p>In order not to use my Census API key, I use the American Fact Finder (<a href="https://factfinder.census.org" class="uri">https://factfinder.census.org</a>) to select economic data (Income/Earnings (Household)) for all census tracts in NJ and PA. We get many (1600+) matching datasets. I have used the DPO3 dataset (“Selected Economic Characteristics” from the American Community Survey before), so I open the 2017 version of that data, transpose rows and columns, and download it (I leave the optional checkboxes unchecked).</p>
 <p>I download the folder of files the Census Bureau gives me with this download into the Analyses/3_GIS/ folder, within a new folder, CensusData, and I leave the name of this folder unchanged: ACS_17_5YR_DP03.</p>
 <p>Let’s take a peek at what’s in there:</p>
-<pre class="r"><code>list.files('CensusData/ACS_17_5YR_DP03/')</code></pre>
+<pre class="r"><code>list.files(&#39;CensusData/ACS_17_5YR_DP03/&#39;)</code></pre>
 <pre><code>## [1] &quot;ACS_17_5YR_DP03_ann.csv&quot;      &quot;ACS_17_5YR_DP03_metadata.csv&quot;
 ## [3] &quot;ACS_17_5YR_DP03.csv&quot;          &quot;ACS_17_5YR_DP03.txt&quot;         
 ## [5] &quot;aff_download_readme.txt&quot;</code></pre>
 <p>Looks like we have some files, and some annotations. The sheer number of variables is pretty astonishing… let’s take a look!</p>
-<pre class="r"><code>selected_economics_variables &lt;- read.csv('CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03_metadata.csv')
+<pre class="r"><code>selected_economics_variables &lt;- read.csv(&#39;CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03_metadata.csv&#39;)
 head(selected_economics_variables)</code></pre>
 <table>
 <thead>
@@ -418,11 +481,11 @@ head(selected_economics_variables)</code></pre>
 </table>
 <p>Altogether, there are 550 potential variables! Obviously we want to choose just a handful, related to poverty, employment, income, etc.</p>
 </div>
-<div id="evaluating-usefulness-of-census-dataset" class="section level1">
-<h1>Evaluating Usefulness of Census Dataset</h1>
+<div id="evaluating-usefulness-of-census-dataset" class="section level2">
+<h2>Evaluating Usefulness of Census Dataset</h2>
 <p>Let’s take a look at just one variable, <code>HC01_VC85</code>, which is described as “Estimate; INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - Median household income (dollars)”. Do we have good coverage of this value over the nearly 700 adopter census tracts we are looking at? This can be a bellweather of the usefulness of the DP03 dataset.</p>
 <pre class="r"><code>library(dplyr)
-selected_economic_characteristics &lt;- read.csv('CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03.csv')
+selected_economic_characteristics &lt;- read.csv(&#39;CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03.csv&#39;)
 adopter_census_median_income &lt;- selected_economic_characteristics %&gt;% filter(GEO.id2 %in% geoids) %&gt;% select(HC01_VC85)</code></pre>
 <p>Let’s take a look at how this one variable shook out:</p>
 <pre class="r"><code>summary(adopter_census_median_income)</code></pre>
@@ -474,10 +537,10 @@ cat_applicants_included &lt;- nrow(cat_applicants %&gt;% filter(GEOID %in% inclu
 <p>Of cat applicants, this Census dataset provides economic characteristics for 1238 applicants, out of a total of 1269.</p>
 <p>Not bad! It looks like this dataset will serve us well. Some data might not be available for rural areas, but I bet the most important economic ones are.</p>
 </div>
-<div id="working-with-census-data" class="section level1">
-<h1>Working with Census Data</h1>
+<div id="working-with-census-data" class="section level2">
+<h2>Working with Census Data</h2>
 <p>So, let’s compose a list of variables we’re interested in. I like a handful of “usual suspects” which disclose a lot about the economic characteristics of a census tract:</p>
-<pre class="r"><code>selection &lt;- c('GEO.id2', 'HC01_VC07', 'HC01_VC30', 'HC01_VC85', 'HC01_VC86', 'HC03_VC171')
+<pre class="r"><code>selection &lt;- c(&#39;GEO.id2&#39;, &#39;HC01_VC07&#39;, &#39;HC01_VC30&#39;, &#39;HC01_VC85&#39;, &#39;HC01_VC86&#39;, &#39;HC03_VC171&#39;)
 selected_economics_variables %&gt;% filter(GEO.id %in% selection)</code></pre>
 <table>
 <thead>
@@ -516,24 +579,17 @@ selected_economics_variables %&gt;% filter(GEO.id %in% selection)</code></pre>
 <p>Let’s get just those economic characteristics on just our census tracts!</p>
 <pre class="r"><code>adopter_economic_characteristics &lt;- selected_economic_characteristics %&gt;% select( selection) %&gt;% filter(GEO.id2 %in% geoids)</code></pre>
 <p>And let’s rename those variables something easier to recall. We’re putting in the word ‘tract’ to remind us that these values do NOT correspond to the individual applicant, but to their census tract.</p>
-<pre class="r"><code>names(adopter_economic_characteristics) &lt;- c('GEOID',
-                                             'tract_unemployment_pct',
-                                             'tract_commute_public_transit',
-                                             'tract_median_income',
-                                             'tract_mean_income',
-                                             'tract_poverty_pct')</code></pre>
-<p>Great, now we can do things like merge that selected data into our cat and dog applicants!</p>
-<pre class="r"><code>cat_applicants &lt;- merge(x = cat_applicants, 
-                        y = adopter_economic_characteristics,
-                        by = &quot;GEOID&quot;,
-                        all.x = TRUE)
-dog_applicants &lt;- merge(x = dog_applicants, 
-                        y = adopter_economic_characteristics,
-                        by = &quot;GEOID&quot;,
-                        all.x = TRUE)</code></pre>
+<pre class="r"><code>names(adopter_economic_characteristics) &lt;- c(&#39;GEOID&#39;,
+                                             &#39;tract_unemployment_pct&#39;,
+                                             &#39;tract_commute_public_transit&#39;,
+                                             &#39;tract_median_income&#39;,
+                                             &#39;tract_mean_income&#39;,
+                                             &#39;tract_poverty_pct&#39;)</code></pre>
 </div>
-<div id="analyzing-our-adopters" class="section level1">
-<h1>Analyzing Our Adopters</h1>
+<div id="save-data-for-further-use" class="section level2">
+<h2>Save Data for Further Use</h2>
+<p>Let’s save our data for downline use…</p>
+<pre class="r"><code>write.csv(adopter_economic_characteristics, &quot;CensusData/census_tracts_economics.csv&quot;, row.names = FALSE)</code></pre>
 </div>
 
 
