@@ -29,8 +29,8 @@ for (i in seq_along(csv_files)) {
     
 }
 
-# actions <-
-#     read_csv(file = "./Data/processed_data/all_actions.csv")
+actions <-
+    read_csv(file = "./Data/processed_data/all_actions.csv")
 
 
 actions_wide <-
@@ -49,4 +49,4 @@ actions_wide <-
     spread(item, wait) %>% 
     mutate(wday_start = wday(date_start, label = TRUE, abbr = TRUE))
 
-write.csv(actions_wide, "./Data/actions_wide.csv", row.names = FALSE)
+write.csv(actions_wide, "./Data/processed_data/actions_wide.csv", row.names = FALSE)
