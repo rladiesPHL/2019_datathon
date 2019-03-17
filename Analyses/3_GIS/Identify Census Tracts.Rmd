@@ -1,0 +1,134 @@
+---
+title: "Get Socioeconomic and Demographic Data From US Census Bureau"
+author: "Joy Payton"
+date: "3/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(printr)
+```
+
+## What Census Tracts Do We Have?
+
+We want to know this so that we can obtain the correct info from the Census Bureau.
+
+```{r}
+dog_applicants <- read.csv('../../Data/dog_apps.csv')
+cat_applicants <- read.csv('../../Data/cat_apps.csv')
+geoids <- unique(c(dog_applicants$GEOID, cat_applicants$GEOID))
+```
+
+We have `r length(geoids)` unique census tracts represented!
+
+How is our coverage of census tracts?  After all, we only geocoded PA and NJ.  Was that a mistake?
+
+```{r}
+states_represented <- unique(c(as.character(dog_applicants$State), 
+                               as.character(cat_applicants$State)))
+```
+
+We have the following states represented: `r states_represented`
+
+And how many times are we lacking the geocode?
+
+```{r echo=FALSE}
+coverage_table <- table(is.na(c(dog_applicants$GEOID, cat_applicants$GEOID)))
+coverage <- coverage_table[1]/(coverage_table[1]+coverage_table[2])*100
+```
+
+We have `r round(coverage,2)`% coverage.  We have `r coverage_table[1]+coverage_table[2]` total addresses, of which `r coverage_table[1]` have a GEOID (Census Tract), and `r coverage_table[2]` are missing that data.
+
+## Get Census Data
+
+Now we have to think about what Census Bureau data to obtain.  Large metropolitan areas get attention from the one-year American Community Survey, which happens with much greater frequency than the decennial (every ten years) census, so it's more up to date.  But, it's also an estimate, as it's a survey that obtains data from a selection of the population.  We know that some of our adopters do *not* come from the Philly area and in fact live in rural areas.  So the ACS one-year might not be the right choice.  Luckily, the five-year ACS is another option -- it covers the entire nation, and has larger sample sizes, so lower margin of error.
+
+In order not to use my Census API key, I use the American Fact Finder (<https://factfinder.census.org>) to select economic data (Income/Earnings (Household)) for all census tracts in NJ and PA. We get many (1600+) matching datasets.  I have used the DPO3 dataset ("Selected Economic Characteristics" from the American Community Survey before), so I open the 2017 version of that data, transpose rows and columns, and download it (I leave the optional checkboxes unchecked).
+
+I download the folder of files the Census Bureau gives me with this download into the Analyses/3_GIS/ folder, within a new folder, CensusData, and I leave the name of this folder unchanged: ACS_17_5YR_DP03.
+
+Let's take a peek at what's in there:
+
+```{r}
+list.files('CensusData/ACS_17_5YR_DP03/')
+```
+
+Looks like we have some files, and some annotations.  The sheer number of variables is pretty astonishing... let's take a look!
+
+```{r}
+selected_economics_variables <- read.csv('CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03_metadata.csv')
+head(selected_economics_variables)
+tail(selected_economics_variables)
+```
+
+Altogether, there are `r nrow(selected_economics_variables)` potential variables!  Obviously we want to choose just a handful, related to poverty, employment, income, etc.
+
+## Evaluating Usefulness of Census Dataset
+
+Let's take a look at just one variable, `HC01_VC85`, which is described as "Estimate; INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - Median household income (dollars)".  Do we have good coverage of this value over the nearly 700 adopter census tracts we are looking at?  This can be a bellweather of the usefulness of the DP03 dataset.
+
+```{r}
+library(dplyr)
+selected_economic_characteristics <- read.csv('CensusData/ACS_17_5YR_DP03/ACS_17_5YR_DP03.csv')
+adopter_census_median_income <- selected_economic_characteristics %>% filter(GEO.id2 %in% geoids) %>% select(HC01_VC85)
+```
+
+Let's take a look at how this one variable shook out:
+
+```{r}
+summary(adopter_census_median_income)
+```
+
+We have only 1 `NA`.  But we might have some missing tracts that aren't showing up.
+
+Let's check.  The length of this filtered data is `r nrow(adopter_census_median_income)`, while we have `r length(geoids)` unique census tracts.  Not all of our census tracts are included in this ACS data, which is what we expected.
+
+So, what percentage of our overall adopters (presumably, those in rural areas) are left out?  Let's do a bit of set work.
+
+```{r}
+included_tracts <- intersect(geoids, selected_economic_characteristics$GEO.id2)
+dog_applicants_included <- nrow(dog_applicants %>% filter(GEOID %in% included_tracts))
+cat_applicants_included <- nrow(cat_applicants %>% filter(GEOID %in% included_tracts))
+```
+
+Of dog applicants, this Census dataset provides economic characteristics for `r dog_applicants_included` applicants, out of a total of `r nrow(dog_applicants)`.  
+
+Of cat applicants, this Census dataset provides economic characteristics for `r cat_applicants_included` applicants, out of a total of `r nrow(cat_applicants)`. 
+
+Not bad! It looks like this dataset will serve us well.  Some data might not be available for rural areas, but I bet the most important economic ones are.
+
+## Working with Census Data
+
+So, let's compose a list of variables we're interested in.  I like a handful of "usual suspects" which disclose a lot about the economic characteristics of a census tract:
+
+```{r}
+selection <- c('GEO.id2', 'HC01_VC07', 'HC01_VC30', 'HC01_VC85', 'HC01_VC86', 'HC03_VC171')
+selected_economics_variables %>% filter(GEO.id %in% selection)
+```
+
+Let's get just those economic characteristics on just our census tracts!
+
+```{r}
+adopter_economic_characteristics <- selected_economic_characteristics %>% select( selection) %>% filter(GEO.id2 %in% geoids)
+```
+
+And let's rename those variables something easier to recall.  We're putting in the word 'tract' to remind us that these values do NOT correspond to the individual applicant, but to their census tract.
+
+```{r}
+names(adopter_economic_characteristics) <- c('GEOID',
+                                             'tract_unemployment_pct',
+                                             'tract_commute_public_transit',
+                                             'tract_median_income',
+                                             'tract_mean_income',
+                                             'tract_poverty_pct')
+```
+
+
+## Save Data for Further Use
+
+Let's save our data for downline use...
+
+```{r}
+write.csv(adopter_economic_characteristics, "CensusData/census_tracts_economics.csv", row.names = FALSE)
+```
