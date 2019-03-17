@@ -1,21 +1,31 @@
 ---
 title: "apps_data_vd"
-output: html
+author: "Veena Dali"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true 
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r cars}
+```{r load_packages, echo = F}
+#load packages
 library(readr)
-dataCleaned <- read.csv("Analyses/2_Applicants/amygood/output/apps_clean.csv")
-
-#frequency of different home_owner types
-dplyr::count(dataCleaned, home_owner)
+library(dplyr)
+library(tidyr)
 ```
 
-```{r cars}
+```{r load data}
+dataCleaned <- read.csv("Analyses/2_Applicants/amygood/output/apps_clean.csv")
+```
+
+```{r Understand distribution of data}
+#frequency of different home_owner types
+dplyr::count(dataCleaned, home_owner)
+
 #frequency of different allergies types
 dplyr::count(dataCleaned, allergies)
 ```
