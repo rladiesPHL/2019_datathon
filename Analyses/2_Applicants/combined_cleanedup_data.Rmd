@@ -24,11 +24,27 @@ library(skimr)
 library(gtools)
 library(knitr)  #for outputting tables as kables
 ```
+
+##Load Data
+```{r load_data, echo = F,  message = F,  warning = F}
+cat_apps = read_csv("Data/cat_apps.csv")
+dog_apps = read_csv("Data/dog_apps.csv")
+
+cat_actions = read_csv("Data/cat_actions.csv")
+dog_actions = read_csv("Data/dog_actions.csv")
+
+petpoint = read_csv("Data/petpoint.csv")
+
+cat_cards = read_csv("Data/cat_cards.csv")
+dog_cards = read_csv("Data/dog_cards.csv")
+```
+
 ##Helper Functions
 
 convert_to_ind(): creates indicator for specified field in dataframe
 
 ```{r helper_functions, echo = T,  message = F,  warning = T}
+#functions provided by Ramaa
 # create separate dataframe with indicator columns - one for each option of the provided categorical field
 convert_to_ind <- function(df, field){
     df %>% 
@@ -52,7 +68,9 @@ clean_adoption_timeline <- function(x) {
 }
 
 clean_household_agree <- function(x) {
-  x %>% str_replace_all(.,"it-s-a-surprise","a-surprise")
+  x %>% str_replace_all(.,"it-s-a-surprise","a-surprise") %>% 
+    str_replace_all(.,"yes,no","no,yes") %>%
+    str_replace_all(.,"a-surprise,yes","yes,a-surprise")
 }
 
 clean_pet_policy <- function(x) {
@@ -85,6 +103,7 @@ clean_pet_kept <- function(x) {
   x %>% str_replace_all(.,"unsupervised-access-to-my-yard-9doggie-door-etc","unsupervised-access-to-my-yard-doggie-door-etc")
 }
 
+#functions provided by Amy
 tidy_elements <- function(df, colname) {
   elements <- get_unique_elements(df[colname])
   output_df <- df
@@ -118,15 +137,36 @@ get_elements_summary <- function(output_df, colname, new_colnames) {
     gather(!!colname, "count")
   return(elements_summary)
 }
+
+#function provided by Veena
+clean_city <- function(colname) {
+  colname %>% toupper(.) %>%
+  gsub("[.]|[,]| PA$", "", .) %>%
+  gsub("  ", " ", .) %>%
+  gsub("MT ", "MOUNT ", .) %>%
+  gsub("19010", "BRYN MAWR", .) %>%
+  gsub("CHETSER", "CHESTER", .) %>%
+  gsub("ROYERFORD", "ROYERSFORD", .) %>%
+  gsub("NORTH WHALES", "NORTH WALES", .) %>%
+  gsub("MONTGOMERY VALLAGE", "MONTGOMERY VILLAGE", .) %>%
+  gsub("E LANSDOWNE", "EAST LANSDOWNE", .) %>%
+  gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA|PHIALADELPHIA|PHIALDELPHIA|PHILDELPHIA", "PHILADELPHIA", .)
+}
 ```
 
-##Dataset Load and Cleanup
+##Dataset Cleanup
 
 ### Apps Data
-```{r apps, echo = T,  message = F,  warning = T}
-cat_apps = read_csv("Data/cat_apps.csv")
-dog_apps = read_csv("Data/dog_apps.csv")
 
+The cat_apps.csv and dog_apps.csv have exactly same columns but there is a mismatch in their datatypes.
+Steps to fix this:
+  1. Add animal_type="cats" to cats.csv and animal_type="dogs" to dogs.csv 
+  2. cat_apps.csv - convert adults_in _home from character type to integer type
+  3. dog_apps.csv - convert zip code from integer type to character type so that we can categorize them
+
+combined dog and cat apps data [1906, 27]
+
+```{r apps, echo = T,  message = F,  warning = T}
 #convert adults_in_home to integer type
 cat_apps <- cat_apps[,-1] %>% 
   distinct() %>%
@@ -141,10 +181,22 @@ dog_apps <- dog_apps[,-1] %>%
   mutate(animal_type="dogs",
          ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))          
 
+#combine cat and dog apps data
+apps <- bind_rows(cat_apps,dog_apps) 
+```
 
-apps <- bind_rows(cat_apps,dog_apps)
+Apps data needs to be cleaned up: 
+  * Removed columns: STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON
+  * Take absolute value of negative numbers
+  * Any values > 15 for adults_in_home and children_in_home are updated N/A
+  * ideal_adoption_timeline: consolidated next-few-weeks to few-weeks
+  * all_household_agree: consolidated using the function clean_household_agree
+  * home_owner and home_pet_policy: make factor
+  * experience: cleaned using function above
+  * City: cleaned to reduce same cities with different spellings
+  
 
-
+```{r apps_cleanup, echo = T, message = F, warning = T}
 apps <- apps %>% 
   select(-c(STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
   rename(trello_id = outcome_trello_id) %>%
@@ -152,10 +204,14 @@ apps <- apps %>%
          ideal_adoption_timeline = clean_adoption_timeline(ideal_adoption_timeline),
          all_household_agree = clean_household_agree(all_household_agree),
          home_pet_policy = clean_pet_policy(home_pet_policy),
+         home_pet_policy = as.factor(home_pet_policy),
+         home_owner = as.factor(home_owner),
          experience = clean_experience(experience),
          pet_kept = clean_pet_kept(pet_kept),
          adults_in_home = abs(adults_in_home),
-         children_in_home = abs(children_in_home),
+         adults_in_home = replace(adults_in_home, adults_in_home > 15,NA),
+         children_in_home = abs(children_in_home), #remove negative numbers
+         children_in_home = replace(children_in_home, children_in_home > 15,NA), #remove any numbers greater than 15
          home_alone_avg = parse_number(home_alone_avg),
          home_alone_max = parse_number(home_alone_max),
          budget_monthly = clean_budget(budget_monthly),
@@ -180,6 +236,16 @@ apps <- apps %>%
                                              TRUE ~ ">$5000"),
                                    levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
                                    ordered=T))
+#Cleanup city column
+apps$City = clean_city(apps$City)
+apps$City = replace(apps$City, apps$City %in% c("Y"),NA)
+apps$City = as.factor(apps$City)
+
+#Make State factor
+apps$State <- as.factor(apps$State)
+         
+#only extract zip codes with 5 values
+apps$ZIP <- str_extract(apps$ZIP, "^.{5}")
 
 apps_with_indicators <- apps %>%
    #distinct(trello_id) %>%
@@ -201,13 +267,16 @@ apps_with_indicators <- apps %>%
 
 dim(apps)
 dim(apps_with_indicators)
+
+colnames(apps_with_indicators)
+all(duplicated(apps_with_indicators) == FALSE) # check for duplicates
+
+#dput(get_unique_elements(apps_with_indicators, "experience")) #check unique values
+#length(get_unique_elements(apps_with_indicators, "City"))
 ```
 
 ### Actions Dataset
 ```{r actions, echo = T,  message = F,  warning = T}
-cat_actions = read_csv("Data/cat_actions.csv")
-dog_actions = read_csv("Data/dog_actions.csv")
-
 #create one dataframe
 actions <- bind_rows(unique(cat_actions),unique(dog_actions))
 
@@ -233,7 +302,6 @@ str(actions)
 
 ### Petpoint Dataset
 ```{r petpoint, echo = T,  message = F,  warning = T}
-petpoint = read_csv("Data/petpoint.csv")
 petpoint <- petpoint[,-1] %>% #there are 77 duplicates
   distinct() %>%
   filter(animal_type != "Wildlife") %>%
@@ -275,10 +343,6 @@ petpoint <- petpoint[,-1] %>% #there are 77 duplicates
 
 ### Cards Dataset
 ```{r cards, echo = T,  message = F,  warning = T}
-
-cat_cards = read_csv("Data/cat_cards.csv")
-dog_cards = read_csv("Data/dog_cards.csv")
-
 # Add a new column "animal_type" to each dataset
 cat_cards <- cat_cards %>% mutate(animal_type="cats");
 dog_cards <- dog_cards %>% mutate(animal_type="dogs");
@@ -317,5 +381,3 @@ colnames(combine_data)
 #write.csv(combine_data, "combine_data.csv", row.names = FALSE)
 ```
 
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
