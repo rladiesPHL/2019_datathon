@@ -123,7 +123,7 @@ get_elements_summary <- function(output_df, colname, new_colnames) {
 ##Dataset Load and Cleanup
 
 ### Apps Data
-```{r apps}
+```{r apps, echo = T,  message = F,  warning = T}
 cat_apps = read_csv("Data/cat_apps.csv")
 dog_apps = read_csv("Data/dog_apps.csv")
 
@@ -204,7 +204,7 @@ dim(apps_with_indicators)
 ```
 
 ### Actions Dataset
-```{r actions}
+```{r actions, echo = T,  message = F,  warning = T}
 cat_actions = read_csv("Data/cat_actions.csv")
 dog_actions = read_csv("Data/dog_actions.csv")
 
@@ -232,8 +232,8 @@ str(actions)
 ```
 
 ### Petpoint Dataset
-```{r petpoint}
-petpoint = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/petpoint.csv")
+```{r petpoint, echo = T,  message = F,  warning = T}
+petpoint = read_csv("Data/petpoint.csv")
 petpoint <- petpoint[,-1] %>% #there are 77 duplicates
   distinct() %>%
   filter(animal_type != "Wildlife") %>%
@@ -276,8 +276,8 @@ petpoint <- petpoint[,-1] %>% #there are 77 duplicates
 ### Cards Dataset
 ```{r cards, echo = T,  message = F,  warning = T}
 
-cat_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_cards.csv")
-dog_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_cards.csv")
+cat_cards = read_csv("Data/cat_cards.csv")
+dog_cards = read_csv("Data/dog_cards.csv")
 
 # Add a new column "animal_type" to each dataset
 cat_cards <- cat_cards %>% mutate(animal_type="cats");
