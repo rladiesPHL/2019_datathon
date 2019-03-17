@@ -12,6 +12,11 @@ Veena
     -   [Cards Dataset](#cards-dataset)
 -   [Merge the 4 Datasets](#merge-the-4-datasets)
 
+``` r
+# Turn off scientific notation ----
+options(scipen=999) #digits = 2
+```
+
 Load Data
 ---------
 
@@ -21,7 +26,6 @@ Helper Functions
 convert\_to\_ind(): creates indicator for specified field in dataframe
 
 ``` r
-#functions provided by Ramaa
 # create separate dataframe with indicator columns - one for each option of the provided categorical field
 convert_to_ind <- function(df, field){
     df %>% 
@@ -71,16 +75,46 @@ clean_experience <- function(x){
         str_replace_all(., "(bred-sold)-a-pet", "bred-sold")
 }
 
-clean_budget <- function(x) {
-  x %>% str_replace_all(.,"^-","") %>%
-    parse_number(.)
-}
-
 clean_pet_kept <- function(x) {
   x %>% str_replace_all(.,"unsupervised-access-to-my-yard-9doggie-door-etc","unsupervised-access-to-my-yard-doggie-door-etc")
 }
 
-#function provided by Veena
+#budget cleanup functions
+clean_budget <- function(x) {
+  x %>% str_replace_all(.,"^-","") %>%
+    parse_number(.) %>%
+    gsub("[$]|[(]|[)]|[,]", "", .) %>% 
+    as.numeric()
+}
+
+create_budget_range <- function(x) {
+    case_when( x <= 25 ~ "<25",
+               x <= 100 ~ "26-100", 
+               x <= 200 ~ "101-200",
+               x <= 500 ~ "201-500",
+               x <= 1000 ~ "501-1000",
+               x <= 5000 ~ "1001-5000",
+               is.na(x) ~ "NA",
+               TRUE ~ ">5000")
+}
+
+#useful functions for QA
+get_unique_elements <- function(df, colname) {
+  elements_string <- do.call(paste, c(as.list(df[colname]), sep = ","))
+  elements_list <- unique(trimws(unlist(strsplit(elements_string, c(",")))))
+  unique_elements <- elements_list[!elements_list %in% c("","NA")]
+  return(unique_elements)
+}
+
+get_elements_summary <- function(output_df, colname, new_colnames) {
+  subset_df <- output_df[names(output_df) %in% new_colnames]
+  elements_summary <- subset_df %>%
+    summarise_all(sum, na.rm = TRUE) %>%
+    gather(!!colname, "count")
+  return(elements_summary)
+}
+
+#city cleanup
 clean_city <- function(colname) {
   colname %>% toupper(.) %>%
   gsub("[.]|[,]| PA$", "", .) %>%
@@ -129,8 +163,19 @@ dog_apps <- dog_apps[,-1] %>%
 apps <- bind_rows(cat_apps,dog_apps) 
 ```
 
-Apps data needs to be cleaned up: <br> \* Removed columns: STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON <br> \* Take absolute value of negative numbers <br> \* Any values &gt; 15 for adults\_in\_home and children\_in\_home are updated N/A <br> \* ideal\_adoption\_timeline: consolidated next-few-weeks to few-weeks <br> \* all\_household\_agree: consolidated using the function clean\_household\_agree <br> \* home\_owner and home\_pet\_policy: make factor <br> \* experience: cleaned using function above <br> \* City: cleaned to reduce same cities with different spellings
+Apps data needs to be cleaned up:
+<ul>
+        <li> __Removed columns__: STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON </li>          <li> Take absolute value of negative numbers </li>
+        <li> Any values > 15 for __adults_in_home__ and __children_in_home__ are updated N/A </li>
+        <li> __ideal_adoption_timeline__: consolidated next-few-weeks to few-weeks </li>
+        <li> __all_household_agree__: consolidated using the function clean_household_agree </li>
+        <li> __home_owner__ and __home_pet_policy__: make factor </li>
+        <li> __experience__: cleaned using function above </li>
+        <li> __City__: cleaned to reduce same cities with different spellings </li>
+        <li> __budget_monthly__ and __budget_emergency__: </li>
 
+<br> 1. Cleaned up the syntax (e.g. () and $) <br> 2. Updated to take the absolute values (e.g. -3000 is no 3000) <br> 3. Categorized into buckets (e.g. 100-200)
+</ul>
 ``` r
 apps <- apps %>% 
   select(-c(STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
@@ -151,26 +196,9 @@ apps <- apps %>%
          home_alone_max = parse_number(home_alone_max),
          budget_monthly = clean_budget(budget_monthly),
          budget_emergency = clean_budget(budget_emergency),
-         budget_monthly_ranges = factor(case_when(budget_monthly <=25 ~ "Less than $25",
-                                             budget_monthly <=100 ~ "$25-$100",
-                                             budget_monthly <=200 ~ "$100-$200",
-                                             budget_monthly <=500 ~ "$200-$500",
-                                             budget_monthly <=1000 ~ "$500-$1000",
-                                             budget_monthly <=5000 ~ "$1000-$5000",
-                                             is.na(budget_monthly) ~ "NA",
-                                             TRUE ~ ">$5000"),
-                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
-                                   ordered=T),
-         budget_emergency_ranges = factor(case_when(budget_emergency <=25 ~ "Less than $25",
-                                             budget_emergency  <=100 ~ "$25-$100",
-                                             budget_emergency  <=200 ~ "$100-$200",
-                                             budget_emergency  <=500 ~ "$200-$500",
-                                             budget_emergency  <=1000 ~ "$500-$1000",
-                                             budget_emergency  <=5000 ~ "$1000-$5000",
-                                             is.na(budget_emergency ) ~ "NA",
-                                             TRUE ~ ">$5000"),
-                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
-                                   ordered=T))
+         budget_monthly_ranges = as.factor(create_budget_range(budget_monthly)),
+         budget_emergency_ranges = as.factor(create_budget_range(budget_emergency)))
+         
 #Cleanup city column
 apps$City = clean_city(apps$City)
 apps$City = replace(apps$City, apps$City %in% c("Y"),NA)
@@ -217,7 +245,7 @@ dim(apps)
 dim(apps_with_indicators)
 ```
 
-    ## [1] 1906  158
+    ## [1] 1906  160
 
 ``` r
 colnames(apps_with_indicators)
@@ -284,103 +312,105 @@ colnames(apps_with_indicators)
     ##  [59] "experience_past.housemates.pet_ind"                         
     ##  [60] "experience_pet.died.in.care_ind"                            
     ##  [61] "experience_pet.ran.away_ind"                                
-    ##  [62] "budget.monthly.ranges_>$5000_ind"                           
-    ##  [63] "budget.monthly.ranges_$100.$200_ind"                        
-    ##  [64] "budget.monthly.ranges_$1000.$5000_ind"                      
-    ##  [65] "budget.monthly.ranges_$200.$500_ind"                        
-    ##  [66] "budget.monthly.ranges_$25.$100_ind"                         
-    ##  [67] "budget.monthly.ranges_$500.$1000_ind"                       
-    ##  [68] "budget.emergency.ranges_>$5000_ind"                         
-    ##  [69] "budget.emergency.ranges_$100.$200_ind"                      
-    ##  [70] "budget.emergency.ranges_$1000.$5000_ind"                    
-    ##  [71] "budget.emergency.ranges_$200.$500_ind"                      
-    ##  [72] "budget.emergency.ranges_$25.$100_ind"                       
-    ##  [73] "budget.emergency.ranges_$500.$1000_ind"                     
-    ##  [74] "home.alone.avg_0_ind"                                       
-    ##  [75] "home.alone.avg_1_ind"                                       
-    ##  [76] "home.alone.avg_10_ind"                                      
-    ##  [77] "home.alone.avg_11_ind"                                      
-    ##  [78] "home.alone.avg_12_ind"                                      
-    ##  [79] "home.alone.avg_13_ind"                                      
-    ##  [80] "home.alone.avg_2_ind"                                       
-    ##  [81] "home.alone.avg_24_ind"                                      
-    ##  [82] "home.alone.avg_3_ind"                                       
-    ##  [83] "home.alone.avg_4_ind"                                       
-    ##  [84] "home.alone.avg_5_ind"                                       
-    ##  [85] "home.alone.avg_6_ind"                                       
-    ##  [86] "home.alone.avg_7_ind"                                       
-    ##  [87] "home.alone.avg_8_ind"                                       
-    ##  [88] "home.alone.avg_9_ind"                                       
-    ##  [89] "home.alone.max_0_ind"                                       
-    ##  [90] "home.alone.max_1_ind"                                       
-    ##  [91] "home.alone.max_10_ind"                                      
-    ##  [92] "home.alone.max_11_ind"                                      
-    ##  [93] "home.alone.max_12_ind"                                      
-    ##  [94] "home.alone.max_13_ind"                                      
-    ##  [95] "home.alone.max_14_ind"                                      
-    ##  [96] "home.alone.max_15_ind"                                      
-    ##  [97] "home.alone.max_16_ind"                                      
-    ##  [98] "home.alone.max_18_ind"                                      
-    ##  [99] "home.alone.max_2_ind"                                       
-    ## [100] "home.alone.max_20_ind"                                      
-    ## [101] "home.alone.max_23_ind"                                      
-    ## [102] "home.alone.max_24_ind"                                      
-    ## [103] "home.alone.max_28_ind"                                      
-    ## [104] "home.alone.max_3_ind"                                       
-    ## [105] "home.alone.max_30_ind"                                      
-    ## [106] "home.alone.max_36_ind"                                      
-    ## [107] "home.alone.max_4_ind"                                       
-    ## [108] "home.alone.max_48_ind"                                      
-    ## [109] "home.alone.max_5_ind"                                       
-    ## [110] "home.alone.max_6_ind"                                       
-    ## [111] "home.alone.max_7_ind"                                       
-    ## [112] "home.alone.max_8_ind"                                       
-    ## [113] "home.alone.max_9_ind"                                       
-    ## [114] "pet.kept_crate_ind"                                         
-    ## [115] "pet.kept_inside.only_ind"                                   
-    ## [116] "pet.kept_inside.outside_ind"                                
-    ## [117] "pet.kept_inside.with.yard.access_ind"                       
-    ## [118] "pet.kept_leash.harness_ind"                                 
-    ## [119] "pet.kept_other_ind"                                         
-    ## [120] "pet.kept_outside.only_ind"                                  
-    ## [121] "pet.kept_supervised.in.my.yard_ind"                         
-    ## [122] "pet.kept_unsupervised.access.to.my.yard.doggie.door.etc_ind"
-    ## [123] "exercise_another.pet_ind"                                   
-    ## [124] "exercise_dog.parks_ind"                                     
-    ## [125] "exercise_jogging.together_ind"                              
-    ## [126] "exercise_not.much_ind"                                      
-    ## [127] "exercise_other.cats_ind"                                    
-    ## [128] "exercise_other.pets_ind"                                    
-    ## [129] "exercise_playing.in.my.yard_ind"                            
-    ## [130] "exercise_toy.mice_ind"                                      
-    ## [131] "exercise_walks.off.leash_ind"                               
-    ## [132] "exercise_walks.on.leash_ind"                                
-    ## [133] "exercise_wand.toys_ind"                                     
-    ## [134] "needs_declaw_ind"                                           
-    ## [135] "needs_groom.myself_ind"                                     
-    ## [136] "needs_nail.clip_ind"                                        
-    ## [137] "needs_no.grooming_ind"                                      
-    ## [138] "needs_not.sure_ind"                                         
-    ## [139] "needs_other_ind"                                            
-    ## [140] "needs_professional.groomer_ind"                             
-    ## [141] "needs_scratching.post_ind"                                  
-    ## [142] "return.pet_allergies.appear_ind"                            
-    ## [143] "return.pet_becomes.aggressive_ind"                          
-    ## [144] "return.pet_destructive_ind"                                 
-    ## [145] "return.pet_jumps.on.counters_ind"                           
-    ## [146] "return.pet_jumps.on.furniture_ind"                          
-    ## [147] "return.pet_litter.box.issues_ind"                           
-    ## [148] "return.pet_moving.too.far_ind"                              
-    ## [149] "return.pet_new.baby_ind"                                    
-    ## [150] "return.pet_none_ind"                                        
-    ## [151] "return.pet_not.allowed.new.living.space_ind"                
-    ## [152] "return.pet_not.enough.time_ind"                             
-    ## [153] "return.pet_not.housebroken_ind"                             
-    ## [154] "return.pet_other_ind"                                       
-    ## [155] "return.pet_pet.sheds_ind"                                   
-    ## [156] "return.pet_scratches.furniture_ind"                         
-    ## [157] "return.pet_too.playful_ind"                                 
-    ## [158] "return.pet_vet.becomes.expensive_ind"
+    ##  [62] "budget.monthly.ranges_<25_ind"                              
+    ##  [63] "budget.monthly.ranges_>5000_ind"                            
+    ##  [64] "budget.monthly.ranges_1001.5000_ind"                        
+    ##  [65] "budget.monthly.ranges_101.200_ind"                          
+    ##  [66] "budget.monthly.ranges_201.500_ind"                          
+    ##  [67] "budget.monthly.ranges_26.100_ind"                           
+    ##  [68] "budget.monthly.ranges_501.1000_ind"                         
+    ##  [69] "budget.emergency.ranges_<25_ind"                            
+    ##  [70] "budget.emergency.ranges_>5000_ind"                          
+    ##  [71] "budget.emergency.ranges_1001.5000_ind"                      
+    ##  [72] "budget.emergency.ranges_101.200_ind"                        
+    ##  [73] "budget.emergency.ranges_201.500_ind"                        
+    ##  [74] "budget.emergency.ranges_26.100_ind"                         
+    ##  [75] "budget.emergency.ranges_501.1000_ind"                       
+    ##  [76] "home.alone.avg_0_ind"                                       
+    ##  [77] "home.alone.avg_1_ind"                                       
+    ##  [78] "home.alone.avg_10_ind"                                      
+    ##  [79] "home.alone.avg_11_ind"                                      
+    ##  [80] "home.alone.avg_12_ind"                                      
+    ##  [81] "home.alone.avg_13_ind"                                      
+    ##  [82] "home.alone.avg_2_ind"                                       
+    ##  [83] "home.alone.avg_24_ind"                                      
+    ##  [84] "home.alone.avg_3_ind"                                       
+    ##  [85] "home.alone.avg_4_ind"                                       
+    ##  [86] "home.alone.avg_5_ind"                                       
+    ##  [87] "home.alone.avg_6_ind"                                       
+    ##  [88] "home.alone.avg_7_ind"                                       
+    ##  [89] "home.alone.avg_8_ind"                                       
+    ##  [90] "home.alone.avg_9_ind"                                       
+    ##  [91] "home.alone.max_0_ind"                                       
+    ##  [92] "home.alone.max_1_ind"                                       
+    ##  [93] "home.alone.max_10_ind"                                      
+    ##  [94] "home.alone.max_11_ind"                                      
+    ##  [95] "home.alone.max_12_ind"                                      
+    ##  [96] "home.alone.max_13_ind"                                      
+    ##  [97] "home.alone.max_14_ind"                                      
+    ##  [98] "home.alone.max_15_ind"                                      
+    ##  [99] "home.alone.max_16_ind"                                      
+    ## [100] "home.alone.max_18_ind"                                      
+    ## [101] "home.alone.max_2_ind"                                       
+    ## [102] "home.alone.max_20_ind"                                      
+    ## [103] "home.alone.max_23_ind"                                      
+    ## [104] "home.alone.max_24_ind"                                      
+    ## [105] "home.alone.max_28_ind"                                      
+    ## [106] "home.alone.max_3_ind"                                       
+    ## [107] "home.alone.max_30_ind"                                      
+    ## [108] "home.alone.max_36_ind"                                      
+    ## [109] "home.alone.max_4_ind"                                       
+    ## [110] "home.alone.max_48_ind"                                      
+    ## [111] "home.alone.max_5_ind"                                       
+    ## [112] "home.alone.max_6_ind"                                       
+    ## [113] "home.alone.max_7_ind"                                       
+    ## [114] "home.alone.max_8_ind"                                       
+    ## [115] "home.alone.max_9_ind"                                       
+    ## [116] "pet.kept_crate_ind"                                         
+    ## [117] "pet.kept_inside.only_ind"                                   
+    ## [118] "pet.kept_inside.outside_ind"                                
+    ## [119] "pet.kept_inside.with.yard.access_ind"                       
+    ## [120] "pet.kept_leash.harness_ind"                                 
+    ## [121] "pet.kept_other_ind"                                         
+    ## [122] "pet.kept_outside.only_ind"                                  
+    ## [123] "pet.kept_supervised.in.my.yard_ind"                         
+    ## [124] "pet.kept_unsupervised.access.to.my.yard.doggie.door.etc_ind"
+    ## [125] "exercise_another.pet_ind"                                   
+    ## [126] "exercise_dog.parks_ind"                                     
+    ## [127] "exercise_jogging.together_ind"                              
+    ## [128] "exercise_not.much_ind"                                      
+    ## [129] "exercise_other.cats_ind"                                    
+    ## [130] "exercise_other.pets_ind"                                    
+    ## [131] "exercise_playing.in.my.yard_ind"                            
+    ## [132] "exercise_toy.mice_ind"                                      
+    ## [133] "exercise_walks.off.leash_ind"                               
+    ## [134] "exercise_walks.on.leash_ind"                                
+    ## [135] "exercise_wand.toys_ind"                                     
+    ## [136] "needs_declaw_ind"                                           
+    ## [137] "needs_groom.myself_ind"                                     
+    ## [138] "needs_nail.clip_ind"                                        
+    ## [139] "needs_no.grooming_ind"                                      
+    ## [140] "needs_not.sure_ind"                                         
+    ## [141] "needs_other_ind"                                            
+    ## [142] "needs_professional.groomer_ind"                             
+    ## [143] "needs_scratching.post_ind"                                  
+    ## [144] "return.pet_allergies.appear_ind"                            
+    ## [145] "return.pet_becomes.aggressive_ind"                          
+    ## [146] "return.pet_destructive_ind"                                 
+    ## [147] "return.pet_jumps.on.counters_ind"                           
+    ## [148] "return.pet_jumps.on.furniture_ind"                          
+    ## [149] "return.pet_litter.box.issues_ind"                           
+    ## [150] "return.pet_moving.too.far_ind"                              
+    ## [151] "return.pet_new.baby_ind"                                    
+    ## [152] "return.pet_none_ind"                                        
+    ## [153] "return.pet_not.allowed.new.living.space_ind"                
+    ## [154] "return.pet_not.enough.time_ind"                             
+    ## [155] "return.pet_not.housebroken_ind"                             
+    ## [156] "return.pet_other_ind"                                       
+    ## [157] "return.pet_pet.sheds_ind"                                   
+    ## [158] "return.pet_scratches.furniture_ind"                         
+    ## [159] "return.pet_too.playful_ind"                                 
+    ## [160] "return.pet_vet.becomes.expensive_ind"
 
 ``` r
 all(duplicated(apps_with_indicators) == FALSE) # check for duplicates
@@ -548,76 +578,18 @@ cards_with_indicators <- cards %>%
 cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
 ```
 
-    ## # A tibble: 10 x 74
-    ##    label_names last_label num_labels label.names_.ad… label.names_.ad…
-    ##    <chr>       <chr>           <dbl>            <dbl>            <dbl>
-    ##  1 adopted     adopted             1                0                0
-    ##  2 <NA>        <NA>                0               NA               NA
-    ##  3 ready to a… ready to …          1                0                0
-    ##  4 reviewed w… ready to …          2                0                0
-    ##  5 pet policy… ready for…          2                0                0
-    ##  6 ready for … ready to …          2                0                0
-    ##  7 <NA>        <NA>                0               NA               NA
-    ##  8 ready to a… reviewed …          3                0                0
-    ##  9 adopted     adopted             1                0                0
-    ## 10 <NA>        <NA>                0               NA               NA
-    ## # … with 69 more variables: label.names_.adoption.follow.up_ind <dbl>,
-    ## #   label.names_.approved_ind <dbl>,
-    ## #   label.names_.approved.with.limitation_ind <dbl>,
-    ## #   label.names_.checks_ind <dbl>, label.names_.declaw.only_ind <dbl>,
-    ## #   label.names_.denied_ind <dbl>,
-    ## #   label.names_.do.not.follow.up_ind <dbl>,
-    ## #   label.names_.dog.meet_ind <dbl>,
-    ## #   label.names_.foster.to.adopt_ind <dbl>,
-    ## #   label.names_.landlord_ind <dbl>,
-    ## #   label.names_.manager.decision_ind <dbl>,
-    ## #   label.names_.need.info_ind <dbl>,
-    ## #   label.names_.need.proof.of.ownership_ind <dbl>,
-    ## #   label.names_.need.roommates.vet.info_ind <dbl>,
-    ## #   label.names_.need.to.see.id_ind <dbl>,
-    ## #   label.names_.need.vet.info_ind <dbl>,
-    ## #   label.names_.need.written.ll.permission_ind <dbl>,
-    ## #   label.names_.needs.app.attached_ind <dbl>,
-    ## #   label.names_.needs.review.before.approval_ind <dbl>,
-    ## #   label.names_.not.s.n_ind <dbl>, label.names_.not.utd_ind <dbl>,
-    ## #   label.names_.opa_ind <dbl>, label.names_.pet.policy_ind <dbl>,
-    ## #   label.names_.questions_ind <dbl>,
-    ## #   label.names_.ready.for.review_ind <dbl>,
-    ## #   label.names_.ready.to.adopt_ind <dbl>,
-    ## #   label.names_.red.flag_ind <dbl>, label.names_.rescue.check_ind <dbl>,
-    ## #   label.names_.returned_ind <dbl>,
-    ## #   label.names_.reviewed.with.handouts.only_ind <dbl>,
-    ## #   label.names_.serial.no.show_ind <dbl>,
-    ## #   label.names_.unsure.foster.or.adopt_ind <dbl>,
-    ## #   label.names_.vet_ind <dbl>,
-    ## #   label.names_.vet.check.in.process_ind <dbl>,
-    ## #   label.names_.withdrawn_ind <dbl>, label.names_adopted_ind <dbl>,
-    ## #   label.names_adopted.elsewhere_ind <dbl>,
-    ## #   label.names_adoption.follow.up_ind <dbl>,
-    ## #   label.names_approved_ind <dbl>,
-    ## #   label.names_approved.with.limitation_ind <dbl>,
-    ## #   label.names_checks_ind <dbl>, label.names_declaw.only_ind <dbl>,
-    ## #   label.names_denied_ind <dbl>, label.names_foster.to.adopt_ind <dbl>,
-    ## #   label.names_landlord_ind <dbl>,
-    ## #   label.names_manager.decision_ind <dbl>,
-    ## #   label.names_need.info_ind <dbl>,
-    ## #   label.names_need.proof.of.ownership_ind <dbl>,
-    ## #   label.names_need.roommates.vet.info_ind <dbl>,
-    ## #   label.names_need.to.see.id_ind <dbl>,
-    ## #   label.names_need.vet.info_ind <dbl>,
-    ## #   label.names_need.written.ll.permission_ind <dbl>,
-    ## #   label.names_needs.review.before.approval_ind <dbl>,
-    ## #   label.names_not.s.n_ind <dbl>, label.names_not.utd_ind <dbl>,
-    ## #   label.names_opa_ind <dbl>, label.names_pet.policy_ind <dbl>,
-    ## #   label.names_questions_ind <dbl>,
-    ## #   label.names_ready.for.review_ind <dbl>,
-    ## #   label.names_ready.to.adopt_ind <dbl>, label.names_red.flag_ind <dbl>,
-    ## #   label.names_rescue.check_ind <dbl>, label.names_returned_ind <dbl>,
-    ## #   label.names_reviewed.with.handouts.only_ind <dbl>,
-    ## #   label.names_serial.no.show_ind <dbl>,
-    ## #   label.names_unsure.foster.or.adopt_ind <dbl>,
-    ## #   label.names_vet_ind <dbl>, label.names_vet.check.in.process_ind <dbl>,
-    ## #   label.names_withdrawn_ind <dbl>
+| label\_names                                | last\_label             |  num\_labels|  label.names\_.adopted\_ind|  label.names\_.adopted.elsewhere\_ind|  label.names\_.adoption.follow.up\_ind|  label.names\_.approved\_ind|  label.names\_.approved.with.limitation\_ind|  label.names\_.checks\_ind|  label.names\_.declaw.only\_ind|  label.names\_.denied\_ind|  label.names\_.do.not.follow.up\_ind|  label.names\_.dog.meet\_ind|  label.names\_.foster.to.adopt\_ind|  label.names\_.landlord\_ind|  label.names\_.manager.decision\_ind|  label.names\_.need.info\_ind|  label.names\_.need.proof.of.ownership\_ind|  label.names\_.need.roommates.vet.info\_ind|  label.names\_.need.to.see.id\_ind|  label.names\_.need.vet.info\_ind|  label.names\_.need.written.ll.permission\_ind|  label.names\_.needs.app.attached\_ind|  label.names\_.needs.review.before.approval\_ind|  label.names\_.not.s.n\_ind|  label.names\_.not.utd\_ind|  label.names\_.opa\_ind|  label.names\_.pet.policy\_ind|  label.names\_.questions\_ind|  label.names\_.ready.for.review\_ind|  label.names\_.ready.to.adopt\_ind|  label.names\_.red.flag\_ind|  label.names\_.rescue.check\_ind|  label.names\_.returned\_ind|  label.names\_.reviewed.with.handouts.only\_ind|  label.names\_.serial.no.show\_ind|  label.names\_.unsure.foster.or.adopt\_ind|  label.names\_.vet\_ind|  label.names\_.vet.check.in.process\_ind|  label.names\_.withdrawn\_ind|  label.names\_adopted\_ind|  label.names\_adopted.elsewhere\_ind|  label.names\_adoption.follow.up\_ind|  label.names\_approved\_ind|  label.names\_approved.with.limitation\_ind|  label.names\_checks\_ind|  label.names\_declaw.only\_ind|  label.names\_denied\_ind|  label.names\_foster.to.adopt\_ind|  label.names\_landlord\_ind|  label.names\_manager.decision\_ind|  label.names\_need.info\_ind|  label.names\_need.proof.of.ownership\_ind|  label.names\_need.roommates.vet.info\_ind|  label.names\_need.to.see.id\_ind|  label.names\_need.vet.info\_ind|  label.names\_need.written.ll.permission\_ind|  label.names\_needs.review.before.approval\_ind|  label.names\_not.s.n\_ind|  label.names\_not.utd\_ind|  label.names\_opa\_ind|  label.names\_pet.policy\_ind|  label.names\_questions\_ind|  label.names\_ready.for.review\_ind|  label.names\_ready.to.adopt\_ind|  label.names\_red.flag\_ind|  label.names\_rescue.check\_ind|  label.names\_returned\_ind|  label.names\_reviewed.with.handouts.only\_ind|  label.names\_serial.no.show\_ind|  label.names\_unsure.foster.or.adopt\_ind|  label.names\_vet\_ind|  label.names\_vet.check.in.process\_ind|  label.names\_withdrawn\_ind|
+|:--------------------------------------------|:------------------------|------------:|---------------------------:|-------------------------------------:|--------------------------------------:|----------------------------:|--------------------------------------------:|--------------------------:|-------------------------------:|--------------------------:|------------------------------------:|----------------------------:|-----------------------------------:|----------------------------:|------------------------------------:|-----------------------------:|-------------------------------------------:|-------------------------------------------:|----------------------------------:|---------------------------------:|----------------------------------------------:|--------------------------------------:|------------------------------------------------:|---------------------------:|---------------------------:|-----------------------:|------------------------------:|-----------------------------:|------------------------------------:|----------------------------------:|----------------------------:|--------------------------------:|----------------------------:|-----------------------------------------------:|----------------------------------:|------------------------------------------:|-----------------------:|----------------------------------------:|-----------------------------:|--------------------------:|------------------------------------:|-------------------------------------:|---------------------------:|-------------------------------------------:|-------------------------:|------------------------------:|-------------------------:|----------------------------------:|---------------------------:|-----------------------------------:|----------------------------:|------------------------------------------:|------------------------------------------:|---------------------------------:|--------------------------------:|---------------------------------------------:|-----------------------------------------------:|--------------------------:|--------------------------:|----------------------:|-----------------------------:|----------------------------:|-----------------------------------:|---------------------------------:|---------------------------:|-------------------------------:|---------------------------:|----------------------------------------------:|---------------------------------:|-----------------------------------------:|----------------------:|---------------------------------------:|----------------------------:|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| reviewed with handouts only, ready to adopt | ready to adopt          |            2|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  1|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                      0|                                       0|                            0|
+| need info, vet, questions                   | questions               |            3|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             1|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       1|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            1|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| need proof of ownership                     | need proof of ownership |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          1|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| not utd                                     | not utd                 |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          1|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| NA                                          | NA                      |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
 
 Merge the 4 Datasets
 --------------------
@@ -627,304 +599,13 @@ combine_data <- apps_with_indicators %>%
   left_join(actions) %>%
   left_join(petpoint_with_indicators) %>%
   left_join(cards_with_indicators)            
-```
 
-    ## Joining, by = c("trello_id", "animal_type")
-    ## Joining, by = c("trello_id", "animal_type")
-    ## Joining, by = c("trello_id", "animal_type")
-
-``` r
 dim(combine_data)
 ```
 
-    ## [1] 1906  281
+    ## [1] 1906  283
 
 ``` r
-colnames(combine_data)
-```
-
-    ##   [1] "date_submitted"                                             
-    ##   [2] "ideal_adoption_timeline"                                    
-    ##   [3] "reason_for_adoption"                                        
-    ##   [4] "specific_animal"                                            
-    ##   [5] "adults_in_home"                                             
-    ##   [6] "children_in_home"                                           
-    ##   [7] "all_household_agree"                                        
-    ##   [8] "allergies"                                                  
-    ##   [9] "home_owner"                                                 
-    ##  [10] "home_pet_policy"                                            
-    ##  [11] "experience"                                                 
-    ##  [12] "budget_monthly"                                             
-    ##  [13] "budget_emergency"                                           
-    ##  [14] "home_alone_avg"                                             
-    ##  [15] "home_alone_max"                                             
-    ##  [16] "pet_kept"                                                   
-    ##  [17] "exercise"                                                   
-    ##  [18] "needs"                                                      
-    ##  [19] "return_pet"                                                 
-    ##  [20] "how_heard"                                                  
-    ##  [21] "trello_id"                                                  
-    ##  [22] "City"                                                       
-    ##  [23] "State"                                                      
-    ##  [24] "ZIP"                                                        
-    ##  [25] "animal_type"                                                
-    ##  [26] "budget_monthly_ranges"                                      
-    ##  [27] "budget_emergency_ranges"                                    
-    ##  [28] "reason.for.adoption_gift_ind"                               
-    ##  [29] "reason.for.adoption_mouser_ind"                             
-    ##  [30] "reason.for.adoption_my.kids_ind"                            
-    ##  [31] "reason.for.adoption_myself_ind"                             
-    ##  [32] "reason.for.adoption_other_ind"                              
-    ##  [33] "reason.for.adoption_protection_ind"                         
-    ##  [34] "all.household.agree_a.surprise_ind"                         
-    ##  [35] "all.household.agree_no_ind"                                 
-    ##  [36] "all.household.agree_yes_ind"                                
-    ##  [37] "allergies_mildly.allergic_ind"                              
-    ##  [38] "allergies_no.allergies_ind"                                 
-    ##  [39] "allergies_not.sure_ind"                                     
-    ##  [40] "allergies_very.allergic_ind"                                
-    ##  [41] "home.owner_company_ind"                                     
-    ##  [42] "home.owner_family.friend_ind"                               
-    ##  [43] "home.owner_family.member.or.friend_ind"                     
-    ##  [44] "home.owner_landlord_ind"                                    
-    ##  [45] "home.owner_myself_ind"                                      
-    ##  [46] "home.pet.policy_no.but.pets.allowed_ind"                    
-    ##  [47] "home.pet.policy_not.applicable_ind"                         
-    ##  [48] "home.pet.policy_not.yet_ind"                                
-    ##  [49] "home.pet.policy_yes_ind"                                    
-    ##  [50] "home.pet.policy_yes.with.pet.policy_ind"                    
-    ##  [51] "experience_bred.sold_ind"                                   
-    ##  [52] "experience_current.housemates.pet_ind"                      
-    ##  [53] "experience_currently.have.pet_ind"                          
-    ##  [54] "experience_euthanized_ind"                                  
-    ##  [55] "experience_given.away_ind"                                  
-    ##  [56] "experience_given.to.shelter_ind"                            
-    ##  [57] "experience_grew.up.with_ind"                                
-    ##  [58] "experience_never.lived.with_ind"                            
-    ##  [59] "experience_past.housemates.pet_ind"                         
-    ##  [60] "experience_pet.died.in.care_ind"                            
-    ##  [61] "experience_pet.ran.away_ind"                                
-    ##  [62] "budget.monthly.ranges_>$5000_ind"                           
-    ##  [63] "budget.monthly.ranges_$100.$200_ind"                        
-    ##  [64] "budget.monthly.ranges_$1000.$5000_ind"                      
-    ##  [65] "budget.monthly.ranges_$200.$500_ind"                        
-    ##  [66] "budget.monthly.ranges_$25.$100_ind"                         
-    ##  [67] "budget.monthly.ranges_$500.$1000_ind"                       
-    ##  [68] "budget.emergency.ranges_>$5000_ind"                         
-    ##  [69] "budget.emergency.ranges_$100.$200_ind"                      
-    ##  [70] "budget.emergency.ranges_$1000.$5000_ind"                    
-    ##  [71] "budget.emergency.ranges_$200.$500_ind"                      
-    ##  [72] "budget.emergency.ranges_$25.$100_ind"                       
-    ##  [73] "budget.emergency.ranges_$500.$1000_ind"                     
-    ##  [74] "home.alone.avg_0_ind"                                       
-    ##  [75] "home.alone.avg_1_ind"                                       
-    ##  [76] "home.alone.avg_10_ind"                                      
-    ##  [77] "home.alone.avg_11_ind"                                      
-    ##  [78] "home.alone.avg_12_ind"                                      
-    ##  [79] "home.alone.avg_13_ind"                                      
-    ##  [80] "home.alone.avg_2_ind"                                       
-    ##  [81] "home.alone.avg_24_ind"                                      
-    ##  [82] "home.alone.avg_3_ind"                                       
-    ##  [83] "home.alone.avg_4_ind"                                       
-    ##  [84] "home.alone.avg_5_ind"                                       
-    ##  [85] "home.alone.avg_6_ind"                                       
-    ##  [86] "home.alone.avg_7_ind"                                       
-    ##  [87] "home.alone.avg_8_ind"                                       
-    ##  [88] "home.alone.avg_9_ind"                                       
-    ##  [89] "home.alone.max_0_ind"                                       
-    ##  [90] "home.alone.max_1_ind"                                       
-    ##  [91] "home.alone.max_10_ind"                                      
-    ##  [92] "home.alone.max_11_ind"                                      
-    ##  [93] "home.alone.max_12_ind"                                      
-    ##  [94] "home.alone.max_13_ind"                                      
-    ##  [95] "home.alone.max_14_ind"                                      
-    ##  [96] "home.alone.max_15_ind"                                      
-    ##  [97] "home.alone.max_16_ind"                                      
-    ##  [98] "home.alone.max_18_ind"                                      
-    ##  [99] "home.alone.max_2_ind"                                       
-    ## [100] "home.alone.max_20_ind"                                      
-    ## [101] "home.alone.max_23_ind"                                      
-    ## [102] "home.alone.max_24_ind"                                      
-    ## [103] "home.alone.max_28_ind"                                      
-    ## [104] "home.alone.max_3_ind"                                       
-    ## [105] "home.alone.max_30_ind"                                      
-    ## [106] "home.alone.max_36_ind"                                      
-    ## [107] "home.alone.max_4_ind"                                       
-    ## [108] "home.alone.max_48_ind"                                      
-    ## [109] "home.alone.max_5_ind"                                       
-    ## [110] "home.alone.max_6_ind"                                       
-    ## [111] "home.alone.max_7_ind"                                       
-    ## [112] "home.alone.max_8_ind"                                       
-    ## [113] "home.alone.max_9_ind"                                       
-    ## [114] "pet.kept_crate_ind"                                         
-    ## [115] "pet.kept_inside.only_ind"                                   
-    ## [116] "pet.kept_inside.outside_ind"                                
-    ## [117] "pet.kept_inside.with.yard.access_ind"                       
-    ## [118] "pet.kept_leash.harness_ind"                                 
-    ## [119] "pet.kept_other_ind"                                         
-    ## [120] "pet.kept_outside.only_ind"                                  
-    ## [121] "pet.kept_supervised.in.my.yard_ind"                         
-    ## [122] "pet.kept_unsupervised.access.to.my.yard.doggie.door.etc_ind"
-    ## [123] "exercise_another.pet_ind"                                   
-    ## [124] "exercise_dog.parks_ind"                                     
-    ## [125] "exercise_jogging.together_ind"                              
-    ## [126] "exercise_not.much_ind"                                      
-    ## [127] "exercise_other.cats_ind"                                    
-    ## [128] "exercise_other.pets_ind"                                    
-    ## [129] "exercise_playing.in.my.yard_ind"                            
-    ## [130] "exercise_toy.mice_ind"                                      
-    ## [131] "exercise_walks.off.leash_ind"                               
-    ## [132] "exercise_walks.on.leash_ind"                                
-    ## [133] "exercise_wand.toys_ind"                                     
-    ## [134] "needs_declaw_ind"                                           
-    ## [135] "needs_groom.myself_ind"                                     
-    ## [136] "needs_nail.clip_ind"                                        
-    ## [137] "needs_no.grooming_ind"                                      
-    ## [138] "needs_not.sure_ind"                                         
-    ## [139] "needs_other_ind"                                            
-    ## [140] "needs_professional.groomer_ind"                             
-    ## [141] "needs_scratching.post_ind"                                  
-    ## [142] "return.pet_allergies.appear_ind"                            
-    ## [143] "return.pet_becomes.aggressive_ind"                          
-    ## [144] "return.pet_destructive_ind"                                 
-    ## [145] "return.pet_jumps.on.counters_ind"                           
-    ## [146] "return.pet_jumps.on.furniture_ind"                          
-    ## [147] "return.pet_litter.box.issues_ind"                           
-    ## [148] "return.pet_moving.too.far_ind"                              
-    ## [149] "return.pet_new.baby_ind"                                    
-    ## [150] "return.pet_none_ind"                                        
-    ## [151] "return.pet_not.allowed.new.living.space_ind"                
-    ## [152] "return.pet_not.enough.time_ind"                             
-    ## [153] "return.pet_not.housebroken_ind"                             
-    ## [154] "return.pet_other_ind"                                       
-    ## [155] "return.pet_pet.sheds_ind"                                   
-    ## [156] "return.pet_scratches.furniture_ind"                         
-    ## [157] "return.pet_too.playful_ind"                                 
-    ## [158] "return.pet_vet.becomes.expensive_ind"                       
-    ## [159] "date_start"                                                 
-    ## [160] "checklist_ACCT"                                             
-    ## [161] "checklist_CHQ"                                              
-    ## [162] "checklist_LL"                                               
-    ## [163] "checklist_PP"                                               
-    ## [164] "checklist_SPCA"                                             
-    ## [165] "checklist_TR"                                               
-    ## [166] "checklist_VET"                                              
-    ## [167] "wday_start"                                                 
-    ## [168] "species"                                                    
-    ## [169] "primary_breed"                                              
-    ## [170] "secondary_breed"                                            
-    ## [171] "markings"                                                   
-    ## [172] "gender"                                                     
-    ## [173] "altered"                                                    
-    ## [174] "dob"                                                        
-    ## [175] "age_intake"                                                 
-    ## [176] "intake_asilomar"                                            
-    ## [177] "intake_condition"                                           
-    ## [178] "intake_date"                                                
-    ## [179] "intake_type"                                                
-    ## [180] "intake_subtype"                                             
-    ## [181] "intake_reason"                                              
-    ## [182] "intake_sitename"                                            
-    ## [183] "agency_name"                                                
-    ## [184] "outcome_asilomar"                                           
-    ## [185] "release_date"                                               
-    ## [186] "outcome_date"                                               
-    ## [187] "outcome_type"                                               
-    ## [188] "outcome_subtype"                                            
-    ## [189] "outcome_sitename"                                           
-    ## [190] "outcome_city"                                               
-    ## [191] "outcome_state"                                              
-    ## [192] "outcome_ZIP"                                                
-    ## [193] "new_age_group"                                              
-    ## [194] "process_time"                                               
-    ## [195] "process_time_periods"                                       
-    ## [196] "new.age.group_<4.weeks_ind"                                 
-    ## [197] "new.age.group_1.2years_ind"                                 
-    ## [198] "new.age.group_12weeks.6months_ind"                          
-    ## [199] "new.age.group_2.4years_ind"                                 
-    ## [200] "new.age.group_4.12.weeks_ind"                               
-    ## [201] "new.age.group_4.6years_ind"                                 
-    ## [202] "new.age.group_6.10years_ind"                                
-    ## [203] "new.age.group_6months.1year_ind"                            
-    ## [204] "new.age.group_NA_ind"                                       
-    ## [205] "new.age.group_older.than.10years_ind"                       
-    ## [206] "dateLastActivity"                                           
-    ## [207] "due"                                                        
-    ## [208] "label_names"                                                
-    ## [209] "last_label"                                                 
-    ## [210] "num_labels"                                                 
-    ## [211] "label.names_.adopted_ind"                                   
-    ## [212] "label.names_.adopted.elsewhere_ind"                         
-    ## [213] "label.names_.adoption.follow.up_ind"                        
-    ## [214] "label.names_.approved_ind"                                  
-    ## [215] "label.names_.approved.with.limitation_ind"                  
-    ## [216] "label.names_.checks_ind"                                    
-    ## [217] "label.names_.declaw.only_ind"                               
-    ## [218] "label.names_.denied_ind"                                    
-    ## [219] "label.names_.do.not.follow.up_ind"                          
-    ## [220] "label.names_.dog.meet_ind"                                  
-    ## [221] "label.names_.foster.to.adopt_ind"                           
-    ## [222] "label.names_.landlord_ind"                                  
-    ## [223] "label.names_.manager.decision_ind"                          
-    ## [224] "label.names_.need.info_ind"                                 
-    ## [225] "label.names_.need.proof.of.ownership_ind"                   
-    ## [226] "label.names_.need.roommates.vet.info_ind"                   
-    ## [227] "label.names_.need.to.see.id_ind"                            
-    ## [228] "label.names_.need.vet.info_ind"                             
-    ## [229] "label.names_.need.written.ll.permission_ind"                
-    ## [230] "label.names_.needs.app.attached_ind"                        
-    ## [231] "label.names_.needs.review.before.approval_ind"              
-    ## [232] "label.names_.not.s.n_ind"                                   
-    ## [233] "label.names_.not.utd_ind"                                   
-    ## [234] "label.names_.opa_ind"                                       
-    ## [235] "label.names_.pet.policy_ind"                                
-    ## [236] "label.names_.questions_ind"                                 
-    ## [237] "label.names_.ready.for.review_ind"                          
-    ## [238] "label.names_.ready.to.adopt_ind"                            
-    ## [239] "label.names_.red.flag_ind"                                  
-    ## [240] "label.names_.rescue.check_ind"                              
-    ## [241] "label.names_.returned_ind"                                  
-    ## [242] "label.names_.reviewed.with.handouts.only_ind"               
-    ## [243] "label.names_.serial.no.show_ind"                            
-    ## [244] "label.names_.unsure.foster.or.adopt_ind"                    
-    ## [245] "label.names_.vet_ind"                                       
-    ## [246] "label.names_.vet.check.in.process_ind"                      
-    ## [247] "label.names_.withdrawn_ind"                                 
-    ## [248] "label.names_adopted_ind"                                    
-    ## [249] "label.names_adopted.elsewhere_ind"                          
-    ## [250] "label.names_adoption.follow.up_ind"                         
-    ## [251] "label.names_approved_ind"                                   
-    ## [252] "label.names_approved.with.limitation_ind"                   
-    ## [253] "label.names_checks_ind"                                     
-    ## [254] "label.names_declaw.only_ind"                                
-    ## [255] "label.names_denied_ind"                                     
-    ## [256] "label.names_foster.to.adopt_ind"                            
-    ## [257] "label.names_landlord_ind"                                   
-    ## [258] "label.names_manager.decision_ind"                           
-    ## [259] "label.names_need.info_ind"                                  
-    ## [260] "label.names_need.proof.of.ownership_ind"                    
-    ## [261] "label.names_need.roommates.vet.info_ind"                    
-    ## [262] "label.names_need.to.see.id_ind"                             
-    ## [263] "label.names_need.vet.info_ind"                              
-    ## [264] "label.names_need.written.ll.permission_ind"                 
-    ## [265] "label.names_needs.review.before.approval_ind"               
-    ## [266] "label.names_not.s.n_ind"                                    
-    ## [267] "label.names_not.utd_ind"                                    
-    ## [268] "label.names_opa_ind"                                        
-    ## [269] "label.names_pet.policy_ind"                                 
-    ## [270] "label.names_questions_ind"                                  
-    ## [271] "label.names_ready.for.review_ind"                           
-    ## [272] "label.names_ready.to.adopt_ind"                             
-    ## [273] "label.names_red.flag_ind"                                   
-    ## [274] "label.names_rescue.check_ind"                               
-    ## [275] "label.names_returned_ind"                                   
-    ## [276] "label.names_reviewed.with.handouts.only_ind"                
-    ## [277] "label.names_serial.no.show_ind"                             
-    ## [278] "label.names_unsure.foster.or.adopt_ind"                     
-    ## [279] "label.names_vet_ind"                                        
-    ## [280] "label.names_vet.check.in.process_ind"                       
-    ## [281] "label.names_withdrawn_ind"
-
-``` r
-#write.csv(combine_data, "combine_data.csv", row.names = FALSE)
+#colnames(combine_data)
+write.csv(combine_data, "Analyses/2_Applicants/combine_data.csv", row.names = FALSE)
 ```
