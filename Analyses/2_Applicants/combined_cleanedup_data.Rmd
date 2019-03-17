@@ -1,0 +1,321 @@
+---
+title: "combined_dataset"
+author: "Veena"
+date: "3/16/2019"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(echo = T, message = F, warning = F, root.dir = "../../../")
+```
+
+```{r load_packages, echo = false}
+#load packages
+library(readr)
+library(dplyr)
+library(tidyr)
+
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+##Helper Functions
+
+convert_to_ind(): creates indicator for specified field in dataframe
+
+```{r helper_functions, echo = T,  message = F,  warning = T}
+# create separate dataframe with indicator columns - one for each option of the provided categorical field
+convert_to_ind <- function(df, field){
+    df %>% 
+        mutate_(var = field) %>% 
+        distinct(trello_id, var) %>% 
+        unnest(split = str_split(str_trim(var), ",")) %>%
+        select(-var) %>% 
+        filter(!is.na(split)) %>% 
+        mutate(n = 1,
+               split = 
+                   str_replace_all(split, "-", ".") %>% 
+                   str_replace_all(., " ", ".") %>%
+                   paste0(str_replace_all(field, "_", "."), 
+                          "_", ., "_ind")) %>%
+        distinct() %>% 
+        spread(split, n, fill = 0)
+}
+
+clean_adoption_timeline <- function(x) {
+  x %>% str_replace_all(.,"next-few-weeks","few-weeks")
+}
+
+clean_household_agree <- function(x) {
+  x %>% str_replace_all(.,"it-s-a-surprise","a-surprise")
+}
+
+clean_pet_policy <- function(x) {
+  x %>% str_replace_all(.,"no-yet","not-yet") %>%
+    str_replace_all(.,"havent-asked","not-yet") %>%
+    str_replace_all(.,"n-a","not-applicable")
+}
+
+# clean the comma-separated fields
+clean_experience <- function(x){
+    x %>%
+        str_replace_all(., "(grew-up-with)(-pet)", "\\1") %>% 
+        #str_replace_all(., "(currently)(-pet)", "\\1") %>% 
+        str_replace_all(., "(euthanized)[^,]+", "\\1") %>% 
+        str_replace_all(., "had-pet-die", "pet-died-in-care") %>% 
+        str_replace_all(., "[^,]*(lived-with-housemate|lived-wit-prev)[^,]*", "past-housemates-pet") %>% 
+        str_replace_all(., "currently-pets[^,]*", "current-housemates-pet") %>% 
+        str_replace_all(., "(never-lived-)[^,]+", "\\1with") %>% 
+        str_replace_all(., "(given-)[^,]*shelter", "\\1to-shelter") %>% 
+        str_replace_all(., "(given-)(pet-)?(to-another)", "\\1away") %>% 
+        str_replace_all(., "(bred-sold)-a-pet", "bred-sold")
+}
+
+clean_budget <- function(x) {
+  x %>% str_replace_all(.,"^-","") %>%
+    parse_number(.)
+}
+
+clean_pet_kept <- function(x) {
+  x %>% str_replace_all(.,"unsupervised-access-to-my-yard-9doggie-door-etc","unsupervised-access-to-my-yard-doggie-door-etc")
+}
+
+tidy_elements <- function(df, colname) {
+  elements <- get_unique_elements(df[colname])
+  output_df <- df
+  for (i in 1:length(elements)) {
+    new_colname <- paste(colname, gsub(" |-", "_", elements[i]), sep = "_")
+    output_df[new_colname] <- FALSE
+    output_df[new_colname] <- str_detect(output_df[[colname]],
+                                         paste0(elements[i], ",")) |
+                              str_detect(output_df[[colname]],
+                                         paste0(elements[i], "$"))
+  }
+  new_colnames <- setdiff(colnames(output_df), colnames(df))
+  elements_summary <- get_elements_summary(output_df, colname, new_colnames)
+  return(list(elements = elements, 
+              new_colnames = new_colnames,
+              elements_summary = elements_summary,
+              output_df = output_df))
+}
+
+get_unique_elements <- function(df, colname) {
+  elements_string <- do.call(paste, c(as.list(df[colname]), sep = ","))
+  elements_list <- unique(trimws(unlist(strsplit(elements_string, c(",")))))
+  unique_elements <- elements_list[!elements_list %in% c("","NA")]
+  return(unique_elements)
+}
+
+get_elements_summary <- function(output_df, colname, new_colnames) {
+  subset_df <- output_df[names(output_df) %in% new_colnames]
+  elements_summary <- subset_df %>%
+    summarise_all(sum, na.rm = TRUE) %>%
+    gather(!!colname, "count")
+  return(elements_summary)
+}
+```
+
+##Dataset Load and Cleanup
+
+### Apps Data
+```{r apps}
+cat_apps = read_csv("Data/cat_apps.csv")
+dog_apps = read_csv("Data/dog_apps.csv")
+
+#convert adults_in_home to integer type
+cat_apps <- cat_apps[,-1] %>% 
+  distinct() %>%
+  transform(adults_in_home = as.numeric(adults_in_home)) %>%
+  mutate(animal_type="cats",
+         ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))
+
+#convert ZIP to character type and pad it correctly
+dog_apps <- dog_apps[,-1] %>% 
+  distinct() %>% 
+  transform(ZIP = as.character(ZIP)) %>%
+  mutate(animal_type="dogs",
+         ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))          
+
+
+apps <- bind_rows(cat_apps,dog_apps)
+
+
+apps <- apps %>% 
+  select(-c(STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
+  rename(trello_id = outcome_trello_id) %>%
+  mutate(date_submitted = mdy(date_submitted),
+         ideal_adoption_timeline = clean_adoption_timeline(ideal_adoption_timeline),
+         all_household_agree = clean_household_agree(all_household_agree),
+         home_pet_policy = clean_pet_policy(home_pet_policy),
+         experience = clean_experience(experience),
+         pet_kept = clean_pet_kept(pet_kept),
+         adults_in_home = abs(adults_in_home),
+         children_in_home = abs(children_in_home),
+         home_alone_avg = parse_number(home_alone_avg),
+         home_alone_max = parse_number(home_alone_max),
+         budget_monthly = clean_budget(budget_monthly),
+         budget_emergency = clean_budget(budget_emergency),
+         budget_monthly_ranges = factor(case_when(budget_monthly <=25 ~ "Less than $25",
+                                             budget_monthly <=100 ~ "$25-$100",
+                                             budget_monthly <=200 ~ "$100-$200",
+                                             budget_monthly <=500 ~ "$200-$500",
+                                             budget_monthly <=1000 ~ "$500-$1000",
+                                             budget_monthly <=5000 ~ "$1000-$5000",
+                                             is.na(budget_monthly) ~ "NA",
+                                             TRUE ~ ">$5000"),
+                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
+                                   ordered=T),
+         budget_emergency_ranges = factor(case_when(budget_emergency <=25 ~ "Less than $25",
+                                             budget_emergency  <=100 ~ "$25-$100",
+                                             budget_emergency  <=200 ~ "$100-$200",
+                                             budget_emergency  <=500 ~ "$200-$500",
+                                             budget_emergency  <=1000 ~ "$500-$1000",
+                                             budget_emergency  <=5000 ~ "$1000-$5000",
+                                             is.na(budget_emergency ) ~ "NA",
+                                             TRUE ~ ">$5000"),
+                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
+                                   ordered=T))
+
+apps_with_indicators <- apps %>%
+   #distinct(trello_id) %>%
+   left_join(convert_to_ind(apps,"reason_for_adoption")) %>%
+   left_join(convert_to_ind(apps,"all_household_agree")) %>%
+   left_join(convert_to_ind(apps,"allergies")) %>%
+   left_join(convert_to_ind(apps,"home_owner")) %>%
+   left_join(convert_to_ind(apps,"home_pet_policy")) %>%
+   left_join(convert_to_ind(apps,"experience")) %>%
+   left_join(convert_to_ind(apps,"budget_monthly_ranges")) %>%
+   left_join(convert_to_ind(apps,"budget_emergency_ranges")) %>%
+   left_join(convert_to_ind(apps,"home_alone_avg")) %>%
+   left_join(convert_to_ind(apps,"home_alone_max")) %>%
+   left_join(convert_to_ind(apps,"pet_kept")) %>%
+   left_join(convert_to_ind(apps,"exercise")) %>%
+   left_join(convert_to_ind(apps,"needs")) %>%
+   left_join(convert_to_ind(apps,"return_pet"))
+
+
+dim(apps)
+dim(apps_with_indicators)
+```
+
+### Actions Dataset
+```{r actions}
+cat_actions = read_csv("Data/cat_actions.csv")
+dog_actions = read_csv("Data/dog_actions.csv")
+
+#create one dataframe
+actions <- bind_rows(unique(cat_actions),unique(dog_actions))
+
+actions <-
+    actions %>% distinct() %>% 
+    #mutate (animal_type=factor(animal_type)) %>%
+    rename(trello_id = data.card.id) %>%
+    gather(item, result, checklist_ACCT:checklist_VET) %>%
+    group_by(trello_id) %>% 
+    mutate(date_start = min(date)) %>% 
+    filter(result == TRUE) %>%
+    group_by(trello_id, item) %>%
+    filter(date == max(date)) %>%
+    ungroup() %>%
+    mutate(wait = difftime(date, date_start, units = "days"),
+           wait = round(as.numeric(wait), 2)) %>%
+    select(-c(date, data.checkItem.state, type, result)) %>%
+    distinct() %>%
+    spread(item, wait) %>% 
+    mutate(wday_start = wday(date_start, label = TRUE, abbr = TRUE))
+str(actions)
+```
+
+### Petpoint Dataset
+```{r petpoint}
+petpoint = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/petpoint.csv")
+petpoint <- petpoint[,-1] %>% #there are 77 duplicates
+  distinct() %>%
+  filter(animal_type != "Wildlife") %>%
+  select(-c(age_group,STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
+  rename(trello_id = outcome_trello_id) %>%
+  mutate(dob=mdy(dob),
+         intake_date=mdy_hm(intake_date,tz="America/New_York"),
+         release_date=mdy_hm(release_date,tz="America/New_York"),
+         outcome_date=mdy_hm(outcome_date,tz="America/New_York"),
+         outcome_ZIP=as.character(outcome_ZIP),
+         outcome_ZIP=ifelse(str_length(outcome_ZIP)<5,str_c("0",outcome_ZIP),outcome_ZIP),
+         new_age_group = factor(case_when(age_intake<=1 ~ "<4 weeks",
+                                   age_intake <= 3 ~ "4-12 weeks",
+                                   age_intake <= 6 ~ "12weeks-6months",
+                                   age_intake <= 12 ~ "6months-1year",
+                                   age_intake <= 24 ~ "1-2years",
+                                   age_intake <= 48 ~ "2-4years",
+                                   age_intake <= 72 ~ "4-6years",
+                                   age_intake <= 120 ~ "6-10years",
+                                   is.na(age_intake) ~ "NA",
+                                   TRUE ~ "older than 10years"),
+                                levels=c("<4 weeks","4-12 weeks","12weeks-6months",
+                                         "6months-1year","1-2years","2-4years",
+                                         "4-6years","6-10years","older than 10years","NA"),
+                                ordered=TRUE),
+         process_time = (interval(intake_date,outcome_date) / ddays(1)),
+         process_time_periods = cut(process_time,
+                                    breaks=c(-Inf,1,3,5,10,30,90,180,Inf),
+                                    labels=c("< 1day","2-3 days","4-5 days","6-10 days", "11-30 days", "31-90 days", "91-180days", ">180 days"))
+         ) 
+
+#Spread out the new_group data into different columns
+  petpoint_with_indicators <- petpoint %>%
+   #distinct(trello_id) %>%
+   left_join(convert_to_ind(petpoint,"new_age_group"))
+    
+  str(petpoint)
+```
+
+### Cards Dataset
+```{r cards, echo = T,  message = F,  warning = T}
+
+cat_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_cards.csv")
+dog_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_cards.csv")
+
+# Add a new column "animal_type" to each dataset
+cat_cards <- cat_cards %>% mutate(animal_type="cats");
+dog_cards <- dog_cards %>% mutate(animal_type="dogs");
+#combine
+cards <- bind_rows(cat_cards,dog_cards)
+
+#dueComplete has been found to be unreliable - so remove it
+cards <- cards %>% select(-dueComplete) %>%
+  rename(trello_id = id) %>%
+  mutate (last_label = sapply(cards$label_names, FUN=function(x)
+            unlist(
+              str_trim(
+                tail(
+                  str_split(x,",")[[1]],
+                  1)))),
+          num_labels = sapply(cards$label_names, FUN=function(x)
+            ifelse(is.na(x),0,length(str_split(x,",")[[1]]))))
+str(cards)
+cards_with_indicators <- cards %>%
+   #distinct(trello_id) %>%
+   left_join(convert_to_ind(cards,"label_names"))
+
+cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
+```
+
+##Merge the 4 Datasets
+
+```{r}
+combine_data <- apps_with_indicators %>%
+  left_join(actions) %>%
+  left_join(petpoint_with_indicators) %>%
+  left_join(cards_with_indicators)            
+
+dim(combine_data)
+colnames(combine_data)
+#write.csv(combine_data, "combine_data.csv", row.names = FALSE)
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
