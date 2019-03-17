@@ -1,7 +1,7 @@
 ---
 title: "combined_dataset"
-author: "Veena"
-date: "3/16/2019"
+author: "Veena (some edits from Amy and Ramaa)"
+date: "3/17/2019"
 always_allow_html: yes
 output: 
   github_document:
@@ -9,8 +9,8 @@ output:
     df_print: kable
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, message = F, warning = F)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = T, message = F, warning = F, root.dir = "../../")
 ```
 
 ```{r scipen, echo = T,  message = F,  warning = T}
@@ -292,7 +292,8 @@ str(actions)
 
 ### Petpoint Dataset
 ```{r petpoint, echo = T,  message = F,  warning = T}
-petpoint <- petpoint[,-1] %>% #there are 77 duplicates
+petpoint <- petpoint %>% 
+  select(-X1) %>% # there are 77 duplicates
   distinct() %>%
   filter(animal_type != "Wildlife") %>%
   select(-c(age_group,STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
@@ -324,11 +325,16 @@ petpoint <- petpoint[,-1] %>% #there are 77 duplicates
          ) 
 
 #Spread out the new_group data into different columns
-  petpoint_with_indicators <- petpoint %>%
-   #distinct(trello_id) %>%
-   left_join(convert_to_ind(petpoint,"new_age_group"))
+petpoint_with_indicators <- petpoint %>%
+  #distinct(trello_id) %>%
+  left_join(convert_to_ind(petpoint,"new_age_group"))
     
-  str(petpoint)
+str(petpoint)
+
+# Some duplicates remain
+all(duplicated(petpoint) == FALSE)  
+petpoint[duplicated(petpoint),]
+petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
 ```
 
 ### Cards Dataset
@@ -361,13 +367,14 @@ cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
 ##Merge the 4 Datasets
 
 ```{r}
-combine_data <- apps_with_indicators %>%
-  left_join(actions) %>%
-  left_join(petpoint_with_indicators) %>%
-  left_join(cards_with_indicators)            
+master_apps <- apps_with_indicators %>%
+ filter(!is.na(trello_id)) %>%
+ inner_join(petpoint_with_indicators,by = "trello_id") %>%
+ left_join(actions,by = "trello_id") %>%
+ left_join(cards_with_indicators, by = "trello_id")          
 
-dim(combine_data)
-#colnames(combine_data)
-write.csv(combine_data, "Analyses/2_Applicants/combine_data.csv", row.names = FALSE)
+dim(master_apps)
+summary(master_apps)
+write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
 ```
 
