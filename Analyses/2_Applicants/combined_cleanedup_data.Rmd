@@ -201,6 +201,7 @@ Apps data needs to be cleaned up:
 <br>          2. Updated to take the absolute values (e.g. -3000 is no 3000)
 <br>          3. Categorized into buckets (e.g. 100-200)
       </ul>
+      
 
 ```{r apps_cleanup, echo = T, message = F, warning = T}
 apps <- apps %>% 
