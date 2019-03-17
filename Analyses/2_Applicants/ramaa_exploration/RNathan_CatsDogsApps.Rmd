@@ -1,0 +1,197 @@
+---
+title: "PAWS - Cats and Dogs Apps"
+author: "Ramaa Nathan"
+date: "3/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+#### Data Transformations
+The cat_apps.csv and dog_apps.csv have exactly same columns but there is a mismatch in their datatypes.
+So, first step is to fix them
+1. Add animal_type="cats" to cats.csv and animal_type="dogs" to dogs.csv 
+2. cat_apps.csv - convert adults_in _home from character type to integer type
+2. dog_apps.csv - convert zip code from integer type to character type so that we can categorize them
+
+
+```{r}
+cat_apps = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_apps.csv")
+dog_apps = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_apps.csv")
+
+#convert adults_in_home to integer type
+cat_apps <- cat_apps[,-1] %>% 
+  distinct() %>%
+  transform(adults_in_home = as.numeric(adults_in_home)) %>%
+  mutate(animal_type="cats",
+         ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))
+
+#convert ZIP to character type and pad it correctly
+dog_apps <- dog_apps[,-1] %>% 
+  distinct() %>% 
+  transform(ZIP = as.character(ZIP)) %>%
+  mutate(animal_type="dogs",
+         ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))          
+
+
+apps <- bind_rows(cat_apps,dog_apps)
+
+#check for unique values
+apps %>% select(orig=reason_for_adoption) %>% unnest(orig=str_split(orig,",")) %>% unique() 
+apps %>% select(orig=allergies) %>% unnest(orig=str_split(orig,",")) %>% unique()
+apps %>% select(orig=ideal_adoption_timeline) %>% unnest(orig=str_split(orig,",")) %>% unique()
+apps %>% select(orig=home_pet_policy) %>% unnest(orig=str_split(orig,",")) %>% unique()
+apps %>% select(orig=experience) %>% unnest(orig=str_split(orig,",")) %>% unique()
+
+clean_adoption_timeline <- function(x) {
+  x %>% str_replace_all(.,"next-few-weeks","few-weeks")
+}
+
+clean_household_agree <- function(x) {
+  x %>% str_replace_all(.,"it-s-a-surprise","a-surprise")
+}
+
+clean_pet_policy <- function(x) {
+  x %>% str_replace_all(.,"no-yet","not-yet") %>%
+    str_replace_all(.,"havent-asked","not-yet") %>%
+    str_replace_all(.,"n-a","not-applicable")
+}
+
+# clean the comma-separated fields
+clean_experience <- function(x){
+    x %>%
+        str_replace_all(., "(grew-up-with)(-pet)", "\\1") %>% 
+        #str_replace_all(., "(currently)(-pet)", "\\1") %>% 
+        str_replace_all(., "(euthanized)[^,]+", "\\1") %>% 
+        str_replace_all(., "had-pet-die", "pet-died-in-care") %>% 
+        str_replace_all(., "[^,]*(lived-with-housemate|lived-wit-prev)[^,]*", "past-housemates-pet") %>% 
+        str_replace_all(., "currently-pets[^,]*", "current-housemates-pet") %>% 
+        str_replace_all(., "(never-lived-)[^,]+", "\\1with") %>% 
+        str_replace_all(., "(given-)[^,]*shelter", "\\1to-shelter") %>% 
+        str_replace_all(., "(given-)(pet-)?(to-another)", "\\1away") %>% 
+        str_replace_all(., "(bred-sold)-a-pet", "bred-sold")
+}
+
+clean_budget <- function(x) {
+  x %>% str_replace_all(.,"^-","") %>%
+    parse_number(.)
+}
+
+clean_pet_kept <- function(x) {
+  x %>% str_replace_all(.,"unsupervised-access-to-my-yard-9doggie-door-etc","unsupervised-access-to-my-yard-doggie-door-etc")
+}
+
+compare_fields <- function(df, x, fun){
+    df %>% 
+        select(orig = x) %>% 
+        filter(!is.na(orig)) %>% 
+        unnest(orig = str_split(orig, ",")) %>%
+        distinct() %>% 
+        mutate(clean = do.call(fun, list(orig))) %>% 
+        arrange(clean) %>% 
+        mutate(match = ifelse(clean != orig, "*", ""))
+}
+
+compare_fields(apps, "experience", clean_experience) %>% filter(match == "*")
+#str(apps)
+apps <- apps %>% 
+  select(-c(STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
+  rename(trello_id = outcome_trello_id) %>%
+  mutate(date_submitted = mdy(date_submitted),
+         ideal_adoption_timeline = clean_adoption_timeline(ideal_adoption_timeline),
+         all_household_agree = clean_household_agree(all_household_agree),
+         home_pet_policy = clean_pet_policy(home_pet_policy),
+         experience = clean_experience(experience),
+         pet_kept = clean_pet_kept(pet_kept),
+         adults_in_home = abs(adults_in_home),
+         children_in_home = abs(children_in_home),
+         home_alone_avg = parse_number(home_alone_avg),
+         home_alone_max = parse_number(home_alone_max),
+         budget_monthly = clean_budget(budget_monthly),
+         budget_emergency = clean_budget(budget_emergency),
+         budget_monthly_ranges = factor(case_when(budget_monthly <=25 ~ "Less than $25",
+                                             budget_monthly <=100 ~ "$25-$100",
+                                             budget_monthly <=200 ~ "$100-$200",
+                                             budget_monthly <=500 ~ "$200-$500",
+                                             budget_monthly <=1000 ~ "$500-$1000",
+                                             budget_monthly <=5000 ~ "$1000-$5000",
+                                             is.na(budget_monthly) ~ "NA",
+                                             TRUE ~ ">$5000"),
+                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
+                                   ordered=T),
+         budget_emergency_ranges = factor(case_when(budget_emergency <=25 ~ "Less than $25",
+                                             budget_emergency  <=100 ~ "$25-$100",
+                                             budget_emergency  <=200 ~ "$100-$200",
+                                             budget_emergency  <=500 ~ "$200-$500",
+                                             budget_emergency  <=1000 ~ "$500-$1000",
+                                             budget_emergency  <=5000 ~ "$1000-$5000",
+                                             is.na(budget_emergency ) ~ "NA",
+                                             TRUE ~ ">$5000"),
+                                   levels=c("<$25","$25-$100","$100-$200","$200-$500","$500-$1000","$1000-$5000",">$5000","NA"),
+                                   ordered=T))
+
+apps %>% ggplot(mapping=aes(x=budget_monthly_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Monthly budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+apps %>% ggplot(mapping=aes(x=budget_emergency_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Emergency budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home alone avg
+apps %>% ggplot(mapping=aes(x=home_alone_avg,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Average") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+### Home alone max
+apps %>% ggplot(mapping=aes(x=home_alone_max,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Maximum") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+str(apps)
+
+#apps %>% sample_n(30) %>% select(budget_monthly,budget_monthly_ranges)
+#apps %>% select(reason_for_adoption) %>% unnest(rfa=str_split(reason_for_adoption,","))
+#convert all other character types to factor types
+#mutate_if(sapply(apps,is.character),as.factor)
+#str(apps)
+#summary(apps)
+## CONVERT HOME_ALONE to integer after taking out h....
+```
+
+```{r}
+
+# create separate dataframe with indicator columns - one for each option of the provided categorical field
+convert_to_ind <- function(df, field){
+    df %>% 
+        mutate_(var = field) %>% 
+        distinct(trello_id, var) %>% 
+        unnest(split = str_split(var, ",")) %>%
+        select(-var) %>% 
+        filter(!is.na(split)) %>% 
+        mutate(n = 1,
+               split = 
+                   str_replace_all(split, "-", ".") %>% 
+                   paste0(str_replace_all(field, "_", "."), 
+                          "_", ., "_ind")) %>%
+        distinct() %>% 
+        spread(split, n, fill = 0)
+}
+ convert_to_ind(apps,"reason_for_adoption") %>% head() %>% View()
+ 
+ str(apps_with_indicators)
+```
+
+

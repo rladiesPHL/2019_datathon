@@ -139,13 +139,37 @@ petpoint %>% semi_join(twocount) %>%
 paste("After all processing:")
 dim(petpoint)
 ```
+```{r}
+##Compare dob, intake_date, age_intake, age_group 
+#petpoint %>% sample_n(10) %>% select(dob, intake_date, age_intake,age_group) 
+
+
+petpoint <- petpoint %>%  select(-age_group) %>%
+  mutate(new_age_group = factor(case_when(age_intake<=1 ~ "<4 weeks", 
+                                   age_intake <= 3 ~ "4-12 weeks", 
+                                   age_intake <= 6 ~ "12weeks-6months",
+                                   age_intake <= 12 ~ "6months-1year",
+                                   age_intake <= 24 ~ "1-2years",
+                                   age_intake <= 48 ~ "2-4years",
+                                   age_intake <= 72 ~ "4-6years",
+                                   age_intake <= 120 ~ "6-10years",
+                                   is.na(age_intake) ~ "NA",
+                                   TRUE ~ "older than 10years"),
+                                levels=c("<4 weeks","4-12 weeks","12weeks-6months",
+                                         "6months-1year","1-2years","2-4years",
+                                         "4-6years","6-10years","older than 10years","NA"),
+                                ordered=TRUE))
+#Verify that the new_agee group is correct - Compare dob, intake_date, age_intake, new_age_group 
+petpoint %>% sample_n(10) %>% select(dob, intake_date, age_intake,new_age_group) 
+```
+Observation: When we compare the DOB, age_intake, intake_date and age_group, the age-group column does not match the intake_age. So, dropped the original age_group column and added a new_age_group column
 
 #### Data Visualizations
 ```{r,echo = FALSE}
 # reorder the age_group levels
-petpoint <- petpoint %>% 
-  mutate(age_group = factor(age_group,levels(age_group)[c(10,5,9,3,7,1,4,6,8,2)],ordered=TRUE))
-petpoint %>% ggplot(mapping=aes(x=age_group,fill=age_group)) + 
+#petpoint <- petpoint %>% 
+   #mutate(age_group = factor(age_group,levels(age_group)[c(10,5,9,3,7,1,4,6,8,2)],ordered=TRUE))
+petpoint %>% ggplot(mapping=aes(x=new_age_group,fill=new_age_group)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(title = "Age Group Distribution") +
