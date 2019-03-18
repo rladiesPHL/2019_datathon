@@ -356,7 +356,14 @@ cards <- cards %>% select(-dueComplete) %>%
                   1)))),
           num_labels = sapply(cards$label_names, FUN=function(x)
             ifelse(is.na(x),0,length(str_split(x,",")[[1]]))))
+
+# convert dateLastActivity & due from character to Date
+cards <- cards %>%
+  mutate(dateLastActivity = mdy(dateLastActivity)) %>%
+  mutate(due = mdy(due))
+
 str(cards)
+
 cards_with_indicators <- cards %>%
    #distinct(trello_id) %>%
    left_join(convert_to_ind(cards,"label_names"))
