@@ -33,7 +33,7 @@ not_all_na <- function(x) any(!is.na(x))
 
 In this analysis, I'm going to try and answer the question: what geographical factors contribute to how quickly an application gets processed? Inefficiency here is defined as applications that took more than 2 weeks to process. This will be assessed as follows: 
 
-- For applications that have a decision (see below for labels that indicate this), the last recorded checklist item is checked off 7 days or less from the date of submission
+- For applications that have a decision (see below for labels that indicate this), the last recorded checklist item is checked off 14 days or less from the date of submission
 - For applications that don't have a decision (processing is ongoing), the submission date is more than 2 weeks prior to 12/31/2018 
 
 - **with decision** = "denied", "do not follow up", "adopted", "adoption follow up", "returned", "adopted elsewhere", "approved", "ready to adopt", "ready for review", "reviewed with handouts only", "approved with limitation", "dog meet", "foster to adopt"
@@ -188,11 +188,15 @@ dog.appsandcards <- dog.appsandcards[which(dog.appsandcards$processing.time >0),
 cat.appsandcards <- cat.appsandcards[which(cat.appsandcards$processing.time >0),]
 ```
 
-Next, we're going to label those applications as efficient where the processing took 14 days or less. 
+Next, we're going to label inefficient applications. Those are the ones that are completed in the top third of processing time. For dogs, this means longer than `r round(quantile(dog.appsandcards$processing.time,.5))` days, and for cats, this means `r round(quantile(cat.appsandcards$processing.time,.5))`.
 
 ```{r}
-dog.appsandcards$efficient <- ifelse(dog.appsandcards$processing.time>14,0,1)
-cat.appsandcards$efficient <- ifelse(cat.appsandcards$processing.time>14,0,1)
+dog.appsandcards <- dog.appsandcards[which(dog.appsandcards$decision.status == "decision" | 
+                                            (dog.appsandcards$decision.status == "no decision" & dog.appsandcards$processing.time > 10)),]
+cat.appsandcards <- cat.appsandcards[which(cat.appsandcards$decision.status == "decision" | 
+                                            (cat.appsandcards$decision.status == "no decision" & cat.appsandcards$processing.time > 10)),]
+dog.appsandcards$efficient <- ifelse(dog.appsandcards$processing.time>10,0,1)
+cat.appsandcards$efficient <- ifelse(cat.appsandcards$processing.time>10,0,1)
 ```
 
 ### Census data
@@ -407,7 +411,7 @@ model <- lm(m, data=all.geo.spatial)
 summary(model)
 ```
 
-We have an adjusted R2 of `r summary(model)$adj.r.squared`. Let's plot the overall lm residuals on a map.
+We have an adjusted R2 of `r summary(model)$adj.r.squared`. The significant predictors are HC02_EST_VC20_comp (p <.001), HC02_EST_VC34_educ (p<.05) and HC02_EST_VC32_comp (p <.05).
 
 ```{r}
 resids<-residuals(model)
@@ -431,22 +435,30 @@ gwr.map <- cbind(all.geo.spatial, as.matrix(results))
 qtm(gwr.map, fill = "localR2")
 ```
 
-So if I'm understanding this correctly, the model fits better in the far outskirts than in CC or northeast. Let's plot the predictors that were significant.
-
 ```{r}
 lm.coeffs <- as.data.frame(summary(model)$coefficients)
 
 var <- "HC02_EST_VC20_comp"
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 # draw map
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+# saved as rplot01.png
+```
 
-var <- "HC02_EST_VC02_educ"
+The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of people who have a cell data plan and no other type of internet subscription, the lower the proportion of efficient applications. This effect is more pronounced in north and northeast Philly. 
+
+```{r}
+var <- "HC02_EST_VC34_educ"
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 # draw map
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
 
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+#saved as rplot02.png
 ```
+
+The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of the population 25 to 34 year old who are enrolled in school, the higher the proportion of efficient applications. This effect seems to be more noticeable in east Philly. 
+
 
 ### Cats
 
@@ -478,24 +490,6 @@ vars <- vars[order(abs(vars$value), decreasing = TRUE),]
 
 m <- as.formula(paste("efficient ~",paste0(vars$var,collapse = "+")))
 summary(lm(m, data=all.geo))
-
-# the selected variables are:
-
-# HC02_EST_VC20_comp = Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan - Cellular data plan with no other type of Internet subscription
-# HC02_EST_VC05_comp = Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
-# HC02_EST_VC16_educ = Percent; Estimate; Population 3 to 4 years - 3 to 4 year olds enrolled in school
-# HC01_EST_VC22_educ = Total; Estimate; Population 10 to 14 years - 10 to 14 year olds enrolled in school
-# HC02_EST_VC22_comp = Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Satellite Internet service
-# HC02_EST_VC05_educ = Percent; Estimate; Elementary: grade 1 to grade 4
-
-
-
-```
-
-# Analyses 
-
-
-```{r}
 
 all.geo.spatial <-
   sp::merge(x = pa_nj, y = all.geo, by = "GEOID", all.x=FALSE, all.y=TRUE)
@@ -536,7 +530,11 @@ summary(model)
 resids<-residuals(model)
 all.geo.spatial$map.resids <- resids
 qtm(all.geo.spatial, fill = "map.resids")
+```
 
+HC02_EST_VC06_educ is the only significant variable. 
+
+```{r}
 library("spgwr")
 GWRbandwidth <- gwr.sel(m, data=all.geo.spatial,adapt=T)
 
@@ -550,14 +548,17 @@ names(results)
 
 gwr.map <- cbind(all.geo.spatial, as.matrix(results))
 qtm(gwr.map, fill = "localR2")
+```
 
+```{r}
 lm.coeffs <- as.data.frame(summary(model)$coefficients)
 
 var = 'HC02_EST_VC06_educ'
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+
 tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
 
-var = 'HC02_EST_VC19_comp'
-print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+# saved as rplot03.png
 ```
+
+The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of kids enrolled in grades 5-8, the lower the proportion of efficient applications. This effect seems to be more noticeable in the northeast.
