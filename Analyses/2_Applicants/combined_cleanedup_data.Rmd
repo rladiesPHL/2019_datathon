@@ -33,16 +33,16 @@ library(knitr)  #for outputting tables as kables
 
 ##Load Data
 ```{r load_data, echo = F,  message = F,  warning = F}
-cat_apps = read_csv("Data/cat_apps.csv")
-dog_apps = read_csv("Data/dog_apps.csv")
+cat_apps = read_csv("../../Data/cat_apps.csv")
+dog_apps = read_csv("../../Data/dog_apps.csv")
 
-cat_actions = read_csv("Data/cat_actions.csv")
-dog_actions = read_csv("Data/dog_actions.csv")
+cat_actions = read_csv("../../Data/cat_actions.csv")
+dog_actions = read_csv("../../Data/dog_actions.csv")
 
-petpoint = read_csv("Data/petpoint.csv")
+petpoint = read_csv("../../Data/petpoint.csv")
 
-cat_cards = read_csv("Data/cat_cards.csv")
-dog_cards = read_csv("Data/dog_cards.csv")
+cat_cards = read_csv("../../Data/cat_cards.csv")
+dog_cards = read_csv("../../Data/dog_cards.csv")
 ```
 
 ##Helper Functions
@@ -382,6 +382,209 @@ master_apps <- apps_with_indicators %>%
 
 dim(master_apps)
 summary(master_apps)
-write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
+#write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
+
+# Save a single object to a file
+saveRDS(master_apps, "masterapps.rds")
+# Restore it under a different name to verify
+reloaded_data <- readRDS("masterapps.rds")
+str(reloaded_data)
+identical(master_apps,reloaded_data)
+```
+
+## Data Visualizations
+### Petpoint Visualizations
+```{r,echo = FALSE}
+#Distribution of species
+ petpoint%>% ggplot(mapping=aes(x=species,fill=species)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Species") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+#age group
+petpoint %>% ggplot(mapping=aes(x=new_age_group,col=animal_type,fill=animal_type)) + 
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Age Group Distribution") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+
+ #Distribution of agency name
+ petpoint%>% ggplot(mapping=aes(x=agency_name,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Agency Name") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+#plot the intake asilomar
+ petpoint%>% ggplot(mapping=aes(x=intake_asilomar,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = "Intake Asilomar")  +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+#plot the intake type
+ petpoint%>% ggplot(mapping=aes(x=intake_type,col=animal_type,fill=animal_type)) + 
+    geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Intake Type")  +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+ #plot the intake sub-type
+ petpoint%>% ggplot(mapping=aes(x=intake_subtype,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+   labs(title = "Intake Sub Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+ #plot the intake reason
+ petpoint%>% ggplot(mapping=aes(x=intake_reason,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = "Intake Reason") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ 
+ #plot the intake sitename
+ petpoint%>% ggplot(mapping=aes(x=intake_sitename,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Intake Sitename") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+  #plot the outcome sitename
+ petpoint%>% ggplot(mapping=aes(x=outcome_sitename,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Sitename") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ #plot the outcome type
+ petpoint%>% ggplot(mapping=aes(x=outcome_type,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+  #plot the outcome sub-type
+ petpoint%>% ggplot(mapping=aes(x=outcome_subtype,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Sub Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+#How many were altered?
+ petpoint%>% ggplot(mapping=aes(x=altered,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Sprayed/Neutered") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+
+#plot the distribution of the processing time - number of days between intake and outcome 
+petpoint %>% ggplot(mapping=aes(x=process_time,col=animal_type,fill=animal_type)) +
+  geom_histogram(breaks=seq(20,300,by=20),col="red",fill="green",alpha=0.2) +
+  labs(title="Histogram of Processing Time in Days (Intake -> Outcome)")
+
+#plot the process time periods categories
+petpoint %>%  ggplot(mapping=aes(x=process_time_periods,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Process Time Periods") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+```
+
+### Cards Visualizations
+```{r}
+#Distribution of lastLabel 
+cards %>% filter(!is.na(label_names)) %>% 
+  ggplot(mapping=aes(x=last_label,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Last Label in the sequence of Label_Names") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+cards %>% select(last_label) %>% table(useNA="always") %>% sort(decreasing = T)
+```
+
+### Apps Visualizations
+```{r}
+
+apps %>% ggplot(mapping=aes(x=budget_monthly_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Monthly budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+apps %>% ggplot(mapping=aes(x=budget_emergency_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Emergency budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home alone avg
+apps %>% ggplot(mapping=aes(x=home_alone_avg,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Average") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home alone max
+apps %>% ggplot(mapping=aes(x=home_alone_max,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Maximum") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+```
+
+
+### Actions Visualizations
+```{r}
+#plot the distribution of the action time - number of days between first action and checklist_VET 
+actions %>% ggplot(mapping=aes(x=checklist_ACCT,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_ACCT)")
+
+
+actions %>% ggplot(mapping=aes(x=checklist_CHQ,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_CHQ)")
+
+actions %>% ggplot(mapping=aes(x=checklist_LL,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_LL)")
+
+actions %>% ggplot(mapping=aes(x=checklist_PP,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_PP)")
+
+actions %>% ggplot(mapping=aes(x=checklist_SPCA,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_SPCA)")
+
+actions %>% ggplot(mapping=aes(x=checklist_TR,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_TR)")
+
+actions %>% ggplot(mapping=aes(x=checklist_VET,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_VET)")
+
 ```
 

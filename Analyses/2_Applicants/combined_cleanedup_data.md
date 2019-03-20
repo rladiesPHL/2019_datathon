@@ -1,6 +1,6 @@
 combined\_dataset
 ================
-Veena (edited by Amy and Ramaa)
+Veena (some edits from Amy and Ramaa)
 3/17/2019
 
 -   [Load Data](#load-data)
@@ -11,6 +11,11 @@ Veena (edited by Amy and Ramaa)
     -   [Petpoint Dataset](#petpoint-dataset)
     -   [Cards Dataset](#cards-dataset)
 -   [Merge the 4 Datasets](#merge-the-4-datasets)
+-   [Data Visualizations](#data-visualizations)
+    -   [Petpoint Visualizations](#petpoint-visualizations)
+    -   [Cards Visualizations](#cards-visualizations)
+    -   [Apps Visualizations](#apps-visualizations)
+    -   [Actions Visualizations](#actions-visualizations)
 
 ``` r
 # Turn off scientific notation ----
@@ -291,8 +296,8 @@ colnames(apps_with_indicators)
     ##  [46] "home.pet.policy_no.but.pets.allowed_ind"                    
     ##  [47] "home.pet.policy_not.applicable_ind"                         
     ##  [48] "home.pet.policy_not.yet_ind"                                
-    ##  [49] "home.pet.policy_yes.with.pet.policy_ind"                    
-    ##  [50] "home.pet.policy_yes_ind"                                    
+    ##  [49] "home.pet.policy_yes_ind"                                    
+    ##  [50] "home.pet.policy_yes.with.pet.policy_ind"                    
     ##  [51] "experience_bred.sold_ind"                                   
     ##  [52] "experience_current.housemates.pet_ind"                      
     ##  [53] "experience_currently.have.pet_ind"                          
@@ -576,13 +581,25 @@ cards <- cards %>% select(-dueComplete) %>%
                   1)))),
           num_labels = sapply(cards$label_names, FUN=function(x)
             ifelse(is.na(x),0,length(str_split(x,",")[[1]]))))
+
+# convert dateLastActivity & due from character to Date
+cards <- cards %>%
+  mutate(dateLastActivity = mdy(dateLastActivity)) %>%
+  mutate(due = mdy(due))
+```
+
+    ## Warning: All formats failed to parse. No formats found.
+
+    ## Warning: All formats failed to parse. No formats found.
+
+``` r
 str(cards)
 ```
 
     ## Classes 'tbl_df', 'tbl' and 'data.frame':    9989 obs. of  7 variables:
     ##  $ trello_id       : chr  "5a6d054eea0086b8d596b209" "5a6e1189899dc1ca5caff197" "5a6e338962147c1a458086c2" "5a709fb3ced1c38cc2a08bbe" ...
-    ##  $ dateLastActivity: Date, format: "2018-01-31" "2018-01-31" ...
-    ##  $ due             : Date, format: "2018-01-27" "2018-01-28" ...
+    ##  $ dateLastActivity: Date, format: NA NA ...
+    ##  $ due             : Date, format: NA NA ...
     ##  $ animal_type     : chr  "cats" "cats" "cats" "cats" ...
     ##  $ label_names     : chr  "ready to adopt" "vet" "ready for review" "ready for review, declaw only" ...
     ##  $ last_label      : Named chr  "ready to adopt" "vet" "ready for review" "declaw only" ...
@@ -598,18 +615,18 @@ cards_with_indicators <- cards %>%
 cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
 ```
 
-| label\_names                                                | last\_label                 |  num\_labels|  label.names\_.adopted.elsewhere\_ind|  label.names\_.adopted\_ind|  label.names\_.adoption.follow.up\_ind|  label.names\_.approved.with.limitation\_ind|  label.names\_.approved\_ind|  label.names\_.checks\_ind|  label.names\_.declaw.only\_ind|  label.names\_.denied\_ind|  label.names\_.do.not.follow.up\_ind|  label.names\_.dog.meet\_ind|  label.names\_.foster.to.adopt\_ind|  label.names\_.landlord\_ind|  label.names\_.manager.decision\_ind|  label.names\_.need.info\_ind|  label.names\_.need.proof.of.ownership\_ind|  label.names\_.need.roommates.vet.info\_ind|  label.names\_.need.to.see.id\_ind|  label.names\_.need.vet.info\_ind|  label.names\_.need.written.ll.permission\_ind|  label.names\_.needs.app.attached\_ind|  label.names\_.needs.review.before.approval\_ind|  label.names\_.not.s.n\_ind|  label.names\_.not.utd\_ind|  label.names\_.opa\_ind|  label.names\_.pet.policy\_ind|  label.names\_.questions\_ind|  label.names\_.ready.for.review\_ind|  label.names\_.ready.to.adopt\_ind|  label.names\_.red.flag\_ind|  label.names\_.rescue.check\_ind|  label.names\_.returned\_ind|  label.names\_.reviewed.with.handouts.only\_ind|  label.names\_.serial.no.show\_ind|  label.names\_.unsure.foster.or.adopt\_ind|  label.names\_.vet.check.in.process\_ind|  label.names\_.vet\_ind|  label.names\_.withdrawn\_ind|  label.names\_adopted.elsewhere\_ind|  label.names\_adopted\_ind|  label.names\_adoption.follow.up\_ind|  label.names\_approved.with.limitation\_ind|  label.names\_approved\_ind|  label.names\_checks\_ind|  label.names\_declaw.only\_ind|  label.names\_denied\_ind|  label.names\_foster.to.adopt\_ind|  label.names\_landlord\_ind|  label.names\_manager.decision\_ind|  label.names\_need.info\_ind|  label.names\_need.proof.of.ownership\_ind|  label.names\_need.roommates.vet.info\_ind|  label.names\_need.to.see.id\_ind|  label.names\_need.vet.info\_ind|  label.names\_need.written.ll.permission\_ind|  label.names\_needs.review.before.approval\_ind|  label.names\_not.s.n\_ind|  label.names\_not.utd\_ind|  label.names\_opa\_ind|  label.names\_pet.policy\_ind|  label.names\_questions\_ind|  label.names\_ready.for.review\_ind|  label.names\_ready.to.adopt\_ind|  label.names\_red.flag\_ind|  label.names\_rescue.check\_ind|  label.names\_returned\_ind|  label.names\_reviewed.with.handouts.only\_ind|  label.names\_serial.no.show\_ind|  label.names\_unsure.foster.or.adopt\_ind|  label.names\_vet.check.in.process\_ind|  label.names\_vet\_ind|  label.names\_withdrawn\_ind|
-|:------------------------------------------------------------|:----------------------------|------------:|-------------------------------------:|---------------------------:|--------------------------------------:|--------------------------------------------:|----------------------------:|--------------------------:|-------------------------------:|--------------------------:|------------------------------------:|----------------------------:|-----------------------------------:|----------------------------:|------------------------------------:|-----------------------------:|-------------------------------------------:|-------------------------------------------:|----------------------------------:|---------------------------------:|----------------------------------------------:|--------------------------------------:|------------------------------------------------:|---------------------------:|---------------------------:|-----------------------:|------------------------------:|-----------------------------:|------------------------------------:|----------------------------------:|----------------------------:|--------------------------------:|----------------------------:|-----------------------------------------------:|----------------------------------:|------------------------------------------:|----------------------------------------:|-----------------------:|-----------------------------:|------------------------------------:|--------------------------:|-------------------------------------:|-------------------------------------------:|---------------------------:|-------------------------:|------------------------------:|-------------------------:|----------------------------------:|---------------------------:|-----------------------------------:|----------------------------:|------------------------------------------:|------------------------------------------:|---------------------------------:|--------------------------------:|---------------------------------------------:|-----------------------------------------------:|--------------------------:|--------------------------:|----------------------:|-----------------------------:|----------------------------:|-----------------------------------:|---------------------------------:|---------------------------:|-------------------------------:|---------------------------:|----------------------------------------------:|---------------------------------:|-----------------------------------------:|---------------------------------------:|----------------------:|----------------------------:|
-| NA                                                          | NA                          |            0|                                    NA|                          NA|                                     NA|                                           NA|                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                                       NA|                      NA|                            NA|                                   NA|                         NA|                                    NA|                                          NA|                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                                      NA|                     NA|                           NA|
-| ready to adopt, need to see id, reviewed with handouts only | reviewed with handouts only |            3|                                     0|                           0|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  1|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               1|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                                       0|                      0|                            0|
-| reviewed with handouts only, ready to adopt                 | ready to adopt              |            2|                                     0|                           0|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  1|                            0|                                0|                            0|                                               0|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                                       0|                      0|                            0|
-| ready to adopt                                              | ready to adopt              |            1|                                     0|                           0|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                                       0|                      0|                            0|
-| ready to adopt, reviewed with handouts only                 | reviewed with handouts only |            2|                                     0|                           0|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               1|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                                       0|                      0|                            0|
-| adopted, adoption follow up                                 | adoption follow up          |            2|                                     0|                           0|                                      1|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          1|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                                       0|                      0|                            0|
-| red flag, manager decision                                  | manager decision            |            2|                                     0|                           0|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    1|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           1|                               0|                           0|                                              0|                                 0|                                         0|                                       0|                      0|                            0|
-| NA                                                          | NA                          |            0|                                    NA|                          NA|                                     NA|                                           NA|                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                                       NA|                      NA|                            NA|                                   NA|                         NA|                                    NA|                                          NA|                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                                      NA|                     NA|                           NA|
-| reviewed with handouts only, adopted                        | adopted                     |            2|                                     0|                           1|                                      0|                                            0|                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                                        0|                       0|                             0|                                    0|                          0|                                     0|                                           0|                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                                       0|                      0|                            0|
-| NA                                                          | NA                          |            0|                                    NA|                          NA|                                     NA|                                           NA|                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                                       NA|                      NA|                            NA|                                   NA|                         NA|                                    NA|                                          NA|                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                                      NA|                     NA|                           NA|
+| label\_names                                | last\_label                 |  num\_labels|  label.names\_.adopted\_ind|  label.names\_.adopted.elsewhere\_ind|  label.names\_.adoption.follow.up\_ind|  label.names\_.approved\_ind|  label.names\_.approved.with.limitation\_ind|  label.names\_.checks\_ind|  label.names\_.declaw.only\_ind|  label.names\_.denied\_ind|  label.names\_.do.not.follow.up\_ind|  label.names\_.dog.meet\_ind|  label.names\_.foster.to.adopt\_ind|  label.names\_.landlord\_ind|  label.names\_.manager.decision\_ind|  label.names\_.need.info\_ind|  label.names\_.need.proof.of.ownership\_ind|  label.names\_.need.roommates.vet.info\_ind|  label.names\_.need.to.see.id\_ind|  label.names\_.need.vet.info\_ind|  label.names\_.need.written.ll.permission\_ind|  label.names\_.needs.app.attached\_ind|  label.names\_.needs.review.before.approval\_ind|  label.names\_.not.s.n\_ind|  label.names\_.not.utd\_ind|  label.names\_.opa\_ind|  label.names\_.pet.policy\_ind|  label.names\_.questions\_ind|  label.names\_.ready.for.review\_ind|  label.names\_.ready.to.adopt\_ind|  label.names\_.red.flag\_ind|  label.names\_.rescue.check\_ind|  label.names\_.returned\_ind|  label.names\_.reviewed.with.handouts.only\_ind|  label.names\_.serial.no.show\_ind|  label.names\_.unsure.foster.or.adopt\_ind|  label.names\_.vet\_ind|  label.names\_.vet.check.in.process\_ind|  label.names\_.withdrawn\_ind|  label.names\_adopted\_ind|  label.names\_adopted.elsewhere\_ind|  label.names\_adoption.follow.up\_ind|  label.names\_approved\_ind|  label.names\_approved.with.limitation\_ind|  label.names\_checks\_ind|  label.names\_declaw.only\_ind|  label.names\_denied\_ind|  label.names\_foster.to.adopt\_ind|  label.names\_landlord\_ind|  label.names\_manager.decision\_ind|  label.names\_need.info\_ind|  label.names\_need.proof.of.ownership\_ind|  label.names\_need.roommates.vet.info\_ind|  label.names\_need.to.see.id\_ind|  label.names\_need.vet.info\_ind|  label.names\_need.written.ll.permission\_ind|  label.names\_needs.review.before.approval\_ind|  label.names\_not.s.n\_ind|  label.names\_not.utd\_ind|  label.names\_opa\_ind|  label.names\_pet.policy\_ind|  label.names\_questions\_ind|  label.names\_ready.for.review\_ind|  label.names\_ready.to.adopt\_ind|  label.names\_red.flag\_ind|  label.names\_rescue.check\_ind|  label.names\_returned\_ind|  label.names\_reviewed.with.handouts.only\_ind|  label.names\_serial.no.show\_ind|  label.names\_unsure.foster.or.adopt\_ind|  label.names\_vet\_ind|  label.names\_vet.check.in.process\_ind|  label.names\_withdrawn\_ind|
+|:--------------------------------------------|:----------------------------|------------:|---------------------------:|-------------------------------------:|--------------------------------------:|----------------------------:|--------------------------------------------:|--------------------------:|-------------------------------:|--------------------------:|------------------------------------:|----------------------------:|-----------------------------------:|----------------------------:|------------------------------------:|-----------------------------:|-------------------------------------------:|-------------------------------------------:|----------------------------------:|---------------------------------:|----------------------------------------------:|--------------------------------------:|------------------------------------------------:|---------------------------:|---------------------------:|-----------------------:|------------------------------:|-----------------------------:|------------------------------------:|----------------------------------:|----------------------------:|--------------------------------:|----------------------------:|-----------------------------------------------:|----------------------------------:|------------------------------------------:|-----------------------:|----------------------------------------:|-----------------------------:|--------------------------:|------------------------------------:|-------------------------------------:|---------------------------:|-------------------------------------------:|-------------------------:|------------------------------:|-------------------------:|----------------------------------:|---------------------------:|-----------------------------------:|----------------------------:|------------------------------------------:|------------------------------------------:|---------------------------------:|--------------------------------:|---------------------------------------------:|-----------------------------------------------:|--------------------------:|--------------------------:|----------------------:|-----------------------------:|----------------------------:|-----------------------------------:|---------------------------------:|---------------------------:|-------------------------------:|---------------------------:|----------------------------------------------:|---------------------------------:|-----------------------------------------:|----------------------:|---------------------------------------:|----------------------------:|
+| NA                                          | NA                          |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| adopted                                     | adopted                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| adopted                                     | adopted                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready to adopt, reviewed with handouts only | reviewed with handouts only |            2|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               1|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| reviewed with handouts only, adopted        | adopted                     |            2|                           1|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                      0|                                       0|                            0|
+| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready to adopt                              | ready to adopt              |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| not utd                                     | not utd                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          1|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
 
 Merge the 4 Datasets
 --------------------
@@ -782,14 +799,14 @@ summary(master_apps)
     ##  3rd Qu.:0.00000                    3rd Qu.:0.0000             
     ##  Max.   :1.00000                    Max.   :1.0000             
     ##  NA's   :231                        NA's   :231                
-    ##  home.pet.policy_yes.with.pet.policy_ind home.pet.policy_yes_ind
-    ##  Min.   :0.00000                         Min.   :0.0000         
-    ##  1st Qu.:0.00000                         1st Qu.:0.0000         
-    ##  Median :0.00000                         Median :1.0000         
-    ##  Mean   :0.08444                         Mean   :0.7022         
-    ##  3rd Qu.:0.00000                         3rd Qu.:1.0000         
-    ##  Max.   :1.00000                         Max.   :1.0000         
-    ##  NA's   :231                             NA's   :231            
+    ##  home.pet.policy_yes_ind home.pet.policy_yes.with.pet.policy_ind
+    ##  Min.   :0.0000          Min.   :0.00000                        
+    ##  1st Qu.:0.0000          1st Qu.:0.00000                        
+    ##  Median :1.0000          Median :0.00000                        
+    ##  Mean   :0.7022          Mean   :0.08444                        
+    ##  3rd Qu.:1.0000          3rd Qu.:0.00000                        
+    ##  Max.   :1.0000          Max.   :1.00000                        
+    ##  NA's   :231             NA's   :231                            
     ##  experience_bred.sold_ind experience_current.housemates.pet_ind
     ##  Min.   :0.000000         Min.   :0.00000                      
     ##  1st Qu.:0.000000         1st Qu.:0.00000                      
@@ -1318,14 +1335,14 @@ summary(master_apps)
     ##  3rd Qu.: 3.075   3rd Qu.: 2.9425   3rd Qu.: 8.48   3rd Qu.: 2.805  
     ##  Max.   :61.900   Max.   :31.8200   Max.   :10.89   Max.   :31.820  
     ##  NA's   :20       NA's   :20        NA's   :454     NA's   :18      
-    ##  checklist_VET      wday_start dateLastActivity          due            
-    ##  Min.   : 0.000   Fri    :77   Min.   :2018-08-13   Min.   :2018-07-03  
-    ##  1st Qu.: 0.360   Wed    :76   1st Qu.:2018-10-18   1st Qu.:2018-09-24  
-    ##  Median : 1.780   Sat    :75   Median :2018-11-16   Median :2018-10-25  
-    ##  Mean   : 3.256   Mon    :63   Mean   :2018-11-14   Mean   :2018-10-22  
-    ##  3rd Qu.: 4.760   Sun    :59   3rd Qu.:2018-12-11   3rd Qu.:2018-11-21  
-    ##  Max.   :31.820   (Other):97   Max.   :2019-01-20   Max.   :2019-01-06  
-    ##  NA's   :28       NA's   : 9   NA's   :1            NA's   :43          
+    ##  checklist_VET      wday_start dateLastActivity      due     
+    ##  Min.   : 0.000   Fri    :77   Min.   :NA       Min.   :NA   
+    ##  1st Qu.: 0.360   Wed    :76   1st Qu.:NA       1st Qu.:NA   
+    ##  Median : 1.780   Sat    :75   Median :NA       Median :NA   
+    ##  Mean   : 3.256   Mon    :63   Mean   :NA       Mean   :NA   
+    ##  3rd Qu.: 4.760   Sun    :59   3rd Qu.:NA       3rd Qu.:NA   
+    ##  Max.   :31.820   (Other):97   Max.   :NA       Max.   :NA   
+    ##  NA's   :28       NA's   : 9   NA's   :456      NA's   :456  
     ##  animal_type.y.y    label_names         last_label          num_labels   
     ##  Length:456         Length:456         Length:456         Min.   :0.000  
     ##  Class :character   Class :character   Class :character   1st Qu.:1.000  
@@ -1334,70 +1351,70 @@ summary(master_apps)
     ##                                                           3rd Qu.:2.000  
     ##                                                           Max.   :4.000  
     ##                                                           NA's   :1      
-    ##  label.names_.adopted.elsewhere_ind label.names_.adopted_ind
-    ##  Min.   :0                          Min.   :0.0000          
-    ##  1st Qu.:0                          1st Qu.:0.0000          
-    ##  Median :0                          Median :0.0000          
-    ##  Mean   :0                          Mean   :0.2829          
-    ##  3rd Qu.:0                          3rd Qu.:1.0000          
-    ##  Max.   :0                          Max.   :1.0000          
-    ##  NA's   :7                          NA's   :7               
-    ##  label.names_.adoption.follow.up_ind
-    ##  Min.   :0.00000                    
-    ##  1st Qu.:0.00000                    
-    ##  Median :0.00000                    
-    ##  Mean   :0.01782                    
-    ##  3rd Qu.:0.00000                    
-    ##  Max.   :1.00000                    
-    ##  NA's   :7                          
-    ##  label.names_.approved.with.limitation_ind label.names_.approved_ind
-    ##  Min.   :0.000000                          Min.   :0                
-    ##  1st Qu.:0.000000                          1st Qu.:0                
-    ##  Median :0.000000                          Median :0                
-    ##  Mean   :0.008909                          Mean   :0                
-    ##  3rd Qu.:0.000000                          3rd Qu.:0                
-    ##  Max.   :1.000000                          Max.   :0                
-    ##  NA's   :7                                 NA's   :7                
-    ##  label.names_.checks_ind label.names_.declaw.only_ind
-    ##  Min.   :0               Min.   :0                   
-    ##  1st Qu.:0               1st Qu.:0                   
-    ##  Median :0               Median :0                   
-    ##  Mean   :0               Mean   :0                   
-    ##  3rd Qu.:0               3rd Qu.:0                   
-    ##  Max.   :0               Max.   :0                   
-    ##  NA's   :7               NA's   :7                   
-    ##  label.names_.denied_ind label.names_.do.not.follow.up_ind
-    ##  Min.   :0               Min.   :0                        
-    ##  1st Qu.:0               1st Qu.:0                        
-    ##  Median :0               Median :0                        
-    ##  Mean   :0               Mean   :0                        
-    ##  3rd Qu.:0               3rd Qu.:0                        
-    ##  Max.   :0               Max.   :0                        
-    ##  NA's   :7               NA's   :7                        
-    ##  label.names_.dog.meet_ind label.names_.foster.to.adopt_ind
-    ##  Min.   :0.000000          Min.   :0                       
-    ##  1st Qu.:0.000000          1st Qu.:0                       
-    ##  Median :0.000000          Median :0                       
-    ##  Mean   :0.002227          Mean   :0                       
-    ##  3rd Qu.:0.000000          3rd Qu.:0                       
-    ##  Max.   :1.000000          Max.   :0                       
-    ##  NA's   :7                 NA's   :7                       
-    ##  label.names_.landlord_ind label.names_.manager.decision_ind
-    ##  Min.   :0                 Min.   :0                        
-    ##  1st Qu.:0                 1st Qu.:0                        
-    ##  Median :0                 Median :0                        
-    ##  Mean   :0                 Mean   :0                        
-    ##  3rd Qu.:0                 3rd Qu.:0                        
-    ##  Max.   :0                 Max.   :0                        
-    ##  NA's   :7                 NA's   :7                        
-    ##  label.names_.need.info_ind label.names_.need.proof.of.ownership_ind
-    ##  Min.   :0                  Min.   :0                               
-    ##  1st Qu.:0                  1st Qu.:0                               
-    ##  Median :0                  Median :0                               
-    ##  Mean   :0                  Mean   :0                               
-    ##  3rd Qu.:0                  3rd Qu.:0                               
-    ##  Max.   :0                  Max.   :0                               
-    ##  NA's   :7                  NA's   :7                               
+    ##  label.names_.adopted_ind label.names_.adopted.elsewhere_ind
+    ##  Min.   :0.0000           Min.   :0                         
+    ##  1st Qu.:0.0000           1st Qu.:0                         
+    ##  Median :0.0000           Median :0                         
+    ##  Mean   :0.2829           Mean   :0                         
+    ##  3rd Qu.:1.0000           3rd Qu.:0                         
+    ##  Max.   :1.0000           Max.   :0                         
+    ##  NA's   :7                NA's   :7                         
+    ##  label.names_.adoption.follow.up_ind label.names_.approved_ind
+    ##  Min.   :0.00000                     Min.   :0                
+    ##  1st Qu.:0.00000                     1st Qu.:0                
+    ##  Median :0.00000                     Median :0                
+    ##  Mean   :0.01782                     Mean   :0                
+    ##  3rd Qu.:0.00000                     3rd Qu.:0                
+    ##  Max.   :1.00000                     Max.   :0                
+    ##  NA's   :7                           NA's   :7                
+    ##  label.names_.approved.with.limitation_ind label.names_.checks_ind
+    ##  Min.   :0.000000                          Min.   :0              
+    ##  1st Qu.:0.000000                          1st Qu.:0              
+    ##  Median :0.000000                          Median :0              
+    ##  Mean   :0.008909                          Mean   :0              
+    ##  3rd Qu.:0.000000                          3rd Qu.:0              
+    ##  Max.   :1.000000                          Max.   :0              
+    ##  NA's   :7                                 NA's   :7              
+    ##  label.names_.declaw.only_ind label.names_.denied_ind
+    ##  Min.   :0                    Min.   :0              
+    ##  1st Qu.:0                    1st Qu.:0              
+    ##  Median :0                    Median :0              
+    ##  Mean   :0                    Mean   :0              
+    ##  3rd Qu.:0                    3rd Qu.:0              
+    ##  Max.   :0                    Max.   :0              
+    ##  NA's   :7                    NA's   :7              
+    ##  label.names_.do.not.follow.up_ind label.names_.dog.meet_ind
+    ##  Min.   :0                         Min.   :0.000000         
+    ##  1st Qu.:0                         1st Qu.:0.000000         
+    ##  Median :0                         Median :0.000000         
+    ##  Mean   :0                         Mean   :0.002227         
+    ##  3rd Qu.:0                         3rd Qu.:0.000000         
+    ##  Max.   :0                         Max.   :1.000000         
+    ##  NA's   :7                         NA's   :7                
+    ##  label.names_.foster.to.adopt_ind label.names_.landlord_ind
+    ##  Min.   :0                        Min.   :0                
+    ##  1st Qu.:0                        1st Qu.:0                
+    ##  Median :0                        Median :0                
+    ##  Mean   :0                        Mean   :0                
+    ##  3rd Qu.:0                        3rd Qu.:0                
+    ##  Max.   :0                        Max.   :0                
+    ##  NA's   :7                        NA's   :7                
+    ##  label.names_.manager.decision_ind label.names_.need.info_ind
+    ##  Min.   :0                         Min.   :0                 
+    ##  1st Qu.:0                         1st Qu.:0                 
+    ##  Median :0                         Median :0                 
+    ##  Mean   :0                         Mean   :0                 
+    ##  3rd Qu.:0                         3rd Qu.:0                 
+    ##  Max.   :0                         Max.   :0                 
+    ##  NA's   :7                         NA's   :7                 
+    ##  label.names_.need.proof.of.ownership_ind
+    ##  Min.   :0                               
+    ##  1st Qu.:0                               
+    ##  Median :0                               
+    ##  Mean   :0                               
+    ##  3rd Qu.:0                               
+    ##  Max.   :0                               
+    ##  NA's   :7                               
     ##  label.names_.need.roommates.vet.info_ind label.names_.need.to.see.id_ind
     ##  Min.   :0                                Min.   :0                      
     ##  1st Qu.:0                                1st Qu.:0                      
@@ -1486,38 +1503,38 @@ summary(master_apps)
     ##  3rd Qu.:0                       3rd Qu.:0                              
     ##  Max.   :0                       Max.   :0                              
     ##  NA's   :7                       NA's   :7                              
-    ##  label.names_.vet.check.in.process_ind label.names_.vet_ind
-    ##  Min.   :0                             Min.   :0           
-    ##  1st Qu.:0                             1st Qu.:0           
-    ##  Median :0                             Median :0           
-    ##  Mean   :0                             Mean   :0           
-    ##  3rd Qu.:0                             3rd Qu.:0           
-    ##  Max.   :0                             Max.   :0           
-    ##  NA's   :7                             NA's   :7           
-    ##  label.names_.withdrawn_ind label.names_adopted.elsewhere_ind
-    ##  Min.   :0                  Min.   :0                        
-    ##  1st Qu.:0                  1st Qu.:0                        
-    ##  Median :0                  Median :0                        
-    ##  Mean   :0                  Mean   :0                        
-    ##  3rd Qu.:0                  3rd Qu.:0                        
-    ##  Max.   :0                  Max.   :0                        
-    ##  NA's   :7                  NA's   :7                        
-    ##  label.names_adopted_ind label.names_adoption.follow.up_ind
-    ##  Min.   :0.0000          Min.   :0.000000                  
-    ##  1st Qu.:0.0000          1st Qu.:0.000000                  
-    ##  Median :1.0000          Median :0.000000                  
-    ##  Mean   :0.6548          Mean   :0.002227                  
-    ##  3rd Qu.:1.0000          3rd Qu.:0.000000                  
-    ##  Max.   :1.0000          Max.   :1.000000                  
-    ##  NA's   :7               NA's   :7                         
-    ##  label.names_approved.with.limitation_ind label.names_approved_ind
-    ##  Min.   :0.000000                         Min.   :0.000000        
-    ##  1st Qu.:0.000000                         1st Qu.:0.000000        
-    ##  Median :0.000000                         Median :0.000000        
-    ##  Mean   :0.008909                         Mean   :0.006682        
-    ##  3rd Qu.:0.000000                         3rd Qu.:0.000000        
-    ##  Max.   :1.000000                         Max.   :1.000000        
-    ##  NA's   :7                                NA's   :7               
+    ##  label.names_.vet_ind label.names_.vet.check.in.process_ind
+    ##  Min.   :0            Min.   :0                            
+    ##  1st Qu.:0            1st Qu.:0                            
+    ##  Median :0            Median :0                            
+    ##  Mean   :0            Mean   :0                            
+    ##  3rd Qu.:0            3rd Qu.:0                            
+    ##  Max.   :0            Max.   :0                            
+    ##  NA's   :7            NA's   :7                            
+    ##  label.names_.withdrawn_ind label.names_adopted_ind
+    ##  Min.   :0                  Min.   :0.0000         
+    ##  1st Qu.:0                  1st Qu.:0.0000         
+    ##  Median :0                  Median :1.0000         
+    ##  Mean   :0                  Mean   :0.6548         
+    ##  3rd Qu.:0                  3rd Qu.:1.0000         
+    ##  Max.   :0                  Max.   :1.0000         
+    ##  NA's   :7                  NA's   :7              
+    ##  label.names_adopted.elsewhere_ind label.names_adoption.follow.up_ind
+    ##  Min.   :0                         Min.   :0.000000                  
+    ##  1st Qu.:0                         1st Qu.:0.000000                  
+    ##  Median :0                         Median :0.000000                  
+    ##  Mean   :0                         Mean   :0.002227                  
+    ##  3rd Qu.:0                         3rd Qu.:0.000000                  
+    ##  Max.   :0                         Max.   :1.000000                  
+    ##  NA's   :7                         NA's   :7                         
+    ##  label.names_approved_ind label.names_approved.with.limitation_ind
+    ##  Min.   :0.000000         Min.   :0.000000                        
+    ##  1st Qu.:0.000000         1st Qu.:0.000000                        
+    ##  Median :0.000000         Median :0.000000                        
+    ##  Mean   :0.006682         Mean   :0.008909                        
+    ##  3rd Qu.:0.000000         3rd Qu.:0.000000                        
+    ##  Max.   :1.000000         Max.   :1.000000                        
+    ##  NA's   :7                NA's   :7                               
     ##  label.names_checks_ind label.names_declaw.only_ind label.names_denied_ind
     ##  Min.   :0              Min.   :0                   Min.   :0             
     ##  1st Qu.:0              1st Qu.:0                   1st Qu.:0             
@@ -1622,14 +1639,14 @@ summary(master_apps)
     ##  3rd Qu.:0                      3rd Qu.:0                             
     ##  Max.   :0                      Max.   :0                             
     ##  NA's   :7                      NA's   :7                             
-    ##  label.names_vet.check.in.process_ind label.names_vet_ind
-    ##  Min.   :0                            Min.   :0.000000   
-    ##  1st Qu.:0                            1st Qu.:0.000000   
-    ##  Median :0                            Median :0.000000   
-    ##  Mean   :0                            Mean   :0.002227   
-    ##  3rd Qu.:0                            3rd Qu.:0.000000   
-    ##  Max.   :0                            Max.   :1.000000   
-    ##  NA's   :7                            NA's   :7          
+    ##  label.names_vet_ind label.names_vet.check.in.process_ind
+    ##  Min.   :0.000000    Min.   :0                           
+    ##  1st Qu.:0.000000    1st Qu.:0                           
+    ##  Median :0.000000    Median :0                           
+    ##  Mean   :0.002227    Mean   :0                           
+    ##  3rd Qu.:0.000000    3rd Qu.:0                           
+    ##  Max.   :1.000000    Max.   :0                           
+    ##  NA's   :7           NA's   :7                           
     ##  label.names_withdrawn_ind
     ##  Min.   :0                
     ##  1st Qu.:0                
@@ -1640,5 +1657,301 @@ summary(master_apps)
     ##  NA's   :7
 
 ``` r
-write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
+#write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
+
+# Save a single object to a file
+saveRDS(master_apps, "masterapps.rds")
+# Restore it under a different name to verify
+reloaded_data <- readRDS("masterapps.rds")
+str(reloaded_data)
 ```
+
+    ## 'data.frame':    456 obs. of  286 variables:
+    ##  $ date_submitted                                             : Date, format: "2018-12-31" "2018-12-27" ...
+    ##  $ ideal_adoption_timeline                                    : chr  "today" "one-month-or-more" "one-month-or-more" "today" ...
+    ##  $ reason_for_adoption                                        : chr  "myself" "myself" "myself" "myself,my-kids,gift" ...
+    ##  $ specific_animal                                            : logi  TRUE TRUE FALSE FALSE TRUE FALSE ...
+    ##  $ adults_in_home                                             : num  1 2 1 1 2 2 2 1 1 1 ...
+    ##  $ children_in_home                                           : int  0 0 0 3 1 2 2 1 0 0 ...
+    ##  $ all_household_agree                                        : chr  "yes" "yes" "yes" "yes,a-surprise" ...
+    ##  $ allergies                                                  : chr  "no-allergies" "no-allergies" "mildly-allergic" "no-allergies" ...
+    ##  $ home_owner                                                 : Factor w/ 5 levels "company","family-friend",..: 5 5 5 5 5 3 3 5 3 1 ...
+    ##  $ home_pet_policy                                            : Factor w/ 5 levels "no-but-pets-allowed",..: NA NA NA NA NA NA NA NA NA 4 ...
+    ##  $ experience                                                 : chr  "given-away,pet-died-in-care,euthanized,grew-up-with,currently-have-pet,current-housemates-pet" "euthanized,grew-up-with,past-housemates-pet" "grew-up-with,past-housemates-pet" "grew-up-with" ...
+    ##  $ budget_monthly                                             : num  125 250 100 150 250 100 100 1000 100 60 ...
+    ##  $ budget_emergency                                           : num  3000 1000 2500 300 250 500 500 5000 500 500 ...
+    ##  $ home_alone_avg                                             : num  NA 8 0 6 5 6 6 3 5 6 ...
+    ##  $ home_alone_max                                             : num  3 NA 6 NA 5 8 8 3 8 8 ...
+    ##  $ pet_kept                                                   : chr  "inside-only" "inside-only" "inside-only" "inside-only" ...
+    ##  $ exercise                                                   : chr  "toy-mice,wand-toys,other-pets" "toy-mice,wand-toys" "toy-mice,wand-toys" "toy-mice,wand-toys,other-pets" ...
+    ##  $ needs                                                      : chr  "nail-clip,scratching-post" "nail-clip,scratching-post" "scratching-post" "not-sure" ...
+    ##  $ return_pet                                                 : chr  "none,becomes-aggressive" "none" "none,allergies-appear" "none" ...
+    ##  $ how_heard                                                  : chr  "other" "website" NA NA ...
+    ##  $ trello_id                                                  : chr  "5bfecbeaf9c3e187eb632753" "5830b6fd9b5eb5693b943550" "5c23b9c9afe9f63c84e03f76" "5c1fc899f249bd6e1f45d851" ...
+    ##  $ City                                                       : Factor w/ 258 levels "ABINGDON","ABINGTON",..: 186 186 186 186 186 2 2 56 186 186 ...
+    ##  $ State                                                      : Factor w/ 14 levels "CA","CO","CT",..: 14 14 14 14 14 14 14 14 14 14 ...
+    ##  $ ZIP                                                        : chr  "19104" "19144" "19148" "19129" ...
+    ##  $ animal_type.x                                              : chr  "cats" "cats" "cats" "cats" ...
+    ##  $ budget_monthly_ranges                                      : Factor w/ 7 levels "<25",">5000",..: 4 5 6 4 5 6 6 7 6 6 ...
+    ##  $ budget_emergency_ranges                                    : Factor w/ 7 levels "<25",">5000",..: 3 7 3 5 5 5 5 3 5 5 ...
+    ##  $ reason.for.adoption_gift_ind                               : num  0 0 0 1 0 0 0 0 0 0 ...
+    ##  $ reason.for.adoption_mouser_ind                             : num  0 0 0 0 1 0 0 0 0 0 ...
+    ##  $ reason.for.adoption_my.kids_ind                            : num  0 0 0 1 1 0 0 1 0 0 ...
+    ##  $ reason.for.adoption_myself_ind                             : num  1 1 1 1 1 1 1 0 1 1 ...
+    ##  $ reason.for.adoption_other_ind                              : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ reason.for.adoption_protection_ind                         : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ all.household.agree_a.surprise_ind                         : num  0 0 0 1 0 0 0 0 1 0 ...
+    ##  $ all.household.agree_no_ind                                 : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ all.household.agree_yes_ind                                : num  1 1 1 1 1 1 1 1 0 1 ...
+    ##  $ allergies_mildly.allergic_ind                              : num  0 0 1 0 0 0 0 0 0 0 ...
+    ##  $ allergies_no.allergies_ind                                 : num  1 1 0 1 1 1 1 1 1 1 ...
+    ##  $ allergies_not.sure_ind                                     : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ allergies_very.allergic_ind                                : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.owner_company_ind                                     : num  1 0 0 0 0 0 0 0 0 1 ...
+    ##  $ home.owner_family.friend_ind                               : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.owner_family.member.or.friend_ind                     : num  0 0 0 0 0 1 1 0 1 0 ...
+    ##  $ home.owner_landlord_ind                                    : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.owner_myself_ind                                      : num  1 1 1 1 1 0 0 1 0 0 ...
+    ##  $ home.pet.policy_no.but.pets.allowed_ind                    : num  0 NA NA NA NA NA NA NA NA 0 ...
+    ##  $ home.pet.policy_not.applicable_ind                         : num  0 NA NA NA NA NA NA NA NA 0 ...
+    ##  $ home.pet.policy_not.yet_ind                                : num  0 NA NA NA NA NA NA NA NA 0 ...
+    ##  $ home.pet.policy_yes_ind                                    : num  1 NA NA NA NA NA NA NA NA 1 ...
+    ##  $ home.pet.policy_yes.with.pet.policy_ind                    : num  0 NA NA NA NA NA NA NA NA 0 ...
+    ##  $ experience_bred.sold_ind                                   : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ experience_current.housemates.pet_ind                      : num  1 0 0 0 0 0 0 0 0 0 ...
+    ##  $ experience_currently.have.pet_ind                          : num  1 0 0 0 0 0 0 1 0 1 ...
+    ##  $ experience_euthanized_ind                                  : num  1 1 0 0 0 0 0 0 0 0 ...
+    ##  $ experience_given.away_ind                                  : num  1 0 0 0 0 0 0 0 0 0 ...
+    ##  $ experience_given.to.shelter_ind                            : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ experience_grew.up.with_ind                                : num  1 1 1 1 1 1 1 0 0 1 ...
+    ##  $ experience_never.lived.with_ind                            : num  0 0 0 0 0 0 0 0 1 0 ...
+    ##  $ experience_past.housemates.pet_ind                         : num  0 1 1 0 1 0 0 0 0 0 ...
+    ##  $ experience_pet.died.in.care_ind                            : num  1 0 0 0 0 1 1 0 0 0 ...
+    ##  $ experience_pet.ran.away_ind                                : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_<25_ind                              : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_>5000_ind                            : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_1001.5000_ind                        : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_101.200_ind                          : num  1 0 0 1 0 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_201.500_ind                          : num  0 1 0 0 1 0 0 0 0 0 ...
+    ##  $ budget.monthly.ranges_26.100_ind                           : num  0 0 1 0 0 1 1 0 1 1 ...
+    ##  $ budget.monthly.ranges_501.1000_ind                         : num  0 0 0 0 0 0 0 1 0 0 ...
+    ##  $ budget.emergency.ranges_<25_ind                            : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.emergency.ranges_>5000_ind                          : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.emergency.ranges_1001.5000_ind                      : num  1 0 1 0 0 0 0 1 0 0 ...
+    ##  $ budget.emergency.ranges_101.200_ind                        : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.emergency.ranges_201.500_ind                        : num  0 0 0 1 1 1 1 0 1 1 ...
+    ##  $ budget.emergency.ranges_26.100_ind                         : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ budget.emergency.ranges_501.1000_ind                       : num  0 1 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_0_ind                                       : num  0 0 1 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_1_ind                                       : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_10_ind                                      : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_11_ind                                      : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_12_ind                                      : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_13_ind                                      : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_2_ind                                       : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_24_ind                                      : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_3_ind                                       : num  0 0 0 0 0 0 0 1 0 0 ...
+    ##  $ home.alone.avg_4_ind                                       : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_5_ind                                       : num  0 0 0 0 1 0 0 0 1 0 ...
+    ##  $ home.alone.avg_6_ind                                       : num  0 0 0 1 0 1 1 0 0 1 ...
+    ##  $ home.alone.avg_7_ind                                       : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_8_ind                                       : num  1 1 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.avg_9_ind                                       : num  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_0_ind                                       : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_1_ind                                       : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_10_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_11_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_12_ind                                      : num  1 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_13_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_14_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_15_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##  $ home.alone.max_16_ind                                      : num  0 NA 0 NA 0 0 0 0 0 0 ...
+    ##   [list output truncated]
+
+``` r
+identical(master_apps,reloaded_data)
+```
+
+    ## [1] TRUE
+
+Data Visualizations
+-------------------
+
+### Petpoint Visualizations
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-1.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-2.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-3.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-4.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-5.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-6.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-7.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-8.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-9.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-10.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-11.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-12.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-13.png)![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-2-14.png)
+
+### Cards Visualizations
+
+``` r
+#Distribution of lastLabel 
+cards %>% filter(!is.na(label_names)) %>% 
+  ggplot(mapping=aes(x=last_label,col=animal_type,fill=animal_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Last Label in the sequence of Label_Names") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+``` r
+cards %>% select(last_label) %>% table(useNA="always") %>% sort(decreasing = T)
+```
+
+    ## .
+    ##                         <NA>               ready to adopt 
+    ##                         3444                         1404 
+    ##                      adopted             ready for review 
+    ##                         1136                          927 
+    ##  reviewed with handouts only                    questions 
+    ##                          541                          351 
+    ##                      not utd                          vet 
+    ##                          257                          242 
+    ##                     red flag                    need info 
+    ##                          195                          176 
+    ##                     returned            adopted elsewhere 
+    ##                          173                          160 
+    ##                need vet info                       denied 
+    ##                          150                          120 
+    ##           adoption follow up             manager decision 
+    ##                          113                          104 
+    ##                   pet policy                     approved 
+    ##                           92                           82 
+    ##                       checks               need to see id 
+    ##                           55                           48 
+    ##                    withdrawn                  declaw only 
+    ##                           41                           37 
+    ##                 rescue check     approved with limitation 
+    ##                           35                           31 
+    ##                     dog meet                          opa 
+    ##                           28                           14 
+    ##      need proof of ownership   need written ll permission 
+    ##                            5                            5 
+    ##       unsure foster or adopt              foster to adopt 
+    ##                            5                            4 
+    ##             do not follow up      need roommates vet info 
+    ##                            3                            3 
+    ##         vet check in process                     landlord 
+    ##                            3                            2 
+    ##           needs app attached needs review before approval 
+    ##                            1                            1 
+    ##               serial no show 
+    ##                            1
+
+### Apps Visualizations
+
+``` r
+apps %>% ggplot(mapping=aes(x=budget_monthly_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Monthly budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-4-1.png)
+
+``` r
+apps %>% ggplot(mapping=aes(x=budget_emergency_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Emergency budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-4-2.png)
+
+``` r
+### Home alone avg
+apps %>% ggplot(mapping=aes(x=home_alone_avg,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Average") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-4-3.png)
+
+``` r
+### Home alone max
+apps %>% ggplot(mapping=aes(x=home_alone_max,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Maximum") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-4-4.png)
+
+### Actions Visualizations
+
+``` r
+#plot the distribution of the action time - number of days between first action and checklist_VET 
+actions %>% ggplot(mapping=aes(x=checklist_ACCT,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_ACCT)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_CHQ,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_CHQ)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-2.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_LL,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_LL)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-3.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_PP,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_PP)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-4.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_SPCA,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_SPCA)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-5.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_TR,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_TR)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-6.png)
+
+``` r
+actions %>% ggplot(mapping=aes(x=checklist_VET,col=animal_type,fill=animal_type)) +
+  geom_histogram(binwidth=2,col="red",fill="green",alpha=0.2) +
+  coord_cartesian(xlim=c(0,25)) +
+  facet_grid(animal_type ~ .) +
+  labs(title="Histogram of time to action (checklist_VET)")
+```
+
+![](combined_cleanedup_data_files/figure-markdown_github/unnamed-chunk-5-7.png)
