@@ -54,10 +54,11 @@ convert_to_ind(): creates indicator for specified field in dataframe
 convert_to_ind <- function(df, field){
     df %>% 
         mutate_(var = field) %>% 
-        distinct(trello_id, var) %>% 
+        distinct(trello_id, animal_type, var) %>% 
         unnest(split = str_split(str_trim(var), ",")) %>%
         select(-var) %>% 
         filter(!is.na(split)) %>% 
+        mutate(split = str_trim(split)) %>%
         mutate(n = 1,
                split = 
                    str_replace_all(split, "-", ".") %>% 

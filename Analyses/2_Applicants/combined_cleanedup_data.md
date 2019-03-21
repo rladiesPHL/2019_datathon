@@ -35,10 +35,11 @@ convert\_to\_ind(): creates indicator for specified field in dataframe
 convert_to_ind <- function(df, field){
     df %>% 
         mutate_(var = field) %>% 
-        distinct(trello_id, var) %>% 
+        distinct(trello_id, animal_type, var) %>% 
         unnest(split = str_split(str_trim(var), ",")) %>%
         select(-var) %>% 
         filter(!is.na(split)) %>% 
+        mutate(split = str_trim(split)) %>%
         mutate(n = 1,
                split = 
                    str_replace_all(split, "-", ".") %>% 
@@ -615,18 +616,18 @@ cards_with_indicators <- cards %>%
 cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
 ```
 
-| label\_names                                | last\_label                 |  num\_labels|  label.names\_.adopted\_ind|  label.names\_.adopted.elsewhere\_ind|  label.names\_.adoption.follow.up\_ind|  label.names\_.approved\_ind|  label.names\_.approved.with.limitation\_ind|  label.names\_.checks\_ind|  label.names\_.declaw.only\_ind|  label.names\_.denied\_ind|  label.names\_.do.not.follow.up\_ind|  label.names\_.dog.meet\_ind|  label.names\_.foster.to.adopt\_ind|  label.names\_.landlord\_ind|  label.names\_.manager.decision\_ind|  label.names\_.need.info\_ind|  label.names\_.need.proof.of.ownership\_ind|  label.names\_.need.roommates.vet.info\_ind|  label.names\_.need.to.see.id\_ind|  label.names\_.need.vet.info\_ind|  label.names\_.need.written.ll.permission\_ind|  label.names\_.needs.app.attached\_ind|  label.names\_.needs.review.before.approval\_ind|  label.names\_.not.s.n\_ind|  label.names\_.not.utd\_ind|  label.names\_.opa\_ind|  label.names\_.pet.policy\_ind|  label.names\_.questions\_ind|  label.names\_.ready.for.review\_ind|  label.names\_.ready.to.adopt\_ind|  label.names\_.red.flag\_ind|  label.names\_.rescue.check\_ind|  label.names\_.returned\_ind|  label.names\_.reviewed.with.handouts.only\_ind|  label.names\_.serial.no.show\_ind|  label.names\_.unsure.foster.or.adopt\_ind|  label.names\_.vet\_ind|  label.names\_.vet.check.in.process\_ind|  label.names\_.withdrawn\_ind|  label.names\_adopted\_ind|  label.names\_adopted.elsewhere\_ind|  label.names\_adoption.follow.up\_ind|  label.names\_approved\_ind|  label.names\_approved.with.limitation\_ind|  label.names\_checks\_ind|  label.names\_declaw.only\_ind|  label.names\_denied\_ind|  label.names\_foster.to.adopt\_ind|  label.names\_landlord\_ind|  label.names\_manager.decision\_ind|  label.names\_need.info\_ind|  label.names\_need.proof.of.ownership\_ind|  label.names\_need.roommates.vet.info\_ind|  label.names\_need.to.see.id\_ind|  label.names\_need.vet.info\_ind|  label.names\_need.written.ll.permission\_ind|  label.names\_needs.review.before.approval\_ind|  label.names\_not.s.n\_ind|  label.names\_not.utd\_ind|  label.names\_opa\_ind|  label.names\_pet.policy\_ind|  label.names\_questions\_ind|  label.names\_ready.for.review\_ind|  label.names\_ready.to.adopt\_ind|  label.names\_red.flag\_ind|  label.names\_rescue.check\_ind|  label.names\_returned\_ind|  label.names\_reviewed.with.handouts.only\_ind|  label.names\_serial.no.show\_ind|  label.names\_unsure.foster.or.adopt\_ind|  label.names\_vet\_ind|  label.names\_vet.check.in.process\_ind|  label.names\_withdrawn\_ind|
-|:--------------------------------------------|:----------------------------|------------:|---------------------------:|-------------------------------------:|--------------------------------------:|----------------------------:|--------------------------------------------:|--------------------------:|-------------------------------:|--------------------------:|------------------------------------:|----------------------------:|-----------------------------------:|----------------------------:|------------------------------------:|-----------------------------:|-------------------------------------------:|-------------------------------------------:|----------------------------------:|---------------------------------:|----------------------------------------------:|--------------------------------------:|------------------------------------------------:|---------------------------:|---------------------------:|-----------------------:|------------------------------:|-----------------------------:|------------------------------------:|----------------------------------:|----------------------------:|--------------------------------:|----------------------------:|-----------------------------------------------:|----------------------------------:|------------------------------------------:|-----------------------:|----------------------------------------:|-----------------------------:|--------------------------:|------------------------------------:|-------------------------------------:|---------------------------:|-------------------------------------------:|-------------------------:|------------------------------:|-------------------------:|----------------------------------:|---------------------------:|-----------------------------------:|----------------------------:|------------------------------------------:|------------------------------------------:|---------------------------------:|--------------------------------:|---------------------------------------------:|-----------------------------------------------:|--------------------------:|--------------------------:|----------------------:|-----------------------------:|----------------------------:|-----------------------------------:|---------------------------------:|---------------------------:|-------------------------------:|---------------------------:|----------------------------------------------:|---------------------------------:|-----------------------------------------:|----------------------:|---------------------------------------:|----------------------------:|
-| NA                                          | NA                          |            0|                          NA|                                    NA|                                     NA|                           NA|                                           NA|                         NA|                              NA|                         NA|                                   NA|                           NA|                                  NA|                           NA|                                   NA|                            NA|                                          NA|                                          NA|                                 NA|                                NA|                                             NA|                                     NA|                                               NA|                          NA|                          NA|                      NA|                             NA|                            NA|                                   NA|                                 NA|                           NA|                               NA|                           NA|                                              NA|                                 NA|                                         NA|                      NA|                                       NA|                            NA|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
-| adopted                                     | adopted                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| adopted                                     | adopted                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| ready to adopt, reviewed with handouts only | reviewed with handouts only |            2|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               1|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| reviewed with handouts only, adopted        | adopted                     |            2|                           1|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                      0|                                       0|                            0|
-| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| ready to adopt                              | ready to adopt              |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| not utd                                     | not utd                     |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          1|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
-| ready for review                            | ready for review            |            1|                           0|                                     0|                                      0|                            0|                                            0|                          0|                               0|                          0|                                    0|                            0|                                   0|                            0|                                    0|                             0|                                           0|                                           0|                                  0|                                 0|                                              0|                                      0|                                                0|                           0|                           0|                       0|                              0|                             0|                                    0|                                  0|                            0|                                0|                            0|                                               0|                                  0|                                          0|                       0|                                        0|                             0|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| label\_names                                | last\_label       |  num\_labels|  label.names\_adopted\_ind|  label.names\_adopted.elsewhere\_ind|  label.names\_adoption.follow.up\_ind|  label.names\_approved\_ind|  label.names\_approved.with.limitation\_ind|  label.names\_checks\_ind|  label.names\_declaw.only\_ind|  label.names\_denied\_ind|  label.names\_do.not.follow.up\_ind|  label.names\_dog.meet\_ind|  label.names\_foster.to.adopt\_ind|  label.names\_landlord\_ind|  label.names\_manager.decision\_ind|  label.names\_need.info\_ind|  label.names\_need.proof.of.ownership\_ind|  label.names\_need.roommates.vet.info\_ind|  label.names\_need.to.see.id\_ind|  label.names\_need.vet.info\_ind|  label.names\_need.written.ll.permission\_ind|  label.names\_needs.app.attached\_ind|  label.names\_needs.review.before.approval\_ind|  label.names\_not.s.n\_ind|  label.names\_not.utd\_ind|  label.names\_opa\_ind|  label.names\_pet.policy\_ind|  label.names\_questions\_ind|  label.names\_ready.for.review\_ind|  label.names\_ready.to.adopt\_ind|  label.names\_red.flag\_ind|  label.names\_rescue.check\_ind|  label.names\_returned\_ind|  label.names\_reviewed.with.handouts.only\_ind|  label.names\_serial.no.show\_ind|  label.names\_unsure.foster.or.adopt\_ind|  label.names\_vet\_ind|  label.names\_vet.check.in.process\_ind|  label.names\_withdrawn\_ind|
+|:--------------------------------------------|:------------------|------------:|--------------------------:|------------------------------------:|-------------------------------------:|---------------------------:|-------------------------------------------:|-------------------------:|------------------------------:|-------------------------:|-----------------------------------:|---------------------------:|----------------------------------:|---------------------------:|-----------------------------------:|----------------------------:|------------------------------------------:|------------------------------------------:|---------------------------------:|--------------------------------:|---------------------------------------------:|-------------------------------------:|-----------------------------------------------:|--------------------------:|--------------------------:|----------------------:|-----------------------------:|----------------------------:|-----------------------------------:|---------------------------------:|---------------------------:|-------------------------------:|---------------------------:|----------------------------------------------:|---------------------------------:|-----------------------------------------:|----------------------:|---------------------------------------:|----------------------------:|
+| NA                                          | NA                |            0|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                  NA|                          NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                    NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| ready to adopt                              | ready to adopt    |            1|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| need info, need vet info, adopted elsewhere | adopted elsewhere |            3|                          0|                                    1|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            1|                                          0|                                          0|                                 0|                                1|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready to adopt                              | ready to adopt    |            1|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 1|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| NA                                          | NA                |            0|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                  NA|                          NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                    NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| NA                                          | NA                |            0|                         NA|                                   NA|                                    NA|                          NA|                                          NA|                        NA|                             NA|                        NA|                                  NA|                          NA|                                 NA|                          NA|                                  NA|                           NA|                                         NA|                                         NA|                                NA|                               NA|                                            NA|                                    NA|                                              NA|                         NA|                         NA|                     NA|                            NA|                           NA|                                  NA|                                NA|                          NA|                              NA|                          NA|                                             NA|                                NA|                                        NA|                     NA|                                      NA|                           NA|
+| approved                                    | approved          |            1|                          0|                                    0|                                     0|                           1|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| reviewed with handouts only, adopted        | adopted           |            2|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              1|                                 0|                                         0|                      0|                                       0|                            0|
+| adopted                                     | adopted           |            1|                          1|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   0|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
+| ready for review                            | ready for review  |            1|                          0|                                    0|                                     0|                           0|                                           0|                         0|                              0|                         0|                                   0|                           0|                                  0|                           0|                                   0|                            0|                                          0|                                          0|                                 0|                                0|                                             0|                                     0|                                               0|                          0|                          0|                      0|                             0|                            0|                                   1|                                 0|                           0|                               0|                           0|                                              0|                                 0|                                         0|                      0|                                       0|                            0|
 
 Merge the 4 Datasets
 --------------------
@@ -641,7 +642,7 @@ master_apps <- apps_with_indicators %>%
 dim(master_apps)
 ```
 
-    ## [1] 456 286
+    ## [1] 456 252
 
 ``` r
 summary(master_apps)
@@ -1351,198 +1352,46 @@ summary(master_apps)
     ##                                                           3rd Qu.:2.000  
     ##                                                           Max.   :4.000  
     ##                                                           NA's   :1      
-    ##  label.names_.adopted_ind label.names_.adopted.elsewhere_ind
-    ##  Min.   :0.0000           Min.   :0                         
-    ##  1st Qu.:0.0000           1st Qu.:0                         
-    ##  Median :0.0000           Median :0                         
-    ##  Mean   :0.2829           Mean   :0                         
-    ##  3rd Qu.:1.0000           3rd Qu.:0                         
-    ##  Max.   :1.0000           Max.   :0                         
-    ##  NA's   :7                NA's   :7                         
-    ##  label.names_.adoption.follow.up_ind label.names_.approved_ind
-    ##  Min.   :0.00000                     Min.   :0                
-    ##  1st Qu.:0.00000                     1st Qu.:0                
-    ##  Median :0.00000                     Median :0                
-    ##  Mean   :0.01782                     Mean   :0                
-    ##  3rd Qu.:0.00000                     3rd Qu.:0                
-    ##  Max.   :1.00000                     Max.   :0                
-    ##  NA's   :7                           NA's   :7                
-    ##  label.names_.approved.with.limitation_ind label.names_.checks_ind
-    ##  Min.   :0.000000                          Min.   :0              
-    ##  1st Qu.:0.000000                          1st Qu.:0              
-    ##  Median :0.000000                          Median :0              
-    ##  Mean   :0.008909                          Mean   :0              
-    ##  3rd Qu.:0.000000                          3rd Qu.:0              
-    ##  Max.   :1.000000                          Max.   :0              
-    ##  NA's   :7                                 NA's   :7              
-    ##  label.names_.declaw.only_ind label.names_.denied_ind
-    ##  Min.   :0                    Min.   :0              
-    ##  1st Qu.:0                    1st Qu.:0              
-    ##  Median :0                    Median :0              
-    ##  Mean   :0                    Mean   :0              
-    ##  3rd Qu.:0                    3rd Qu.:0              
-    ##  Max.   :0                    Max.   :0              
-    ##  NA's   :7                    NA's   :7              
-    ##  label.names_.do.not.follow.up_ind label.names_.dog.meet_ind
-    ##  Min.   :0                         Min.   :0.000000         
-    ##  1st Qu.:0                         1st Qu.:0.000000         
-    ##  Median :0                         Median :0.000000         
-    ##  Mean   :0                         Mean   :0.002227         
-    ##  3rd Qu.:0                         3rd Qu.:0.000000         
-    ##  Max.   :0                         Max.   :1.000000         
-    ##  NA's   :7                         NA's   :7                
-    ##  label.names_.foster.to.adopt_ind label.names_.landlord_ind
-    ##  Min.   :0                        Min.   :0                
-    ##  1st Qu.:0                        1st Qu.:0                
-    ##  Median :0                        Median :0                
-    ##  Mean   :0                        Mean   :0                
-    ##  3rd Qu.:0                        3rd Qu.:0                
-    ##  Max.   :0                        Max.   :0                
-    ##  NA's   :7                        NA's   :7                
-    ##  label.names_.manager.decision_ind label.names_.need.info_ind
-    ##  Min.   :0                         Min.   :0                 
-    ##  1st Qu.:0                         1st Qu.:0                 
-    ##  Median :0                         Median :0                 
-    ##  Mean   :0                         Mean   :0                 
-    ##  3rd Qu.:0                         3rd Qu.:0                 
-    ##  Max.   :0                         Max.   :0                 
-    ##  NA's   :7                         NA's   :7                 
-    ##  label.names_.need.proof.of.ownership_ind
-    ##  Min.   :0                               
-    ##  1st Qu.:0                               
-    ##  Median :0                               
-    ##  Mean   :0                               
-    ##  3rd Qu.:0                               
-    ##  Max.   :0                               
-    ##  NA's   :7                               
-    ##  label.names_.need.roommates.vet.info_ind label.names_.need.to.see.id_ind
-    ##  Min.   :0                                Min.   :0                      
-    ##  1st Qu.:0                                1st Qu.:0                      
-    ##  Median :0                                Median :0                      
-    ##  Mean   :0                                Mean   :0                      
-    ##  3rd Qu.:0                                3rd Qu.:0                      
-    ##  Max.   :0                                Max.   :0                      
-    ##  NA's   :7                                NA's   :7                      
-    ##  label.names_.need.vet.info_ind
-    ##  Min.   :0                     
-    ##  1st Qu.:0                     
-    ##  Median :0                     
-    ##  Mean   :0                     
-    ##  3rd Qu.:0                     
-    ##  Max.   :0                     
-    ##  NA's   :7                     
-    ##  label.names_.need.written.ll.permission_ind
-    ##  Min.   :0                                  
-    ##  1st Qu.:0                                  
-    ##  Median :0                                  
-    ##  Mean   :0                                  
-    ##  3rd Qu.:0                                  
-    ##  Max.   :0                                  
-    ##  NA's   :7                                  
-    ##  label.names_.needs.app.attached_ind
-    ##  Min.   :0                          
-    ##  1st Qu.:0                          
-    ##  Median :0                          
-    ##  Mean   :0                          
-    ##  3rd Qu.:0                          
-    ##  Max.   :0                          
-    ##  NA's   :7                          
-    ##  label.names_.needs.review.before.approval_ind label.names_.not.s.n_ind
-    ##  Min.   :0                                     Min.   :0               
-    ##  1st Qu.:0                                     1st Qu.:0               
-    ##  Median :0                                     Median :0               
-    ##  Mean   :0                                     Mean   :0               
-    ##  3rd Qu.:0                                     3rd Qu.:0               
-    ##  Max.   :0                                     Max.   :0               
-    ##  NA's   :7                                     NA's   :7               
-    ##  label.names_.not.utd_ind label.names_.opa_ind label.names_.pet.policy_ind
-    ##  Min.   :0.000000         Min.   :0            Min.   :0                  
-    ##  1st Qu.:0.000000         1st Qu.:0            1st Qu.:0                  
-    ##  Median :0.000000         Median :0            Median :0                  
-    ##  Mean   :0.002227         Mean   :0            Mean   :0                  
-    ##  3rd Qu.:0.000000         3rd Qu.:0            3rd Qu.:0                  
-    ##  Max.   :1.000000         Max.   :0            Max.   :0                  
-    ##  NA's   :7                NA's   :7            NA's   :7                  
-    ##  label.names_.questions_ind label.names_.ready.for.review_ind
-    ##  Min.   :0                  Min.   :0                        
-    ##  1st Qu.:0                  1st Qu.:0                        
-    ##  Median :0                  Median :0                        
-    ##  Mean   :0                  Mean   :0                        
-    ##  3rd Qu.:0                  3rd Qu.:0                        
-    ##  Max.   :0                  Max.   :0                        
-    ##  NA's   :7                  NA's   :7                        
-    ##  label.names_.ready.to.adopt_ind label.names_.red.flag_ind
-    ##  Min.   :0.00000                 Min.   :0.00000          
-    ##  1st Qu.:0.00000                 1st Qu.:0.00000          
-    ##  Median :0.00000                 Median :0.00000          
-    ##  Mean   :0.01782                 Mean   :0.01114          
-    ##  3rd Qu.:0.00000                 3rd Qu.:0.00000          
-    ##  Max.   :1.00000                 Max.   :1.00000          
-    ##  NA's   :7                       NA's   :7                
-    ##  label.names_.rescue.check_ind label.names_.returned_ind
-    ##  Min.   :0                     Min.   :0.00000          
-    ##  1st Qu.:0                     1st Qu.:0.00000          
-    ##  Median :0                     Median :0.00000          
-    ##  Mean   :0                     Mean   :0.01559          
-    ##  3rd Qu.:0                     3rd Qu.:0.00000          
-    ##  Max.   :0                     Max.   :1.00000          
-    ##  NA's   :7                     NA's   :7                
-    ##  label.names_.reviewed.with.handouts.only_ind
-    ##  Min.   :0.00000                             
-    ##  1st Qu.:0.00000                             
-    ##  Median :0.00000                             
-    ##  Mean   :0.04232                             
-    ##  3rd Qu.:0.00000                             
-    ##  Max.   :1.00000                             
-    ##  NA's   :7                                   
-    ##  label.names_.serial.no.show_ind label.names_.unsure.foster.or.adopt_ind
-    ##  Min.   :0                       Min.   :0                              
-    ##  1st Qu.:0                       1st Qu.:0                              
-    ##  Median :0                       Median :0                              
-    ##  Mean   :0                       Mean   :0                              
-    ##  3rd Qu.:0                       3rd Qu.:0                              
-    ##  Max.   :0                       Max.   :0                              
-    ##  NA's   :7                       NA's   :7                              
-    ##  label.names_.vet_ind label.names_.vet.check.in.process_ind
-    ##  Min.   :0            Min.   :0                            
-    ##  1st Qu.:0            1st Qu.:0                            
-    ##  Median :0            Median :0                            
-    ##  Mean   :0            Mean   :0                            
-    ##  3rd Qu.:0            3rd Qu.:0                            
-    ##  Max.   :0            Max.   :0                            
-    ##  NA's   :7            NA's   :7                            
-    ##  label.names_.withdrawn_ind label.names_adopted_ind
-    ##  Min.   :0                  Min.   :0.0000         
-    ##  1st Qu.:0                  1st Qu.:0.0000         
-    ##  Median :0                  Median :1.0000         
-    ##  Mean   :0                  Mean   :0.6548         
-    ##  3rd Qu.:0                  3rd Qu.:1.0000         
-    ##  Max.   :0                  Max.   :1.0000         
-    ##  NA's   :7                  NA's   :7              
-    ##  label.names_adopted.elsewhere_ind label.names_adoption.follow.up_ind
-    ##  Min.   :0                         Min.   :0.000000                  
-    ##  1st Qu.:0                         1st Qu.:0.000000                  
-    ##  Median :0                         Median :0.000000                  
-    ##  Mean   :0                         Mean   :0.002227                  
-    ##  3rd Qu.:0                         3rd Qu.:0.000000                  
-    ##  Max.   :0                         Max.   :1.000000                  
-    ##  NA's   :7                         NA's   :7                         
-    ##  label.names_approved_ind label.names_approved.with.limitation_ind
-    ##  Min.   :0.000000         Min.   :0.000000                        
-    ##  1st Qu.:0.000000         1st Qu.:0.000000                        
-    ##  Median :0.000000         Median :0.000000                        
-    ##  Mean   :0.006682         Mean   :0.008909                        
-    ##  3rd Qu.:0.000000         3rd Qu.:0.000000                        
-    ##  Max.   :1.000000         Max.   :1.000000                        
-    ##  NA's   :7                NA's   :7                               
-    ##  label.names_checks_ind label.names_declaw.only_ind label.names_denied_ind
-    ##  Min.   :0              Min.   :0                   Min.   :0             
-    ##  1st Qu.:0              1st Qu.:0                   1st Qu.:0             
-    ##  Median :0              Median :0                   Median :0             
-    ##  Mean   :0              Mean   :0                   Mean   :0             
-    ##  3rd Qu.:0              3rd Qu.:0                   3rd Qu.:0             
-    ##  Max.   :0              Max.   :0                   Max.   :0             
-    ##  NA's   :7              NA's   :7                   NA's   :7             
+    ##  label.names_adopted_ind label.names_adopted.elsewhere_ind
+    ##  Min.   :0.0000          Min.   :0                        
+    ##  1st Qu.:1.0000          1st Qu.:0                        
+    ##  Median :1.0000          Median :0                        
+    ##  Mean   :0.9376          Mean   :0                        
+    ##  3rd Qu.:1.0000          3rd Qu.:0                        
+    ##  Max.   :1.0000          Max.   :0                        
+    ##  NA's   :7               NA's   :7                        
+    ##  label.names_adoption.follow.up_ind label.names_approved_ind
+    ##  Min.   :0.00000                    Min.   :0.000000        
+    ##  1st Qu.:0.00000                    1st Qu.:0.000000        
+    ##  Median :0.00000                    Median :0.000000        
+    ##  Mean   :0.02005                    Mean   :0.006682        
+    ##  3rd Qu.:0.00000                    3rd Qu.:0.000000        
+    ##  Max.   :1.00000                    Max.   :1.000000        
+    ##  NA's   :7                          NA's   :7               
+    ##  label.names_approved.with.limitation_ind label.names_checks_ind
+    ##  Min.   :0.00000                          Min.   :0             
+    ##  1st Qu.:0.00000                          1st Qu.:0             
+    ##  Median :0.00000                          Median :0             
+    ##  Mean   :0.01782                          Mean   :0             
+    ##  3rd Qu.:0.00000                          3rd Qu.:0             
+    ##  Max.   :1.00000                          Max.   :0             
+    ##  NA's   :7                                NA's   :7             
+    ##  label.names_declaw.only_ind label.names_denied_ind
+    ##  Min.   :0                   Min.   :0             
+    ##  1st Qu.:0                   1st Qu.:0             
+    ##  Median :0                   Median :0             
+    ##  Mean   :0                   Mean   :0             
+    ##  3rd Qu.:0                   3rd Qu.:0             
+    ##  Max.   :0                   Max.   :0             
+    ##  NA's   :7                   NA's   :7             
+    ##  label.names_do.not.follow.up_ind label.names_dog.meet_ind
+    ##  Min.   :0                        Min.   :0.000000        
+    ##  1st Qu.:0                        1st Qu.:0.000000        
+    ##  Median :0                        Median :0.000000        
+    ##  Mean   :0                        Mean   :0.002227        
+    ##  3rd Qu.:0                        3rd Qu.:0.000000        
+    ##  Max.   :0                        Max.   :1.000000        
+    ##  NA's   :7                        NA's   :7               
     ##  label.names_foster.to.adopt_ind label.names_landlord_ind
     ##  Min.   :0                       Min.   :0               
     ##  1st Qu.:0                       1st Qu.:0               
@@ -1583,6 +1432,14 @@ summary(master_apps)
     ##  3rd Qu.:0                     3rd Qu.:0                                 
     ##  Max.   :0                     Max.   :0                                 
     ##  NA's   :7                     NA's   :7                                 
+    ##  label.names_needs.app.attached_ind
+    ##  Min.   :0                         
+    ##  1st Qu.:0                         
+    ##  Median :0                         
+    ##  Mean   :0                         
+    ##  3rd Qu.:0                         
+    ##  Max.   :0                         
+    ##  NA's   :7                         
     ##  label.names_needs.review.before.approval_ind label.names_not.s.n_ind
     ##  Min.   :0                                    Min.   :0.000000       
     ##  1st Qu.:0                                    1st Qu.:0.000000       
@@ -1595,7 +1452,7 @@ summary(master_apps)
     ##  Min.   :0.000000        Min.   :0           Min.   :0                 
     ##  1st Qu.:0.000000        1st Qu.:0           1st Qu.:0                 
     ##  Median :0.000000        Median :0           Median :0                 
-    ##  Mean   :0.002227        Mean   :0           Mean   :0                 
+    ##  Mean   :0.004454        Mean   :0           Mean   :0                 
     ##  3rd Qu.:0.000000        3rd Qu.:0           3rd Qu.:0                 
     ##  Max.   :1.000000        Max.   :0           Max.   :0                 
     ##  NA's   :7               NA's   :7           NA's   :7                 
@@ -1608,27 +1465,27 @@ summary(master_apps)
     ##  Max.   :0                 Max.   :1.000000                
     ##  NA's   :7                 NA's   :7                       
     ##  label.names_ready.to.adopt_ind label.names_red.flag_ind
-    ##  Min.   :0.00000                Min.   :0.000000        
-    ##  1st Qu.:0.00000                1st Qu.:0.000000        
-    ##  Median :0.00000                Median :0.000000        
-    ##  Mean   :0.06236                Mean   :0.002227        
-    ##  3rd Qu.:0.00000                3rd Qu.:0.000000        
-    ##  Max.   :1.00000                Max.   :1.000000        
+    ##  Min.   :0.00000                Min.   :0.00000         
+    ##  1st Qu.:0.00000                1st Qu.:0.00000         
+    ##  Median :0.00000                Median :0.00000         
+    ##  Mean   :0.08018                Mean   :0.01336         
+    ##  3rd Qu.:0.00000                3rd Qu.:0.00000         
+    ##  Max.   :1.00000                Max.   :1.00000         
     ##  NA's   :7                      NA's   :7               
     ##  label.names_rescue.check_ind label.names_returned_ind
-    ##  Min.   :0                    Min.   :0.000000        
-    ##  1st Qu.:0                    1st Qu.:0.000000        
-    ##  Median :0                    Median :0.000000        
-    ##  Mean   :0                    Mean   :0.002227        
-    ##  3rd Qu.:0                    3rd Qu.:0.000000        
-    ##  Max.   :0                    Max.   :1.000000        
+    ##  Min.   :0                    Min.   :0.00000         
+    ##  1st Qu.:0                    1st Qu.:0.00000         
+    ##  Median :0                    Median :0.00000         
+    ##  Mean   :0                    Mean   :0.01782         
+    ##  3rd Qu.:0                    3rd Qu.:0.00000         
+    ##  Max.   :0                    Max.   :1.00000         
     ##  NA's   :7                    NA's   :7               
     ##  label.names_reviewed.with.handouts.only_ind
     ##  Min.   :0.0000                             
     ##  1st Qu.:0.0000                             
     ##  Median :0.0000                             
-    ##  Mean   :0.2428                             
-    ##  3rd Qu.:0.0000                             
+    ##  Mean   :0.2851                             
+    ##  3rd Qu.:1.0000                             
     ##  Max.   :1.0000                             
     ##  NA's   :7                                  
     ##  label.names_serial.no.show_ind label.names_unsure.foster.or.adopt_ind
@@ -1666,7 +1523,7 @@ reloaded_data <- readRDS("masterapps.rds")
 str(reloaded_data)
 ```
 
-    ## 'data.frame':    456 obs. of  286 variables:
+    ## 'data.frame':    456 obs. of  252 variables:
     ##  $ date_submitted                                             : Date, format: "2018-12-31" "2018-12-27" ...
     ##  $ ideal_adoption_timeline                                    : chr  "today" "one-month-or-more" "one-month-or-more" "today" ...
     ##  $ reason_for_adoption                                        : chr  "myself" "myself" "myself" "myself,my-kids,gift" ...
