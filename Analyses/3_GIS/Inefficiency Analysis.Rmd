@@ -457,7 +457,7 @@ tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title =
 #saved as rplot02.png
 ```
 
-The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of the population 25 to 34 year old who are enrolled in school, the higher the proportion of efficient applications. This effect seems to be more noticeable in east Philly. 
+The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of the population 25 to 34 year old who are enrolled in school, the higher the proportion of efficient applications. 
 
 
 ### Cats
@@ -559,6 +559,19 @@ print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
 
 # saved as rplot03.png
+
 ```
 
 The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of kids enrolled in grades 5-8, the lower the proportion of efficient applications. This effect seems to be more noticeable in the northeast.
+
+```{r}
+lm.coeffs <- as.data.frame(summary(model)$coefficients)
+
+var = 'HC02_EST_VC06_educ'
+print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
+# saved as rplot03.png
+
+```
