@@ -6,38 +6,40 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.width = 4,
+                      fig.height = 4)
 ```
 
 ```{r include=F, warning=F}
+library(ggthemr)
 library(tidyverse)
 ```
 
-## Executive Summary
-<span style="color:gray">*This section should have up to 5 bullet points summarizing the main conclusions from the analysis. These should be worded in such a way that PAWS management can easily understand what actios would be beneficial. It can be a shorter version of the conclusions section below.*</span>
+```{r include=F, warning=F}
+# Set some themes for plotting
+ggthemr('fresh')
+```
 
-* Tweets were analyzed to understand any patterns in twitter activity and whether that could be linked to application or pet information
+## Executive Summary
+
+* @phillypaws tweets were analyzed to understand any patterns in twitter activity and whether that could be linked to application or pet information
 * No strong trends or observations were gained, but it was fun to look at the data
-* We did not see a strong assocation between twitter activity and applications
-* We identified the most commonly tweeted words such as "home","adoption",and "meet"
+* We did not see a strong association between twitter activity and applications
+* We identified the most commonly tweeted words such as "home", "adoption", and "meet"
 * We found that tweets with photos were more often favorited and retweeted
 
 
 ## Contributors
 
-<span style="color:gray">*This section should list the names and 1-2 sentence descriptions of everyone who worked on the submission. An example is listed below (please replace the example with your own info).*</span>
-
 **Alice M Walsh, PhD** is a computational biologist in the pharmaceutical industry. She enjoys analyzing patient data and trying to make informed decisions using data. She also enjoys walking and training her dog, Pebbles.
 
 ## Problem definition and dataset
-
-<span style="color:gray">*This section should summarize the question your group has worked on, as well as any working definitions that you used (beyond what was outlined in the general description). Additionally, this section should contain any issues or challenges that you noticed in the data, that may be relevant.*</span>
 
 We examined the data from the PAWS twitter account, @phillypaws. We used the twitter API to download the most recent 3200 tweets, which included all tweets from 2018. Quotes and retweets were not excluded from the dataset.
 
 ## Results
 
-<span style="color:gray">*You may structure this section in any way that makes results easier to understand and describe.*</span>
 ```{r}
 # Load in data - previously pulled with rtweet package
 tweets <- readRDS('tweets_13FEB2019.Rds')
@@ -151,7 +153,7 @@ compare_days %>%
   ggplot(aes(x=created_day, y=percent, color=type)) + 
   geom_line() + 
   theme_bw()+
-  ggtitle("Frequency of applications and tweets by day")
+  ggtitle("Frequency of applications and tweets \nby day")
 
 # Line by week
 compare_days %>% 
@@ -165,7 +167,7 @@ compare_days %>%
   # geom_bar(aes(fill = type), position="dodge", stat = "identity") +
   geom_line(aes(color = type))+
   theme_bw() +
-  ggtitle("Frequency of applications and tweets by week")
+  ggtitle("Frequency of applications and tweets \nby week")
 
 # Scatter plot grouped by week
 compare_days %>% 
@@ -193,30 +195,123 @@ compare_days %>%
 source('alice_plot_top_words.R')
 
 # plot_top_words(tweets)
-plot_top_words(tweets_18) + ggtitle("@phillypaws 2018 tweets\nWord frequency")
+plot_top_words(tweets_18) + ggtitle("@phillypaws 2018 tweets\nWord frequency") + theme_bw() + xlab("") + ylab("") + theme(text = element_text(size=16))
 
 ```
 
 ```{r}
 # What made a tweet popular (retweets and favorites?)
+# tweets_18 %>% 
+#   mutate(has_photo = !is.na(media_type)) %>% 
+#   group_by(has_photo) %>% 
+#   summarise(favorite = mean(favorite_count, rm.na = T),
+#             retweet = mean(retweet_count, rm.na = T)) %>% 
+#   gather(metric, average, favorite:retweet) %>% 
+#   ggplot(aes(x=has_photo, y=average, fill = metric)) +
+#   geom_col(position = "dodge") + 
+#   theme_bw() + ylab("Average") + xlab("Is there a photo?")
+#   ggtitle("Tweets with photos \nare liked and retweeted more")
+
+  
 tweets_18 %>% 
   mutate(has_photo = !is.na(media_type)) %>% 
-  group_by(has_photo) %>% 
-  summarise(favorite = mean(favorite_count, rm.na = T),
-            retweet = mean(retweet_count, rm.na = T)) %>% 
-  gather(metric, average, favorite:retweet) %>% 
-  ggplot(aes(x=has_photo, y=average, fill = metric)) +
-  geom_col(position = "dodge") + 
-  theme_bw() + 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = has_photo)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  ylab("Count") + xlab("") + 
   ggtitle("Tweets with photos \nare liked and retweeted more")
+```
+
+```{r}
+# Merge in cat/dog predictions
+pred_img <- readRDS('alice_predict.Rds')
+pred_img <- pred_img %>% 
+  mutate(status_id = gsub(".jpg","",gsub("predict/","",filenames)))
+
+tweets_pred <- tweets %>% 
+  left_join(pred_img, by = "status_id") %>% 
+  mutate(has_photo = !is.na(media_type)) %>% 
+  # filter(has_photo == T) %>% 
+  mutate(animal_type = case_when(
+    predict < 0.2 ~ "cat",
+    predict > 0.9 ~ "dog",
+    is.na(predict) ~ "no photo",
+    TRUE ~ "other"
+  ),
+  animal_text = case_when(
+    grepl("cat|kitten|Cat|Kitten", text) ~ "cat",
+    grepl("dog|pup|Dog|Pup", text) ~ "dog",
+    TRUE ~ "other"
+  )) %>% 
+  filter(is_quote == F, is_retweet == F)
+
+# tweets_pred %>%
+#   filter(animal_type %in% c("cat","dog")) %>% 
+#   group_by(animal_type) %>% 
+#   filter(retweet_count < 200) %>% 
+#   summarise(favorite = mean(favorite_count, rm.na = T),
+#             retweet = mean(retweet_count, rm.na = T)) %>% 
+#   gather(metric, average, favorite:retweet) %>% 
+#   ggplot(aes(x=animal_type, y=average, fill = metric)) +
+#   geom_col(position = "dodge") + 
+#   theme_bw() + 
+#   ggtitle("Tweets with photos of cats \nare liked and retweeted more")
+
+tweets_pred %>% 
+  filter(animal_type %in% c("cat","dog")) %>%
+  # filter(retweet_count < 200) %>% 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = animal_type)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  scale_y_continuous(trans = "log2") +
+  # ylim(c(0,100)) + 
+  ylab("Count") + xlab("") + 
+  ggtitle("Tweets with cat photos \nare retweeted more")
+
+tweets_pred %>% 
+  # filter(animal_type %in% c("cat","dog")) %>%
+  # filter(retweet_count < 200) %>% 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = animal_text)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  # ylim(c(0,100)) +
+  scale_y_continuous(trans = "log2") + 
+  ylab("Count") + xlab("") + 
+  ggtitle("Tweets with cat text \nare retweeted more")
+
+# tweets_pred %>% 
+#   filter(animal_type %in% c("cat","dog")) %>%
+#   # filter(retweet_count < 200) %>% 
+#   ggplot(aes(x=favorite_count, y=retweet_count)) +
+#   geom_jitter(aes(color=animal_type), alpha = 0.75, height = 0.1, width = 0.1) + 
+#   theme_bw() + 
+#   geom_abline(slope = 1, intercept = 0) +
+#   scale_y_log10() + scale_x_log10() + 
+#   ggtitle("Tweets with photos of cats \nare retweeted more")
+
+# tweets %>% 
+#   filter(retweet_count < 200) %>% 
+#   ggplot(aes(x=predict, y=retweet_count)) +
+#   geom_point(aes(color=animal_type), alpha = 0.5) + 
+#   theme_bw() + 
+#   geom_smooth(method = "lm") +
+#   ylim(c(0,50)) + 
+#   ggtitle("Tweets with photos of cats \nare retweeted more")
 
 ```
 
 ## Conclusions and Next Steps
 
-<span style="color:gray">*This section should have a bulletpoint list of what conclusions can be drawn from the analyses that were performed, and what next steps should be taken, both by PAWS and by R-Ladies.*</span>
-
 Keep on tweeting! If someone wanted to dig deeper into this data, they could:
 
-* Perform image analysis on photos tweeted
+* Perform better image analysis on photos tweeted
 * Try to link tweets about certain topics (a specific animal, request for donations) to specific outcomes (did the animal get adopted? did they receive more donations?)
