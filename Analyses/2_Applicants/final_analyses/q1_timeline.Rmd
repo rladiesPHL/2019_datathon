@@ -356,7 +356,7 @@ masterapps_20190324 %>%
   theme_light() +
   labs(x = NULL,                                                                         # set plot labels
        y = NULL) +
-  ggtitle("Median Days to Checklist Item Heatmap (by Outcome Site") +                    # set plot title
+  ggtitle("Median Days to Checklist Item Heatmap (by Outcome Site)" +                    # set plot title
   scale_x_discrete(expand = c(0, 0)) +                                                   # visual editing, used to expand tiles to entire plot area on both axes
   scale_y_discrete(expand = c(0, 0)) +                                
   theme(legend.position = "none",                                                        # remove legend
