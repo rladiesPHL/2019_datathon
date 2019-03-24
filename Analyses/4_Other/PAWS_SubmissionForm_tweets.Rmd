@@ -8,7 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       fig.width = 4,
-                      fig.height = 4)
+                      fig.height = 4,
+                      warning=F)
 ```
 
 ```{r include=F, warning=F}
@@ -200,19 +201,7 @@ plot_top_words(tweets_18) + ggtitle("@phillypaws 2018 tweets\nWord frequency") +
 ```
 
 ```{r}
-# What made a tweet popular (retweets and favorites?)
-# tweets_18 %>% 
-#   mutate(has_photo = !is.na(media_type)) %>% 
-#   group_by(has_photo) %>% 
-#   summarise(favorite = mean(favorite_count, rm.na = T),
-#             retweet = mean(retweet_count, rm.na = T)) %>% 
-#   gather(metric, average, favorite:retweet) %>% 
-#   ggplot(aes(x=has_photo, y=average, fill = metric)) +
-#   geom_col(position = "dodge") + 
-#   theme_bw() + ylab("Average") + xlab("Is there a photo?")
-#   ggtitle("Tweets with photos \nare liked and retweeted more")
 
-  
 tweets_18 %>% 
   mutate(has_photo = !is.na(media_type)) %>% 
   gather(metric, count, favorite_count:retweet_count) %>% 
@@ -248,17 +237,6 @@ tweets_pred <- tweets %>%
   )) %>% 
   filter(is_quote == F, is_retweet == F)
 
-# tweets_pred %>%
-#   filter(animal_type %in% c("cat","dog")) %>% 
-#   group_by(animal_type) %>% 
-#   filter(retweet_count < 200) %>% 
-#   summarise(favorite = mean(favorite_count, rm.na = T),
-#             retweet = mean(retweet_count, rm.na = T)) %>% 
-#   gather(metric, average, favorite:retweet) %>% 
-#   ggplot(aes(x=animal_type, y=average, fill = metric)) +
-#   geom_col(position = "dodge") + 
-#   theme_bw() + 
-#   ggtitle("Tweets with photos of cats \nare liked and retweeted more")
 
 tweets_pred %>% 
   filter(animal_type %in% c("cat","dog")) %>%
@@ -287,25 +265,6 @@ tweets_pred %>%
   scale_y_continuous(trans = "log2") + 
   ylab("Count") + xlab("") + 
   ggtitle("Tweets with cat text \nare retweeted more")
-
-# tweets_pred %>% 
-#   filter(animal_type %in% c("cat","dog")) %>%
-#   # filter(retweet_count < 200) %>% 
-#   ggplot(aes(x=favorite_count, y=retweet_count)) +
-#   geom_jitter(aes(color=animal_type), alpha = 0.75, height = 0.1, width = 0.1) + 
-#   theme_bw() + 
-#   geom_abline(slope = 1, intercept = 0) +
-#   scale_y_log10() + scale_x_log10() + 
-#   ggtitle("Tweets with photos of cats \nare retweeted more")
-
-# tweets %>% 
-#   filter(retweet_count < 200) %>% 
-#   ggplot(aes(x=predict, y=retweet_count)) +
-#   geom_point(aes(color=animal_type), alpha = 0.5) + 
-#   theme_bw() + 
-#   geom_smooth(method = "lm") +
-#   ylim(c(0,50)) + 
-#   ggtitle("Tweets with photos of cats \nare retweeted more")
 
 ```
 
