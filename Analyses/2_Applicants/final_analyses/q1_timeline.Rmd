@@ -46,7 +46,7 @@ masterapps_20190324 <- masterapps_20190324 %>%
 
 **Timeline by Animal**
 
-```{r adoption animal boxplot, message=F, warning=F}
+```{r adoption animal boxplot, echo=T, message=F, warning=F}
 # boxplot of adoption_time by animal
 masterapps_20190324 %>%
   filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
@@ -70,7 +70,7 @@ masterapps_20190324 %>%
 
 <br />
 
-```{r animal type df, message=F, warning=F}
+```{r animal type df, echo=T, message=F, warning=F}
 # related table 
 
 # isolate the data that is related to animal type
@@ -100,7 +100,7 @@ I assumed that the outcome_sitename (or the location from where animal left PAWS
 
 Here are some visualizations that I tossed together. 
 
-```{r adoption animal & site boxplot}
+```{r adoption animal & site boxplot, echo=T}
 # boxplot of adoption_time by animal & adoption location
 masterapps_20190324 %>%
   drop_na(outcome_sitename) %>%                                                         # one id with no adoption site, drop that id
@@ -157,7 +157,7 @@ site_animal_df <- masterapps_20190324 %>%
          "median_adoption_time" = "median(adoption_time)") 
 ```
 
-```{r outcome site & animal df formattable, message=F, warning=F}
+```{r outcome site & animal df formattable, echo=T, message=F, warning=F}
 formattable(site_animal_df, align =c("l","l","c","c"), list(
   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
   `mean_adoption_time`= color_tile("#FFEFDB", "#FF8000"),
@@ -166,7 +166,7 @@ formattable(site_animal_df, align =c("l","l","c","c"), list(
 
 <br />
 
-```{r outcome site & animal heatmap, message=F, warning=F}
+```{r outcome site & animal heatmap, echo=T, message=F, warning=F}
 # heatmap plot of median adoption time by animal & adoption site
 site_animal_df %>%
   ggplot(aes(animal_type, outcome_site)) + 
@@ -204,7 +204,7 @@ Based on median values, here are the fastest & slowest time-to-adoption sites:
 
 <br />
 
-```{r frequency poly}
+```{r frequency poly, echo=T}
 # frequency polygon to compare distribution by adoption site 
 masterapps_20190324 %>%
   drop_na(outcome_sitename) %>%                                          # one id with no adoption site, drop that id
@@ -228,7 +228,7 @@ masterapps_20190324 %>%
 
 I isolated the data to just applications that resulted in adoption. 
 
-```{r checklist days boxplot outliers, message=F, warning=F}
+```{r checklist days boxplot outliers, echo=T, message=F, warning=F}
 # days distribution boxplot, by checklist_item & animal
 masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
@@ -255,7 +255,7 @@ masterapps_20190324 %>%
 The outliers make it a little difficult to analyze this plot, so I made it again with fewer outliers. 
 
 <br />
-```{r checklist days boxplot, message=F, warning=F}
+```{r checklist days boxplot, echo=T, message=F, warning=F}
 #  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
 masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
@@ -288,7 +288,7 @@ I also thought it might be more valuable to visualize this information in anothe
 
 <br />
 
-```{r checklist formattable, message=F, warning=F}
+```{r checklist formattable, echo=T, message=F, warning=F}
 # isolate the data that is related to checklist items for adoptions
 checklist_calcs <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
@@ -378,7 +378,7 @@ Otherwise, most application items take between one and two days (median). There 
 
 <br />
 
-```{r checklist formattable animals, message=F, warning=F}
+```{r checklist formattable animals, echo=T, message=F, warning=F}
 # isolate the data that is related to checklist items for adoptions
 checklist_animal_calcs <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
