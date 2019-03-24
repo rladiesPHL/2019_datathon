@@ -1,0 +1,59 @@
+---
+title: "PAWS Denied Applications Analysis"
+author: "Veena"
+date: "3/23/2019"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true 
+    df_print: kable
+---
+
+2. Describe an adoption application's trajectory at PAWS <br>
+2.4 What are the applicant and animal characteristics that predict a denied application?
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = T, message = F, warning = F)
+```
+
+```{r scipen, echo = F,  message = F,  warning = T}
+# Turn off scientific notation ----
+options(scipen=999) #digits = 2
+```
+
+##Load Packages
+```{r load_packages, echo = T, message=F, warning=F}
+#load packages
+library(readr)
+library(dplyr)
+library(tidyr)
+
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+
+##Load Data
+```{r load_data, echo = T,  message = F,  warning = T}
+apps_cards <- readRDS("../appsCards.rds")
+```
+
+##Explore Data
+```{r explore_data, echo = T,  message = F,  warning = T}
+dim(apps_cards)
+is.data.frame(apps_cards)
+#summary(apps_cards)
+
+#select(apps_cards, matches("denied")) #to find how many columns have some sort of indicator of the app being denied
+
+dplyr::count(apps_cards, label.names_denied_ind) #how many applications were denied
+#colnames(apps_cards)
+
+df <- dplyr::filter(apps_cards, label.names_denied_ind == 1)
+
+ggplot()
+
+```

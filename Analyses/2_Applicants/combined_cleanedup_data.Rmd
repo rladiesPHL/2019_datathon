@@ -1,6 +1,5 @@
 ---
 title: "combined_dataset"
-author: "Veena (some edits from Amy and Ramaa)"
 date: "3/17/2019"
 always_allow_html: yes
 output: 
@@ -408,6 +407,25 @@ reloaded_data <- readRDS(datedfilename)
 
 str(reloaded_data)
 identical(master_apps,reloaded_data)
+```
+
+###Merge the Apps and Cards datasets
+
+```{r}
+apps_cards <- apps_with_indicators %>%
+ filter(!is.na(trello_id)) %>%
+ left_join(cards_with_indicators, by = "trello_id")          
+
+dim(apps_cards)
+summary(apps_cards)
+#write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
+
+# Save a single object to a file
+saveRDS(apps_cards, "appsCards.rds")
+# Restore it under a different name to verify
+#reloaded_data <- readRDS("appsCards.rds")
+#str(reloaded_data)
+#identical(apps_cards,reloaded_data)
 ```
 
 ## Data Visualizations
