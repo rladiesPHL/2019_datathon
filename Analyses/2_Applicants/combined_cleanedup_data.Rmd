@@ -414,7 +414,7 @@ identical(master_apps,reloaded_data)
 ```{r}
 apps_cards <- apps_with_indicators %>%
  filter(!is.na(trello_id)) %>%
- left_join(cards_with_indicators, by = "trello_id")          
+ left_join(cards_with_indicators)          
 
 dim(apps_cards)
 summary(apps_cards)
