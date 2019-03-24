@@ -163,7 +163,7 @@ clean_city <- function(colname) {
 
 The cat_apps.csv and dog_apps.csv have exactly same columns but there is a mismatch in their datatypes.
 <br><br>Steps to fix this:
-<br>1. Add animal_type="cats" to cats.csv and animal_type="dogs" to dogs.csv 
+<br>1. Add animal_type="cat" to cats.csv and animal_type="dog" to dogs.csv 
 <br>2. cat_apps.csv - convert adults_in _home from character type to integer type
 <br>3. dog_apps.csv - convert zip code from integer type to character type so that we can categorize them
 
@@ -174,14 +174,14 @@ combined dog and cat apps data [1906, 27]
 cat_apps <- cat_apps[,-1] %>% 
   distinct() %>%
   transform(adults_in_home = as.numeric(adults_in_home)) %>%
-  mutate(animal_type="cats",
+  mutate(animal_type="cat",
          ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))
 
 #convert ZIP to character type and pad it correctly
 dog_apps <- dog_apps[,-1] %>% 
   distinct() %>% 
   transform(ZIP = as.character(ZIP)) %>%
-  mutate(animal_type="dogs",
+  mutate(animal_type="dog",
          ZIP=ifelse(str_length(ZIP)<5,str_c("0",ZIP),ZIP))          
 
 #combine cat and dog apps data
@@ -300,6 +300,7 @@ petpoint <- petpoint %>%
   select(-c(age_group,STATEFP,COUNTYFP,TRACTCE,GEOID,NAME,NAMELSAD,MTFCC,FUNCSTAT,ALAND,AWATER,INTPTLAT,INTPTLON)) %>%
   rename(trello_id = outcome_trello_id) %>%
   mutate(dob=mdy(dob),
+         animal_type=str_to_lower(animal_type),
          intake_date=mdy_hm(intake_date,tz="America/New_York"),
          release_date=mdy_hm(release_date,tz="America/New_York"),
          outcome_date=mdy_hm(outcome_date,tz="America/New_York"),
@@ -341,8 +342,8 @@ petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61
 ### Cards Dataset
 ```{r cards, echo = T,  message = F,  warning = T}
 # Add a new column "animal_type" to each dataset
-cat_cards <- cat_cards %>% mutate(animal_type="cats");
-dog_cards <- dog_cards %>% mutate(animal_type="dogs");
+cat_cards <- cat_cards %>% mutate(animal_type="cat");
+dog_cards <- dog_cards %>% mutate(animal_type="dog");
 #combine
 cards <- bind_rows(cat_cards,dog_cards)
 
@@ -372,23 +373,39 @@ cards_with_indicators <- cards %>%
 cards_with_indicators %>% sample_n(10) %>% select(contains("label"))
 ```
 
+```{r}
+# find the unique animal_types in each dataset
+apps %>% select(animal_type) %>% distinct()
+cards %>% select(animal_type) %>% distinct()
+actions %>% select(animal_type) %>% distinct()
+petpoint %>% select(animal_type) %>% distinct()
+```
+
 ##Merge the 4 Datasets
 
 ```{r}
+# master_apps <- apps_with_indicators %>%
+#  filter(!is.na(trello_id)) %>%
+#  inner_join(petpoint_with_indicators,by = "trello_id") %>%
+#  left_join(actions,by = "trello_id") %>%
+#  left_join(cards_with_indicators, by = "trello_id")          
+
 master_apps <- apps_with_indicators %>%
  filter(!is.na(trello_id)) %>%
- inner_join(petpoint_with_indicators,by = "trello_id") %>%
- left_join(actions,by = "trello_id") %>%
- left_join(cards_with_indicators, by = "trello_id")          
+ left_join(actions) %>%
+ left_join(cards_with_indicators) %>%
+left_join(petpoint_with_indicators)
 
 dim(master_apps)
 summary(master_apps)
 #write.csv(master_apps, "Analyses/2_Applicants/master_apps.csv", row.names = FALSE)
 
 # Save a single object to a file
-saveRDS(master_apps, "masterapps.rds")
+datedfilename <- paste("masterapps_",paste(today()) %>% str_replace_all("-",""),".rds",sep="")
+saveRDS(master_apps, datedfilename)
 # Restore it under a different name to verify
-reloaded_data <- readRDS("masterapps.rds")
+reloaded_data <- readRDS(datedfilename)
+
 str(reloaded_data)
 identical(master_apps,reloaded_data)
 ```
