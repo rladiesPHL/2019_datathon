@@ -34,7 +34,7 @@ not_all_na <- function(x) any(!is.na(x))
 In this analysis, I'm going to try and answer the question: what geographical factors contribute to how quickly an application gets processed? Inefficiency here is defined as applications that took more than 2 weeks to process. This will be assessed as follows: 
 
 - For applications that have a decision (see below for labels that indicate this), the last recorded checklist item is checked off 14 days or less from the date of submission
-- For applications that don't have a decision (processing is ongoing), the submission date is more than 2 weeks prior to 12/31/2018 
+- For applications that don't have a decision (processing is ongoing), the submission date is more than 10 days prior to 12/31/2018 
 
 - **with decision** = "denied", "do not follow up", "adopted", "adoption follow up", "returned", "adopted elsewhere", "approved", "ready to adopt", "ready for review", "reviewed with handouts only", "approved with limitation", "dog meet", "foster to adopt"
 - **without_decision** = "needs review before approval", "manager decision", "vet" , "need vet info", "need roommates vet info","not utd","questions", "not s n","need to see id", "need info", "checks", "needs app attached", "rescue check", "pet policy", "need written ll permission", "opa", "need proof of ownership", "landlord", "declaw only", "red flag", "unsure foster or adopt", "serial no show"
@@ -440,7 +440,11 @@ lm.coeffs <- as.data.frame(summary(model)$coefficients)
 
 var <- "HC02_EST_VC20_comp"
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
-# draw map
+
+# map just this variable
+tm_shape(gwr.map) + tm_fill(paste0(var), n = 5, style = "quantile", title = "Raw data") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+# map coefficients
 tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
                                                                                                             legend.title.size = 0.6)
 # saved as rplot01.png
