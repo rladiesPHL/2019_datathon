@@ -31,7 +31,7 @@ Come up with your own questions and insights using the provided dataset.
 
 ## Timeline and Workflow
 
-**February 12, 6-8pm: Kickoff Meetup:** At this event, teams will form to work on one of the 4 topics outlined above (any participant can choose to be a part of multiple groups). Interested participants should add their names, slack IDs and GitHub IDs to [this list](https://docs.google.com/document/d/1EzzVXFIJ-_KdAwprpDXTcC0G8VYxp6nCOKoZnskgEII/edit#heading=h.46g28hd7gts9) (new rows can be added). All participants should join the R-Ladies Philly Slack workspace with [this sign-up link](http://bit.ly/join-rladies-slack) and join the #paws channel. If anyone needs help setting up a GitHub account, there will be an organizer to help with this at the event. 
+**February 12, 6-8pm: Kickoff Meetup:** At this event, teams will form to work on one of the 4 topics outlined above (any participant can choose to be a part of multiple groups). Interested participants should add their names, slack IDs and GitHub IDs to [this list](https://docs.google.com/document/d/1EzzVXFIJ-_KdAwprpDXTcC0G8VYxp6nCOKoZnskgEII/edit#heading=h.46g28hd7gts9) (new rows can be added). All participants should join the R-Ladies Philly Slack workspace with [this sign-up link](http://bit.ly/join-rladies-slack) and join the #paws channel. If anyone needs help setting up a GitHub account, there will be an organizer to help with this at the event. *If you weren't able to attend the Kickoff Meetup and want to get involved, check out [How to get involved](get_involved.md).*
 
 After the kickoff meetup, groups will work together using Slack and GitHub. R-Ladies organizers will check in with groups via Slack to help with progress and help where necessary. 
 
