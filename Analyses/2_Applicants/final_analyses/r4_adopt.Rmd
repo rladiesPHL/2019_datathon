@@ -44,15 +44,24 @@ unique(master$last_label)
 #master %>% select(trello_id, outcome_type,contains("label"))
 
 #check if any of the labels do not contain adopted
-master %>% filter(outcome_type=="Adoption") %>% filter(!str_detect(label_names,"adopted")) %>% select(trello_id, outcome_type,label_names) 
+master %>% 
+  filter(outcome_type == "Adoption") %>% 
+  filter(!str_detect(label_names,"adopted")) %>% 
+  select(trello_id, outcome_type,label_names) 
 ## 28 entries found!
 
 #check if any of the labels do not contain "adopt" in any form
-master %>% filter(outcome_type=="Adoption") %>% filter(!str_detect(label_names,"adopt")) %>% select(trello_id, outcome_type,label_names) 
+master %>% 
+  filter(outcome_type=="Adoption") %>% 
+  filter(!str_detect(label_names,"adopt")) %>%
+  select(trello_id, outcome_type,label_names) 
 # there are four entries with no labels associated with label
 
 #check if there are no labels at all
-master  %>% filter(outcome_type=="Adoption") %>% filter(num_labels == 0) %>% select(trello_id,animal_type,label_names)
+master  %>% 
+  filter(outcome_type=="Adoption") %>% 
+  filter(num_labels == 0) %>% 
+  select(trello_id,animal_type,label_names)
 # there are six total entries and fice unique entries with no labels
 
 #master  %>% filter(outcome_type=="Adoption") %>% filter(num_labels == 0) %>%  select(trello_id,label_names,date_submitted,outcome_date,starts_with("checklist")) 
@@ -63,19 +72,23 @@ master  %>% filter(outcome_type=="Adoption") %>% filter(num_labels == 0) %>% sel
 #### Verify the animal_type column - a problem was detected here
 ```{r}
 #check why we have animal.x and animal.y
-master %>% select(starts_with("animal_type")) %>% table()
+master %>% 
+  select(starts_with("animal_type")) %>% 
+  table()
 ```
 
 ### Plots for adopted
 ```{r}
-master %>% filter(outcome_type=="Adoption") %>%
+master %>% 
+  filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=animal_type,col=animal_type,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     labs(title = "Species") +
    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
 
-master %>% filter(outcome_type=="Adoption") %>%
+master %>% 
+  filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,col=animal_type,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
@@ -172,8 +185,9 @@ master %>% filter(outcome_type=="Adoption") %>%
 #### Apply Random Forests to check for important varaibles
 ```{r}
 master_mod <- master %>%
-  mutate(adoption=ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),1,0)) %>%
-  select(-c(trello_id,reason_for_adoption,all_household_agree,allergies,home_owner, all_household_agree,allergies,
+  mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),1,0)) %>%
+  #mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type==1),1,0)) %>%
+  select(-c(trello_id,reason_for_adoption, all_household_agree, allergies, home_owner, all_household_agree, allergies,
             experience, budget_monthly, budget_emergency,pet_kept,exercise,needs,return_pet),
          -starts_with("budget."),
          -starts_with("home.alone"),
@@ -197,14 +211,21 @@ All _ind columns should have either a 1 or 0. There is some bug in the convert_t
 
 #### Apply random forests
 ```{r}
-inTrain <- createDataPartition(y=master_mod$adoption, p=0.7, list=FALSE)
+#removing all NAs results in dataframe with 0 rows
+dim(na.omit(master_mod))
+
+inTrain <- createDataPartition(y = master_mod$adoption, p=0.7, list=FALSE)
 training <- master_mod[inTrain, ]
 testing <- master_mod[-inTrain,]
 dim(training)
 dim(testing)
 table(training$adoption)
 table(testing$adoption)
-#rfFit <- train(adoption~.,data=training,method="rf",prox=TRUE,importance=TRUE)
+rfFit <- train(adoption ~ .,
+               data = training,
+               method = "rf",
+               prox = TRUE,
+               importance = TRUE)
 #rffit
 #importance(rffit)
 ```
