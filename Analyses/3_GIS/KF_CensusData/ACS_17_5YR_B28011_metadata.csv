@@ -1,0 +1,19 @@
+GEO.id,Id
+GEO.id2,Id2
+GEO.display-label,Geography
+HD01_VD01,Estimate; Total:
+HD02_VD01,Margin of Error; Total:
+HD01_VD02,Estimate; Total: - With an Internet subscription
+HD02_VD02,Margin of Error; Total: - With an Internet subscription
+HD01_VD03,Estimate; Total: - With an Internet subscription - Dial-up alone
+HD02_VD03,Margin of Error; Total: - With an Internet subscription - Dial-up alone
+HD01_VD04,"Estimate; Total: - With an Internet subscription - Broadband such as cable, fiber optic, or DSL"
+HD02_VD04,"Margin of Error; Total: - With an Internet subscription - Broadband such as cable, fiber optic, or DSL"
+HD01_VD05,Estimate; Total: - With an Internet subscription - Satellite Internet service
+HD02_VD05,Margin of Error; Total: - With an Internet subscription - Satellite Internet service
+HD01_VD06,Estimate; Total: - With an Internet subscription - Other service
+HD02_VD06,Margin of Error; Total: - With an Internet subscription - Other service
+HD01_VD07,Estimate; Total: - Internet access without a subscription
+HD02_VD07,Margin of Error; Total: - Internet access without a subscription
+HD01_VD08,Estimate; Total: - No Internet access
+HD02_VD08,Margin of Error; Total: - No Internet access

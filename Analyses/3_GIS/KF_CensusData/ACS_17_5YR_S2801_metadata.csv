@@ -1,0 +1,127 @@
+GEO.id,Id
+GEO.id2,Id2
+GEO.display-label,Geography
+HC01_EST_VC01,Total; Estimate; Total households
+HC01_MOE_VC01,Total; Margin of Error; Total households
+HC02_EST_VC01,Percent; Estimate; Total households
+HC02_MOE_VC01,Percent; Margin of Error; Total households
+HC01_EST_VC04,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices:
+HC01_MOE_VC04,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices:
+HC02_EST_VC04,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices:
+HC02_MOE_VC04,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices:
+HC01_EST_VC05,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
+HC01_MOE_VC05,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
+HC02_EST_VC05,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
+HC02_MOE_VC05,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
+HC01_EST_VC06,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop with no other type of computing device
+HC01_MOE_VC06,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop with no other type of computing device
+HC02_EST_VC06,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop with no other type of computing device
+HC02_MOE_VC06,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop with no other type of computing device
+HC01_EST_VC07,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone
+HC01_MOE_VC07,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone
+HC02_EST_VC07,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone
+HC02_MOE_VC07,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone
+HC01_EST_VC08,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone - Smartphone with no other type of computing device
+HC01_MOE_VC08,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone - Smartphone with no other type of computing device
+HC02_EST_VC08,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone - Smartphone with no other type of computing device
+HC02_MOE_VC08,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone - Smartphone with no other type of computing device
+HC01_EST_VC09,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer
+HC01_MOE_VC09,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer
+HC02_EST_VC09,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer
+HC02_MOE_VC09,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer
+HC01_EST_VC10,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer - Tablet or other portable wireless computer with no other type of computing device
+HC01_MOE_VC10,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer - Tablet or other portable wireless computer with no other type of computing device
+HC02_EST_VC10,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer - Tablet or other portable wireless computer with no other type of computing device
+HC02_MOE_VC10,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Tablet or other portable wireless computer - Tablet or other portable wireless computer with no other type of computing device
+HC01_EST_VC11,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer
+HC01_MOE_VC11,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer
+HC02_EST_VC11,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer
+HC02_MOE_VC11,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer
+HC01_EST_VC12,Total; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer - Other computer with no other type of computing device
+HC01_MOE_VC12,Total; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer - Other computer with no other type of computing device
+HC02_EST_VC12,Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer - Other computer with no other type of computing device
+HC02_MOE_VC12,Percent; Margin of Error; TYPES OF COMPUTER - Has one or more types of computing devices: - Other computer - Other computer with no other type of computing device
+HC01_EST_VC13,Total; Estimate; TYPES OF COMPUTER - No computer
+HC01_MOE_VC13,Total; Margin of Error; TYPES OF COMPUTER - No computer
+HC02_EST_VC13,Percent; Estimate; TYPES OF COMPUTER - No computer
+HC02_MOE_VC13,Percent; Margin of Error; TYPES OF COMPUTER - No computer
+HC01_EST_VC16,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription:
+HC01_MOE_VC16,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription:
+HC02_EST_VC16,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription:
+HC02_MOE_VC16,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription:
+HC01_EST_VC17,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Dial-up with no other type of Internet subscription
+HC01_MOE_VC17,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Dial-up with no other type of Internet subscription
+HC02_EST_VC17,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Dial-up with no other type of Internet subscription
+HC02_MOE_VC17,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Dial-up with no other type of Internet subscription
+HC01_EST_VC18,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type
+HC01_MOE_VC18,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type
+HC02_EST_VC18,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type
+HC02_MOE_VC18,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type
+HC01_EST_VC19,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan
+HC01_MOE_VC19,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan
+HC02_EST_VC19,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan
+HC02_MOE_VC19,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan
+HC01_EST_VC20,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan - Cellular data plan with no other type of Internet subscription
+HC01_MOE_VC20,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan - Cellular data plan with no other type of Internet subscription
+HC02_EST_VC20,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan - Cellular data plan with no other type of Internet subscription
+HC02_MOE_VC20,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Cellular data plan - Cellular data plan with no other type of Internet subscription
+HC01_EST_VC21,"Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Broadband such as cable, fiber optic or DSL"
+HC01_MOE_VC21,"Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Broadband such as cable, fiber optic or DSL"
+HC02_EST_VC21,"Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Broadband such as cable, fiber optic or DSL"
+HC02_MOE_VC21,"Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Broadband such as cable, fiber optic or DSL"
+HC01_EST_VC22,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Satellite Internet service
+HC01_MOE_VC22,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Satellite Internet service
+HC02_EST_VC22,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Satellite Internet service
+HC02_MOE_VC22,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription: - Broadband of any type - Satellite Internet service
+HC01_EST_VC23,Total; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - Without an Internet subscription
+HC01_MOE_VC23,Total; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - Without an Internet subscription
+HC02_EST_VC23,Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - Without an Internet subscription
+HC02_MOE_VC23,Percent; Margin of Error; TYPE OF INTERNET SUBSCRIPTIONS - Without an Internet subscription
+HC01_EST_VC26,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000:"
+HC01_MOE_VC26,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000:"
+HC02_EST_VC26,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000:"
+HC02_MOE_VC26,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000:"
+HC01_EST_VC27,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With dial-up Internet subscription alone"
+HC01_MOE_VC27,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With dial-up Internet subscription alone"
+HC02_EST_VC27,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With dial-up Internet subscription alone"
+HC02_MOE_VC27,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With dial-up Internet subscription alone"
+HC01_EST_VC28,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With a broadband Internet subscription"
+HC01_MOE_VC28,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With a broadband Internet subscription"
+HC02_EST_VC28,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With a broadband Internet subscription"
+HC02_MOE_VC28,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - With a broadband Internet subscription"
+HC01_EST_VC29,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - Without an Internet subscription"
+HC01_MOE_VC29,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - Without an Internet subscription"
+HC02_EST_VC29,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - Without an Internet subscription"
+HC02_MOE_VC29,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Less than $20,000: - Without an Internet subscription"
+HC01_EST_VC30,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999:"
+HC01_MOE_VC30,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999:"
+HC02_EST_VC30,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999:"
+HC02_MOE_VC30,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999:"
+HC01_EST_VC31,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With dial-up Internet subscription alone"
+HC01_MOE_VC31,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With dial-up Internet subscription alone"
+HC02_EST_VC31,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With dial-up Internet subscription alone"
+HC02_MOE_VC31,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With dial-up Internet subscription alone"
+HC01_EST_VC32,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With a broadband Internet subscription"
+HC01_MOE_VC32,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With a broadband Internet subscription"
+HC02_EST_VC32,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With a broadband Internet subscription"
+HC02_MOE_VC32,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - With a broadband Internet subscription"
+HC01_EST_VC33,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - Without an Internet subscription"
+HC01_MOE_VC33,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - Without an Internet subscription"
+HC02_EST_VC33,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - Without an Internet subscription"
+HC02_MOE_VC33,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $20,000 to $74,999: - Without an Internet subscription"
+HC01_EST_VC34,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more:"
+HC01_MOE_VC34,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more:"
+HC02_EST_VC34,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more:"
+HC02_MOE_VC34,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more:"
+HC01_EST_VC35,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With dial-up Internet subscription alone"
+HC01_MOE_VC35,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With dial-up Internet subscription alone"
+HC02_EST_VC35,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With dial-up Internet subscription alone"
+HC02_MOE_VC35,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With dial-up Internet subscription alone"
+HC01_EST_VC36,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With a broadband Internet subscription"
+HC01_MOE_VC36,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With a broadband Internet subscription"
+HC02_EST_VC36,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With a broadband Internet subscription"
+HC02_MOE_VC36,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - With a broadband Internet subscription"
+HC01_EST_VC37,"Total; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - Without an Internet subscription"
+HC01_MOE_VC37,"Total; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - Without an Internet subscription"
+HC02_EST_VC37,"Percent; Estimate; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - Without an Internet subscription"
+HC02_MOE_VC37,"Percent; Margin of Error; HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2017 INFLATION-ADJUSTED DOLLARS) - $75,000 or more: - Without an Internet subscription"
