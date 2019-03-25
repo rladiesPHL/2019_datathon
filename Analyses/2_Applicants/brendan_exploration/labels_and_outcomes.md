@@ -1,19 +1,27 @@
----
-title: "PAWS EDA"
-author: "Brendan Graham"
-always_allow_html: yes
-output: 
-  github_document:
-    toc: true 
----
+PAWS EDA
+================
+Brendan Graham
 
-```{r}
+``` r
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 library(ggplot2)
 ```
 
-```{r load_data, fig.height = 10, fig.width=10}
-
+``` r
 master <- readRDS("~/R Working Directory/Other/2019_datathon/Analyses/2_Applicants/masterapps_20190324.rds")
 
 # unique(master$outcome_type)
@@ -40,5 +48,6 @@ master %>%
        y = "Count", 
        fill = "Adoption Status", 
        title = "Over 250 Animals Labelled `Ready to Adopt`\nbut were not Adopted")
-
 ```
+
+![](labels_and_outcomes_files/figure-markdown_github/load_data-1.png)
