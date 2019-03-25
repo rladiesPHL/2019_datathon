@@ -1,0 +1,325 @@
+---
+title: "Economic Analyses of Applicants"
+author: "Joy Payton"
+date: "3/15/2019"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Load Packages
+
+We'll need some packages to make this stuff work!
+
+```{r}
+library(dplyr)
+library(stringr)
+```
+
+## Get Data
+
+Let's bring in cat and dog application data.
+
+```{r}
+dog_applicants <- read.csv('../../Data/dog_apps.csv', stringsAsFactors = FALSE)
+cat_applicants <- read.csv('../../Data/cat_apps.csv', stringsAsFactors = FALSE)
+```
+
+Also, what about the cards?
+
+```{r}
+dog_cards <- read.csv('../../Data/dog_cards.csv', stringsAsFactors = FALSE)
+cat_cards <- read.csv('../../Data/cat_cards.csv', stringsAsFactors = FALSE)
+```
+
+And actions?
+
+```{r}
+dog_actions <- read.csv('../../Data/dog_actions.csv', stringsAsFactors = FALSE)
+cat_actions <- read.csv('../../Data/cat_actions.csv', stringsAsFactors = FALSE)
+```
+
+As a reminder, in "Identify Census Tracts.Rmd" we created some data for the census tracts represented by our adopters, which contains selected economic characteristics.  Let's bring that data in!
+
+```{r}
+selected_economic_characteristics <- read.csv("CensusData/census_tracts_economics.csv", stringsAsFactors = FALSE)
+```
+
+Great, now we can do things like merge that selected data into our cat and dog applicants!
+
+```{r}
+cat_applicants <- merge(x = cat_applicants, 
+                        y = selected_economic_characteristics,
+                        by = "GEOID",
+                        all.x = TRUE)
+dog_applicants <- merge(x = dog_applicants, 
+                        y = selected_economic_characteristics,
+                        by = "GEOID",
+                        all.x = TRUE)
+```
+
+## Cat Applicants vs Dog Applicants
+
+Let's take a quick box plot of the median household income of our cat applicants (understood in aggregate):
+
+```{r}
+library(ggplot2)
+ggplot(cat_applicants,aes(y=tract_median_income)) +
+  geom_boxplot() 
+```
+
+And our dog applicants:
+
+```{r}
+ggplot(dog_applicants,aes(y=tract_median_income)) +
+  geom_boxplot() 
+```
+
+In order to combine plots and compare cats vs dogs side-by-side, we should combine our data:
+
+```{r}
+all_applicants <- rbind(cat_applicants %>% mutate(pet = "cat"), 
+                      dog_applicants %>% mutate(pet = "dog"))
+```
+
+Now we can do a side by side box plot:
+
+```{r}
+ggplot(all_applicants,aes(x=pet, y=tract_median_income)) +
+  geom_boxplot() 
+```
+
+It seems like dog applicants come from slightly more affluent areas.  Does that bear up under statistical scrutiny?
+
+```{r}
+t.test(tract_median_income ~ pet, all_applicants)
+t.test(tract_poverty_pct ~ pet, all_applicants)
+```
+**Yes, dog applicants are from wealthier neighborhoods, by a little (a few thousand dollars per year in income and handful of percent difference in the number of households under the poverty level).**
+
+Let's look at this a different way, to get an idea of distribution:
+
+```{r}
+ggplot(all_applicants,aes(x=tract_median_income)) +
+  geom_density(aes(fill=pet), alpha=0.5)
+```
+
+We can see that although there's statistical significance to the wealth inequality between cat and dog applicants, there's really not a huge difference in distribution -- dog applicants have more range between lower middle class and upper middle class, while cat applicants tend to skew more toward lower incomes.  But nothing very startling.
+
+## Application Completion Status
+
+How many applications were completed?  Does completion status have a link with median income?  With poverty?
+
+First, let's combine cards with applications:
+
+```{r}
+cards <- rbind(cat_cards,dog_cards)
+all_applicants <- merge(x = all_applicants,
+                        y = cards, 
+                        by.x ="outcome_trello_id",
+                        by.y = "id")
+
+```
+
+Now we can plot application completion by various economic realities:
+
+```{r}
+ggplot(all_applicants,aes(x=dueComplete, y=tract_median_income)) +
+  geom_boxplot() 
+
+ggplot(all_applicants,aes(x=dueComplete, y=tract_poverty_pct)) +
+  geom_boxplot() 
+```
+
+There does seem to be a small economic difference between completed applications -- applicants who completed come from slightly more affluent areas.  Is this difference statistically significant?
+
+```{r}
+t.test(tract_median_income ~ dueComplete, all_applicants)
+t.test(tract_poverty_pct ~ dueComplete, all_applicants)
+```
+
+**No, at an alpha of 0.05, this small difference is not statistically significant.  There is no neighborhood wealth difference between completed and non-completed applications.**
+
+So, completions seem to be unbiased where neighborhood income is concerned.  That's probably a good thing!  
+
+## Denials
+
+What about denials?  Are denial labels more frequent for appicants in poorer neighborhoods?
+
+There are lots of labels. Let's simplify, in order to make red flag, approvals, and denials easier to determine.
+
+```{r}
+all_applicants <- all_applicants %>% mutate(red_flag = str_detect(label_names, "red flag"),
+                                              approved = str_detect(label_names, "approved"),
+                                              denied = str_detect(label_names,"denied"))
+```
+
+```{r}
+ggplot(all_applicants %>% filter(!is.na(denied)),aes(x=denied, y=tract_median_income)) +
+  geom_boxplot() 
+```
+
+It sure seems like "denied" labels are more frequent among applicants in poorer neighborhoods.  Does this hold up to statistical scrutiny?
+
+```{r}
+t.test(tract_median_income ~ denied, all_applicants %>% filter(!is.na(denied)))
+```
+
+**Yes, denied flags are more frequent in poorer neigborhoods.**
+
+What about red flags?
+
+## Application Red Flags
+
+How many applications got red flagged?  What is the economic situation there?
+
+What economic differences, if any, can be determined with regard to red flags?
+
+```{r}
+ggplot(all_applicants,aes(x=red_flag, y=tract_median_income)) +
+  geom_boxplot() 
+```
+
+It certainly seems that applicants from poorer areas are more likely to receive red flags.  
+
+
+Are red flagged applicants from poorer neighborhoods than non-red flagged applicants, at a statistically significant level?
+
+```{r}
+t.test(tract_median_income ~ red_flag, all_applicants %>% filter(!is.na(red_flag)))
+```
+
+Yes.  **There is a statistically significant difference in the neighborhood income level of applicants who are red flagged.**
+
+This may be completely desired, if the red flag is related to the financial ability to care for a pet and some education or counseling around realistic budgets.  But red flags might reflect bias.  How can we tell?
+
+Let's start by looking at the budget set aside for the red flag holders.  We'll split out cats and dogs, since the two types of animals have different expected expenses.  First, let's convert currency to numbers:
+
+```{r}
+all_applicants$budget_monthly_num <- as.numeric(gsub('[$,]','',all_applicants$budget_monthly))
+all_applicants$budget_emergency_num <- as.numeric(gsub('[$,]','',all_applicants$budget_emergency))
+```
+
+Let's see if our numbers make sense:
+
+```{r}
+summary(all_applicants$budget_monthly_num)
+summary(all_applicants$budget_emergency_num)
+```
+
+Snap, we have some negative numbers and a couple of REALLY HIGH numbers.  Let's investigate.
+
+```{r}
+all_applicants %>% filter(budget_emergency_num < 0 |
+                          budget_emergency_num > 10000 |
+                          budget_monthly_num < 0 |
+                          budget_monthly_num > 10000) %>%
+                   select(outcome_trello_id, budget_monthly, budget_monthly_num, budget_emergency, budget_emergency_num)
+
+```
+
+Hmm.  I'm going to make a wild guess that negative numbers are a mistake and should be made positive.   I also suspect that things like \$0.50 are user errors and might be \$50.00, but I won't fix that.  Also, I wonder if some people put in their yearly salary or something like that instead of budget?
+
+To try to resolve these, I'm going to do the following:
+
+* Make negative numbers positive
+* Exclude monthly budgets over $1,000 as unrealistic and probably an error
+* Exclude emergency budgets over $50,000 as unrealistic and probably an error
+
+```{r}
+all_applicants$budget_monthly_num <- abs(as.numeric(gsub('[$,]','',all_applicants$budget_monthly)))
+all_applicants$budget_emergency_num <- abs(as.numeric(gsub('[$,]','',all_applicants$budget_emergency)))
+all_applicants$budget_emergency_num[which(all_applicants$budget_emergency_num > 50000)] <- NA
+all_applicants$budget_monthly_num[which(all_applicants$budget_monthly_num > 1000)] <- NA
+```
+
+Let's check out the budget numbers...  First for monthly budgets:
+
+```{r}
+all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+  ggplot(aes(x=pet, y=budget_monthly_num)) +
+  geom_boxplot(aes(fill=red_flag)) 
+```
+
+Interestingly, there seems to be a strong monthly budget difference between cat red flag applicants and non red flag applicants.  But there's no appreciable difference in budget between dog owners based on red flag status.
+
+Let's check that, statistically.  First, is the seemingly huge cat difference statistically significant?
+
+```{r}
+t.test(budget_monthly_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "cat") )
+```
+
+Yes.  **There is a statistically significant difference in the monthly budgets proposed by cat applicants who received red flags and cat applicants who did not.**  This seems to indicate that unrealistic budgeting might come into play when red flags are imposed on cat applicants.
+
+Dog applicants, on the other hand, seemed to have very similar monthly budgets, regardless of their red flag status.  Does that hold up?
+
+```{r}
+t.test(budget_monthly_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "dog") )
+```
+
+**There's no statistical significance to the very slight difference in dog monthly budgets.  Red flagged dog applicants are budgeting the same monthly amount as their non-red-flagged counterparts.**
+
+What about emergency budgets?
+
+```{r}
+all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+  ggplot(aes(x=pet, y=budget_emergency_num)) +
+  geom_boxplot(aes(fill=red_flag)) 
+```
+
+Snap, this is hard to check because of outliers.  Let's just set a ceiling at $10k for emergencies -- if a budget is more than that, we'll just set it to ten thousand.
+
+```{r}
+all_applicants$budget_emergency_num[which(all_applicants$budget_emergency_num > 10000)] <- 10000
+all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+  ggplot(aes(x=pet, y=budget_emergency_num)) +
+  geom_boxplot(aes(fill=red_flag)) 
+```
+
+Looks like there's a difference here in both types of pets -- red flagged applicants budgeted less for emergencies.  Is this difference statistically significant?
+
+```{r}
+t.test(budget_emergency_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "dog") )
+t.test(budget_emergency_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "cat") )
+```
+
+**Yes, emergency budgets are lower for red-flagged applicants for both cats and dogs, at a statistically significant level.**  It seems that emergency budgets being too low might prompt some doubt / red flags.
+
+## Budgets and Poverty
+
+So, what's the link, if any, between budgeting ability and census tract economic characteristics?  It seems to make sense that applicants from poorer neighborhoods have less discretionary budget available for pet care, but let's check this intuition.
+
+```{r}
+ggplot(all_applicants, aes(x=tract_median_income, y=budget_emergency_num)) +
+  geom_point(aes(color=red_flag), alpha = 0.3)
+```
+
+It's sort of hard to discern a trend.  Let's model it with a linear model:
+
+```{r}
+poverty_budget <- lm(budget_emergency_num ~ tract_median_income, data = all_applicants)
+summary(poverty_budget)
+```
+
+There's a definite trend, but the R squared seems to indicate that tract income only accounts for about 7% of the difference in budgets.
+
+And let's plot that linear model on top of our scatterplot:
+
+
+```{r}
+ggplot(all_applicants, aes(x=tract_median_income, y=budget_emergency_num)) +
+  geom_point(aes(color=red_flag), alpha = 0.3) +
+  geom_abline(intercept = poverty_budget$coefficients[1], slope = poverty_budget$coefficients[2])
+```
+
+## What Does Neighborhood Wealth Affect?
+
+We've been hypothesizing that the reason why applicants from poorer areas get red-flagged and denial labels more frequently is related to budgeting, especially budgeting for emergencies.  But are there other factors at play?

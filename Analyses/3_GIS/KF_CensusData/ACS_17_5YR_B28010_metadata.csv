@@ -1,0 +1,17 @@
+GEO.id,Id
+GEO.id2,Id2
+GEO.display-label,Geography
+HD01_VD01,Estimate; Total:
+HD02_VD01,Margin of Error; Total:
+HD01_VD02,Estimate; Total: - Has one or more types of computing devices:
+HD02_VD02,Margin of Error; Total: - Has one or more types of computing devices:
+HD01_VD03,Estimate; Total: - Has one or more types of computing devices: - Desktop or laptop
+HD02_VD03,Margin of Error; Total: - Has one or more types of computing devices: - Desktop or laptop
+HD01_VD04,Estimate; Total: - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop alone
+HD02_VD04,Margin of Error; Total: - Has one or more types of computing devices: - Desktop or laptop - Desktop or laptop alone
+HD01_VD05,"Estimate; Total: - Has one or more types of computing devices: - Smartphone, tablet or other portable wireless computer or other computer"
+HD02_VD05,"Margin of Error; Total: - Has one or more types of computing devices: - Smartphone, tablet or other portable wireless computer or other computer"
+HD01_VD06,"Estimate; Total: - Has one or more types of computing devices: - Smartphone, tablet or other portable wireless computer or other computer - Smartphone, tablet or other portable wireless computer or other computer, no desktop or laptop"
+HD02_VD06,"Margin of Error; Total: - Has one or more types of computing devices: - Smartphone, tablet or other portable wireless computer or other computer - Smartphone, tablet or other portable wireless computer or other computer, no desktop or laptop"
+HD01_VD07,Estimate; Total: - No Computer
+HD02_VD07,Margin of Error; Total: - No Computer
