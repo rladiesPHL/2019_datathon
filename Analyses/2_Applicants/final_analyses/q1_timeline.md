@@ -19,6 +19,7 @@ library(dplyr)
 library(readr)
 library(data.table)
 library(formattable)
+library(knitr)
 ```
 
 Load Data
@@ -85,11 +86,10 @@ masterapps_20190324 %>%
          "median adoption time" = "median(adoption_time)")
 ```
 
-    ## # A tibble: 2 x 3
-    ##   `animal type` `mean adoption time` `median adoption time`
-    ##   <chr>                        <dbl>                  <dbl>
-    ## 1 cat                           24.2                  18.8 
-    ## 2 dog                           17.2                   7.86
+| animal type |  mean adoption time|  median adoption time|
+|:------------|-------------------:|---------------------:|
+| cat         |            24.18434|                 18.80|
+| dog         |            17.21027|                  7.86|
 
 <br />
 
@@ -147,14 +147,13 @@ masterapps_20190324 %>%
          "median adoption time" = "median(adoption_time)")
 ```
 
-    ## # A tibble: 5 x 3
-    ##   `outcome site`         `mean adoption time` `median adoption time`
-    ##   <chr>                                 <dbl>                  <dbl>
-    ## 1 Grant Avenue                           20.4                   8.77
-    ## 2 Grays Ferry Avenue                     15.9                  12.7 
-    ## 3 PAC                                    14.1                   7.76
-    ## 4 PAWS Foster Program                    27.8                  24.1 
-    ## 5 PAWS Offsite Adoptions                 27.1                  24.3
+| outcome site           |  mean adoption time|  median adoption time|
+|:-----------------------|-------------------:|---------------------:|
+| Grant Avenue           |            20.41333|                 8.770|
+| Grays Ferry Avenue     |            15.94632|                12.710|
+| PAC                    |            14.08069|                 7.760|
+| PAWS Foster Program    |            27.77663|                24.120|
+| PAWS Offsite Adoptions |            27.06545|                24.335|
 
 ``` r
 # related table 
@@ -164,35 +163,36 @@ site_animal_df <- masterapps_20190324 %>%
   drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
   filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
   group_by(outcome_sitename, animal_type) %>%                     # before calculations, group data by outcome site
-  summarize(mean(adoption_time),                                  # calculate mean, use summarize to collapse each site into single-row summary 
-            median(adoption_time)) %>%                            # calculate median, use summarize to collapse each site into single-row summary 
-  rename("animal_type" = "animal_type",                           # rename the df columns to be more readable 
-         "outcome_site" = "outcome_sitename",
-         "mean_adoption_time" = "mean(adoption_time)",
-         "median_adoption_time" = "median(adoption_time)") 
+  summarize(mean = mean(adoption_time),                           # calculate mean, use summarize to collapse each site into single-row summary 
+            median = median(adoption_time)) %>%                   # calculate median, use summarize to collapse each site into single-row summary 
+  mutate_at(vars(mean, median), funs(round(., 2))) %>%            # round the calcs to 2 decimal places
+  rename("animal" = "animal_type",                                # rename the df columns to be more readable 
+         "outcome site" = "outcome_sitename",                     # can't utilize underscores or formatting gets weird
+         "mean adoption time" = "mean",
+         "median adoption time" = "median") 
 ```
 
 ``` r
 formattable(site_animal_df, align =c("l","l","c","c"), list(
   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
-  `mean_adoption_time`= color_tile("#FFEFDB", "#FF8000"),
-  `median_adoption_time`= color_tile("#FFEFDB", "#FF8000")))
+  `mean adoption time`= color_tile("#FFEFDB", "#FF8000"),
+  `median adoption time`= color_tile("#FFEFDB", "#FF8000")))
 ```
 
 <table class="table table-condensed">
 <thead>
 <tr>
 <th style="text-align:left;">
-outcome\_site
+outcome site
 </th>
 <th style="text-align:left;">
-animal\_type
+animal
 </th>
 <th style="text-align:center;">
-mean\_adoption\_time
+mean adoption time
 </th>
 <th style="text-align:center;">
-median\_adoption\_time
+median adoption time
 </th>
 </tr>
 </thead>
@@ -205,10 +205,10 @@ Grant Avenue
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb468">18.925405</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb468">18.93</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffcd98">10.250</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffcd98">10.25</span>
 </td>
 </tr>
 <tr>
@@ -219,10 +219,10 @@ Grant Avenue
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8e1d">26.208421</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8e1d">26.21</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe4c5">5.980</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe4c5">5.98</span>
 </td>
 </tr>
 <tr>
@@ -233,10 +233,10 @@ Grays Ferry Avenue
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">7.840000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">7.84</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffdab2">7.840</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffdab2">7.84</span>
 </td>
 </tr>
 <tr>
@@ -247,10 +247,10 @@ Grays Ferry Avenue
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc282">16.396667</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc282">16.40</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc07e">12.770</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc07e">12.77</span>
 </td>
 </tr>
 <tr>
@@ -261,10 +261,10 @@ PAC
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc78d">15.362143</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc78d">15.36</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffd9b0">7.965</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffd9b0">7.96</span>
 </td>
 </tr>
 <tr>
@@ -275,10 +275,10 @@ PAC
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe9d1">8.804118</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe9d1">8.80</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">3.930</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">3.93</span>
 </td>
 </tr>
 <tr>
@@ -289,10 +289,10 @@ PAWS Foster Program
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">29.015405</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">29.02</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">24.880</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">24.88</span>
 </td>
 </tr>
 <tr>
@@ -303,10 +303,10 @@ PAWS Foster Program
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc283">16.318000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc283">16.32</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc488">11.860</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffc488">11.86</span>
 </td>
 </tr>
 <tr>
@@ -317,10 +317,10 @@ PAWS Offsite Adoptions
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8912">27.191628</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8912">27.19</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8001">24.780</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8001">24.78</span>
 </td>
 </tr>
 <tr>
@@ -331,10 +331,10 @@ PAWS Offsite Adoptions
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffa64c">21.640000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffa64c">21.64</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff9121">21.640</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff9121">21.64</span>
 </td>
 </tr>
 </tbody>
@@ -342,12 +342,21 @@ dog
 <br />
 
 ``` r
+# rename site_animaL_df column names to include underscores
+site_animal_df <- site_animal_df %>%
+  rename("animal_type" = "animal",                                # couldn't use underscores earlier due to formatting of table, need them now to do other anlysis
+         "outcome_site" = "outcome site",                     
+         "mean_adoption_time" = "mean adoption time",
+         "median_adoption_time" = "median adoption time") 
+```
+
+``` r
 # heatmap plot of median adoption time by animal & adoption site
 site_animal_df %>%
   ggplot(aes(animal_type, outcome_site)) + 
-  geom_tile(aes(fill = median_adoption_time),                                            # set tiles to be mean adoption time
+  geom_tile(aes(fill = median_adoption_time),                                            # set tiles to be median adoption time
             color = "white") + 
-  scale_fill_gradient(low = "white",                                                     # set tile gradient colors
+  scale_fill_gradient(low = "aliceblue",                                                     # set tile gradient colors
                       high = "steelblue") +
   theme_light() +
   labs(x = NULL,                                                                         # set plot labels
@@ -384,21 +393,23 @@ Based on median values, here are the fastest & slowest time-to-adoption sites:
 ``` r
 # frequency polygon to compare distribution by adoption site 
 masterapps_20190324 %>%
-  drop_na(outcome_sitename) %>%                                          # one id with no adoption site, drop that id
-  filter(!adoption_time < 0) %>%                                         # remove negative values in adoption_time column
+  drop_na(outcome_sitename) %>%                                                         # one id with no adoption site, drop that id
+  filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
   
   ggplot(aes(adoption_time, color = outcome_sitename)) +
   geom_freqpoly(bins = 15) +
   theme_light() +
-  labs(x = "days between app submission & adoption",                     # set plot labels
+  labs(x = "days between app submission & adoption",                                    # set plot labels
        y = "count of applications") + 
-  ggtitle("Days Until Adoption Distribution by Adoption Site") +         # set plot title
-  theme(plot.title = element_text(hjust = 0.5, face="bold"),             # title formatting (center, bold)
-        legend.title = element_blank(),                                  # leave legend title blank
-        panel.grid.minor.y = element_blank())
+  ggtitle("Days Until Adoption Distribution by Adoption Site") +                        # set plot title
+  theme(plot.title = element_text(hjust = 0.5, face="bold"),                            # title formatting (center, bold)
+        legend.title = element_blank(),                                                 # leave legend title blank
+        panel.grid.minor.y = element_blank(),        
+        axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 5, l = 0)),      # x axis title formatting (padding)
+        axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 5)))      # y axis title formatting (padding)
 ```
 
-![](q1_timeline_files/figure-markdown_github/frequency%20poly-1.png)
+![](q1_timeline_files/figure-markdown_github/frequency%20poly%20site-1.png)
 
 <br /> <br />
 
@@ -478,10 +489,11 @@ checklist_calcs <- masterapps_20190324 %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
   group_by(checklist_item) %>%
-  summarize(mean(value),
-            median(value)) %>%
-  rename("mean_days_from_last_item" = "mean(value)",                           # rename the df columns to be more readable
-         "median_days_from_last_item" = "median(value)") 
+  summarize(mean = mean(value),                                         # calculate mean, use summarize to collapse each site into single-row summary 
+            median = median(value)) %>%                                 # calculate median, use summarize to collapse each site into single-row summary 
+  mutate_at(vars(mean, median), funs(round(., 2))) %>%                  # round calcs to 2 decimal places
+  rename("mean days from last item" = "mean",                           # rename the df columns to be more readable
+         "median days from last item" = "median") 
 
 # get the count of each checklist item occurrence
 checklist_count <- masterapps_20190324 %>%
@@ -492,30 +504,37 @@ checklist_count <- masterapps_20190324 %>%
   count(checklist_item)
 
 # combine the calculations with the n for each checklist_item
-checklist_df <- merge(checklist_count, checklist_calcs, by = "checklist_item", all.x = TRUE) 
+checklist_df <- merge(checklist_count, checklist_calcs, by = "checklist_item", all.x = TRUE) %>%
+  mutate(item_percent = percent(n/453, 1)) %>%                                                           # calculate the percent of applications that had each item checked off
+  rename("percent of cards with item checked" = "item_percent",                                          # rename the df columns to be more readable
+         "checklist item" = "checklist_item")
+```
 
+``` r
 # put the table into formattable
 formattable(checklist_df, align =c("l","c","c","c"), list(
   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
-  `n`= color_tile("white", "white"),
-  `mean_days_from_last_item`= color_tile("#FFEFDB", "#FF8000"),
-  `median_days_from_last_item`= color_tile("#FFEFDB", "#FF8000")))
+  `mean days from last item`= color_tile("#FFEFDB", "#FF8000"),
+  `median days from last item`= color_tile("#FFEFDB", "#FF8000")))
 ```
 
 <table class="table table-condensed">
 <thead>
 <tr>
 <th style="text-align:left;">
-checklist\_item
+checklist item
 </th>
 <th style="text-align:center;">
 n
 </th>
 <th style="text-align:center;">
-mean\_days\_from\_last\_item
+mean days from last item
 </th>
 <th style="text-align:center;">
-median\_days\_from\_last\_item
+median days from last item
+</th>
+<th style="text-align:left;">
+percent of cards with item checked
 </th>
 </tr>
 </thead>
@@ -525,13 +544,16 @@ median\_days\_from\_last\_item
 checklist\_ACCT
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">1</span>
-</td>
-<td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.890000</span>
+1
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.89</span>
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.89</span>
+</td>
+<td style="text-align:left;">
+0.2%
 </td>
 </tr>
 <tr>
@@ -539,13 +561,16 @@ checklist\_ACCT
 checklist\_CHQ
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">432</span>
+432
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeeda">2.106736</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeeda">2.11</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeeda">0.97</span>
+</td>
+<td style="text-align:left;">
+95.4%
 </td>
 </tr>
 <tr>
@@ -553,13 +578,16 @@ checklist\_CHQ
 checklist\_LL
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">433</span>
+433
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe9cf">2.555266</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe8cf">2.56</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeed9">1.03</span>
+</td>
+<td style="text-align:left;">
+95.6%
 </td>
 </tr>
 <tr>
@@ -567,13 +595,16 @@ checklist\_LL
 checklist\_PP
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">433</span>
+433
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffecd6">2.263811</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffecd6">2.26</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeed9">1.03</span>
+</td>
+<td style="text-align:left;">
+95.6%
 </td>
 </tr>
 <tr>
@@ -581,13 +612,16 @@ checklist\_PP
 checklist\_SPCA
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">2</span>
+2
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffbc77">6.070000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffbc77">6.07</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb56a">6.07</span>
+</td>
+<td style="text-align:left;">
+0.4%
 </td>
 </tr>
 <tr>
@@ -595,13 +629,16 @@ checklist\_SPCA
 checklist\_TR
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">435</span>
+435
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">2.082276</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">2.08</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">0.95</span>
+</td>
+<td style="text-align:left;">
+96.0%
 </td>
 </tr>
 <tr>
@@ -609,13 +646,16 @@ checklist\_TR
 checklist\_VET
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">425</span>
+425
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffdfbd">3.276494</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffdfbd">3.28</span>
 </td>
 <td style="text-align:center;">
 <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe5c8">1.80</span>
+</td>
+<td style="text-align:left;">
+93.8%
 </td>
 </tr>
 </tbody>
@@ -624,14 +664,16 @@ checklist\_VET
 
 With this table we can see the summary calcs for each checklist item a little more clearly. I also added an "n" column with the number of applications that had this item checked off (had a day since last item value present). This is helpful in understanding how the n size may affect mean/median values.
 
-One main takeaway is that checklist\_ACCT & checklist\_SPCA are often not checked off. These correspond to:
+One main takeaway is that checklist\_ACCT & checklist\_SPCA are often not checked off; they are checked in less than 1% of adoption applications. These items correspond to:
 
 -   *checklist\_ACCT*: Check with ACCT (Animal Care and Control Team)
 -   *checklist\_SPCA*: Check with SPCA (Society for the Prevention of Cruelty to Animals)
 
-Why are these items typically left unchecked? Are they not always necessary for an application (it would seem not)? Our very very small n suggests that these items take longer than the others—is that why they are not required items? Are there other components of an application, like red flags or animal information, that would lead to this item needing to be completed?
+Why are these items typically left unchecked? Are they not always necessary for an application (it would seem not)? Our very very small n suggests that these items take longer than the others—is that why they are not required items? Are there other components of an application, like red flags or animal information, that would lead to this item needing to be completed? I would assume so, based on the organizations that these item's involve.
 
-Can also see in the visualization below that those two checklist items were only completed at the PAC site. Why is that? In any case, I think it's hard to assess these two checklist items.
+Can also see in the visualization below that those two checklist items were only completed at the PAC site. Why is that? In any case, it's unfrotunately too difficult to extrpolate on these two checklist items since they occurred so infrequently.
+
+Another point to note is that no checklist item was featured in 100% of adoption applications.
 
 ``` r
 # heatmap plot of mean adoption time by animal & adoption site
@@ -656,7 +698,7 @@ masterapps_20190324 %>%
   theme_light() +
   labs(x = NULL,                                                                         # set plot labels
        y = NULL) +
-  ggtitle("Median Days to Checklist Item Heatmap (by Outcome Site") +                    # set plot title
+  ggtitle("Median Days to Checklist Item Heatmap (by Outcome Site)") +                   # set plot title
   scale_x_discrete(expand = c(0, 0)) +                                                   # visual editing, used to expand tiles to entire plot area on both axes
   scale_y_discrete(expand = c(0, 0)) +                                
   theme(legend.position = "none",                                                        # remove legend
@@ -683,36 +725,40 @@ Otherwise, most application items take between one and two days (median). There 
 # isolate the data that is related to checklist items for adoptions
 checklist_animal_calcs <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
-  gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
+  gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%       # flatten checklist rows into one column (called "checklist_item") and corresponsding values into one column (called "values")
   drop_na(value) %>%
   group_by(checklist_item, animal_type) %>%
-  summarize(mean(value),
-            median(value)) %>%
-  rename("mean_days_from_last_item" = "mean(value)",                           # rename the df columns to be more readable
-         "median_days_from_last_item" = "median(value)") 
+  summarize(mean = mean(value),                                         # calculate mean, use summarize to collapse each site into single-row summary 
+            median = median(value)) %>%                                 # calculate median, use summarize to collapse each site into single-row summary 
+  mutate_at(vars(mean, median), funs(round(., 2))) %>%                  # round calcs to 2 decimal places
+  rename("mean days from last item" = "mean",                           # rename the df columns to be more readable
+         "median days from last item" = "median",
+         "checlist item" = "checklist_item",
+         "animal type" = "animal_type") 
+```
 
+``` r
 # put the table into formattable
 formattable(checklist_animal_calcs, align =c("l","c","c","c"), list(
   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
-  `n`= color_tile("white", "white"),
-  `mean_days_from_last_item`= color_tile("#FFEFDB", "#FF8000"),
-  `median_days_from_last_item`= color_tile("#FFEFDB", "#FF8000")))
+  `mean days from last item`= color_tile("#FFEFDB", "#FF8000"),
+  `median days from last item`= color_tile("#FFEFDB", "#FF8000")))
 ```
 
 <table class="table table-condensed">
 <thead>
 <tr>
 <th style="text-align:left;">
-checklist\_item
+checlist item
 </th>
 <th style="text-align:center;">
-animal\_type
+animal type
 </th>
 <th style="text-align:center;">
-mean\_days\_from\_last\_item
+mean days from last item
 </th>
 <th style="text-align:center;">
-median\_days\_from\_last\_item
+median days from last item
 </th>
 </tr>
 </thead>
@@ -725,10 +771,10 @@ checklist\_ACCT
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.890000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.89</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.890</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ff8000">10.89</span>
 </td>
 </tr>
 <tr>
@@ -739,10 +785,10 @@ checklist\_CHQ
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe6ca">2.219246</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe6ca">2.22</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.00</span>
 </td>
 </tr>
 <tr>
@@ -753,10 +799,10 @@ checklist\_CHQ
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeeda">1.562432</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeeda">1.56</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeed9">0.795</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffeed9">0.80</span>
 </td>
 </tr>
 <tr>
@@ -767,10 +813,10 @@ checklist\_LL
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe0be">2.739050</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe0be">2.74</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffead3">1.085</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd3">1.08</span>
 </td>
 </tr>
 <tr>
@@ -781,10 +827,10 @@ checklist\_LL
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd7">1.678000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd7">1.68</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd8">0.830</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd8">0.83</span>
 </td>
 </tr>
 <tr>
@@ -795,10 +841,10 @@ checklist\_PP
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe5c7">2.363064</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe5c7">2.36</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.030</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.03</span>
 </td>
 </tr>
 <tr>
@@ -809,10 +855,10 @@ checklist\_PP
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffecd5">1.782297</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffecd5">1.78</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd8">0.840</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffedd8">0.84</span>
 </td>
 </tr>
 <tr>
@@ -823,10 +869,10 @@ checklist\_SPCA
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb970">6.070000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb970">6.07</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb467">6.070</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffb467">6.07</span>
 </td>
 </tr>
 <tr>
@@ -837,10 +883,10 @@ checklist\_TR
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe7cb">2.198412</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe7cb">2.20</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.000</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffebd4">1.00</span>
 </td>
 </tr>
 <tr>
@@ -851,10 +897,10 @@ checklist\_TR
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">1.533684</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">1.53</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">0.715</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffefdb">0.72</span>
 </td>
 </tr>
 <tr>
@@ -865,10 +911,10 @@ checklist\_VET
 cat
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffd7ad">3.484046</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffd7ad">3.48</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe2c3">1.830</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe2c3">1.83</span>
 </td>
 </tr>
 <tr>
@@ -879,10 +925,10 @@ checklist\_VET
 dog
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe6c9">2.292027</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffe5c9">2.29</span>
 </td>
 <td style="text-align:center;">
-<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffead1">1.165</span>
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffead1">1.17</span>
 </td>
 </tr>
 </tbody>
