@@ -1,0 +1,86 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(conflicted)
+
+filter <- dplyr::filter
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Exploration: What Predicts Successful/Unsucessful Adoptions
+
+### Wrangle Data
+
+```{r}
+#read_csv('../../Data/dog_apps.csv') -> dog_apps
+
+read_csv('../../Data/dog_cards.csv') -> dog_cards
+```
+
+```{r}
+dog_cards %>% 
+# filter for completed applications only
+  filter(dueComplete == TRUE) %>%
+# separate multiple labels from one column to many columns
+  separate(label_names, into = c('label1', 'label2', 'label3', 'label4'), sep = ',') %>%
+# make each label into its own column with 1 for label on card and 0 for no label
+  mutate(approved = ifelse(label1 == 'approved' | label2 == 'approved' | label3 == 'approved' | label4 == 'approved', 
+                           1, 0),
+         ready_to_adopt = ifelse(label1 == 'ready to adopt' | label2 == 'ready to adopt' | 
+                                   label3 == 'ready to adopt' | label4 == 'ready to adopt',
+                                 1, 0),
+         ready_for_review = ifelse(label1 == 'ready for review' | label2 == 'ready for review' | 
+                                     label3 == 'ready for review' | label4 == 'ready for review',
+                                   1, 0),
+         reviewed_with_handouts_only = ifelse(label1 == 'reviewed with handouts only' | label2 == 'reviewed with handouts only' | 
+                                     label3 == 'reviewed with handouts only' | label4 == 'reviewed with handouts only',
+                                   1, 0),
+         approved_with_limitation = ifelse(label1 == 'approved with limitation' | label2 == 'approved with limitation' | 
+                                     label3 == 'approved with limitation' | label4 == 'approved with limitation',
+                                   1, 0),
+         needs_review_before_approval = ifelse(label1 == 'needs review before approval' | label2 == 'needs review before approval' | 
+                                     label3 == 'needs review before approval' | label4 == 'needs review before approval',
+                                   1, 0),
+         denied = ifelse(label1 == 'denied' | label2 == 'denied' | label3 == 'denied' | label4 == 'denied', 
+                           1, 0),
+         withdrawn = ifelse(label1 == 'withdrawn' | label2 == 'withdrawn' | label3 == 'withdrawn' | label4 == 'withdrawn', 
+                           1, 0),
+         do_not_follow_up = ifelse(label1 == 'do not follow up' | label2 == 'do not follow up' | 
+                                     label3 == 'do not follow up' | label4 == 'do not follow up',
+                                   1, 0),
+         manager_decision = ifelse(label1 == 'manager decision' | label2 == 'manager decision' | 
+                                     label3 == 'manager decision' | label4 == 'manager decision', 
+                           1, 0)) %>%
+# replace all the NAs in the label columns with 0
+  replace_na(list(approved = 0, ready_to_adopt = 0, ready_for_review = 0, reviewed_with_handouts_only = 0,
+                  approved_with_limitation = 0, needs_review_before_approval = 0, denied = 0, 
+                  do_not_follow_up = 0, manager_decision = 0)) %>%
+# drop the separated, messy label columns
+  select(-(label1:label4)) %>%
+# create an application success column, 0 for denied, 1 for in progress, 2 for approved
+  mutate(app_success = case_when(approved == 1 | approved_with_limitation == 1 ~ 2,
+                                 denied == 1 | withdrawn == 1 | do_not_follow_up == 1 ~ 0,
+                                 TRUE ~ 1)) -> dog_cards_w_app_success 
+```
+
+Count numbers of approved, in process, denied applications. Denied applications are coded as 0, in progress applications are coded as 1, and approved applications are coded as 2.
+
+```{r}
+dog_cards_w_app_success %>% group_by(app_success) %>% count()
+```
+
+
+
+
+
+
+
+
+
+
+
+
