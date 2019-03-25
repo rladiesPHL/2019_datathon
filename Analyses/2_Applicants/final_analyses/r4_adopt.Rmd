@@ -205,7 +205,13 @@ master_mod %>% skim() %>%
 All _ind columns should have either a 1 or 0. There is some bug in the convert_to_ind funtion what was used during merge that is creating NA in the _ind columns. Set them to 0.
 
 ```{r}
-#master_mod %>% select(ends_with("_ind")) %>% colnames() %>% str() #replace_na(0) %>% View()
+
+#replace all _ind NAs with 0
+
+master_mod <- master_mod %>%
+  mutate_at(vars(ends_with("_ind")),
+            funs(if_else(is.na(.), 0, .)))
+
 ```
 
 
@@ -213,6 +219,10 @@ All _ind columns should have either a 1 or 0. There is some bug in the convert_t
 ```{r}
 #removing all NAs results in dataframe with 0 rows
 dim(na.omit(master_mod))
+
+master_pre_process <- preProcess(master_mod, "knnImpute")
+
+master_pre_processpred <- predict(master_pre_process, master_mod)
 
 inTrain <- createDataPartition(y = master_mod$adoption, p=0.7, list=FALSE)
 training <- master_mod[inTrain, ]
