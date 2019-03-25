@@ -75,15 +75,17 @@ masterapps_20190324 %>%
 # related table 
 
 # isolate the data that is related to animal type
-masterapps_20190324 %>%
-  drop_na(outcome_sitename) %>%                                   # drop any results with no outcome_site
-  filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
-  group_by(animal_type) %>%                                       # before calculations, group data by outcome site
-  summarize(mean(adoption_time),                                  # calculate mean, use summarize to collapse each site into single-row summary 
-            median(adoption_time)) %>%                            # calculate median, use summarize to collapse each site into single-row summary 
-  rename("animal type" = "animal_type",                           # rename the df columns to be more readable 
-         "mean adoption time" = "mean(adoption_time)",
-         "median adoption time" = "median(adoption_time)")
+kable(
+      masterapps_20190324 %>%
+        drop_na(outcome_sitename) %>%                                   # drop any results with no outcome_site
+        filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
+        group_by(animal_type) %>%                                       # before calculations, group data by outcome site
+        summarize(mean(adoption_time),                                  # calculate mean, use summarize to collapse each site into single-row summary 
+                  median(adoption_time)) %>%                            # calculate median, use summarize to collapse each site into single-row summary 
+        rename("animal type" = "animal_type",                           # rename the df columns to be more readable 
+               "mean adoption time" = "mean(adoption_time)",
+               "median adoption time" = "median(adoption_time)")
+)
 ```
 
 | animal type |  mean adoption time|  median adoption time|
@@ -136,15 +138,17 @@ masterapps_20190324 %>%
 # related table 
 
 # isolate the data that is related to outcome site
-masterapps_20190324 %>%
-  drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
-  filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
-  group_by(outcome_sitename) %>%                                  # before calculations, group data by outcome site
-  summarize(mean(adoption_time),                                  # calculate mean, use summarize to collapse each site into single-row summary 
-            median(adoption_time)) %>%                            # calculate median, use summarize to collapse each site into single-row summary 
-  rename("outcome site" = "outcome_sitename",                     # rename the df columns to be more readable 
-         "mean adoption time" = "mean(adoption_time)",
-         "median adoption time" = "median(adoption_time)")
+kable(
+      masterapps_20190324 %>%
+        drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
+        filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
+        group_by(outcome_sitename) %>%                                  # before calculations, group data by outcome site
+        summarize(mean(adoption_time),                                  # calculate mean, use summarize to collapse each site into single-row summary 
+                  median(adoption_time)) %>%                            # calculate median, use summarize to collapse each site into single-row summary 
+        rename("outcome site" = "outcome_sitename",                     # rename the df columns to be more readable 
+               "mean adoption time" = "mean(adoption_time)",
+               "median adoption time" = "median(adoption_time)")
+)
 ```
 
 | outcome site           |  mean adoption time|  median adoption time|
