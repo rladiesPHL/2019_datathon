@@ -85,15 +85,20 @@ dplyr::count(apps_cards, label.names_red.flag_ind) #133 red flagged
 #colnames(apps_cards)
 
 df_denied <- dplyr::filter(apps_cards, label.names_denied_ind == 1)
-df_withdrawn <- dplyr::filter(apps_cards, label.names_withdrawn_ind == 1)
-df_redflag <- dplyr::filter(apps_cards, label.names_red.flag_ind == 1) 
+df_redflag <- dplyr::filter(apps_cards, label.names_red.flag_ind == 1)
+#df_withdrawn <- dplyr::filter(apps_cards, label.names_withdrawn_ind == 1)
 ```
 
 Visualization and further analysis for applications that were denied and withdrawn
 ----------------------------------------------------------------------------------
 
-<br> There were 12 applications that were denied and 19 that were withdrawn. The analysis below shows the characteristics of the applications that were denied. Below are visualizations that show the budget, allergies, home owner, home pet policy, and experience breakdown for denied applications. <br> Key takeaways: <br> No allergies for the denied application <br> Budget has no impact on denied application <br> Based on the denied applications, all household members agreed <br> Majority did not enter the home pet policy and not everyone is the home owner
-
+<br> There were 12 applications that were denied and 19 that were withdrawn. The analysis below shows the characteristics of the applications that were denied. Below are visualizations that show the budget, allergies, home owner, home pet policy, and experience breakdown for denied applications. <br>
+<pre>
+Key takeaways:
+- No allergies for the denied application
+- Budget has no impact on denied application
+- Based on the denied applications, all household members agreed
+- Majority did not enter the home pet policy and not everyone is the home owner</pre>
 ``` r
 #budget, all household agree, allergies, homeowner, home pet policy (lot of NA), experience
 ggplot(df_denied, aes(x=budget_monthly_ranges)) + 
