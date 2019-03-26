@@ -236,65 +236,60 @@ Visualization and further analysis for applications that are red flagged
 #df_redflag$label_names
 
 #For the applications that are red flgged, how many end up becoming adopted
-dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
-```
+#dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
 
-| outcome\_date       |    n|
-|:--------------------|----:|
-| 2018-10-06 12:58:00 |    1|
-| 2018-11-06 17:15:00 |    1|
-| 2018-11-30 18:17:00 |    1|
-| 2018-12-18 15:31:00 |    2|
-| 2019-01-17 17:39:00 |    1|
-| NA                  |  129|
+#dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
 
-``` r
-dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
-```
+#dplyr::count(df_redflag, all_household_agree)
 
-|  label.names\_denied\_ind|    n|
-|-------------------------:|----:|
-|                         0|  133|
-|                         1|    2|
+#dplyr::count(df_redflag, reason_for_adoption)
 
-``` r
-dplyr::count(df_redflag, all_household_agree)
-```
-
-| all\_household\_agree |    n|
-|:----------------------|----:|
-| a-surprise            |    1|
-| yes                   |  131|
-| yes,a-surprise        |    3|
-
-``` r
-dplyr::count(df_redflag, reason_for_adoption)
-```
-
-| reason\_for\_adoption       |    n|
-|:----------------------------|----:|
-| NA                          |    2|
-| gift                        |    5|
-| mouser                      |    5|
-| mouser,my-kids,myself       |    1|
-| mouser,other                |    1|
-| my-kids                     |    9|
-| my-kids,gift                |    1|
-| my-kids,mouser              |    2|
-| my-kids,myself              |    3|
-| my-kids,myself,mouser       |    1|
-| my-kids,myself,other        |    1|
-| my-kids,protection,myself   |    1|
-| myself                      |   60|
-| myself,mouser               |   11|
-| myself,mouser,gift          |    1|
-| myself,mouser,my-kids       |    1|
-| myself,my-kids              |   17|
-| myself,my-kids,mouser       |    7|
-| myself,my-kids,mouser,gift  |    1|
-| myself,my-kids,mouser,other |    1|
-| other                       |    4|
-
-``` r
 #Time difference between when they were adopted and application submission date
+df_redflag2 <- select(df_redflag, label_names, animal_type)
+
+df_redflag3 <- separate(df_redflag2, 'label_names', paste("label_name", 1:6, sep="_"), sep=",", extra="drop")
 ```
+
+    ## Warning: Expected 6 pieces. Missing pieces filled with `NA` in 132 rows [1,
+    ## 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
+
+``` r
+dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some can still be in 
+```
+
+| last\_label             |    n|
+|:------------------------|----:|
+| adopted                 |    1|
+| adopted elsewhere       |    3|
+| checks                  |    2|
+| declaw only             |    1|
+| denied                  |    2|
+| manager decision        |   11|
+| need info               |   11|
+| need proof of ownership |    1|
+| need to see id          |    2|
+| need vet info           |    5|
+| not utd                 |    2|
+| opa                     |    2|
+| pet policy              |    3|
+| questions               |   12|
+| ready for review        |   18|
+| ready to adopt          |    3|
+| red flag                |   40|
+| rescue check            |    5|
+| vet                     |    9|
+| vet check in process    |    1|
+| withdrawn               |    1|
+
+``` r
+ggplot(df_redflag, aes(x=last_label)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Last Updated Label for Red Flagged Applications") +
+  labs(x = "Last Updated Label",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 45)) +
+  theme(axis.text.x = element_text(angle=80, vjust=0.5))
+```
+
+![](q4_denied_applications_files/figure-markdown_github/red%20flag-1.png)

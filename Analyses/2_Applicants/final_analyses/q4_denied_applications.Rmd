@@ -163,14 +163,28 @@ ggplot(experience_summary, aes(x= fct_reorder(cleaned_col, value, .desc=TRUE), y
 #df_redflag$label_names
 
 #For the applications that are red flgged, how many end up becoming adopted
-dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
+#dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
 
-dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
+#dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
 
-dplyr::count(df_redflag, all_household_agree)
+#dplyr::count(df_redflag, all_household_agree)
 
-dplyr::count(df_redflag, reason_for_adoption)
+#dplyr::count(df_redflag, reason_for_adoption)
 
 #Time difference between when they were adopted and application submission date
+df_redflag2 <- select(df_redflag, label_names, animal_type)
+
+df_redflag3 <- separate(df_redflag2, 'label_names', paste("label_name", 1:6, sep="_"), sep=",", extra="drop")
+
+dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some can still be in 
+
+ggplot(df_redflag, aes(x=last_label)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Last Updated Label for Red Flagged Applications") +
+  labs(x = "Last Updated Label",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 45)) +
+  theme(axis.text.x = element_text(angle=80, vjust=0.5))
 
 ```
