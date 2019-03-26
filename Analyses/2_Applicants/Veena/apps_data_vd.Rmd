@@ -28,6 +28,11 @@ dplyr::count(dataCleaned, home_owner)
 
 #frequency of different allergies types
 dplyr::count(dataCleaned, allergies)
+
+#a <- dplyr::count(d, experience)
+#is.data.frame(a)
+#a[order(a$n, decreasing=TRUE),]
+
 ```
 
 
