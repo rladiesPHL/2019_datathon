@@ -409,6 +409,13 @@ str(reloaded_data)
 identical(master_apps,reloaded_data)
 ```
 
+# save processed actions, cards_with_indicators, and petpoint_with_indicators
+```{r}
+saveRDS(actions, "processed_actions.rds")
+saveRDS(cards_with_indicators, "processed_cards_with_indicators.rds")
+saveRDS(petpoint_with_indicators, "processed_petpoint_with_indicators.rds")
+```
+
 ###Merge the Apps and Cards datasets
 
 ```{r}
