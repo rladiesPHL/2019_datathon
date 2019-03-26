@@ -221,6 +221,65 @@ Visualization and further analysis for applications that are red flagged
 
 ``` r
 #For the applications that are red flgged, how many end up becoming adopted
+dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
+```
 
+| outcome\_date       |    n|
+|:--------------------|----:|
+| 2018-10-06 12:58:00 |    1|
+| 2018-11-06 17:15:00 |    1|
+| 2018-11-30 18:17:00 |    1|
+| 2018-12-18 15:31:00 |    2|
+| 2019-01-17 17:39:00 |    1|
+| NA                  |  129|
+
+``` r
+dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
+```
+
+|  label.names\_denied\_ind|    n|
+|-------------------------:|----:|
+|                         0|  133|
+|                         1|    2|
+
+``` r
+dplyr::count(df_redflag, all_household_agree)
+```
+
+| all\_household\_agree |    n|
+|:----------------------|----:|
+| a-surprise            |    1|
+| yes                   |  131|
+| yes,a-surprise        |    3|
+
+``` r
+dplyr::count(df_redflag, reason_for_adoption)
+```
+
+| reason\_for\_adoption       |    n|
+|:----------------------------|----:|
+| NA                          |    2|
+| gift                        |    5|
+| mouser                      |    5|
+| mouser,my-kids,myself       |    1|
+| mouser,other                |    1|
+| my-kids                     |    9|
+| my-kids,gift                |    1|
+| my-kids,mouser              |    2|
+| my-kids,myself              |    3|
+| my-kids,myself,mouser       |    1|
+| my-kids,myself,other        |    1|
+| my-kids,protection,myself   |    1|
+| myself                      |   60|
+| myself,mouser               |   11|
+| myself,mouser,gift          |    1|
+| myself,mouser,my-kids       |    1|
+| myself,my-kids              |   17|
+| myself,my-kids,mouser       |    7|
+| myself,my-kids,mouser,gift  |    1|
+| myself,my-kids,mouser,other |    1|
+| other                       |    4|
+
+``` r
 #Time difference between when they were adopted and application submission date
 ```

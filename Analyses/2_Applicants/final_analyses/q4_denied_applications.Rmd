@@ -153,9 +153,17 @@ ggplot(experience_summary, aes(x= fct_reorder(cleaned_col, value, .desc=TRUE), y
 
 
 ##Visualization and further analysis for applications that are red flagged
+
 ```{r red flag, echo = T,  message = F,  warning = T}
 
 #For the applications that are red flgged, how many end up becoming adopted
+dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
+
+dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
+
+dplyr::count(df_redflag, all_household_agree)
+
+dplyr::count(df_redflag, reason_for_adoption)
 
 #Time difference between when they were adopted and application submission date
 

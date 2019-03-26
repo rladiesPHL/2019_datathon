@@ -29,9 +29,27 @@ dplyr::count(dataCleaned, home_owner)
 #frequency of different allergies types
 dplyr::count(dataCleaned, allergies)
 
+#d <- dplyr::filter(masterData, !is.na(outcome_date))
+
 #a <- dplyr::count(d, experience)
 #is.data.frame(a)
 #a[order(a$n, decreasing=TRUE),]
+
+g1 <- ggplot(d, aes(x=home_owner)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 500)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5))
+
+g2 <- ggplot(d, aes(x=home_pet_policy)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 500)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5))
+
+theme_set(theme_cowplot(font_size=12))
+plot_grid(g1, g2, align='h')
 
 ```
 
