@@ -124,6 +124,19 @@ Visualization and further analysis for applications that were denied
 </pre>
 ``` r
 #budget, all household agree, allergies, homeowner, home pet policy (lot of NA), experience
+dplyr::count(df_denied, budget_monthly_ranges)
+```
+
+| budget\_monthly\_ranges |    n|
+|:------------------------|----:|
+| 101-200                 |    2|
+| 201-500                 |    1|
+| 26-100                  |    8|
+| 501-1000                |    1|
+
+``` r
+df_denied$budget_monthly_ranges <- factor(df_denied$budget_monthly_ranges,levels = c("26-100", "101-200", "201-500", "501-1000"))
+
 ggplot(df_denied, aes(x=budget_monthly_ranges)) + 
   geom_bar(aes(fill=animal_type), width=.5) +
   ggtitle("Budget for Denied Applications") +
@@ -220,6 +233,8 @@ Visualization and further analysis for applications that are red flagged
 ------------------------------------------------------------------------
 
 ``` r
+#df_redflag$label_names
+
 #For the applications that are red flgged, how many end up becoming adopted
 dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
 ```
