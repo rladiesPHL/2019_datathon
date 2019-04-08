@@ -38,13 +38,40 @@ knitr::opts_chunk$set(echo = TRUE)
 ###Affecting Decline
 
 
-##Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>
-###Missing Data
-###Incorrect labels
-###Recommendations for Collecting Clean Data
+## Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>
+### Missing Data  
+Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set. 
+
+![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
+
+The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
+
+### Unlimited Responses and Response Validation
+Like many of the other teams, we ran into several challenges as a result of questions having a wide range of possible responses and illogical answers. For example, the 12 different responses below are for the Allergy question:
+
+Response | Count
+---------|------
+no-allergies      |             1,694
+mildly-allergic   |              130
+not-sure       |                  38
+not-sure,no-allergies    |        16
+very-allergic          |          10
+no-allergies,mildly-allergic  |    5
+no-allergies,not-sure          |   5
+mildly-allergic,no-allergies    |  3
+mildly-allergic,very-allergic   |  3
+mildly-allergic,not-sure        |  1
+very-allergic,mildly-allergic   |  1
+very-allergic,no-allergies     |   1
+
+In one case the responses conflict with each other: "very-allergic,no-allergies". This make grouping the data after the fact almost impossible because its not clear if this applicant has allergies or not. This is one example, but there were some other cases where this problem occurred as well, such a for the questions relating to Experience and Where the Pet Will be Kept. 
+
+For the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e.only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient.
+
+### Recommendations for Collecting Clean Data
+One of the most important recommendations moving forward would be to redesign the application to enforce standardized, limited and logical responses. Allowing only a single response combined with a limited response set would make analysis much easier in the future. Doing so will save PAWS staff time when reviewing applications _and_ make future analyses  easier and can lead to better insights.  
 
 ##Important Features for Prediction <span style="color:brown"> - Ramaa</span>
-
 
 ##Conclusions and Recommendations
 ###Recommendations to analyze the data frequently to check for improvements in processing application
