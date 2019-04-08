@@ -1,0 +1,112 @@
+---
+title: "PAWS - R Ladies Community Data Project"
+author: "Ramaa Nathan"
+date: "2/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+#### Read the files and check their structure
+```{r echo=TRUE}
+petpoint = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/petpoint.csv")
+cat_apps = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/cat_apps.csv")
+dog_apps = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/dog_apps.csv")
+cat_actions = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/cat_actions.csv")
+dog_actions = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/dog_actions.csv")
+cat_cards = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/cat_cards.csv")
+dog_cards = read.csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon-master/Data/dog_cards.csv")
+
+str(petpoint)
+str(cat_apps)
+str(dog_apps)
+str(cat_actions)
+str(dog_actions)
+str(cat_cards)
+str(dog_cards)
+```
+#### Check for for number of missing values by columns in each file
+```{r}
+#find columns that have NAs in them
+naInCols_petpoint = sapply(petpoint, function(x) sum(is.na(x)))
+naInCols_petpoint[naInCols_petpoint>0]
+
+naInCols_catapps = sapply(cat_apps, function(x) sum(is.na(x)))
+naInCols_catapps[naInCols_catapps>0]
+
+naInCols_dogapps = sapply(dog_apps, function(x) sum(is.na(x)))
+naInCols_dogapps[naInCols_dogapps>0]
+
+naInCols_catactions = sapply(cat_actions, function(x) sum(is.na(x)))
+naInCols_catactions[naInCols_catactions>0]
+
+naInCols_dogactions = sapply(dog_actions, function(x) sum(is.na(x)))
+naInCols_dogactions[naInCols_dogactions>0]
+
+naInCols_catcards = sapply(cat_cards, function(x) sum(is.na(x)))
+naInCols_catcards[naInCols_catcards>0]
+
+naInCols_dogcards = sapply(dog_cards, function(x) sum(is.na(x)))
+naInCols_dogcards[naInCols_dogcards>0]
+```
+
+#### All dates are specified as factors. Convert them to datetime or date formats. Records can then be sorted chronologically
+```{r}
+#petpoint dates
+# dates are all characterised as factors. Convert them to datetime.
+petpoint$intake_date_time = strptime(petpoint$intake_date,format="%m/%d/%Y %I:%M %p")
+petpoint$release_date_time = strptime(petpoint$release_date,format="%m/%d/%Y %I:%M %p")
+petpoint$outcome_date_time = strptime(petpoint$outcome_date,format="%m/%d/%Y %I:%M %p")
+
+#cat_apps and dog_apps
+cat_apps$date_submitted_date = as.Date(cat_apps$date_submitted,format="%m/%d/%Y")
+dog_apps$date_submitted_date = as.Date(dog_apps$date_submitted,format="%m/%d/%Y")
+
+#cat_actions and dog_actions
+cat_gmt <- as.POSIXct(strptime(cat_actions$date,format="%Y-%m-%dT%H:%M:%SZ",tz="GMT"))
+cat_actions$update_date_time = as.POSIXct(format(cat_gmt,tz="America/New_York"))
+dog_gmt <- as.POSIXct(strptime(dog_actions$date,format="%Y-%m-%dT%H:%M:%SZ",tz="GMT"))
+dog_actions$update_date_time = as.POSIXct(format(dog_gmt,tz="America/New_York"))
+
+#cat_cards and dog_cards
+cat_cards$due_date = as.Date(cat_cards$due,format="%Y-%m-%d")
+dog_cards$due_date = as.Date(dog_cards$due,format="%Y-%m-%d")
+```
+
+#### Verify the structure of all the date columns
+```{r}
+petpoint %>% select(contains("date")) %>% str()
+cat_apps %>% select(contains("date")) %>% str()
+dog_apps %>% select(contains("date")) %>% str()
+cat_actions %>% select(contains("date")) %>% str()
+dog_actions %>% select(contains("date")) %>% str()
+cat_cards %>% select(contains("date")) %>% str()
+dog_cards %>% select(contains("date")) %>% str()
+```
+
+#### Explore and find patterns in data
+```{r}
+
+#find the frequency of pets by species
+table (petpoint $species)
+
+#Plot of frequency of updates to the actions databases
+dog_actions %>% group_by(data.card.id) %>% summarise(total=n()) %>% select(total) %>% table %>% barplot(main="Frequency of Updates to 'Dog' Actions")
+cat_actions %>% group_by(data.card.id) %>% summarise(total=n()) %>% select(total) %>% table %>% barplot(main="Frequency of Updates to 'Cat' Actions")
+
+```
+
+```{r}
+# In the action files, group by id and then sort by update_date_time and then find the last action and number of actions associated with it. 
+#In the action files, find the number of applications what were approved and the time it took from start to finish
+#plot a frequency table of applications arriving by month. Is there any month when there are the most applications? Which month as the most and which month has the least?
+#What is the most freuqnet reason for disapproval?
+#convert numerical data from factors to number.
+#create a summary of all the numerical data.
+#dog_apps and cat_apps - historgram of each category - overlay dog and cat data
+#how many  hanging ids? ie. how many ids are in one of the databases but not in the other?
+```
+

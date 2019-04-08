@@ -1,0 +1,279 @@
+---
+title: "PAWS - R Ladies Community Data Project"
+author: "Ramaa Nathan"
+date: "2/27/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+
+```
+
+#### petpoint.csv
+Summary of Transformations:
+1. DOB: Convert from character to Date Type using : lubridate::mdy(dob) 
+
+2. intake_date, release_date, outcome_date: convert to POSIX using mdy_hm(<date>)
+
+3. Convert all other character types to factor types
+
+4. Create time intervals and and time period caterogies to track time from intake to outcome.
+
+Summary of data: using skimr::skim(petpoint)
+
+Questions:
+1. NAME: Regional name: Data is a number string. Are these IDS?
+
+2. There are 12 entries with intake_age = -1 months and 312 entries with intake_age=0 months. What is the difference between them?
+
+3. ZipCode: there are 41 entries with invalid zipcodes (length < 5)
+
+4. There are 308 trello_ids where there is more than one duplicate of outcome_trello_id. On checking, we find 242 entries with 2 duplicates, 10 ids with three dupliates, 2 ids with 4 duplciates each, and 1 id with 5 duplicates
+
+#### Process the data file
+```{r petpoint,echo = FALSE}
+petpoint = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/petpoint.csv")
+paste("First read in:")
+dim(petpoint)
+
+# Are there any duplicates in the data?
+sum(duplicated(petpoint[,-1]))
+#remove the duplicates
+#petpoint <- petpoint[-which(duplicated(petpoint[,-1])),]
+petpoint <- petpoint[,-1] %>% distinct()
+paste("after removing duplicates")
+dim(petpoint)
+
+ # Are there any duplicates of outcome_trello_id where outcome_trello_id is  id for matching with cards and actions datasets
+ numNonUniquesIDs = petpoint %>% 
+   filter(!is.na(outcome_trello_id)) %>% 
+   select(outcome_trello_id) %>% 
+   group_by(outcome_trello_id) %>% 
+   summarise(dupcount=n())
+paste("Frequency of non unique trello IDs")
+table(numNonUniquesIDs$dupcount)
+
+
+```
+
+#### Data Transformations
+```{r,echo = FALSE}
+#first convert the date columns and then convert the rest of the character columns to factors
+petpoint <- petpoint %>% 
+  mutate(dob=mdy(dob),
+         intake_date=mdy_hm(intake_date,tz="America/New_York"),
+         release_date=mdy_hm(release_date,tz="America/New_York"),
+         outcome_date=mdy_hm(outcome_date,tz="America/New_York")
+  )
+
+#Find the entries that have incorrect format of zipcode
+paste("Initial Number of invalid zipcode entries:",petpoint %>%  filter(nchar(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>% dim())
+petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP)
+
+# convert zipcode from integer to character format and add a zero at the beginning when length is less than 5
+petpoint <- petpoint %>% 
+  mutate(outcome_ZIP=as.character(outcome_ZIP)) %>% 
+  mutate(outcome_ZIP=ifelse(str_length(outcome_ZIP)<5,str_c("0",outcome_ZIP),outcome_ZIP))
+  
+#Recheck if there are still any  entries that have incorrect format of zipcode
+paste("After correction: Number of invalid zipcode entries:",petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP) %>% dim())
+petpoint %>%  filter(str_length(outcome_ZIP) < 5) %>% select(outcome_ZIP)
+
+#convert any remaining columns from character type to factor type
+petpoint <- petpoint %>% mutate_if(sapply(petpoint,is.character),as.factor)
+
+str(petpoint)
+skim(petpoint)
+```
+
+####  Checks for Missing data and data anomalies
+```{r,echo = FALSE}
+# find number of missing data in each column
+print("Missing Entries")
+petpoint %>% skim() %>% 
+  filter(stat == "missing") %>% filter(value > 0) %>% 
+  kable(caption="Missing Entries in Petpoint.csv")
+
+#check primary breed names
+paste( "Primary Breeds")
+unique(petpoint$primary_breed)
+paste("Secondary breeds:")
+unique(petpoint$secondary_breed)
+paste("Markings:")
+unique(petpoint$markings)
+paste("Species:")
+unique(petpoint$species)
+
+#are the intake age ranges valid?
+table(petpoint$age_intake)
+print("There are 12 entries with age = -1 months and 312 entries with age=0 months")
+
+
+#find the one with 5 duplicate outcome_trello_id
+fivecount=numNonUniquesIDs %>% 
+  filter(dupcount == 5)
+
+#get more details about animal details - outcome type and outcome date for this duplicat trello_id
+petpoint %>% semi_join(fivecount) %>% 
+  select(outcome_trello_id,outcome_type, outcome_date) %>% 
+  arrange(outcome_date)
+
+#find the one with 2 duplicate outcome_trello_id
+twocount=numNonUniquesIDs %>% 
+  filter(dupcount == 2)
+
+#get more details about animal details - outcome type and outcome date for this duplicat trello_id
+petpoint %>% semi_join(twocount) %>% 
+  select(outcome_trello_id,species,gender,primary_breed,outcome_type, outcome_date) %>% 
+  arrange(outcome_trello_id, outcome_date)
+
+
+## This is to be sure that I did not introduce any duplicates
+paste("After all processing:")
+dim(petpoint)
+```
+```{r}
+##Compare dob, intake_date, age_intake, age_group 
+#petpoint %>% sample_n(10) %>% select(dob, intake_date, age_intake,age_group) 
+
+
+petpoint <- petpoint %>%  select(-age_group) %>%
+  mutate(new_age_group = factor(case_when(age_intake<=1 ~ "<4 weeks", 
+                                   age_intake <= 3 ~ "4-12 weeks", 
+                                   age_intake <= 6 ~ "12weeks-6months",
+                                   age_intake <= 12 ~ "6months-1year",
+                                   age_intake <= 24 ~ "1-2years",
+                                   age_intake <= 48 ~ "2-4years",
+                                   age_intake <= 72 ~ "4-6years",
+                                   age_intake <= 120 ~ "6-10years",
+                                   is.na(age_intake) ~ "NA",
+                                   TRUE ~ "older than 10years"),
+                                levels=c("<4 weeks","4-12 weeks","12weeks-6months",
+                                         "6months-1year","1-2years","2-4years",
+                                         "4-6years","6-10years","older than 10years","NA"),
+                                ordered=TRUE))
+#Verify that the new_agee group is correct - Compare dob, intake_date, age_intake, new_age_group 
+petpoint %>% sample_n(10) %>% select(dob, intake_date, age_intake,new_age_group) 
+```
+Observation: When we compare the DOB, age_intake, intake_date and age_group, the age-group column does not match the intake_age. So, dropped the original age_group column and added a new_age_group column
+
+#### Data Visualizations
+```{r,echo = FALSE}
+# reorder the age_group levels
+#petpoint <- petpoint %>% 
+   #mutate(age_group = factor(age_group,levels(age_group)[c(10,5,9,3,7,1,4,6,8,2)],ordered=TRUE))
+petpoint %>% ggplot(mapping=aes(x=new_age_group,fill=new_age_group)) + 
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Age Group Distribution") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+#Distribution of species
+ petpoint%>% ggplot(mapping=aes(x=species,fill=species)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Species") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ #Distribution of agency name
+ petpoint%>% ggplot(mapping=aes(x=agency_name,fill=agency_name)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of Agency Name") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+#plot the intake asilomar
+ petpoint%>% ggplot(mapping=aes(x=intake_asilomar,fill=intake_asilomar)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = "Intake Asilomar")  +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+#plot the intake type
+ petpoint%>% ggplot(mapping=aes(x=intake_type,fill=intake_type)) + 
+    geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Intake Type")  +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+ #plot the intake sub-type
+ petpoint%>% ggplot(mapping=aes(x=intake_subtype,fill=intake_subtype)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+   labs(title = "Intake Sub Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+ #plot the intake reason
+ petpoint%>% ggplot(mapping=aes(x=intake_reason,fill=intake_reason)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = "Intake Reason") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ table(petpoint$intake_reason)
+ 
+ #plot the intake sitename
+ petpoint%>% ggplot(mapping=aes(x=intake_sitename,fill=intake_sitename)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Intake Sitename") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+  #plot the outcome sitename
+ petpoint%>% ggplot(mapping=aes(x=outcome_sitename,fill=outcome_sitename)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Sitename") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ #plot the outcome type
+ petpoint%>% ggplot(mapping=aes(x=outcome_type,fill=outcome_type)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+  #plot the outcome sub-type
+ petpoint%>% ggplot(mapping=aes(x=outcome_subtype,fill=outcome_subtype)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Outcome Sub Type") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+kable(sort(table(petpoint$outcome_subtype),decreasing=TRUE))
+ 
+#How many were altered?
+ petpoint%>% ggplot(mapping=aes(x=altered,fill=altered)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Sprayed/Neutered") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+ 
+ # How many days between intake and outcome 
+petpoint <- petpoint %>% mutate(process_time = interval(intake_date,outcome_date) / ddays(1))
+#plot the distribution
+petpoint %>% ggplot(mapping=aes(x=process_time)) +
+  geom_histogram(breaks=seq(20,300,by=20),col="red",fill="green",alpha=0.2) +
+  labs(title="Histogram of Processing Time in Days (Intake -> Outcome)")
+
+#create time period categories
+petpoint$process_time_periods <- cut(petpoint$process_time,
+      breaks=c(-Inf,1,3,5,10,30,90,180,Inf),
+      labels=c("< 1day","2-3 days","4-5 days","6-10 days", "11-30 days", "31-90 days", "91-180days", ">180 days"))
+#plot the categories
+ ggplot(petpoint,mapping=aes(x=process_time_periods,fill=process_time_periods)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Process Time Periods") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+ 
+```
+
+
+

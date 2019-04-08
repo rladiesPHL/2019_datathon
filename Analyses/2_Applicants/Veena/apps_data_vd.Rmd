@@ -1,0 +1,77 @@
+---
+title: "apps_data_vd"
+author: "Veena Dali"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages, echo = F}
+#load packages
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+```{r load data}
+dataCleaned <- read.csv("Analyses/2_Applicants/amygood/output/apps_clean.csv")
+```
+
+```{r Understand distribution of data}
+#frequency of different home_owner types
+dplyr::count(dataCleaned, home_owner)
+
+#frequency of different allergies types
+dplyr::count(dataCleaned, allergies)
+
+#d <- dplyr::filter(masterData, !is.na(outcome_date))
+
+#a <- dplyr::count(d, experience)
+#is.data.frame(a)
+#a[order(a$n, decreasing=TRUE),]
+
+g1 <- ggplot(d, aes(x=home_owner)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 500)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5))
+
+g2 <- ggplot(d, aes(x=home_pet_policy)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 500)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5))
+
+theme_set(theme_cowplot(font_size=12))
+plot_grid(g1, g2, align='h')
+
+```
+
+
+```{r cars}
+#frequency of different ideal_adoption_timeline types
+dplyr::count(dataCleaned, ideal_adoption_timeline)
+```
+
+
+```{r cars}
+#frequency of different reason_for_adoption types
+dplyr::count(dataCleaned, reason_for_adoption)
+```
+
+```{r cars}
+#frequency of different all_household_agree types
+dplyr::count(dataCleaned, all_household_agree)
+
+dplyr::count(dataCleaned, home_alone_max) #not sure what this field represents
+
+dplyr::count(dataCleaned, exercise) 
+
+```
+

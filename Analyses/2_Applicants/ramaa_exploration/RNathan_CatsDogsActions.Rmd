@@ -1,0 +1,108 @@
+---
+title: "PAWS - Actions"
+author: "Ramaa Nathan"
+date: "3/8/2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+
+#### Data Columns:
+1. type: type of update done to the card. “createCard” (when the card was created) / “updateCheckItemStateOnCard” (when a checklist item was modified). PAWS use a fairly standardized checklist for going through the applications, so the timeline in which that checklist gets completed can be informative
+2. data.checkItem.state: if a checklist item was modified, whether it was modified to “complete” or “incomplete”
+3. date: the date when the action was taken
+4. data.card.id:
+5. animal_type_: cat or dog
+6. checklist_ACCT: Check with ACCT (Animal Care and Control Team)
+7. checklist_CHQ: Check with clinic HQ (the PAWS clinic uses a different software for logging clients than the adoptions process)
+8. checklist_LL: Check with property owner
+9. checklist_PP: Check with PetPoint
+10. checklist_SPCA: Check with SPCA (Society for the Prevention of Cruelty to Animals)
+11. checklist_TR: Check with Trello
+12. checklist_VET: Check with vet
+
+
+```{r cards}
+cat_actions = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_actions.csv")
+dog_actions = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_actions.csv")
+cat_actions
+dog_actions
+
+#create one dataframe
+actions <- bind_rows(unique(cat_actions),unique(dog_actions))
+actions <- actions  %>%
+  mutate (animal_type=factor(animal_type))
+str(actions)
+
+# Are there any duplicates in the data?
+anyDuplicated(actions)
+
+# find number of missing data in each column
+# print("Missing Entries")
+# skim(actions) %>%
+#   filter(stat == "missing") %>% filter(value > 0) 
+# actions %>% group_by(animal_type) %>% skim() %>% filter(stat == "missing") %>% filter(value > 0) 
+# table(actions$data.checkItem.state)
+```
+Observations: 
+1. There are no duplicates and there are 6,892 observations with missing data only for data.checkItem.state (4,998 for cats and 1,894 for dogs).
+2. There are 31,217 records with complete for data.checkitem.state and 870 records with incomplete.
+
+```{r}
+# frequency of type
+actions %>% count(type)
+```
+Observations:
+1. 6,892 entries of createCard and 32,087 enrties of updateCheckItemStateOnCard
+
+#### Check Range of Date
+```{r}
+# range of date
+actions %>% skim(date)
+```
+```{r}
+#data.card.id - find number of unique entries
+n_distinct(actions$data.card.id)
+actions %>% group_by(animal_type) %>% summarize(unique_ids = n_distinct(data.card.id))
+```
+Observations: There are 7,209 unique data,.card.id
+
+
+```{r}
+anyDuplicated(actions)
+actions_wide <-
+    actions %>% distinct() %>% 
+    rename(id = data.card.id) %>%
+    gather(item, result, checklist_ACCT:checklist_VET) %>%
+    group_by(id) %>% 
+    mutate(date_start = min(date)) %>% 
+    filter(result == TRUE) %>%
+    group_by(id, item) %>%
+    filter(date == max(date)) %>%
+    ungroup() %>%
+    mutate(wait = difftime(date, date_start, units = "days"),
+           wait = round(as.numeric(wait), 2)) %>%
+    select(-c(date, data.checkItem.state, type, result)) %>%
+    distinct() %>%
+    spread(item, wait) %>% 
+  mutate(wday_start = wday(date_start, label = TRUE, abbr = TRUE))
+# 
+# actions_wide
+#write.csv(actions_wide, "./Data/actions_wide.csv", row.names = FALSE)
+anyDuplicated(actions_wide)
+actions_wide %>% sample_n(10)
+actions %>% filter(data.card.id=="5b12f48abd07fe5382780044")
+actions_wide %>% filter(id=="5b12f48abd07fe5382780044")
+```
+Observations: We get duplicates after computing the wait time as there seem to be multiple entries for some of the checklist item on the same days for a few record -  one with data.checkItem.state==Complete and theother with incomplete state
+
+

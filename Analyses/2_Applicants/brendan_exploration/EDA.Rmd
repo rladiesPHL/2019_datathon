@@ -1,0 +1,447 @@
+---
+title: "PAWS EDA"
+author: "Brendan Graham"
+always_allow_html: yes
+output: 
+  github_document:
+    toc: true 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message = F, warning = F)
+```
+
+```{r load_packages, echo = F}
+#load packages
+library(readr)
+library(dplyr)
+library(lubridate)
+library(highcharter)
+library(ggplot2)
+library(zoo)
+library(skimr)
+library(stringr)
+library(data.table)
+library(tidyr)
+
+```
+
+## Read in Data  
+```{r load_data}
+#load data
+
+cat_actions <- readr::read_csv(file = "Data/cat_actions.csv") %>%  
+  mutate(animal_type = "cat") 
+cat_apps <- readr::read_csv(file = "Data/cat_apps.csv" ) %>%
+  mutate(animal_type = "cat")
+cat_cards <- readr::read_csv(file = "Data/cat_cards.csv") %>%
+  mutate(animal_type = "cat")
+
+ 
+dog_actions <- readr::read_csv(file = "Data/dog_actions.csv") %>% 
+  mutate(animal_type = "dog")
+dog_apps <- readr::read_csv(file = "Data/dog_apps.csv") %>% 
+  mutate(animal_type = "dog")
+dog_cards <- readr::read_csv(file = "Data/dog_cards.csv") %>%
+  mutate(animal_type = "dog")
+
+pets <-  readr::read_csv(file = "Data/petpoint.csv")
+
+ 
+#combine
+apps_raw <- rbind(cat_apps, dog_apps)
+cards_raw <- rbind(cat_cards, dog_cards)
+actions_raw <- rbind(cat_actions, dog_actions)
+
+```
+
+## Dataset Overview and Questions  
+
+### Data Generation Process and Some Notes / Questions   
+_(based on notes from meeting, may be innacurate)_
+
+  * __Applications:__ `dog_apps.csv` and `cat_apps.csv`  
+    * filled out and submitted online  
+    * applications range from `r min(mdy(apps_raw$date_submitted))` to `r max(mdy(apps_raw$date_submitted))`
+        * _Note: may not be enough data for timeseries/seasonal approach_
+    * every one needs to be triaged by PAWS staff, can we help automate its or make it easier somehow?  
+    * Every application should have a card associated with it (cards are auto-generated with an online application)
+    * __<span style="color:red">Question</span>: some applications have no `outcome_trello_id`, does ths mean they do not have a card associated with them? if so, how can we tell the outcome? May need to remove these applications__  
+    * __<span style="color:red">Question</span>: some `outcome_trello_id`'s appear twice (see Appicaitons section below, or id = `5bfecbeaf9c3e187eb632753` for example), are these duplicates?__
+
+<br>      
+    
+  * __Cards:__ `cat_cards.csv` and `dog_cards.csv`   
+    * keeps track of last state of the application via `label_names` column
+    * cards range from `r min(cards_raw$dateLastActivity)` to `r max(cards_raw$dateLastActivity)`  
+        * _Note: cards seem to include data before the min application date, so maybe not all rows will not be necessary_  
+    * data is 1 row per id  
+        * _Note: Can have multiple labels per id, keep in mind when trying to categorize an application as successful or not_ 
+    * based on the definition in the codebook, `dateLastActivity` should match the max `date` for the corresponding id in the `actions` data
+        * _this does not hold for id = `5bfecbeaf9c3e187eb632753`_
+    * __<span style="color:red">Question</span>: It seems like when `dueComplete == TRUE`, it means the app was marked complete and there should be a corresponing date in `due`, but there are 6 records with blank dates where `dueComplete == TRUE`__
+    * __<span style="color:red">Question</span>: On the flipside, it seems like when `dueComplete == FALSE`, it means the app was not marked complete and they lost contact with applicant. In this case there should not be a corresponing date in `due`, but there there 4,290 records with completed application dates where `dueComplete == FALSE`__  
+    * __<span style="color:red">Question</span>: It seems like some cards can be labelled with "adopted"" even though `dueComplete == FALSE`, see id = `5bfecbeaf9c3e187eb632753` for example__
+    
+<br>
+
+  * __Actions:__ `cat_actions.csv` and `dog_actions.csv`  
+    * actions are things done to the cards
+    * actions track of the application process via the checklist columns & associated time stamps
+    * the `data.checkItem.state` column indicates the action taken for the given column at the specified date time 
+      * the action is modifying the column to either complete or incomplete
+    * When the `type == createCard`,  `data.checkItem.state` is always `NA` b/c the card is only being created at this step
+      * since all columns will be FALSE when `type == createCard`, it  may make sense to split this data set into `type == createCard` for the card create date only, and `type == updateCheckItemStateOnCard` to get only the actions done after card was created
+        * may want to compare the `date` entry for the `type == createCard` data set to the `dateLastActivity` entry in the cards data to get the application time frame
+      * may want to check that when `type == createCard` the `date` is the same as the `date_submitted` in the applications data for each corresponding ID
+    * _Note: Can have multiple rows per id (1 for each action taken on the card)_
+    * __<span style="color:red">Question</span>: Why doesn't every `data.card.id` in the `actions` have a `createCard` type variable? some have it and some don't?__
+
+<br>
+
+  * __A Weird Example Case__
+    * ID = `5bfecbeaf9c3e187eb632753` has a lot of weird things going on
+        * 2 seemingly different apps are associated with this ID in `apps_raw` data set
+        * seems like this ID in the `cards` data set was a successful adoption, __but__ has no entry date in `due`  and `dueComplete == FALSE`
+        * the `dateLastActiviy` in the `cards` data set does not match the max date in `actions` data set
+        * seems like there weren't any actions taken in the `actions` data for this ID, but based on the `cards` data for this ID, seems like a successful adoption 
+
+<br>
+
+### Data Model
+
+Based on the codebook and looking over the data, it seems the data sets are related in the following way:  
+
+  * `apps` joins to `cards` on `outcome_trello_id = id`  
+  * `cards` joins to `actions` on  `id = data.card.id`  
+  * `apps` joins to `actions`on  `outcome_trello_id = data.card.id` (but probably won't need to join these 2 directly)  
+
+## Check for duplicates and missing data
+
+```{r missing_dups}
+#applications
+missing_app_ids <- apps_raw %>%
+  filter(is.na(outcome_trello_id))
+
+dup_app_ids <- apps_raw %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  group_by(outcome_trello_id) %>%
+  summarise(count = n()) %>%
+  filter(count > 1)
+
+#cards
+missing_card_ids <- cards_raw %>%
+  filter(is.na(id))
+
+dup_cards <- cards_raw  %>%
+  filter(!is.na(id)) %>%
+  group_by(id) %>%
+  summarise(count = n()) %>%
+  filter(count > 1)
+
+#actions
+missing_action_ids <- actions_raw %>%
+  filter(is.na(data.card.id))
+
+dup_actions <- actions_raw  %>%
+  filter(!is.na(data.card.id)) %>%
+  group_by(data.card.id) %>%
+  summarise(count = n()) %>%
+  filter(count > 1) 
+
+missing_dups <- data.frame("Missing App IDs" = nrow(missing_app_ids), 
+                          "Missing Card IDs" = nrow(missing_card_ids), 
+                          "Missing Action IDs" = nrow(missing_action_ids),
+                          "Duplicate App IDs" = nrow(dup_app_ids),
+                          "Duplicate Card IDs" = nrow(dup_cards),
+                          "Duplicate Action IDs" = nrow(dup_actions))
+
+kable(missing_dups)
+```
+
+Seems like there are 276 applications with no `outcome_trello_id`, and 35 applications with duplicate `outcome_trello_id`. The 6,578 duplicate action IDs are expected since that data set contains 1 row per action and a card can have multiple actions taken on it.
+
+## Check data model assumptions 
+
+checking a few things that can impact the data when joining these data sets  
+
+  1. check that every unique `application` (that has an ID) has a corresponding `card`  
+  2. check that there is at least 1 record in the `actions` data set for every `card `  
+  3. check that the application `submit_dt` is the same as the date the `createCard` action was taken (for those cards that have `createCard`)  
+  
+```{r}
+#check every unique application, that has an ID, has a corresponding card
+app_card_check <- apps_raw %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  select(outcome_trello_id) %>%
+  unique() %>%
+  left_join(., cards_raw, by = c("outcome_trello_id" = "id")) %>%
+  #these are all the cols in `one_row_per_action`, so if theyre all NULL then there's no corresponding entry
+  filter(is.na(dateLastActivity),
+         is.na(dueComplete),
+         is.na(due),
+         is.na(animal_type),
+         is.na(label_names)
+         )
+
+nrow(app_card_check) # 6 apps with no card
+```
+
+
+```{r}
+#check that there is at least 1 record in the actions dataset for every card
+one_row_per_action <- actions_raw %>%
+  select(data.card.id, date, type) %>%
+  group_by(data.card.id) %>%
+  mutate(row_num = row_number()) %>%
+  filter(row_num == 1)
+
+card_action_check <- cards_raw %>%
+  left_join(., one_row_per_action, by = c("id" = "data.card.id")) %>%
+  #these are all the cols in `one_row_per_action`, so if theyre all NULL then there's no corresponding entry
+  filter(is.na(date),
+         is.na(type),
+         is.na(row_num))
+
+nrow(card_action_check) # 2839 cards with no actions
+```
+
+
+```{r}
+# check that the application `submit_dt` is the same as the date the `createCard` action was taken (for those cards that have `createCard`)
+created <- actions_raw %>%
+  filter(type == "createCard") %>%
+  select(type, date, data.card.id) %>%
+  mutate(date = as.Date(date))
+
+unique_apps <- apps_raw %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  select(outcome_trello_id, date_submitted) %>%
+  unique()
+
+date_check <- created %>%
+  left_join(., unique_apps, by = c( "data.card.id" = "outcome_trello_id")) %>%
+  filter(!(is.na(date_submitted))) %>%
+  mutate(date_check = ifelse(mdy(date_submitted) == as.Date(date), 1, 0)) %>%
+  filter(date_check == 0)
+
+nrow(date_check) # 407 cards with different create dates from the application submit date, which date should we use for the application timeframe?
+```
+
+
+## Applications
+
+### Application volume by month
+```{r}
+
+apps_raw %>%
+  mutate(date_submitted = lubridate::mdy(date_submitted),
+         month = lubridate::floor_date(date_submitted, "month")) %>%
+  group_by(month, animal_type) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count/sum(count))  %>%
+  ggplot(aes(x = month, y = count, fill = animal_type, label = scales::percent(freq))) +
+  geom_bar(stat = "identity") +
+  labs(title = "monthly application volume") +
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+```
+
+
+### Visualizing duplicate applications
+```{r}
+#create dataset with only duplicate apps
+dup_apps <- apps_raw %>%
+  filter(outcome_trello_id %in% dup_app_ids$outcome_trello_id) %>%
+  group_by(outcome_trello_id) %>%
+  mutate(id = row_number())
+
+#most dups are people applying twice. 3 people have applied 3 times
+hist(dup_apps$id)
+```
+
+
+## Cards 
+
+### Method for splitting cards into separate rows based on label names  
+
+might be needed for categorizing an application as successful or not. Also might be a good way to see if there is some common reasons why applications aren't successful.
+
+```{r}
+split_cards <- cards_raw %>% 
+    mutate(label_names = strsplit(as.character(label_names), ",")) %>% 
+    unnest(label_names) %>%
+     mutate(label_names = trimws(label_names),
+            #renaming "adopted elsewhere" so regex can ID successful adoptions easier
+            label_names = ifelse(label_names == "adopted elsewhere", "elsewhere", label_names))
+
+#create some application outcome categories
+adopted <- c("adopted", "adoption follow up")
+mgr <- "manager decision"
+ready <- c("approved", "ready to adopt", "ready for review", "reviewed with handouts only", "approved with limitation")
+not_adopted <- c("denied", "withdrawn", "do not follow up", "red flag", "serial no show", "elsewhere")
+adopted_elsewhere <- "elsewhere"
+vet <- c("vet", "vet check in process", "need vet info", "need roommates vet info")
+pet_issues <- c("not utd", "questions", "not s n", "dog meet")
+more_info_needed <- c("need to see id", "need info", "needs app attached", "rescue check", "checks")
+housing_landlord <- c("pet policy", "need written ll permission", "opa", "need proof of ownership", "landlord")
+
+#assign labels to category
+split_cards <- split_cards %>%
+  mutate(label_names = trimws(label_names)) %>%
+  ungroup() %>%
+  rowwise() %>% 
+  mutate(category = case_when(
+    grepl(paste(adopted, collapse = '|'), label_names) ~ "adopted",
+    grepl(paste(adopted_elsewhere, collapse = '|'), label_names) ~ "adopted elsewhere",
+    grepl(paste(mgr,collapse = '|'), label_names) ~ "manager",
+    grepl(paste(not_adopted,collapse = '|'), label_names) ~ "not_adopted",
+    grepl(paste(ready, collapse = "|"), label_names) ~ "ready",
+    grepl(paste(vet,collapse = '|'), label_names)  ~ "vet",
+    grepl(paste(pet_issues,collapse = '|'), label_names)  ~ "pet_issues",
+    grepl(paste(more_info_needed, collapse = '|'), label_names)  ~ "more_info_needed",
+    grepl(paste(housing_landlord, collapse = '|'),label_names) ~ "housing_landlord",
+    TRUE ~ 'other'
+  ))
+
+kable(head(split_cards, 15))
+
+
+```
+
+
+## Actions
+
+### Method to collapse actions into 1 row per id  
+
+This will replace the `TRUE` cell entries with the `date`, and put `NA` for the `FALSE` cell entries. Then it collapses the dataset so there is 1 row per ID, with the time stamps each action took place. The only issue with this is that loses information regarding the `data.checkItem.state`, now we can't tell if the action was to mark it complete or incomplete. Might need to re-work this.
+
+```{r collapse_actions}
+
+actions_collapsed <- actions_raw %>%
+  filter(type != "createCard") %>%
+  #group_by(data.card.id) %>%
+  #mutate(first_date = min(date)) %>%
+  #ungroup() %>%
+  group_by(data.card.id) %>%
+  mutate(row_number = row_number()) %>%
+  select(-c(checklist_seq_num, row_number)) %>%
+  mutate(checklist_ACCT = ifelse(checklist_ACCT == T, as.character(date), NA),
+         checklist_CHQ = ifelse(checklist_CHQ == T, as.character(date), NA),
+         checklist_LL = ifelse(checklist_LL == T, as.character(date), NA),
+         checklist_PP = ifelse(checklist_PP == T, as.character(date), NA),
+         checklist_SPCA = ifelse(checklist_SPCA == T, as.character(date), NA),
+         checklist_TR = ifelse(checklist_TR == T, as.character(date), NA),
+         checklist_VET = ifelse(checklist_VET == T, as.character(date), NA)
+         ) %>%
+  select(-date) %>%
+  mutate_all(funs(na.locf(., na.rm = FALSE, fromLast = FALSE))) %>%
+  filter(row_number()==n()) %>%
+  ungroup()
+
+kable(head(actions_collapsed, 15))
+
+```
+
+
+## Looking into Successful/Unsuccessful Apps
+```{r combine}
+
+#get list of IDs where adoption was successful
+successful_ids <- pets %>%
+  filter(outcome_type == "Adoption") %>%
+  pull(outcome_trello_id)
+
+#create indicator based on those IDs and check distribution: ~ 75% of apps in the sample are unsuccessful 
+apps_raw <- apps_raw %>%
+  mutate(successful = ifelse(outcome_trello_id %in% successful_ids, 1, 0)) 
+
+apps_raw %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  group_by(successful) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count / sum(count))
+```
+
+possible analysis idea - why are so many unsuccessful? can we ID what part of the process apps get caught up? if so we can inform PAWS where they can provide applicants w/ extra support/materials (i.e. vet info)  
+
+```{r}
+#checking proportions of successful/unsuccessfuly between cats/dogs: cats about even, dogs overwhelmingly unsuccessful (only about 12% of dog apps are successful in the sample)
+non_blank_apps <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))
+
+prop.table(table(apps_raw$successful[!(is.na(apps_raw$outcome_trello_id))],
+                 apps_raw$animal_type[!(is.na(apps_raw$outcome_trello_id))]), 
+           margin = 2)
+```
+
+given the large disparity, maybe dog applications have the largest potential for improvement? It seems like a lot of the unsuccessful dog apps were approved and ready...
+
+
+```{r}
+
+#get labels for unsuccessful dog apps
+unsuccessful <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))%>%
+  filter(animal_type == "dog") %>%
+  filter(successful == 0) %>%
+  left_join(., cards_raw, by = c("outcome_trello_id" = "id"))
+
+unsuccessful %>% 
+  group_by(label_names) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  head(10)
+
+```
+
+
+**What is the time spent on successfull vs unsuccessful apps?**   
+Could have some missing data issues here since we define the timeframe as card create date, and there are many cards with no `createCard` row
+
+possible analysis idea - processing apps take a lot of time, can we quickly flag an app?  
+
+```{r}
+
+create_card <- actions_raw %>%
+  filter(type == "createCard")
+
+apps_raw <- apps_raw %>%
+  left_join(., create_card, by = c("outcome_trello_id" = "data.card.id")) 
+
+timeframe <- apps_raw %>%
+  left_join(., cards_raw, by = c("outcome_trello_id" = "id")) %>%
+  mutate(timeframe = difftime(dateLastActivity, date, units = "days"))
+
+timeframe %>%
+  filter(!is.na(outcome_trello_id)) %>%
+  group_by(successful, animal_type) %>%
+  summarise(mean_days = mean(timeframe, na.rm = T))
+  
+
+```
+
+## Ideal Dataset
+just my initial thoughts, interested in the approach others are thinking of as well!
+
+ * Would be at the application level (1 row per application)
+ * Needs outcome ID (in order to join to other datasets)
+ * Would have a card assocoated with each app in order to have a label associated with each app
+ * need a `createCard` date in the actions dataset
+ * needs all action checklist items in 1 row
+ * Includes sucessful adoption indicator
+ 
+ ![](Untitled.jpg)
+
+```{r combining}
+has_id <- apps_raw %>%
+  filter(!is.na(outcome_trello_id))
+
+has_card <- has_id %>%
+  inner_join(., cards_raw, by = c("outcome_trello_id" = "id"))
+
+has_create_date <- has_card %>%
+  inner_join(., created, by = c("outcome_trello_id" = "data.card.id")) 
+```
+
+
