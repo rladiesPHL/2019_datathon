@@ -406,7 +406,7 @@ Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>
 
 Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set.
 
-![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
 

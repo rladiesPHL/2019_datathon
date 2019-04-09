@@ -26,7 +26,7 @@ library(formattable)
 
 ```{r load, echo=FALSE}
 masterapps_20190324 <- readRDS("../masterapps_20190324.rds")
-masterapps_20190324<- masterapps_20190324 %>% 
+masterapps_20190324 <- masterapps_20190324 %>% 
   mutate(adoption = factor(ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),TRUE,FALSE)),
          adoption_time = difftime(outcome_date, date_submitted, units = "days"),
          adoption_time = round(as.numeric(adoption_time), 2),
@@ -466,7 +466,37 @@ Most of the people who adopted a pet had no allergies.
 ### Missing Data  
 Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set. 
 
-![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
+```{r, echo = F, message = F, warning = F}
+
+cat_apps <- readr::read_csv(file = "Apps_Data/cat_apps.csv" ) %>%
+  mutate(animal_type = "cat")
+
+dog_apps <- readr::read_csv(file = "Apps_Data/dog_apps.csv") %>% 
+  mutate(animal_type = "dog")
+
+#combine
+apps_combined <- rbind(cat_apps, dog_apps)
+
+
+#count NA
+na_check <- purrr::map_df(apps_combined, ~sum(is.na(.))) %>% 
+  reshape2::melt(.) %>% 
+  filter(variable != "X1") %>%
+  filter(value > 0) %>%
+  top_n(25)
+
+ggplot(na_check, aes(x = reorder(variable, value), y = value)) +
+  geom_bar(stat="identity") + 
+  labs(x = "Application Question", 
+       y = "Count of NA's",
+       title = "Count of NAs in Applications Data Set"
+  ) + 
+  coord_flip()
+
+#![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
+
+```
+
 
 The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
 
