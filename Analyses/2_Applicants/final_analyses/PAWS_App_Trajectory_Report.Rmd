@@ -16,7 +16,7 @@ library(tidyverse)
 library(lubridate)
 library(skimr)
 library(gtools)
-library(knitr)
+library(knitr)  #for outputting tables as kables
 library(caret)
 library(data.table)
 library(formattable)
@@ -373,7 +373,7 @@ In general, cat applications typically take longer than dog applications. The ch
 ```{r kc_timeline_boxplot_animal, echo=FALSE, fig.height=3, fig.width=8, fig.align = "center"}
 
 # boxplot of adoption_time by animal
-master_apps_report %>%
+masterapps_20190324 %>%
   filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
   
   ggplot(aes(x = animal_type, y = adoption_time, fill = animal_type)) +                 # break out checklist_item by cat & dog
@@ -401,7 +401,7 @@ The outcome site for an adoption also influences the timeline of an application.
 
 ```{r kc_heatmap_data, include=FALSE }
 # isolate the data that is related to both outcome site & animal type
-site_animal_df <- master_apps_report %>%
+site_animal_df <- masterapps_20190324 %>%
   drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
   filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
   group_by(outcome_sitename, animal_type) %>%                     # before calculations, group data by outcome site
@@ -449,7 +449,7 @@ collapse_rows_df <- function(df, variable){
 }
 
 # get count of each animal at each outcome_site
-site_count <- master_apps_report %>%
+site_count <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
   drop_na(outcome_sitename) %>%
   group_by(outcome_sitename, animal_type) %>%
@@ -499,7 +499,7 @@ Only one site had a higher median adoption time for dogs than for cats—Grays F
 
 ```{r checklist_boxplot, echo=FALSE, fig.align="center", fig.height=5, fig.width=10, warning=FALSE}
 #  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
-master_apps_report %>%
+masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%                       # flatten checklist rows into one column (called "checklist_item") and corresponding values into one column (called "values")
   
@@ -527,7 +527,7 @@ The chart above removed significant outliers, but further inspection of these ou
 
 ```{r checklist_site_animal_data, echo=FALSE}
 # isolate the data that is related to checklist items for adoptions
-checklist_calcs <- master_apps_report %>%
+checklist_calcs <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -538,7 +538,7 @@ checklist_calcs <- master_apps_report %>%
   rename("median days from last item" = "median") 
 
 # get the count of each checklist item occurrence
-checklist_count <- master_apps_report %>%
+checklist_count <- masterapps_20190324 %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -572,7 +572,7 @@ We analysed the the different factors of the applications that ended with a succ
 
 
 ```{r Adoption, echo=FALSE}
-master_apps_report %>% 
+masterapps_20190324 %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
    geom_bar() +
@@ -588,7 +588,7 @@ When applicants requested a specific type of animal, 30% of applications resulte
 
 
 ```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption") %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -605,7 +605,7 @@ Most of the applicants who adopted a pet had allocated a monthly budget of less 
 
 ```{r, echo=FALSE}
 ### Home alone avg
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -620,7 +620,7 @@ Applicants who expected to leave the animal alone at home for longer hours chose
 
 
 ```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -636,8 +636,7 @@ Singles overwhelmingly seem to prefer to adopt a pet.
 
 
 ```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%
-  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Number of Children in Home") +
@@ -649,10 +648,10 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_hom
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
 
 ```{r, echo=FALSE}
-expcols <- master_apps_report %>% 
+expcols <- masterapps_20190324 %>% 
   select(starts_with("experience_")) %>% 
   colnames()
-expdata <- master_apps_report %>%
+expdata <- masterapps_20190324 %>%
   select(starts_with("experience_"),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
   gather(key="ExperienceType",value="value",expcols)
@@ -689,7 +688,7 @@ Interestingly, more number of applicants who were able to successfully adopt had
 
 ```{r, echo=FALSE}
 ### Home Pet Policy
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
     geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -702,10 +701,10 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
 ```{r, echo=FALSE}
-retcols <- master_apps_report %>% 
+retcols <- masterapps_20190324 %>% 
   select(starts_with("return.")) %>% 
   colnames()
-retdata <- master_apps_report %>%
+retdata <- masterapps_20190324 %>%
   select(starts_with("return."),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
   gather(key="ReturnReasons",value="value",retcols)
@@ -748,7 +747,7 @@ retdata %>%
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
 
 ```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption") %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
     geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -769,11 +768,10 @@ Most of the people who adopted a pet had no allergies.
 Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set. 
 
 ```{r, echo = F, message = F, warning = F}
-
 cat_apps <- readr::read_csv(file = "../../../Data/cat_apps.csv" ) %>%
   mutate(animal_type = "cat")
 
-dog_apps <- readr::read_csv(file = "../../../Data/dog_apps.csv") %>% 
+dog_apps <- readr::read_csv(file = "../../../Data/dog_apps.csv") %>%
   mutate(animal_type = "dog")
 
 #combine

@@ -6,11 +6,10 @@ April 09, 2019
 -   [Executive Summary <span style="color:brown"> - Amy</span> (will wait until report is complete)](#executive-summary---amy-will-wait-until-report-is-complete)
 -   [Contributors <span style="color:brown"> - Amy</span>](#contributors---amy)
 -   [Data Pre-processing <span style="color:brown"> - Amy</span>](#data-pre-processing---amy)
--   [Load Data](#load-data)
     -   [Actions Dataset](#actions-dataset)
     -   [Petpoint Dataset](#petpoint-dataset)
     -   [Cards Dataset](#cards-dataset)
--   [Merge the 4 Datasets](#merge-the-4-datasets)
+    -   [Combined Datasets](#combined-datasets)
     -   [Data Cleaning](#data-cleaning)
     -   [Data Conversion](#data-conversion)
     -   [Spreading/Creating to Indicator Variables](#spreadingcreating-to-indicator-variables)
@@ -54,19 +53,15 @@ Contributors <span style="color:brown"> - Amy</span>
 Data Pre-processing <span style="color:brown"> - Amy</span>
 -----------------------------------------------------------
 
-Load Data
----------
-
--   Error in mutate\_impl(.data, dots) : Evaluation error: unused arguments (label = TRUE, abbr = TRUE).
-
 ### Actions Dataset
 
 ### Petpoint Dataset
 
 ### Cards Dataset
 
-Merge the 4 Datasets
---------------------
+### Combined Datasets
+
+-   N.B. Some differences between `master_apps_report` and `masterapps_20190324` which Amy will try to understand. Seem to be in the indicator variables.
 
 ``` r
 master_apps_report <- apps_with_indicators %>%
