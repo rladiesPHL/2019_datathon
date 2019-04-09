@@ -25,8 +25,228 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ##Analysis of Time in Processing Applications
-###How long does each application take?
-###Heatmap 
+
+### How Animal & Outcome Site Influence Appiclation Timelines
+
+Application timelines were measured by taking the difference between the time an application was submitted and the time that application resulted in an adoption. Only applications that resulted in adoption were assessed; applications that were denied were not included in the analysis. This is a potential area of further investigation. 
+
+In general, cat applications typically take longer than dog applications. The chart below shows that the median adoption timeline for **cats** is approximately **19** days (vertical black line inside red box), while **dog** applications average about **8** to result in an adoption (vertical black line inside blue box). 
+
+```{r kc_data_setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# libraries
+library(ggplot2)
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(readr)
+library(data.table)
+library(formattable)
+library(knitr)
+
+# data
+masterapps_20190324 <- readRDS("/Users/connolk/Downloads/masterapps_20190324.rds")
+
+# add adoption_time column for the difference between the date_submitted & outcome_date
+masterapps_20190324 <- masterapps_20190324 %>%
+  mutate(adoption_time = difftime(outcome_date, date_submitted, units = "days"),
+         adoption_time = round(as.numeric(adoption_time), 2))
+```
+
+```{r kc_timeline_boxplot_animal, echo=FALSE, fig.height=3, fig.width=8, fig.align = "center"}
+
+# boxplot of adoption_time by animal
+masterapps_20190324 %>%
+  filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
+  
+  ggplot(aes(x = animal_type, y = adoption_time, fill = animal_type)) +                 # break out checklist_item by cat & dog
+  geom_boxplot(alpha = 0.4, outlier.alpha = 0.3) +                                      # make outliers and boxes more transparent
+  scale_y_continuous(breaks = seq(0, 140, by=20)) +                                     # set y axis tick intervals at 20
+  theme_light() + 
+  ggtitle("Adoption Timeline by Animal") +                                              # set plot title
+  labs(x = NULL,                                                                        # set plot labels
+       y= "days between app submission & adoption",
+       fill = "animal type") +
+  theme(axis.text.y = element_text(size=10),
+        plot.title = element_text(hjust = 0.5,                                          # title formatting (center, bold, padding)
+                                  line = 15, 
+                                  face = "bold", 
+                                  margin = margin(t = 0, r = 0, b = 10, l = 0)),        
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 5, l = 0)),      # x axis title formatting (padding)
+        axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 5))) +    # y axis title formatting (padding)
+  coord_flip()                  
+```
+
+The chart also illuminates that for longer-than-average application timelines, animal type may influence just *how much longer* those above-average timelines are. Of the longer-than-usual applications, cat ones took between 35 days and 70 days compared to about 18 days to 40 days for dogs.
+
+The outcome site for an adoption also influences the timeline of an application. It's important to note that this analysis does not consider all the potential locations that an animal spent its time during the application process; it is strictly based on the animal's outcome site. 
+
+
+```{r kc_heatmap_data, include=FALSE }
+# isolate the data that is related to both outcome site & animal type
+site_animal_df <- masterapps_20190324 %>%
+  drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
+  filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
+  group_by(outcome_sitename, animal_type) %>%                     # before calculations, group data by outcome site
+  summarize(mean = mean(adoption_time),                           # calculate mean, use summarize to collapse each site into single-row summary 
+            median = median(adoption_time)) %>%                   # calculate median, use summarize to collapse each site into single-row summary 
+  mutate_at(vars(mean, median), funs(round(., 2)))                # round the calcs to 2 decimal places
+```
+
+```{r kc_heatmap_site, echo=FALSE, fig.height=2.6, fig.width=7, fig.align = "center"}
+# heatmap plot of median adoption time by animal & adoption site
+
+site_animal_df %>%
+  ggplot(aes(animal_type, outcome_sitename)) + 
+  geom_tile(aes(fill = median),                                            # set tiles to be median adoption time
+            color = "white") + 
+  scale_fill_gradient(low = "aliceblue",                                                     # set tile gradient colors
+                      high = "steelblue") +
+  theme_bw() +
+  labs(x = NULL,                                                                         # set plot labels
+       y = NULL) +
+  ggtitle("Median Adoption Time Heatmap") +                                              # set plot title
+  scale_x_discrete(expand = c(0, 0)) +                                                   # visual editing, used to expand tiles to entire plot area on both axes
+  scale_y_discrete(expand = c(0, 0)) +                                
+  theme(axis.text.x = element_text(size=8),           
+        axis.text.y = element_text(size=10),
+        legend.position = "none",                                                        # remove legend
+        plot.title = element_text(hjust = 0.5,                                           # title formatting (center, bold, padding)
+                                  line = 15, 
+                                  face = "bold", 
+                                  margin = margin(t = 0, r = 0, b = 10, l = 0))) +
+  coord_flip()
+```
+```{r kc_table_site_data, include=FALSE}
+# fuction to collapse a specified column in a df; will be used in formattable 
+collapse_rows_df <- function(df, variable){
+  
+  group_var <- enquo(variable)
+  
+  df %>%
+    group_by(!! group_var) %>%
+    mutate(groupRow = 1:n()) %>%
+    ungroup() %>%
+    mutate(!!quo_name(group_var) := ifelse(groupRow == 1, as.character(!! group_var), "")) %>%
+    select(-c(groupRow))
+}
+
+# get count of each animal at each outcome_site
+site_count <- masterapps_20190324 %>%
+  filter(outcome_type == "Adoption") %>%
+  drop_na(outcome_sitename) %>%
+  group_by(outcome_sitename, animal_type) %>%
+  count(animal_type)
+
+# add a column to site_count df join n counts on
+site_count <- unite(site_count, combined, outcome_sitename, animal_type, remove = FALSE, sep = "")
+
+# add a column to site_animal_df join n counts on
+site_animal_df <- unite(site_animal_df, combined, outcome_sitename, animal_type, remove = FALSE, sep = "")
+
+# join the two tables together
+# combine the calculations with the n for each checklist_item
+site_animal_join <- left_join(site_animal_df, site_count)
+```
+
+``` {r kc_table_site, echo=FALSE, fig.width=6}                                               
+# drop the "combined" column and rename columns for formatting
+site_animal_join %>%
+  mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
+  select(-c(mean, combined)) %>%
+  select(outcome_sitename, animal_type, n, median) %>%
+  rename("median adoption time" = "median") %>%
+  drop_na(outcome_sitename) %>%
+  collapse_rows_df(outcome_sitename) %>% 
+  
+  
+  formattable(align =c("l","l","c","c"), list(
+  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
+  `median adoption time`= color_tile("#FFFFFF", "#FFFFFF")))
+```
+
+From the heatmap and table above, it's clear that overall average adoption times were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places 
+
+Based on median values, here are the fastest & slowest time-to-adoption sites:
+
+* **Cats**
+    + Slowest: PAWS Foster Program
+    + Fastest: Grays Ferry Avenue
+* **Dogs**
+    + Slowest: PAWS Foster Program
+    + Fastest: PAC
+
+Only one site had a higher median adoption time for dogs than for cats—Grays Ferry Avenue. This site also had the fewest cat adoptions, though (n=2). It's also important to note the small n size for dog apps at PAWS Offsite Adoptions (n=1). 
+
+### How Animal & Outcome Site Influence Application Checklist Items
+
+```{r checklist_boxplot, echo=FALSE, fig.align="center", fig.height=5, fig.width=10, warning=FALSE}
+#  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
+masterapps_20190324 %>%
+  filter(outcome_type == "Adoption") %>%
+  gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%                       # flatten checklist rows into one column (called "checklist_item") and corresponding values into one column (called "values")
+  
+  ggplot(aes(x = checklist_item, y = value)) +
+  geom_boxplot(aes(fill = animal_type), alpha = 0.4, outlier.alpha = 0.1) +             # break out checklist_item by cat & dog
+  scale_y_continuous(breaks = seq(0, 20, by=2),                                         # set y axis tick intervals at 2
+                     limits=c(0, 20)) +                                                 # set y limit to 16 to "remove" highest outliers & see plots better 
+  theme_light() + 
+  ggtitle("Day Count Distribution by Checklist Item (Removed Some Outliers)") +
+  labs(x = "checklist item",
+       y= "days from last checklist item",
+       fill = "animal type") +
+  theme(plot.title = element_text(hjust = 0.5,                                          # title formatting (center, bold, padding)
+                                  line = 15, 
+                                  face = "bold", 
+                                  margin = margin(t = 0, r = 0, b = 10, l = 0)),        
+        axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 5, l = 0)),      # x axis title formatting (padding)
+        axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 5))) +    # y axis title formatting (padding)
+  coord_flip()   
+```
+
+Most application items took between one and two days (median) to complete. While the animal type and outcome site didn't significantly impact the individual item times, cat applications generally exhibited slightly longer times between checklist items. Cat applications averaged about **1.2** days between checklist item, compared to **0.9** for dogs (excluding SPCA & ACCT items). The VET checklist item had the greatest difference between cats and dogs, and also was the item that took the longest (besides SPCA & ACCT items). This distinction between animals, while modest, could contribute to longer submission-to-adoption times for cat applications. 
+
+The chart above removed significant outliers, but further inspection of these outliers could be valuable. Understanding what causes certain application steps to take longer could help to streamline parts of the checklist process.  
+
+```{r checklist_site_animal_data, echo=FALSE}
+# isolate the data that is related to checklist items for adoptions
+checklist_calcs <- masterapps_20190324 %>%
+  filter(outcome_type == "Adoption") %>%
+  gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
+  drop_na(value) %>%
+  group_by(checklist_item) %>%
+  summarize(mean = mean(value),                                         # calculate mean, use summarize to collapse each site into single-row summary 
+            median = median(value)) %>%                                 # calculate median, use summarize to collapse each site into single-row summary 
+  mutate_at(vars(mean, median), funs(round(., 2))) %>%                  # round calcs to 2 decimal places
+  rename("median days from last item" = "median") 
+
+# get the count of each checklist item occurrence
+checklist_count <- masterapps_20190324 %>%
+  filter(outcome_type == "Adoption") %>%
+  gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
+  drop_na(value) %>%
+  group_by(checklist_item) %>%
+  count(checklist_item)
+
+# combine the calculations with the n for each checklist_item
+checklist_df <- merge(checklist_count, checklist_calcs, by = "checklist_item", all.x = TRUE) %>%
+  mutate(item_percent = percent(n/453, 1)) %>%                                                           # calculate the percent of applications that had each item checked off
+  rename("percent of cards with item checked" = "item_percent",                                          # rename the df columns to be more readable
+         "checklist item" = "checklist_item") %>%
+  select(-c(mean)) %>%
+  arrange(n)
+```
+
+```{r checklist_site_animal_table, echo=FALSE}
+# put the table into formattable
+formattable(checklist_df, align =c("l","c","c","c"), list(
+  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+  `mean days from last item`= color_tile("#FFFFFF", "#FFFFFF"),
+  `median days from last item`= color_tile("#FFFFFF", "#FFFFFF")))
+```
+
+The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
 
 ##Application Characteristics 
