@@ -12,7 +12,23 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+library(caret)
+```
+
+```{r load, echo=FALSE}
+master <- readRDS("../masterapps_20190324.rds")
+master <- master %>% 
+  mutate(adoption = factor(ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),TRUE,FALSE)),
+         budget_monthly_ranges =factor(budget_monthly_ranges,
+                                       levels=c("<25","26-100","101-200","201-500","501-1000","1001-5000",">5000","NA"),
+                                       ordered=TRUE))
+
 ```
 
 ##Executive Summary <span style="color:brown"> - Amy</span> (will wait until report is complete)
@@ -32,8 +48,198 @@ knitr::opts_chunk$set(echo = TRUE)
 ##Application Characteristics 
 
 ### Affecting Adoption   <span style="color:brown"> - Ramaa </span> 
-####Frequency of processing applications - is it daily checks or processing applications in bulk every few days?  (new analysis  -- to check)
-####Budget, allergies, number of adults, number of children….
+We analysed the the different factors of the applications that ended with a successful adoption. 
+
+
+```{r Adoption, echo=FALSE}
+master %>% 
+  #filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Specific Animal") +
+    xlab("Chose Specific Animal") +
+    scale_fill_discrete(name = "Adoption Status") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
+
+
+
+```{r, echo=FALSE}
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Monthly budgets") +
+    xlab("Monthly Budget for Pet") +
+    scale_fill_discrete(name = "Animal Type") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+
+Most of the applicants who adopted a pet had allocated a monthly budget of less than $500. 
+
+
+
+```{r, echo=FALSE}
+### Home alone avg
+master %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+  ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Home Alone Average") +
+    xlab("Averge Number of Hours Alone Per Day") +
+    scale_fill_discrete(name = "Animal Type") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
+
+
+
+```{r, echo=FALSE}
+master %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+  ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Number of Adults in Home") +
+  xlab("Number of Adults at Home") +
+  scale_fill_discrete(name = "Animal Type") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+```
+
+
+Singles overwhelmingly seem to prefer to adopt a pet. 
+
+
+```{r, echo=FALSE}
+master %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%
+  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Number of Children in Home") +
+  xlab("Number of Children at Home") +
+  scale_fill_discrete(name = "Animal Type") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
+
+```{r, echo=FALSE}
+expcols <- master %>% 
+  select(starts_with("experience_")) %>% 
+  colnames()
+expdata <- master %>%
+  select(starts_with("experience_"),adoption,animal_type) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
+  gather(key="ExperienceType",value="value",expcols)
+variable_names <- list(
+ "experience_bred.sold_ind" = "Bred/Sold",
+ "experience_current.housemates.pet_ind" = "Current Housemates",
+ "experience_currently.have.pet_ind" = "Currently Have",
+ "experience_euthanized_ind"="Euthanized",
+ "experience_given.away_ind"="Given Away", 
+ "experience_given.to.shelter_ind"="Given to Shelter",
+ "experience_grew.up.with_ind"="Grew up With",
+ "experience_never.lived.with_ind" ="Never lived with",
+ "experience_past.housemates.pet_ind"="Past Housemates",
+ "experience_pet.died.in.care_ind"="Died in Care",
+ "experience_pet.ran.away_ind"="Ran Away"
+)
+
+variable_labeller <- function(variable,value){
+  return(variable_names[value])
+}
+
+expdata %>%
+  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~ExperienceType, labeller=variable_labeller) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Experience Type with Pets") +
+    xlab("Adoption Status") +
+    scale_fill_discrete(name = "Animal Type") #+
+   #geom_text(aes(label=value),position=position_stack(1.1))
+```
+
+Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
+
+```{r, echo=FALSE}
+### Home Pet Policy
+master %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+  ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
+    geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Home Pet Policy") +
+    xlab("Home Pet Policy") +
+    scale_fill_discrete(name = "Animal Type") +
+    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
+
+```{r, echo=FALSE}
+retcols <- master %>% 
+  select(starts_with("return.")) %>% 
+  colnames()
+retdata <- master %>%
+  select(starts_with("return."),adoption,animal_type) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
+  gather(key="ReturnReasons",value="value",retcols)
+variable_names <- list(
+ "return.pet_allergies.appear_ind" = "Allergies Appear",
+ "return.pet_becomes.aggressive_ind" = "Becomes Aggressive ",
+ "return.pet_destructive_ind" = "Destructive",
+ "return.pet_jumps.on.counters_ind" = "Jumps on Counters",
+ "return.pet_jumps.on.furniture_ind"= "Jumps on Furniture",
+ "return.pet_litter.box.issues_ind"="Litter Box Issues",
+ "return.pet_moving.too.far_ind" ="Moving Too Far",
+ "return.pet_new.baby_ind" = "New Baby",
+  "return.pet_none_ind" = "None",
+ "return.pet_not.allowed.new.living.space_ind"="Not Allowed in New Space",
+ "return.pet_not.enough.time_ind" = "Not Enough Time",
+  "return.pet_not.housebroken_ind" = "Not Housebroken",
+ "return.pet_other_ind" = "Other",
+ "return.pet_pet.sheds_ind" = "Pet Sheds",
+ "return.pet_scratches.furniture_ind"= "Scratches furniture",
+ "return.pet_too.playful_ind" = "Too Playful",
+ "return.pet_vet.becomes.expensive_ind" = "Becomes Expensive"
+)
+
+variable_labeller <- function(variable,value){
+  return(variable_names[value])
+}
+
+retdata %>%
+  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~ReturnReasons, labeller=variable_labeller) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Possible Reasons to Return Pet") +
+    xlab("Adoption Status") +
+    scale_fill_discrete(name = "Animal Type") #+
+   #geom_text(aes(label=value),position=position_stack(1.1))
+
+```
+
+The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
+
+```{r, echo=FALSE}
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
+    geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+    labs(title = "Allergies") +
+    xlab("Allergy Status") +
+   scale_fill_discrete(name = "Animal Type") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+```
+
+Most of the people who adopted a pet had no allergies.
+
 
 ###Affecting Decline
 
