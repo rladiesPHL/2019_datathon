@@ -10,8 +10,8 @@ Ramaa Nathan
     -   [Spreading/Creating to Indicator Variables](#spreadingcreating-to-indicator-variables)
     -   [Merging data](#merging-data)
 -   [Analysis of Time in Processing Applications](#analysis-of-time-in-processing-applications)
-    -   [How long does each application take?](#how-long-does-each-application-take)
-    -   [Heatmap](#heatmap)
+    -   [How Animal & Outcome Site Influence Appiclation Timelines](#how-animal-outcome-site-influence-appiclation-timelines)
+    -   [How Animal & Outcome Site Influence Application Checklist Items](#how-animal-outcome-site-influence-application-checklist-items)
 -   [Application Characteristics](#application-characteristics)
     -   [Affecting Adoption <span style="color:brown"> - Ramaa </span>](#affecting-adoption---ramaa)
     -   [Affecting Decline](#affecting-decline)
@@ -44,9 +44,315 @@ Feature Engineering <span style="color:brown"> - Amy</span>
 Analysis of Time in Processing Applications
 -------------------------------------------
 
-### How long does each application take?
+### How Animal & Outcome Site Influence Appiclation Timelines
 
-### Heatmap
+Application timelines were measured by taking the difference between the time an application was submitted and the time that application resulted in an adoption. Only applications that resulted in adoption were assessed; applications that were denied were not included in the analysis. This is a potential area of further investigation.
+
+In general, cat applications typically take longer than dog applications. The chart below shows that the median adoption timeline for **cats** is approximately **19** days (vertical black line inside red box), while **dog** applications average about **8** to result in an adoption (vertical black line inside blue box).
+
+<img src="PAWS_App_Trajectory_Report_files/figure-markdown_github/kc_timeline_boxplot_animal-1.png" style="display: block; margin: auto;" />
+
+The chart also illuminates that for longer-than-average application timelines, animal type may influence just *how much longer* those above-average timelines are. Of the longer-than-usual applications, cat ones took between 35 days and 70 days compared to about 18 days to 40 days for dogs.
+
+The outcome site for an adoption also influences the timeline of an application. It's important to note that this analysis does not consider all the potential locations that an animal spent its time during the application process; it is strictly based on the animal's outcome site.
+
+<img src="PAWS_App_Trajectory_Report_files/figure-markdown_github/kc_heatmap_site-1.png" style="display: block; margin: auto;" />
+
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:left;">
+outcome\_sitename
+</th>
+<th style="text-align:left;">
+animal\_type
+</th>
+<th style="text-align:center;">
+n
+</th>
+<th style="text-align:center;">
+median adoption time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Grant Avenue
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:center;">
+74
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">10</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+dog
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">6</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grays Ferry Avenue
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+dog
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">13</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PAC
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:center;">
+70
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+dog
+</td>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">4</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PAWS Foster Program
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:center;">
+187
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">25</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+dog
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">12</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PAWS Offsite Adoptions
+</td>
+<td style="text-align:left;">
+cat
+</td>
+<td style="text-align:center;">
+44
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">25</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+dog
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">22</span>
+</td>
+</tr>
+</tbody>
+</table>
+From the heatmap and table above, it's clear that overall average adoption times were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places
+
+Based on median values, here are the fastest & slowest time-to-adoption sites:
+
+-   **Cats**
+    -   Slowest: PAWS Foster Program
+    -   Fastest: Grays Ferry Avenue
+-   **Dogs**
+    -   Slowest: PAWS Foster Program
+    -   Fastest: PAC
+
+Only one site had a higher median adoption time for dogs than for cats—Grays Ferry Avenue. This site also had the fewest cat adoptions, though (n=2). It's also important to note the small n size for dog apps at PAWS Offsite Adoptions (n=1).
+
+### How Animal & Outcome Site Influence Application Checklist Items
+
+<img src="PAWS_App_Trajectory_Report_files/figure-markdown_github/checklist_boxplot-1.png" style="display: block; margin: auto;" />
+
+Most application items took between one and two days (median) to complete. While the animal type and outcome site didn't significantly impact the individual item times, cat applications generally exhibited slightly longer times between checklist items. Cat applications averaged about **1.2** days between checklist item, compared to **0.9** for dogs (excluding SPCA & ACCT items). The VET checklist item had the greatest difference between cats and dogs, and also was the item that took the longest (besides SPCA & ACCT items). This distinction between animals, while modest, could contribute to longer submission-to-adoption times for cat applications.
+
+The chart above removed significant outliers, but further inspection of these outliers could be valuable. Understanding what causes certain application steps to take longer could help to streamline parts of the checklist process.
+
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:left;">
+checklist item
+</th>
+<th style="text-align:center;">
+n
+</th>
+<th style="text-align:center;">
+median days from last item
+</th>
+<th style="text-align:center;">
+percent of cards with item checked
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+checklist\_ACCT
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">10.89</span>
+</td>
+<td style="text-align:center;">
+0.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_SPCA
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">6.07</span>
+</td>
+<td style="text-align:center;">
+0.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_VET
+</td>
+<td style="text-align:center;">
+425
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">1.80</span>
+</td>
+<td style="text-align:center;">
+93.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_CHQ
+</td>
+<td style="text-align:center;">
+432
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0.97</span>
+</td>
+<td style="text-align:center;">
+95.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_LL
+</td>
+<td style="text-align:center;">
+433
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">1.03</span>
+</td>
+<td style="text-align:center;">
+95.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_PP
+</td>
+<td style="text-align:center;">
+433
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">1.03</span>
+</td>
+<td style="text-align:center;">
+95.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+checklist\_TR
+</td>
+<td style="text-align:center;">
+435
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0.95</span>
+</td>
+<td style="text-align:center;">
+96.0%
+</td>
+</tr>
+</tbody>
+</table>
+The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
 Application Characteristics
 ---------------------------

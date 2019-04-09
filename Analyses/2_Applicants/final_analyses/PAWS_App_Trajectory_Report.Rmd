@@ -13,21 +13,27 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+#libraries
 library(tidyverse)
 library(lubridate)
 library(skimr)
 library(gtools)
 library(knitr)  #for outputting tables as kables
 library(caret)
+library(data.table)
+library(formattable)
 ```
 
 ```{r load, echo=FALSE}
-master <- readRDS("../masterapps_20190324.rds")
-master <- master %>% 
+masterapps_20190324 <- readRDS("../masterapps_20190324.rds")
+masterapps_20190324<- masterapps_20190324 %>% 
   mutate(adoption = factor(ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),TRUE,FALSE)),
+         adoption_time = difftime(outcome_date, date_submitted, units = "days"),
+         adoption_time = round(as.numeric(adoption_time), 2),
          budget_monthly_ranges =factor(budget_monthly_ranges,
                                        levels=c("<25","26-100","101-200","201-500","501-1000","1001-5000",">5000","NA"),
                                        ordered=TRUE))
+
 
 ```
 
@@ -49,25 +55,17 @@ Application timelines were measured by taking the difference between the time an
 In general, cat applications typically take longer than dog applications. The chart below shows that the median adoption timeline for **cats** is approximately **19** days (vertical black line inside red box), while **dog** applications average about **8** to result in an adoption (vertical black line inside blue box). 
 
 ```{r kc_data_setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+# knitr::opts_chunk$set(echo = FALSE)
 
-# libraries
-library(ggplot2)
-library(tidyverse)
-library(lubridate)
-library(dplyr)
-library(readr)
-library(data.table)
-library(formattable)
-library(knitr)
 
-# data
-masterapps_20190324 <- readRDS("/Users/connolk/Downloads/masterapps_20190324.rds")
 
-# add adoption_time column for the difference between the date_submitted & outcome_date
-masterapps_20190324 <- masterapps_20190324 %>%
-  mutate(adoption_time = difftime(outcome_date, date_submitted, units = "days"),
-         adoption_time = round(as.numeric(adoption_time), 2))
+# # data
+# masterapps_20190324 <- readRDS("/Users/connolk/Downloads/masterapps_20190324.rds")
+# 
+# # add adoption_time column for the difference between the date_submitted & outcome_date
+# masterapps_20190324 <- masterapps_20190324 %>%
+#   mutate(adoption_time = difftime(outcome_date, date_submitted, units = "days"),
+#          adoption_time = round(as.numeric(adoption_time), 2))
 ```
 
 ```{r kc_timeline_boxplot_animal, echo=FALSE, fig.height=3, fig.width=8, fig.align = "center"}
@@ -272,7 +270,7 @@ We analysed the the different factors of the applications that ended with a succ
 
 
 ```{r Adoption, echo=FALSE}
-master %>% 
+masterapps_20190324 %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
    geom_bar() +
@@ -288,7 +286,7 @@ When applicants requested a specific type of animal, 30% of applications resulte
 
 
 ```{r, echo=FALSE}
-master %>% filter(outcome_type=="Adoption") %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -305,7 +303,7 @@ Most of the applicants who adopted a pet had allocated a monthly budget of less 
 
 ```{r, echo=FALSE}
 ### Home alone avg
-master %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -320,7 +318,7 @@ Applicants who expected to leave the animal alone at home for longer hours chose
 
 
 ```{r, echo=FALSE}
-master %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -336,7 +334,7 @@ Singles overwhelmingly seem to prefer to adopt a pet.
 
 
 ```{r, echo=FALSE}
-master %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%
   ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -349,10 +347,10 @@ master %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
 
 ```{r, echo=FALSE}
-expcols <- master %>% 
+expcols <- masterapps_20190324 %>% 
   select(starts_with("experience_")) %>% 
   colnames()
-expdata <- master %>%
+expdata <- masterapps_20190324 %>%
   select(starts_with("experience_"),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
   gather(key="ExperienceType",value="value",expcols)
@@ -389,7 +387,7 @@ Interestingly, more number of applicants who were able to successfully adopt had
 
 ```{r, echo=FALSE}
 ### Home Pet Policy
-master %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
     geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -402,10 +400,10 @@ master %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
 ```{r, echo=FALSE}
-retcols <- master %>% 
+retcols <- masterapps_20190324 %>% 
   select(starts_with("return.")) %>% 
   colnames()
-retdata <- master %>%
+retdata <- masterapps_20190324 %>%
   select(starts_with("return."),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(-animal_type,-adoption),sum) %>%
   gather(key="ReturnReasons",value="value",retcols)
@@ -448,7 +446,7 @@ retdata %>%
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
 
 ```{r, echo=FALSE}
-master %>% filter(outcome_type=="Adoption") %>%
+masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
     geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
