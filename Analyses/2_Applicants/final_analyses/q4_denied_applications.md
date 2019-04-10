@@ -8,6 +8,7 @@ Veena
 -   [Explore Data](#explore-data)
 -   [Visualization and further analysis for applications that were denied](#visualization-and-further-analysis-for-applications-that-were-denied)
 -   [Visualization and further analysis for applications that are red flagged](#visualization-and-further-analysis-for-applications-that-are-red-flagged)
+-   [Denied and Red Flagged Applications<span style="color:brown"> - Veena </span>](#denied-and-red-flagged-applications---veena)
 
 1.  Describe an adoption application's trajectory at PAWS <br> 2.4 What are the applicant and animal characteristics that predict a denied application?
 
@@ -35,6 +36,8 @@ Load Data
 apps_cards <- readRDS("../appsCards.rds")
 
 masterData <- readRDS("../masterapps_20190324.rds")
+
+master_apps_report <- readRDS("../masterapps_20190324.rds") #final version I will use in the report
 ```
 
 Explore Data
@@ -293,3 +296,16 @@ ggplot(df_redflag, aes(x=last_label)) +
 ```
 
 ![](q4_denied_applications_files/figure-markdown_github/red%20flag-1.png)
+
+Denied and Red Flagged Applications<span style="color:brown"> - Veena </span>
+-----------------------------------------------------------------------------
+
+<br> We further investigated the characteristics of applications that were denied or red flagged.There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. Below are visualizations that describe how applicants' characteristics (e.g. budget, allergies, home pet policy, etc.) impacted the status of the applications. <br><br> **Denied Applications**<br> **Key takeaways**:
+
+-   No known allergies for denied applicants
+-   Budget had no impact on application
+-   All household members agreed
+-   Majority did not enter the home pet policy and not everyone is the home owner
+-   Unfortunate experiences with prior pets (e.g. ran away, died in care)
+
+![](q4_denied_applications_files/figure-markdown_github/denied%20applications-1.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-2.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-3.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-4.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-5.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-6.png)

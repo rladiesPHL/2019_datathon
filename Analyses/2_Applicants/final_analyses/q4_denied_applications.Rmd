@@ -42,6 +42,8 @@ library(cowplot)
 apps_cards <- readRDS("../appsCards.rds")
 
 masterData <- readRDS("../masterapps_20190324.rds")
+
+master_apps_report <- readRDS("../masterapps_20190324.rds") #final version I will use in the report
 ```
 
 ##Explore Data
@@ -177,6 +179,127 @@ df_redflag2 <- select(df_redflag, label_names, animal_type)
 df_redflag3 <- separate(df_redflag2, 'label_names', paste("label_name", 1:6, sep="_"), sep=",", extra="drop")
 
 dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some can still be in 
+
+ggplot(df_redflag, aes(x=last_label)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Last Updated Label for Red Flagged Applications") +
+  labs(x = "Last Updated Label",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 45)) +
+  theme(axis.text.x = element_text(angle=80, vjust=0.5))
+
+```
+
+##Denied and Red Flagged Applications<span style="color:brown"> - Veena </span> 
+
+<br> We further investigated the characteristics of applications that were denied or red flagged. There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. 
+<br><br>
+**Denied Applications**<br>
+Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.) for applications that were denied. We only have data for 12 denied applications so the analysis is limited. Hopefully with more data, we would be able to compare the denied applications to the adopted ones.<br><br>
+Key takeaways:
+* No known allergies for applicants
+* Budget had no impact (same budget range for approved applications)
+* All household members agreed
+* Majority did not enter the home pet policy and not everyone is the home owner
+* Unfortunate experiences with prior pets (e.g. ran away, died in care)
+
+
+``` {r denied applications, echo = F,  message = F,  warning = F}
+df_denied <- dplyr::filter(master_apps_report, label.names_denied_ind == 1)
+df_redflag <- dplyr::filter(master_apps_report, label.names_red.flag_ind == 1)
+
+df_denied$budget_monthly_ranges <- factor(df_denied$budget_monthly_ranges,levels = c("26-100", "101-200", "201-500", "501-1000"))
+
+ggplot(df_denied, aes(x=allergies)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Allergy Status") +
+  labs(x = "Allergies", y= "Count", fill = "Animal Type") +
+  geom_text(aes(label=..count..), stat='count', position=position_stack(1.05)) +
+  coord_cartesian(ylim=c(0, 15))
+
+ggplot(df_denied, aes(x=budget_monthly_ranges)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Budget Ranges") +
+  labs(x = "Budget Range ($)",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  geom_text(aes(label=..count..), stat="count") +
+  coord_cartesian(ylim=c(0, 10))
+
+ggplot(df_denied, aes(x=all_household_agree)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Household Agrees Status") +
+  labs(x = "Household Agrees",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 15))
+
+g1 <- ggplot(df_denied, aes(x=home_owner)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(y= "Count") +
+  ggtitle("Home Characteristics") +
+  theme(legend.position="none") +
+  coord_cartesian(ylim=c(0, 10)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5))
+
+g2 <- ggplot(df_denied, aes(x=home_pet_policy)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  labs(fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 10)) +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5), axis.title.y = element_blank())
+
+theme_set(theme_cowplot(font_size=12))
+plot_grid(g1, g2, align='h')
+
+#home along average; varies too much
+ggplot(df_denied, aes(x=home_alone_avg)) + 
+  geom_bar(aes(fill=animal_type), width=.5) +
+  ggtitle("Home Alone Avg") +
+  labs(x = "Hours",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  coord_cartesian(ylim=c(0, 15))
+
+#trying to get all the experiences to show in one chart
+#df_exp <- dplyr::count(df_denied, experience) #frequency of experiences for all denied applications
+#df_exp[order(df_exp$n, decreasing=TRUE),]
+experience_summary <- df_denied %>%
+  select(starts_with("experience_")) %>% 
+  summarise_all(sum, na.rm = TRUE) %>%
+  gather() %>%
+  mutate(cleaned_col = str_replace(key, "experience_", ""),
+         cleaned_col = str_replace(cleaned_col, "_ind", "")) %>%
+  select(cleaned_col, value)
+
+ggplot(experience_summary, aes(x= fct_reorder(cleaned_col, value, .desc=TRUE), y=value)) + 
+  geom_bar(stat = "identity", fill="#78aac3") +
+  theme(axis.text.x = element_text(angle=50, vjust=0.5)) +
+  guides(fill=FALSE) +
+  ggtitle("Prior Pet Experiences") +
+  labs(x = "Experience", y= "Count")
+
+```
+<br>**Red Flagged Applications**<br>
+
+There were 133 applications that were red flagged. 129 of those have not yet resulted in an adoption or are still being procesed. Since the data set for the applications is from the end of 2018, many of the applications are still in progress. Two of the applications that were flagged were denied but that does not mean that the rest are going to result in adoption. We do not have the final status of many applications so we cannot conclude what happened to the red flagged applications. 
+
+Below is a visualization that shows the last updated status for applications that were red flagged.
+
+
+```{r red flag, echo = F,  message = F,  warning = T}
+
+#For the applications that are red flgged, how many end up becoming adopted
+#dplyr::count(df_redflag, outcome_date) #129/133 did not result in an adoption or application is still in progress
+
+#dplyr::count(df_redflag, label.names_denied_ind) #only two of the red flagged applications were denied but some can still be in progress
+
+#Time difference between when they were adopted and application submission date
+#df_redflag2 <- select(df_redflag, label_names, animal_type)
+
+#df_redflag3 <- separate(df_redflag2, 'label_names', paste("label_name", 1:6, sep="_"), sep=",", extra="drop")
+
+#dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some are still in progress
 
 ggplot(df_redflag, aes(x=last_label)) + 
   geom_bar(aes(fill=animal_type), width=.5) +
