@@ -40,18 +40,17 @@ library(formattable)
 
 ##Data Pre-processing <span style="color:brown"> - Amy</span>
 
-```{r echo = FALSE, message = FALSE, warning = FALSE}
+```{r load_data, echo = FALSE, message = FALSE, warning = FALSE}
 cat_apps = read_csv("../../../Data/cat_apps.csv")
 dog_apps = read_csv("../../../Data/dog_apps.csv")
-
 cat_actions = read_csv("../../../Data/cat_actions.csv")
 dog_actions = read_csv("../../../Data/dog_actions.csv")
-
 petpoint = read_csv("../../../Data/petpoint.csv")
-
 cat_cards = read_csv("../../../Data/cat_cards.csv")
 dog_cards = read_csv("../../../Data/dog_cards.csv")
+```
 
+```{r cleaning_functions, echo = FALSE, message = FALSE, warning = FALSE}
 convert_to_ind <- function(df, field){
     df %>% 
         mutate_(var = field) %>% 
@@ -149,9 +148,18 @@ clean_city <- function(colname) {
   gsub("E LANSDOWNE", "EAST LANSDOWNE", .) %>%
   gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA|PHIALADELPHIA|PHIALDELPHIA|PHILDELPHIA", "PHILADELPHIA", .)
 }
-
-
 ```
+
+#### Applications Dataset
+
+As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. We left aside geographical variables. For cleaning, the following steps were important:
+
+* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks").
+* For `children_in_home` and `adults_in_home`, ignoring "-" by taking the absolute value and replacing absurd values with NA (we replaced values greater than 15 with NAs).
+* N.B. In this version, we haven't removed absurd values for `budget_monthly` and `budget_emergency` (I think we should... $1000000000000!).
+* Standardizing the zipcodes
+* Addressing spelling variations in city names
+* Adding indicator variables
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 cat_apps <- cat_apps %>%
@@ -219,7 +227,9 @@ apps_with_indicators <- apps %>%
    left_join(convert_to_ind(apps,"return_pet"))
 ```
 
-### Actions Dataset
+To our applications dataset we added fields from the actions dataset (comprised of dog_actions.csv and cat_actions.csv), the cards dataset (comprised of dog_cards.csv and cat_cards.csv), and the petpoint dataset (petpoint.csv).
+
+#### Actions Dataset
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 actions <- bind_rows(unique(cat_actions),
                      unique(dog_actions))
@@ -242,7 +252,38 @@ actions <- actions %>%
     mutate(wday_start = lubridate::wday(date_start, label = TRUE, abbr = TRUE))
 ```
 
-### Petpoint Dataset
+#### Cards Dataset
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Add a new column "animal_type" to each dataset
+cat_cards <- cat_cards %>% mutate(animal_type="cat");
+dog_cards <- dog_cards %>% mutate(animal_type="dog");
+#combine
+cards <- bind_rows(cat_cards,dog_cards)
+
+#dueComplete has been found to be unreliable - so remove it
+cards <- cards %>% select(-dueComplete) %>%
+  rename(trello_id = id) %>%
+  mutate (last_label = sapply(cards$label_names, FUN=function(x)
+            unlist(
+              str_trim(
+                tail(
+                  str_split(x,",")[[1]],
+                  1)))),
+          num_labels = sapply(cards$label_names, FUN=function(x)
+            ifelse(is.na(x),0,length(str_split(x,",")[[1]]))))
+
+# convert dateLastActivity & due from character to Date
+cards <- cards %>%
+  mutate(dateLastActivity = mdy(dateLastActivity)) %>%
+  mutate(due = mdy(due))
+
+cards_with_indicators <- cards %>%
+   #distinct(trello_id) %>%
+   left_join(convert_to_ind(cards,"label_names"))
+
+```
+
+#### Petpoint Dataset
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 petpoint <- petpoint %>% 
   select(-X1) %>%
@@ -285,37 +326,6 @@ petpoint_with_indicators <- petpoint %>%
 # all(duplicated(petpoint) == FALSE)  
 # petpoint[duplicated(petpoint),]
 # petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
-```
-
-### Cards Dataset
-```{r echo = FALSE, message = FALSE, warning = FALSE}
-# Add a new column "animal_type" to each dataset
-cat_cards <- cat_cards %>% mutate(animal_type="cat");
-dog_cards <- dog_cards %>% mutate(animal_type="dog");
-#combine
-cards <- bind_rows(cat_cards,dog_cards)
-
-#dueComplete has been found to be unreliable - so remove it
-cards <- cards %>% select(-dueComplete) %>%
-  rename(trello_id = id) %>%
-  mutate (last_label = sapply(cards$label_names, FUN=function(x)
-            unlist(
-              str_trim(
-                tail(
-                  str_split(x,",")[[1]],
-                  1)))),
-          num_labels = sapply(cards$label_names, FUN=function(x)
-            ifelse(is.na(x),0,length(str_split(x,",")[[1]]))))
-
-# convert dateLastActivity & due from character to Date
-cards <- cards %>%
-  mutate(dateLastActivity = mdy(dateLastActivity)) %>%
-  mutate(due = mdy(due))
-
-cards_with_indicators <- cards %>%
-   #distinct(trello_id) %>%
-   left_join(convert_to_ind(cards,"label_names"))
-
 ```
 
 ### Combined Datasets

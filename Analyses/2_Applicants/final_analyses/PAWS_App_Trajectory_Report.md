@@ -6,6 +6,7 @@ April 10, 2019
 -   [Executive Summary <span style="color:brown"> - Amy</span> (will wait until report is complete)](#executive-summary---amy-will-wait-until-report-is-complete)
 -   [Contributors <span style="color:brown"> - Amy</span>](#contributors---amy)
 -   [Data Pre-processing <span style="color:brown"> - Amy</span>](#data-pre-processing---amy)
+    -   [Applications Dataset](#applications-dataset)
     -   [Actions Dataset](#actions-dataset)
     -   [Petpoint Dataset](#petpoint-dataset)
     -   [Cards Dataset](#cards-dataset)
@@ -53,11 +54,17 @@ Contributors <span style="color:brown"> - Amy</span>
 Data Pre-processing <span style="color:brown"> - Amy</span>
 -----------------------------------------------------------
 
-### Actions Dataset
+#### Applications Dataset
 
-### Petpoint Dataset
+As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. We left aside geographical variables. For cleaning, the following steps were important:
 
-### Cards Dataset
+-   Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks").
+
+#### Actions Dataset
+
+#### Petpoint Dataset
+
+#### Cards Dataset
 
 ### Combined Datasets
 
@@ -106,7 +113,7 @@ dim(masterapps_20190324)
 identical(master_apps_report, masterapps_20190324)
 ```
 
-    ## [1] TRUE
+    ## [1] FALSE
 
 ### Data Cleaning
 
@@ -440,35 +447,35 @@ We analysed the the different factors of the applications that ended with a succ
 
 When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Most of the applicants who adopted a pet had allocated a monthly budget of less than $500.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Singles overwhelmingly seem to prefer to adopt a pet.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 Most of the people who adopted a pet had no allergies.
 
@@ -481,7 +488,7 @@ Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>
 
 Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
 
