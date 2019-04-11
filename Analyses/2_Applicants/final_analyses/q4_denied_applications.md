@@ -295,17 +295,19 @@ ggplot(df_redflag, aes(x=last_label)) +
   theme(axis.text.x = element_text(angle=80, vjust=0.5))
 ```
 
-![](q4_denied_applications_files/figure-markdown_github/red%20flag-1.png)
+![](q4_denied_applications_files/figure-markdown_github/red%20flag%20visualization-1.png)
 
 Denied and Red Flagged Applications<span style="color:brown"> - Veena </span>
 -----------------------------------------------------------------------------
 
-<br> We further investigated the characteristics of applications that were denied or red flagged.There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. Below are visualizations that describe how applicants' characteristics (e.g. budget, allergies, home pet policy, etc.) impacted the status of the applications. <br><br> **Denied Applications**<br> **Key takeaways**:
+<br> We further investigated the characteristics of applications that were denied or red flagged. There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. <br><br> **Denied Applications**<br> Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
--   No known allergies for denied applicants
--   Budget had no impact on application
--   All household members agreed
--   Majority did not enter the home pet policy and not everyone is the home owner
--   Unfortunate experiences with prior pets (e.g. ran away, died in care)
+Key takeaways:<br> \* No known allergies for the applicants \* Budget had no impact (same budget range for approved applications) \* All household members agreed to get a pet \* Majority of the applicants did not enter a home pet policy and not everyone is the home owner \* Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
 
-![](q4_denied_applications_files/figure-markdown_github/denied%20applications-1.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-2.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-3.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-4.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-5.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-6.png)
+![](q4_denied_applications_files/figure-markdown_github/denied%20applications-1.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-2.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-3.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-4.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-5.png)![](q4_denied_applications_files/figure-markdown_github/denied%20applications-6.png) <br>**Red Flagged Applications**<br>
+
+There were 133 applications that were red flagged.<br>129 of the 133 have not yet resulted in an adoption or are still being procesed. Two of the applications that were flagged were denied but that does not mean that the rest are going to result in adoption. Since the data set for the applications is from the end of 2018, many of the applications are still in progress. We do not have the final status of all the applications so we cannot conclude what happened to the red flagged applications. As a further project, I think it would be interesting to track the final status of the applications that were red flagged.
+
+Below is a visualization that shows the last updated status for applications that were red flagged. After being flagged, the applications were sent to the manager to make a decision or the applicant was requested to provide more information (e.g. in many cases the applicant was required to provide more information about the vet).
+
+![](q4_denied_applications_files/figure-markdown_github/red%20flag-1.png)
