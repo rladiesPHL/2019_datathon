@@ -1,31 +1,23 @@
-PAWS App-Trajectory Report
+PAWS Application Trajectories: Final Report
 ================
 Ramaa Nathan, Kate Connolly, Veena Dali, Amy Goodwin Davies, Brendan Graham, and Ambika Sowmyan
-April 10, 2019
+April 12, 2019
 
--   [Executive Summary <span style="color:brown"> - Amy</span> (will wait until report is complete)](#executive-summary---amy-will-wait-until-report-is-complete)
--   [Contributors <span style="color:brown"> - Amy</span>](#contributors---amy)
--   [Data Pre-processing <span style="color:brown"> - Amy</span>](#data-pre-processing---amy)
-    -   [Applications Dataset](#applications-dataset)
-    -   [Actions Dataset](#actions-dataset)
-    -   [Petpoint Dataset](#petpoint-dataset)
-    -   [Cards Dataset](#cards-dataset)
-    -   [Combined Datasets](#combined-datasets)
-    -   [Data Cleaning](#data-cleaning)
-    -   [Data Conversion](#data-conversion)
-    -   [Spreading/Creating to Indicator Variables](#spreadingcreating-to-indicator-variables)
-    -   [Merging data](#merging-data)
+-   [Executive Summary](#executive-summary)
+-   [Contributors](#contributors)
+-   [Data Pre-processing](#data-pre-processing)
 -   [Analysis of Time in Processing Applications](#analysis-of-time-in-processing-applications)
     -   [How Animal & Outcome Site Influence Appiclation Timelines](#how-animal-outcome-site-influence-appiclation-timelines)
     -   [How Animal & Outcome Site Influence Application Checklist Items](#how-animal-outcome-site-influence-application-checklist-items)
 -   [Application Characteristics](#application-characteristics)
-    -   [Affecting Adoption <span style="color:brown"> - Ramaa </span>](#affecting-adoption---ramaa)
+    -   [Affecting Adoption](#affecting-adoption)
     -   [Affecting Decline](#affecting-decline)
--   [Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>](#data-issues-affecting-analyses---brendan)
+-   [Denied and Red Flagged Applications](#denied-and-red-flagged-applications)
+-   [Data Issues affecting Analyses](#data-issues-affecting-analyses)
     -   [Missing Data](#missing-data)
     -   [Unlimited Responses and Response Validation](#unlimited-responses-and-response-validation)
     -   [Recommendations for Collecting Clean Data](#recommendations-for-collecting-clean-data)
--   [Important Features for Prediction <span style="color:brown"> - Ramaa</span>](#important-features-for-prediction---ramaa)
+-   [Important Features for Prediction](#important-features-for-prediction)
 -   [Conclusions and Recommendations](#conclusions-and-recommendations)
     -   [Recommendations to analyze the data frequently to check for improvements in processing application](#recommendations-to-analyze-the-data-frequently-to-check-for-improvements-in-processing-application)
     -   [Suggest](#suggest)
@@ -33,42 +25,68 @@ April 10, 2019
         -   [How data collection strategy should be improved](#how-data-collection-strategy-should-be-improved)
         -   [How data analysis might be done on a regular basis](#how-data-analysis-might-be-done-on-a-regular-basis)
 
-Executive Summary <span style="color:brown"> - Amy</span> (will wait until report is complete)
-----------------------------------------------------------------------------------------------
+Executive Summary
+-----------------
 
-Contributors <span style="color:brown"> - Amy</span>
-----------------------------------------------------
+Our task was describe an adoption application's trajectory at PAWS. We focussed on the following areas:
 
--   Ramaa Nathan (Group Leader) is an aspiring data scientist with a PhD in Computer Science and an ongoing masters in Applied Statistics. Her background is in finance and healthcare.
+1.  Application processing timeline
+2.  Application characteristics affecting successful adoptions
+3.  Application characteristics affecting denied and red-flagged adoptions
+
+In this report, we overview our data pre-processing steps, our analyses addressing the three areas above, and our recommendations for PAWS based on our findings for both application trajectory insights and data collection recommendations.
+
+Contributors
+------------
+
+-   Ramaa Nathan (group leader) is an aspiring data scientist with a PhD in Computer Science and an ongoing masters in Applied Statistics. Her background is in finance and healthcare.
 
 -   Kate Connolly is a digital analyst at the Philadelphia Inquirer where she helps to maintain the analytics framework and to provide data-driven support and decisions across the organization.
 
 -   Veena Dali is a senior business intelligence analyst at Comcast working to provide data solutions to support business decisions. Her background is in Neuroscience and Computer Science.
 
--   Amy Goodwin Davies is a data scientist with a background in Linguistics.
+-   Amy Goodwin Davies is a data scientist with a background in psycholinguistics.
 
 -   Brendan Graham is a clinical data analyst at The Children’s Hospital of Philadelphia with a background in applied statistics.
 
 -   Ambika Sowmyan heads the Marketing data analytics group at Hartford Funds. Her background is in Finance and Retail and has a graduate degree in Management and Predictive Analytics.
 
-Data Pre-processing <span style="color:brown"> - Amy</span>
------------------------------------------------------------
+Data Pre-processing
+-------------------
 
-#### Applications Dataset
-
-As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. We left aside geographical variables. For cleaning, the following steps were important:
+As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. For data pre-processing, the following steps were particularly important:
 
 -   Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks").
+-   For `children_in_home` and `adults_in_home`, ignoring "-" by taking the absolute value and replacing absurd values with NA (we replaced values greater than 15 with NAs).
+-   Capping `budget_monthly` and `budget_emergency` at $10000 and $20000 respectively.
+-   Addressing spelling variations in the `City` variable. For example, replacing the strings "PHILLY", "FILADELFIA", "PHILIDELPHIA", "PHIMADELPHIA", "PHIALADELPHIA", "PHIALDELPHIA", "PHILDELPHIA" with "PHILADELPHIA".
+-   Adding new indicator variables for variables containing lists of responses. For example, from `allergies` we created indicator variables for each response (`allergies_mildly.allergic_ind`, `allergies_no.allergies_ind`, `allergies_not.sure_ind`, `allergies_very.allergic_ind`). For this, we used Jake Riley's function (Jake developed this function for the animal trajectory group):
 
-#### Actions Dataset
+``` r
+convert_to_ind <- function(df, field){
+    df %>% 
+        mutate_(var = field) %>% 
+        distinct(trello_id, animal_type, var) %>% 
+        unnest(split = str_split(str_trim(var), ",")) %>%
+        select(-var) %>% 
+        filter(!is.na(split)) %>% 
+        mutate(split = str_trim(split)) %>%
+        mutate(n = 1,
+               split = 
+                   str_replace_all(split, "-", ".") %>% 
+                   str_replace_all(., " ", ".") %>%
+                   paste0(str_replace_all(field, "_", "."), 
+                          "_", ., "_ind")) %>%
+        distinct() %>% 
+        spread(split, n, fill = 0)
+}
+```
 
-#### Petpoint Dataset
+Our cleaned applications dataset contained 1906 rows, 1594 unique trellos ids and the submitted dates ranged from 2018-08-30 to 2018-12-31:
 
-#### Cards Dataset
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
-### Combined Datasets
-
--   N.B. Some differences between `master_apps_report` and `masterapps_20190324` which Amy will try to understand. Seem to be in the indicator variables.
+To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. We also created another dataset comprised of the applications dataset and the cards dataset for analysing denied and red-flagged applications.
 
 ``` r
 master_apps_report <- apps_with_indicators %>%
@@ -114,14 +132,6 @@ identical(master_apps_report, masterapps_20190324)
 ```
 
     ## [1] FALSE
-
-### Data Cleaning
-
-### Data Conversion
-
-### Spreading/Creating to Indicator Variables
-
-### Merging data
 
 Analysis of Time in Processing Applications
 -------------------------------------------
@@ -439,7 +449,7 @@ The table above shows the exceptions to the average checklist times. The ACCT an
 Application Characteristics
 ---------------------------
 
-### Affecting Adoption <span style="color:brown"> - Ramaa </span>
+### Affecting Adoption
 
 We analysed the the different factors of the applications that ended with a successful adoption.
 
@@ -447,48 +457,63 @@ We analysed the the different factors of the applications that ended with a succ
 
 When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 Most of the applicants who adopted a pet had allocated a monthly budget of less than $500.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 Singles overwhelmingly seem to prefer to adopt a pet.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 Most of the people who adopted a pet had no allergies.
 
 ### Affecting Decline
 
-Data Issues affecting Analyses <span style="color:brown"> - Brendan </span>
----------------------------------------------------------------------------
+Denied and Red Flagged Applications
+-----------------------------------
+
+<br> We further investigated the characteristics of applications that were denied or red flagged. There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. <br><br> **Denied Applications**<br> Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
+
+Key takeaways:<br> \* No known allergies for the applicants \* Budget had no impact (same budget range for approved applications) \* All household members agreed to get a pet \* Majority of the applicants did not enter a home pet policy and not everyone is the home owner \* Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
+
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-1.png)![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-2.png)![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-3.png)![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-4.png)![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-5.png)![](PAWS_App_Trajectory_Report_files/figure-markdown_github/denied%20applications-6.png) <br>**Red Flagged Applications**<br>
+
+There were 133 applications that were red flagged.<br>129 of the 133 have not yet resulted in an adoption or are still being procesed. Two of the applications that were flagged were denied but that does not mean that the rest are going to result in adoption. Since the data set for the applications is from the end of 2018, many of the applications are still in progress. We do not have the final status of all the applications so we cannot conclude what happened to the red flagged applications. As a further project, I think it would be interesting to track the final status of the applications that were red flagged.
+
+Below is a visualization that shows the last updated status for applications that were red flagged. After being flagged, the applications were sent to the manager to make a decision or the applicant was requested to provide more information (e.g. in many cases the applicant was required to provide more information about the vet).
+
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/red%20flag-1.png)
+
+Data Issues affecting Analyses
+------------------------------
 
 ### Missing Data
 
 Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set.
 
-![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](PAWS_App_Trajectory_Report_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
 
@@ -519,8 +544,8 @@ For the monthly budget question, there were several negative numbers and some ex
 
 One of the most important recommendations moving forward would be to redesign the application to enforce standardized, limited and logical responses. Allowing only a single response combined with a limited response set would make analysis much easier in the future. Doing so will save PAWS staff time when reviewing applications *and* make future analyses easier and can lead to better insights.
 
-Important Features for Prediction <span style="color:brown"> - Ramaa</span>
----------------------------------------------------------------------------
+Important Features for Prediction
+---------------------------------
 
 Till now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics.
 
@@ -528,7 +553,7 @@ To successfully build a Random Forest, we further cleaned the data to take care 
 
 The combined effect of different characteristics on the adoption status can be studied by considering one of the important outputs generated by the Random Forests, the subset of predictor values that are found to be most commonly used as a criteria for splitting the dataset into two smaller regions at each node. This subset of predictor values, referred to as Important Variables, are shown in the plot below. As seen in the list, we find that the top three characteristics are number of children in a home, the type of dog, and the date the application was submitted. Improved results or a different set of important characteristics can be obtained from better and more complete data.
 
-![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/ImportantVariables.png)
+![](report_images/ImportantVariables.png)
 
 Conclusions and Recommendations
 -------------------------------
