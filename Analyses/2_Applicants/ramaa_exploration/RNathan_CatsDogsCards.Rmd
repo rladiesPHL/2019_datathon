@@ -1,0 +1,145 @@
+---
+title: "PAWS - CARDS"
+author: "Ramaa Nathan"
+date: "3/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+```
+
+#### Data Fields
+1. id: a unique ID
+2. dateLastActivity: the last time an activity was recorded on the card
+3. dueComplete: indicates whether the application is marked as complete or they lost contact with the applicant
+4. due: indicates the date the application is marked as complete or they lost contact with the applicant animal_type: cat or dog
+5. label_names: the label names indicate the last recorded status of the application
+
+
+```{r cards}
+cat_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/cat_cards.csv")
+dog_cards = read_csv("/Users/ramaa/Documents/Meetups/R/PAWS/2019_datathon/Data/dog_cards.csv")
+# Add a new column "animal_type" to each dataset
+cat_cards <- cat_cards %>% mutate(animal_type="cats");
+dog_cards <- dog_cards %>% mutate(animal_type="dogs");
+str(cat_cards)
+str(dog_cards)
+
+#create one dataframe
+cards <- bind_rows(cat_cards,dog_cards)
+str(cards)
+cards <- cards %>% mutate (animal_type=factor(animal_type))
+
+#check for duplicates
+# Are there any duplicates in the data?
+anyDuplicated(cards)
+
+# find number of missing data in each column
+print("Missing Entries")
+cards %>% group_by(animal_type) %>% skim() %>% 
+  filter(stat == "missing") %>% filter(value > 0) 
+#find percentage of missing entries
+cards %>% group_by(animal_type) %>% summarise(n=n(), 
+                                              missing_due=sum(is.na(due)),missing_due_percent = 100*missing_due/n,
+                                            missing_labels=sum(is.na(label_names)),missing_labels_percent = 100*missing_labels/n)
+
+## Check for duplicate ids
+numNonUniquesIDs = cards %>% 
+   filter(!is.na(id)) %>% 
+   select(id) %>% 
+   group_by(id) %>% 
+   summarise(dupcount=n()) %>%
+  filter(dupcount > 1)
+
+#plot the due Complete by  animal type
+ # cards%>% ggplot(mapping=aes(x=dueComplete,col=animal_type,fill=animal_type)) + 
+ #     geom_bar() +
+ #     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+ #      labs(title = "Due Complete by Animal Type")  +
+ #    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1),col="black")
+
+
+```
+
+#### Extract the last label from label names 
+```{r}
+extractFromString = function(str1) {
+  sl = str_split(str1,",")
+  l = length(sl[[1]])
+  last = str_trim(sl[[1]][l])
+  return (unlist(last)) #(list(l,last))
+}
+cards$lastLabel = sapply(cards$label_names, FUN=function(x) extractFromString(x))
+cards$numLabels = sapply(cards$label_names, FUN=function(x) ifelse(is.na(x),0,length(str_split(x,",")[[1]])))
+str(cards)
+cards %>% skim(numLabels)
+```
+#### What is the distribution of labels for each type of dueComplete status?
+```{r}
+ 
+#what are the last labels associated with dueComplete=FALSE
+cards %>% filter(!is.na(lastLabel) & dueComplete == FALSE) %>% 
+  ggplot(mapping=aes(x=lastLabel,fill=lastLabel)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of lastLabel when dueComplete = FALSE") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+cards %>% filter(dueComplete == FALSE) %>% select(lastLabel) %>% table(useNA="always") %>% sort(decreasing = T)
+
+#what are the last labels associated with dueComplete=TRUE
+cards %>% filter(dueComplete) %>% 
+  ggplot(mapping=aes(x=lastLabel,fill=lastLabel)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of lastLabel when dueComplete = TRUE") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+cards %>% filter(dueComplete) %>% select(lastLabel) %>% table(useNA="always") %>% sort(decreasing = T)
+
+#Distribution of lastLabel 
+cards %>% filter(!is.na(label_names)) %>% 
+  ggplot(mapping=aes(x=lastLabel,fill=lastLabel)) + 
+     geom_bar() +
+     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Distribution of lastLabel") +
+  geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+cards %>% select(lastLabel) %>% table(useNA="always") %>% sort(decreasing = T)
+
+```
+Observation: dueComplete=FALSE even when the last status of the applications ends in adoption (712 cases) or ready to adopt(981). 
+Observation: dueComplete=TRUE even when the application status is one of  denied(52), red flag(55), etc. 
+Also, there are 865 cases when dueComplete is TRUE but there are no labels. So, dueComplete does not seem to be getting updated reliably.
+
+#### Compare Dates
+dateLastActivity: the last time an activity was recorded on the card
+due: indicates the date the application is marked as complete or they lost contact with the applicant
+Basically, we expect dateLastActivity to be always later than or equal to the due date
+
+```{r}
+ # Compare dateLastActivity and due
+#When a process is completed leading to adoption, the due date should correspond to when the records were marked as complete
+#check records when dueComplete is true
+#dueComplete: indicates whether the application is marked as complete or they lost contact with the applicant
+cards %>% filter(dueComplete & due>dateLastActivity) %>% select(due,dateLastActivity,lastLabel)
+cards %>% filter(!dueComplete & due>dateLastActivity) %>% select(due,dateLastActivity,lastLabel)
+```
+Observation: There are 7 cases when dueComplete is TRUE and due date is later then dateLastActivity. There are 51 cases where dueComplete is FALSE and the due date is later than dateLastActivity
+
+#### Distribution of number of labels by type of last label
+```{r}
+cards %>% filter(numLabels==6)%>% select(lastLabel) %>% table() %>% sort(decreasing = T)
+cards %>% filter(numLabels==5)%>% select(lastLabel) %>% table() %>% sort(decreasing = T) %>% head(3)
+cards %>% filter(lastLabel=="adopted")%>% select(numLabels) %>% table() %>% sort(decreasing = T) %>% head(3)
+```
+Observations: 
+1. Number of labels range from 0 to 6. 
+2. There are 5 instances when label=6 and the corresponding last labels are: denied, manager decision, pet policy, questions, red flag
+3. There are 13 cases with nuber of labels =5 and the corresponding last albels are red flag, adopted elsewhere, and denied
+4. When the last label is adopted, the number of labels are either 1 (918 cases), 2 (198), or 3(18)
+

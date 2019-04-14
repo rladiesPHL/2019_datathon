@@ -1,0 +1,133 @@
+---
+title: "Initial data exploration"
+author: "Amy Goodwin Davies"
+always_allow_html: yes
+output:
+  github_document:
+    toc: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_knit$set(echo = T, message = F, warning = F, root.dir = "../../../")
+```
+
+
+# Our questions:
+
+* 2.1 How long does each step of an application take? (by animal species and PAWS location where available); i.e., from date of processing start, through checking off each checklist item, to the date and time when an animal was adopted.
+* 2.2 What are the applicant and animal characteristics that predict a speedy adoption?
+* 2.3 What are the applicant and animal characteristics that predict a denied application?
+* 2.4 Are there seasonal patterns to adoptions?
+* 2.5 What predicts an applicant who adopts elsewhere?
+
+Load packages
+
+```{r load_packages, echo = T,  message = F,  warning = T}
+library(tidyverse)
+library(lubridate)
+library(data.table)
+library(forcats)
+library(plyr)
+```
+
+Source helper function(s)
+
+```{r source_functions, echo = T,  message = F,  warning = T}
+source("Analyses/2_Applicants/helper_functions.R")
+```
+
+Load data
+
+```{r load_data, echo = T,  message = F,  warning = T}
+cat_actions <- read_csv("Data/cat_actions.csv")
+dog_actions <- read_csv("Data/dog_actions.csv")
+cat_cards <- read_csv("Data/cat_cards.csv")
+dog_cards <- read_csv("Data/dog_cards.csv")
+cat_apps <- read_csv("Data/cat_apps.csv")
+dog_apps <- read_csv("Data/dog_apps.csv")
+petpoint <- read_csv("Data/petpoint.csv")
+```
+
+# Actions
+
+Create checklist_names as a factor for each checklist name combination...
+
+```{r actions, echo = T,  message = F,  warning = T}
+actions <- rbind(cat_actions, dog_actions)
+actions$checklist_names <- ""
+actions$checklist_names <- as.character(actions$checklist_names)
+actions[actions$checklist_ACCT == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_ACCT == TRUE,]$checklist_names, "ACCT", sep = "/")
+actions[actions$checklist_CHQ == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_CHQ == TRUE,]$checklist_names, "CHQ", sep = "/")
+actions[actions$checklist_LL == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_LL == TRUE,]$checklist_names, "LL", sep = "/")
+actions[actions$checklist_PP == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_PP == TRUE,]$checklist_names, "PP", sep = "/")
+actions[actions$checklist_SPCA == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_SPCA == TRUE,]$checklist_names, "SPCA", sep = "/")
+actions[actions$checklist_TR == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_TR == TRUE,]$checklist_names, "TR", sep = "/")
+actions[actions$checklist_VET == TRUE,]$checklist_names <- 
+  paste(actions[actions$checklist_VET == TRUE,]$checklist_names, "VET", sep = "/")
+actions[actions$checklist_ACCT == FALSE &
+          actions$checklist_CHQ == FALSE &
+          actions$checklist_LL == FALSE &
+          actions$checklist_PP == FALSE &
+          actions$checklist_SPCA == FALSE &
+          actions$checklist_TR == FALSE &
+          actions$checklist_VET == FALSE,]$checklist_names <- "OTHER"
+actions$checklist_names <- trimws(gsub("^/", " ", actions$checklist_names))
+actions$checklist_names <- as.factor(actions$checklist_names)
+summary(actions$checklist_names)
+actions_summary <- ddply(actions, .(checklist_names, animal_type), summarise,
+                         count = length(checklist_names))
+ggplot(actions_summary, aes(x = fct_reorder(checklist_names, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE) +
+  facet_wrap(~ animal_type)
+```
+
+Make wide version of data (each row corresponds to unique data.card.id)...
+
+
+```{r actions_2, echo = T,  message = F,  warning = T}
+actions <- actions %>%
+  dplyr::arrange(date) %>%
+  dplyr::group_by(data.card.id) %>%
+  dplyr::mutate(new_checklist_seq_num = seq_along(date))
+wide_actions <- dcast(actions, formula = data.card.id + animal_type ~ new_checklist_seq_num, value.var = c("checklist_names"))
+nrow(wide_actions) == length(unique(actions$data.card.id))
+wide_actions <- wide_actions %>% mutate_if(is.character, as.factor)
+```
+
+# Cards
+
+```{r cards, echo = T,  message = F,  warning = T}
+cards <- rbind(dog_cards, cat_cards)
+head(cards)
+length(unique(cards$id)) == nrow(cards)
+```
+
+Create boolean variables for each label name...
+
+```{r cards_2, echo = T,  message = F,  warning = T}
+str(cards$label_names)
+summary(cards$label_names)
+length(unique(cards$label_names))
+label_names_tidy <- tidy_elements(cards, "label_names") # slow...
+cards <- label_names_tidy$output_df
+label_names_elements <- label_names_tidy$elements
+label_names_new_colnames <- label_names_tidy$new_colnames
+label_names_elements_summary <- label_names_tidy$elements_summary
+ggplot(label_names_elements_summary, aes(x = fct_reorder(label_names, count), y = count)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.25, position = "identity", size = 2.5) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  guides(fill=FALSE)
+label_names_elements
+label_names_new_colnames
+write_csv(cards, "Analyses/2_Applicants/amygood/output/cards_edited.csv")
+```

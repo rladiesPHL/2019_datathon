@@ -1,0 +1,242 @@
+---
+title: "MergedDataAnalysis-Adoption"
+author: "Ramaa Nathan"
+date: "3/21/2019"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+#  html_document
+knitr::opts_chunk$set(echo = TRUE)
+#options(knitr.table.format = "html") 
+library(tidyverse)
+library(lubridate)
+library(skimr)
+library(gtools)
+library(knitr)  #for outputting tables as kables
+library(caret)
+```
+
+```{r load}
+master <- readRDS("../masterapps_20190324.rds")
+dim(master)
+#colnames(master)
+#outcome_type contains the final status
+#are there any NA?
+anyNA(master$outcome_type)
+#What are the unique labels?
+unique(master$outcome_type)
+# All are only adoption
+
+#Find column names without ind
+#master %>% select(-ends_with("_ind")) %>% colnames()
+```
+
+#### Check the labels of the entries that correspond to adoption for any irregular patterns
+```{r }
+#master %>% select(-contains("_ind")) %>% str()
+#master %>% select(contains("_ind")) %>% str()
+
+unique(master$last_label)
+#master %>% select(trello_id, outcome_type,contains("label"))
+
+#check if any of the labels do not contain adopted
+master %>% 
+  filter(outcome_type == "Adoption") %>% 
+  filter(!str_detect(label_names,"adopted")) %>% 
+  select(trello_id, outcome_type,label_names) 
+## 28 entries found!
+
+#check if any of the labels do not contain "adopt" in any form
+master %>% 
+  filter(outcome_type=="Adoption") %>% 
+  filter(!str_detect(label_names,"adopt")) %>%
+  select(trello_id, outcome_type,label_names) 
+# there are four entries with no labels associated with label
+
+#check if there are no labels at all
+master  %>% 
+  filter(outcome_type=="Adoption") %>% 
+  filter(num_labels == 0) %>% 
+  select(trello_id,animal_type,label_names)
+# there are six total entries and fice unique entries with no labels
+
+#master  %>% filter(outcome_type=="Adoption") %>% filter(num_labels == 0) %>%  select(trello_id,label_names,date_submitted,outcome_date,starts_with("checklist")) 
+#master  %>% filter(outcome_type=="Adoption") %>% select(trello_id,starts_with("checklist")) 
+
+
+```
+#### Verify the animal_type column - a problem was detected here
+```{r}
+#check why we have animal.x and animal.y
+master %>% 
+  select(starts_with("animal_type")) %>% 
+  table()
+```
+
+### Plots for adopted
+```{r}
+master %>% 
+  filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=animal_type,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Species") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+master %>% 
+  filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=specific_animal,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Specific Animal") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=new_age_group,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Age Group of Animal") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=budget_monthly_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Monthly budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=budget_emergency_ranges,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Emergency budgets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home alone avg
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=home_alone_avg,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Average") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home alone max
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=home_alone_max,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Alone Maximum") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Adults at home
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=adults_in_home,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Number of Adults in Home") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### CHildren at home
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=children_in_home,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Number of Children in Home") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Experience
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=experience,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Experience with Pets") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Home Pet Policy
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=home_pet_policy,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Home Pet Policy") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Pet Return
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=return_pet,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Pet Return") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+### Allergies
+master %>% filter(outcome_type=="Adoption") %>%
+  ggplot(mapping=aes(x=allergies,col=animal_type,fill=animal_type)) +
+   geom_bar() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    labs(title = "Allergies") +
+   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+
+```
+
+#### Apply Random Forests to check for important varaibles
+```{r}
+master_mod <- master %>%
+  mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),1,0)) %>%
+  #mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type==1),1,0)) %>%
+  select(-c(trello_id,reason_for_adoption, all_household_agree, allergies, home_owner, all_household_agree, allergies,
+            experience, budget_monthly, budget_emergency,pet_kept,exercise,needs,return_pet),
+         -starts_with("budget."),
+         -starts_with("home.alone"),
+         -starts_with("checklist"),  #the type of check may not affect final adoption
+         -starts_with("label"),  #labels are not reliable
+         -starts_with("new.age"))
+
+## find columns with NA
+master_mod %>% skim() %>% 
+  filter(stat == "missing") %>% filter(value > 0) %>% 
+  kable(caption="Missing Entries in master_mod")
+```
+
+#### Impute the values
+All _ind columns should have either a 1 or 0. There is some bug in the convert_to_ind funtion what was used during merge that is creating NA in the _ind columns. Set them to 0.
+
+```{r}
+
+#replace all _ind NAs with 0
+
+master_mod <- master_mod %>%
+  mutate_at(vars(ends_with("_ind")),
+            funs(if_else(is.na(.), 0, .)))
+
+```
+
+
+#### Apply random forests
+```{r}
+#removing all NAs results in dataframe with 0 rows
+dim(na.omit(master_mod))
+
+master_pre_process <- preProcess(master_mod, "knnImpute")
+
+master_pre_processpred <- predict(master_pre_process, master_mod)
+
+inTrain <- createDataPartition(y = master_mod$adoption, p=0.7, list=FALSE)
+training <- master_mod[inTrain, ]
+testing <- master_mod[-inTrain,]
+dim(training)
+dim(testing)
+table(training$adoption)
+table(testing$adoption)
+rfFit <- train(adoption ~ .,
+               data = training,
+               method = "rf",
+               prox = TRUE,
+               importance = TRUE)
+#rffit
+#importance(rffit)
+```
+

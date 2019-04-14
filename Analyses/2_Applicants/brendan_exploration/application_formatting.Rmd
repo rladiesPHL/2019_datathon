@@ -1,0 +1,112 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(echo = T, message = F, warning = F, root.dir = " ")
+```
+
+```{r packages, echo = T,  message = F,  warning = F}
+library(dplyr)
+library(lubridate)
+```
+
+```{r scipen, echo = T,  message = F,  warning = F}
+# Turn off scientific notation 
+options(scipen=999)
+```
+
+```{r source_functions, echo = T,  message = F,  warning = F}
+# Source helper function(s)
+source("Analyses/2_Applicants/helper_functions.R")
+```
+
+```{r read_data, echo = T,  message = F,  warning = F}
+# Read data
+cat_apps <- read_csv("Data/cat_apps.csv")
+dog_apps <- read_csv("Data/dog_apps.csv")
+
+# Format into single dataset and rename
+cat_apps$animal_type <- "cat"
+dog_apps$animal_type <- "dog"
+
+apps <- rbind(cat_apps, dog_apps)
+
+apps_clean <- apps
+
+```
+
+```{r format}
+# get list of columns to batch convert to factor
+factor_cols <- c("animal_type", "home_owner", "home_pet_policy", "STATEFP", "COUNTYFP",
+                 "TRACTCE", "GEOID", "NAME", "NAMELSAD", "MTFCC", "FUNCSTAT", "ALAND", 
+                 "AWATER", "City", "State", "ZIP")
+
+# Format columns
+apps_clean_test <- apps_clean %>%
+  dplyr::select(-X1) %>%
+  dplyr::filter(!is.na(outcome_trello_id)) %>%
+  dplyr::mutate(date_submitted = lubridate::mdy(date_submitted),
+                deal_adoption_timeline = as.factor(gsub("next-few-weeks", "few-weeks", ideal_adoption_timeline)),
+                adults_in_home = as.numeric(word(gsub("-", "", adults_in_home), 1)),
+                children_in_home = as.numeric(word(gsub("-", "", children_in_home), 1)),
+                all_household_agree = gsub("it-s-a-surprise", "a-surprise", all_household_agree),
+                home_pet_policy = gsub("no-yet", "not-yet", home_pet_policy),
+                home_pet_policy = case_when(
+                  home_pet_policy == "not-applicable" | home_pet_policy == "n-a" ~ NA_character_, #should we keep this as "not applicable"?
+                  TRUE ~ home_pet_policy),
+                budget_monthly = as.numeric(gsub("[$]|[(]|[)]|,|-", "", budget_monthly)),
+                budget_emergency = as.numeric(gsub("[$]|[(]|[)]|,|-", "", budget_emergency)),
+                home_alone_avg = as.numeric(trimws(gsub("h", "", home_alone_avg))),
+                home_alone_max = as.numeric(trimws(gsub("h", "", home_alone_max))),
+                pet_kept = gsub("unsupervised-access-to-my-yard-9doggie-door-etc",
+                                "unsupervised-access-to-my-yard-doggie-door-etc",
+                                pet_kept),
+                NAMELSAD = trimws(gsub("Census Tract", "", NAMELSAD)),
+                ZIP = str_extract(ZIP, "^.{5}"),
+                City = toupper(City),
+                City = gsub("[.]|[,]| PA", "", City),
+                City = trimws(gsub("  ", " ", City)),
+                City = gsub("MT ", "MOUNT ", City),
+                City = gsub("19010", "BRYN MAWR", City),
+                City = gsub("ABINGDON", "ABINGTON", City),
+                City = gsub("E LANSDOWNE", "EAST LANSDOWNE", City),
+                City = gsub("PHILLY|FILADELFIA|PHILIDELPHIA|PHIMADELPHIA", "PHILADELPHIA", City),
+                City = case_when(
+                  startsWith(City, "PHILA") ~ "PHILADELPHIA",
+                  TRUE ~ City)
+                ) %>%
+  dplyr::mutate_at(factor_cols, funs(factor(.)))%>%
+  rename_all(tolower)
+
+
+# Apply Amy's tidy_labelnames function 
+reason_for_adoption_tidy <- tidy_labelnames(apps_clean_test, "reason_for_adoption")
+apps_clean_test <- reason_for_adoption_tidy$output_df
+
+all_household_agree_tidy <- tidy_labelnames(apps_clean_test, "all_household_agree")
+apps_clean_test <- all_household_agree_tidy$output_df
+
+allergies_tidy <- tidy_labelnames(apps_clean_test, "allergies")
+apps_clean_test <- allergies_tidy$output_df
+
+experience_tidy <- tidy_labelnames(apps_clean_test, "experience")
+apps_clean_test <- experience_tidy$output_df
+
+pet_kept_tidy <- tidy_labelnames(apps_clean_test, "pet_kept")
+apps_clean_test <- pet_kept_tidy$output_df
+
+exercise_tidy <- tidy_labelnames(apps_clean_test, "exercise")
+apps_clean_test <- exercise_tidy$output_df
+
+return_pet_tidy <- tidy_labelnames(apps_clean_test, "return_pet")
+apps_clean_test <- return_pet_tidy$output_df
+
+how_heard_tidy <- tidy_labelnames(apps_clean_test, "how_heard")
+apps_clean_test <- how_heard_tidy$output_df
+
+```
+
