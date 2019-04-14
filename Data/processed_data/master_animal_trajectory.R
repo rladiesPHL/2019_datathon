@@ -1,6 +1,7 @@
 # script to create master_animal ----
 
 library(tidyverse)
+library(forcats)
 library(lubridate)
 
 # FUNCTIONS -----
@@ -117,14 +118,20 @@ all_indicators <-
     left_join(convert_to_ind(apps, "pet_kept")) %>% 
     left_join(convert_to_ind(apps, "clean_exercise")) %>% 
     left_join(convert_to_ind(apps, "needs")) %>% 
-    left_join(convert_to_ind(apps, "clean_return"))
+    left_join(convert_to_ind(apps, "clean_return")) %>% 
+    rename_all(funs(str_replace(., "clean.", ""))) %>% 
+    mutate(return_ind = as.numeric(return_none_ind == 0)) %>% 
+    select(-return_none_ind)
 
 # MASTER_ANIMAL master dataset for animal trajectory group ----
 master_animal <-
     petpoint %>% 
     left_join(actions_wide) %>% 
     left_join(apps) %>% # has a few dupes
-    left_join(all_indicators)
+    left_join(all_indicators) %>% 
+    select(-matches("^(needs|return|reason|experience|exercise|pet_kept)$"),
+           -matches("clean_")) %>% 
+    select(id, everything())
 
 write.csv(master_animal, "Data/processed_data/master_animal.csv", row.names = FALSE)
 
@@ -148,4 +155,3 @@ ggplot(indicator_summary, aes(value, n, fill = species)) +
     facet_wrap(~field, scales = "free_y") +
     scale_fill_manual(values = c("grey60", "orange")) +
     coord_flip()
-
