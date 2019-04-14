@@ -1,0 +1,276 @@
+---
+title: "PAWS Datathon Submission Form"
+author: "R-Ladies"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.width = 4,
+                      fig.height = 4,
+                      warning=F)
+```
+
+```{r include=F, warning=F}
+library(ggthemr)
+library(tidyverse)
+```
+
+```{r include=F, warning=F}
+# Set some themes for plotting
+ggthemr('fresh')
+```
+
+## Executive Summary
+
+* @phillypaws tweets were analyzed to understand any patterns in twitter activity and whether that could be linked to application or pet information
+* No strong trends or observations were gained, but it was fun to look at the data
+* We did not see a strong association between twitter activity and applications
+* We identified the most commonly tweeted words such as "home", "adoption", and "meet"
+* We found that tweets with photos were more often favorited and retweeted
+
+
+## Contributors
+
+**Alice M Walsh, PhD** is a computational biologist in the pharmaceutical industry. She enjoys analyzing patient data and trying to make informed decisions using data. She also enjoys walking and training her dog, Pebbles.
+
+## Problem definition and dataset
+
+We examined the data from the PAWS twitter account, @phillypaws. We used the twitter API to download the most recent 3200 tweets, which included all tweets from 2018. Quotes and retweets were not excluded from the dataset.
+
+## Results
+
+```{r}
+# Load in data - previously pulled with rtweet package
+tweets <- readRDS('tweets_13FEB2019.Rds')
+# Let's focus on 2018 to match other datasets
+tweets_18 <- filter(tweets, created_at < as.Date("2019-01-01"), created_at > as.Date("2018-01-01"))
+```
+
+```{r}
+tweets %>% 
+  mutate(created_day = lubridate::floor_date(created_at, unit = "day")) %>% 
+  count(created_day) %>% 
+  ggplot(aes(x=created_day, y=n)) + 
+  geom_line() + 
+  theme_bw() + 
+  ggtitle("Volume of recent @phillypaws tweets")
+
+```
+
+```{r}
+# Let's count tweets by day-of-the-week, week, month, and look for trends
+# Plot by week:
+tweets_18 %>% 
+  mutate(week = lubridate::floor_date(created_at, unit = "week")) %>% 
+  group_by(week) %>% 
+  summarise(favorites = sum(favorite_count),
+            tweets = n(),
+            retweets = sum(retweet_count)) %>% 
+  gather(metric, total, favorites:retweets) %>% 
+  ggplot(aes(x=week, y=total)) + 
+  geom_col() +
+  facet_grid(metric~., scales = "free") +
+  theme_bw() + 
+  ggtitle("2018 @phillypaws stats by week")
+
+```
+
+```{r}
+# Plot by month:
+tweets_18 %>% 
+  mutate(month = lubridate::floor_date(created_at, unit = "month")) %>% 
+  group_by(month) %>% 
+  summarise(favorites = sum(favorite_count),
+            tweets = n(),
+            retweets = sum(retweet_count)) %>% 
+  gather(metric, total, favorites:retweets) %>% 
+  ggplot(aes(x=month, y=total)) + 
+  geom_col() +
+  facet_grid(metric~., scales = "free") +
+  theme_bw() + 
+  ggtitle("2018 @phillypaws stats by month")
+
+
+```
+
+```{r}
+# Plot by day-of-the-week:
+tweets_18 %>% 
+  mutate(weekday = weekdays(created_at)) %>%
+  mutate(weekday = factor(weekday, 
+                               levels = c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"))) %>% 
+  group_by(weekday) %>% 
+  summarise(favorites = sum(favorite_count),
+            tweets = n(),
+            retweets = sum(retweet_count)) %>% 
+  gather(metric, total, favorites:retweets) %>% 
+  ggplot(aes(x=weekday, y=total)) + 
+  geom_col() +
+  facet_grid(metric~., scales = "free") +
+  theme_bw() + 
+  ggtitle("2018 @phillypaws stats by weekday")
+
+```
+
+```{r}
+# Compare twitter activity to application activity?
+cat_apps <- read.csv('../../Data/cat_apps.csv', 
+                     na.strings = c(" ","","na","NA"), stringsAsFactors = F)%>% 
+  janitor::clean_names() %>% 
+  mutate(date_submitted = as.Date(date_submitted, "%m/%d/%Y"))
+
+dog_apps <- read.csv('../../Data/dog_apps.csv', 
+                     na.strings = c(" ","","na","NA"), stringsAsFactors = F)%>% 
+  janitor::clean_names() %>% 
+  mutate(date_submitted = as.Date(date_submitted, "%m/%d/%Y"))
+
+compare_cat_apps <- cat_apps %>% 
+  count(date_submitted) %>% 
+  mutate(type = "cat_apps") %>% 
+  rename(created_day = date_submitted)
+
+compare_dog_apps <- dog_apps %>% 
+  count(date_submitted) %>% 
+  mutate(type = "dog_apps") %>% 
+  rename(created_day = date_submitted)
+
+compare_tweets <- tweets_18 %>% 
+  mutate(created_day = lubridate::floor_date(created_at, unit = "day")) %>% 
+  filter(created_day >= min(compare_cat_apps$created_day)) %>% 
+  count(created_day) %>% 
+  mutate(type = "tweets") 
+
+compare_days  <- rbind(compare_tweets, compare_cat_apps, compare_dog_apps)
+
+```
+
+```{r}
+# Line by day
+compare_days %>% 
+  group_by(type) %>% 
+  mutate(percent = n/sum(n) * 100) %>% 
+  ggplot(aes(x=created_day, y=percent, color=type)) + 
+  geom_line() + 
+  theme_bw()+
+  ggtitle("Frequency of applications and tweets \nby day")
+
+# Line by week
+compare_days %>% 
+  # remove the short week - 2018-08-26 and 2018-12-30
+  filter(created_day > as.Date("2018-09-02"), created_day < as.Date("2018-12-30")) %>% 
+  mutate(week = lubridate::floor_date(created_day, unit = "week")) %>% 
+  group_by(type, week) %>% 
+  summarise(total = sum(n)) %>% 
+  mutate(percent = total/sum(total) * 100) %>% 
+  ggplot(aes(x=week, y = percent)) + 
+  # geom_bar(aes(fill = type), position="dodge", stat = "identity") +
+  geom_line(aes(color = type))+
+  theme_bw() +
+  ggtitle("Frequency of applications and tweets \nby week")
+
+# Scatter plot grouped by week
+compare_days %>% 
+  # remove the short week - 2018-08-26 and 2018-12-30
+  filter(created_day > as.Date("2018-09-02"), created_day < as.Date("2018-12-30")) %>% 
+  mutate(week = lubridate::floor_date(created_day, unit = "week")) %>% 
+  group_by(type, week) %>% 
+  summarise(total = sum(n)) %>% 
+  ungroup() %>% 
+  tidyr::spread(key = type, value = total) %>% 
+  tidyr::gather(app_type, apps, cat_apps:dog_apps) %>% 
+  ggplot(aes(x=tweets, y = apps, color=app_type)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~app_type) +
+  theme_bw() +
+  ggtitle("Applications by tweets\nNumber per week")
+
+```
+
+```{r}
+# What are the top words in all the tweets?
+# Wrote a function to plot for a given dataset
+# thanks to https://www.williamrchase.com/post/is-hadley-wickham-a-cat-or-dog-person-a-twitter-tidytext-analysis/
+source('alice_plot_top_words.R')
+
+# plot_top_words(tweets)
+plot_top_words(tweets_18) + ggtitle("@phillypaws 2018 tweets\nWord frequency") + theme_bw() + xlab("") + ylab("") + theme(text = element_text(size=16))
+
+```
+
+```{r}
+
+tweets_18 %>% 
+  mutate(has_photo = !is.na(media_type)) %>% 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = has_photo)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  ylab("Count") + xlab("") + 
+  ggtitle("Tweets with photos \nare liked and retweeted more")
+```
+
+```{r}
+# Merge in cat/dog predictions
+pred_img <- readRDS('alice_predict.Rds')
+pred_img <- pred_img %>% 
+  mutate(status_id = gsub(".jpg","",gsub("predict/","",filenames)))
+
+tweets_pred <- tweets %>% 
+  left_join(pred_img, by = "status_id") %>% 
+  mutate(has_photo = !is.na(media_type)) %>% 
+  # filter(has_photo == T) %>% 
+  mutate(animal_type = case_when(
+    predict < 0.2 ~ "cat",
+    predict > 0.9 ~ "dog",
+    is.na(predict) ~ "no photo",
+    TRUE ~ "other"
+  ),
+  animal_text = case_when(
+    grepl("cat|kitten|Cat|Kitten", text) ~ "cat",
+    grepl("dog|pup|Dog|Pup", text) ~ "dog",
+    TRUE ~ "other"
+  )) %>% 
+  filter(is_quote == F, is_retweet == F)
+
+
+tweets_pred %>% 
+  filter(animal_type %in% c("cat","dog")) %>%
+  # filter(retweet_count < 200) %>% 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = animal_type)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  scale_y_continuous(trans = "log2") +
+  # ylim(c(0,100)) + 
+  ylab("Count") + xlab("") + 
+  ggtitle("Tweets with cat photos \nare retweeted more")
+
+tweets_pred %>% 
+  # filter(animal_type %in% c("cat","dog")) %>%
+  # filter(retweet_count < 200) %>% 
+  gather(metric, count, favorite_count:retweet_count) %>% 
+  mutate(metric = gsub("_count","",metric)) %>% 
+  ggplot(aes(x=metric, y=count, fill = animal_text)) +
+  geom_point(pch=21, size=1,
+             position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0)) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA) + 
+  # ylim(c(0,100)) +
+  scale_y_continuous(trans = "log2") + 
+  ylab("Count") + xlab("") + 
+  ggtitle("Tweets with cat text \nare retweeted more")
+
+```
+
+## Conclusions and Next Steps
+
+Keep on tweeting! If someone wanted to dig deeper into this data, they could:
+
+* Perform better image analysis on photos tweeted
+* Try to link tweets about certain topics (a specific animal, request for donations) to specific outcomes (did the animal get adopted? did they receive more donations?)
