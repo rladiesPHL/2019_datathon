@@ -357,8 +357,6 @@ all.geo <- all.geo[complete.cases(all.geo),]
 
 x <- model.matrix(efficient ~., data = all.geo)
 x <- x[,-1]
-
-set.seed(10001)
 cvfit <- cv.glmnet(x, all.geo$efficient, type.measure = 'mse', nfolds=5, alpha=.5)
 c <- coef(cvfit, s='lambda.min', exact=TRUE)
 inds <- which(c!=0)
@@ -424,8 +422,6 @@ qtm(all.geo.spatial, fill = "map.resids")
 Let's run a geographically weighted regression. 
 
 ```{r}
-
-set.seed(10002)
 GWRbandwidth <- gwr.sel(m, data=all.geo.spatial,adapt=T)
 
 gwr.model = gwr(m, data=all.geo.spatial, 
@@ -440,16 +436,6 @@ qtm(gwr.map, fill = "localR2")
 ```
 
 ```{r}
-
-# map outcome variable
-tm_shape(gwr.map) + 
-    tm_fill("efficient", n = 4, style = "fixed", breaks = c(0, .33,.67,1), title = "Efficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
-                                                                                                            legend.title.size = 0.6)
-# rplot004
-```
-
-
-```{r}
 lm.coeffs <- as.data.frame(summary(model)$coefficients)
 
 var <- "HC02_EST_VC20_comp"
@@ -459,9 +445,9 @@ print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 tm_shape(gwr.map) + tm_fill(paste0(var), n = 5, style = "quantile", title = "Raw data") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
                                                                                                             legend.title.size = 0.6)
 # map coefficients
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
                                                                                                             legend.title.size = 0.6)
-# saved as rplot001a.png
+# saved as rplot01.png
 ```
 
 The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a predictor (trend) of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of people who have a cell data plan and no other type of internet subscription, the lower the proportion of efficient applications. This effect is more pronounced in north and northeast Philly. 
@@ -471,20 +457,11 @@ var <- "HC02_EST_VC34_educ"
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 # draw map
 
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
 #saved as rplot02.png
 ```
 
 The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of the population 25 to 34 year old who are enrolled in school, the higher the proportion of efficient applications. 
-
-```{r}
-var <- "HC02_EST_VC02_educ"
-print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
-# draw map
-
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
-#saved as rplot001c.png
-```
 
 
 ### Cats
@@ -507,7 +484,6 @@ all.geo <- all.geo[complete.cases(all.geo),]
 x <- model.matrix(efficient ~., data = all.geo)
 x <- x[,-1]
 
-set.seed(10001)
 cvfit <- cv.glmnet(x, all.geo$efficient, type.measure = 'mse', nfolds=5, alpha=.5)
 c <- coef(cvfit, s='lambda.min', exact=TRUE)
 inds <- which(c!=0)
@@ -564,8 +540,6 @@ HC02_EST_VC06_educ is the only significant variable.
 
 ```{r}
 library("spgwr")
-
-set.seed(10001)
 GWRbandwidth <- gwr.sel(m, data=all.geo.spatial,adapt=T)
 
 gwr.model = gwr(m, data=all.geo.spatial, 
@@ -580,38 +554,19 @@ gwr.map <- cbind(all.geo.spatial, as.matrix(results))
 qtm(gwr.map, fill = "localR2")
 ```
 
-
-```{r}
-tm_shape(gwr.map) + 
-    tm_fill("efficient", n = 4, style = "fixed", breaks = c(0, .33,.67,1), title = "Efficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
-
-# saved as rplot005.png
-
-```
-
-
 ```{r}
 lm.coeffs <- as.data.frame(summary(model)$coefficients)
 
 var = 'HC02_EST_VC06_educ'
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 5, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
 
 # saved as rplot03.png
 
 ```
 
 The variable `r as.character(census.descr$descr[which(census.descr$select.vars==var)])` is a significant predictor of proportion of applications that are processed efficiently (10 days or less). Specifically, the higher the percentage of kids enrolled in grades 5-8, the lower the proportion of efficient applications. This effect seems to be more noticeable in the northeast.
-
-```{r}
-# map outcome variable
-tm_shape(gwr.map) + 
-    tm_fill("efficient", n = 4, style = "quantile", title = "Efficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
-                                                                                                            legend.title.size = 0.6)
-# rplot004
-
-```
 
 ```{r}
 lm.coeffs <- as.data.frame(summary(model)$coefficients)
