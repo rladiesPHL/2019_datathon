@@ -1,0 +1,65 @@
+---
+title: "Data Processing Challenges and Recommendations"
+author: "R-Ladies Philadelphia"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executive Summary
+<span style="color:gray">*This section should have up to 5 bullet points summarizing the main conclusions from the analysis. These should be worded in such a way that PAWS management can easily understand what actios would be beneficial. It can be a shorter version of the conclusions section below.*</span>
+
+## Data Processing Challenges
+
+Over the course of preparing the data for anlysis, and analyzing the data, we encountered several challenges that should be considered when interpreting these data.
+
+### 1. Extracting Trello data is limited by the Trello API
+
+Trello data on cards and actions was extracted via an API call. Extracting action data about each card (e.g. card creation, checklist items added, checklist items checked off, comments added, label change, board change, etc.) is limited in the API call to 1000 records, which makes extracting the complete dataset a challenge due to its size (thousands of cards, each with 10+ actions). We therefore limited the data we pulled from Trello to just **create card** and **updates to checklist items**, and pulled these data in 2-week chunks for all of 2018. This is fairly time consuming and is not optimal for one large data pull (rather, this is set up for frequent and very specific data requests from Trello). PAWS should consider whether Trello data is important for ongoing or regular analyses, and then specify very clearly which variables from Trello should be requested via API for analysis. 
+
+### 2. Online application forms for cats and dogs are not consistent
+
+It is clear from reading the application forms for cats and dogs that the items across these two forms are almost identical. However, the following problems were found:
+
+1. Even though the question has the same meaning, the phrasing is different between cats and dogs, e.g.:
+
+- dogs: "I am interested in a specific *pet*"
+- cats: "I am interested in a specific *cat*"
+
+This makes it impossible to automate the mapping of this same question across dog and cat applications, and essentially requires a human to create this mapping. A more efficient way to collect this information would be to have only 1 application, that presents specific questions depending on the type of animal that is desired. 
+
+2. The answer options provided have different wording in cat vs. dog apps, even though they mean the same thing. E.g. "Who owns your home?"
+
+- dog: "Myself", "A friend/family member", "Landlord"
+- cat: "Myself", "A family member/friend (please list their name below)", "A company"
+
+A computer is therefore unable to determine that these options essentially are the same. 
+
+### 3. Online applications allow free text entry where a numeric answer is desirable
+
+This creates a problem for analysis because many people are inclined to add explanations to the numbers, e.g. "2 but 1 of my nieces also lives with us occasionally"  (not a real example) which then requires a human to decide what the applicant meant. A more efficient way to collect this information is to require a numeric entry. 
+
+Additionally, allowing free text entry means there is a possibility that applicants will sprinkle their personal identifiable information in text fields other than those intended for collecting this info. If PAWS wants to make data available again to a group publicly for analysis, this data needs to be carefully reviewed to ensure that personal information is protected. This risk could be minimized by enforcing stricter formats on the online form. 
+
+### 4. Answer options in online applications are not easy to categorize
+
+For instance, the question "what is your experience with pets" might indicate that, based on the answers, an applicant could fall somehwere on the continuum between "no experience" and "very experienced". However, it is not immediately clear from the answer choices where the applicant is. A clearer translation of answer choices to categories could help determine more easily whether an applicant is a good fit for a given dog, or whether an experienced staff member needs to process a given application. 
+
+### 5. Matching online applications data, with trello cards and petpoint data is a manual process
+
+This is the case for several reasons: 
+
+1. There is no unique ID that can be used to match these datasets. Therefore, a person's name must be used.
+
+2. Trello cards are not guaranteed to have a consistent naming convention
+
+Typically, these start with an applicant's first name and last name, but sometimes include a nickname, sometimes include the animal the applicant is applying for, and sometimes these include notes from application processing (e.g. VET CALL). Lack of an identifiable structure in trello cards results in the need for a person to inspect each record. 
+
+3. Sometimes one person has multiple Trello cards
+
+This is either because the person applied multiple times, or in multiple locations, or because the person is both an adopter, a foster, and a volunteer. Sometimes multiple applications are processed under the same trello card, and sometimes multiple applications result in multiple cards for the same adopter. The rules for this process are unclear, which then requires a human to assess what the best course of action is. For more efficient data processing, it would be ideal to have only 1 entry per person, where roles and applications can be recorded over time. 
+
+### 6. Trello cards' labels do not have a clear category structure
