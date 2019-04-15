@@ -6,7 +6,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
               "caret", "kableExtra")
@@ -399,7 +399,7 @@ apps_cards <- apps_with_indicators %>%
 
 ##Analysis of Time in Processing Applications
 
-### How Animal & Outcome Site Influence Appiclation Timelines
+### How Animal & Outcome Site Influence Application Timelines
 
 Application timelines were measured by taking the difference between the time an application was submitted and the time that application resulted in an adoption. Only applications that resulted in adoption were assessed; applications that were denied were not included in the analysis. This is a potential area of further investigation. 
 
@@ -864,9 +864,6 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
 ```
 
 Most of the people who adopted a pet had no allergies.
-
-
-###Affecting Decline
 
 ##Denied and Red Flagged Applications
 
