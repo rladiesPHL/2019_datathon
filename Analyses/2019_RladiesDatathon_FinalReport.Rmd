@@ -6,12 +6,27 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8, message = FALSE, warning = FALSE)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
-              "caret")
+              "caret", "kableExtra")
 invisible(lapply(packages, require, character.only = TRUE))
+```
 
+```{r ggplot theme, echo = FALSE}
+theme_report <- function () { 
+  theme_bw(base_size = 10) %+replace% 
+    theme(
+      axis.title.x = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      axis.title.y  = element_text(face="bold", angle=90, margin = margin(0, 5, 0, 5)),
+      axis.text.y  = element_text(hjust = 0.95),
+      plot.title = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      legend.text = element_text(margin = margin(5, 0, 5, 0)),
+      legend.title = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      strip.text.x = element_text(margin = margin(7, 0, 7, 0)),
+      strip.text.y = element_text(angle=90, margin = margin(0, 7, 0, 7))
+    )
+}
 ```
 
 # Executive Summary
@@ -156,7 +171,7 @@ clean_city <- function(colname) {
 
 As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. For data pre-processing, the following steps were particularly important:
 
-* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks").
+* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks"). (See further discussion of this issue in the *Data Issues affecting Analyses* section)
 * For `children_in_home` and `adults_in_home`, ignoring "-" by taking the absolute value and replacing absurd values with NA (we replaced values greater than 15 with NAs).
 * Capping `budget_monthly` and `budget_emergency` at $10000 and $20000 respectively.
 * Addressing spelling variations in the `City` variable. For example, replacing the strings "PHILLY", "FILADELFIA", "PHILIDELPHIA", "PHIMADELPHIA", "PHIALADELPHIA", "PHIALDELPHIA", "PHILDELPHIA" with "PHILADELPHIA".
@@ -235,16 +250,16 @@ Our cleaned applications dataset contained 1906 rows, 1594 unique trellos ids an
 ```{r include = FALSE}
 nrow(apps_with_indicators)
 length(unique(apps_with_indicators$trello_id))
-min(apps_with_indicators$date_submitted)
-max(apps_with_indicators$date_submitted)
+min(apps_with_indicators$date_submitted) - max(apps_with_indicators$date_submitted)
 ```
 
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 apps_with_indicators %>% 
   ggplot(aes(x = date_submitted, fill = animal_type)) +
-  geom_histogram() +
-  facet_wrap(~animal_type)
+  geom_histogram(alpha = 0.5) +
+    theme_report() +
+    scale_x_date(date_breaks = "2 weeks")
 ```
 
 
@@ -345,9 +360,36 @@ petpoint_with_indicators <- petpoint %>%
 # petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
 ```
 
-To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. We also created another dataset comprised of the applications dataset and the cards dataset for analysing denied and red-flagged applications.
+To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. One issue we encountered was that the date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively).
 
-```{r echo = TRUE, message = FALSE, warning = FALSE}
+```{r include = FALSE}
+max(apps_with_indicators$date_submitted) - min(apps_with_indicators$date_submitted)
+max(as_date(actions$date_start)) - min(as_date(actions$date_start))
+max(as_date(petpoint$outcome_date)) - min(as_date(petpoint$outcome_date))
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+apps_dates <- cbind(as.character(apps_with_indicators$date_submitted), rep("apps", length(apps_with_indicators$date_submitted)))
+actions_dates <- cbind(as.character(actions$date_start), rep("actions", length(actions$date_start)))
+petpoint_dates <- cbind(as.character(petpoint$outcome_date), rep("petpoint", length(petpoint$outcome_date)))
+all_dates <- as.data.frame(rbind(apps_dates, actions_dates, petpoint_dates))
+names(all_dates)[1] <- "Date"
+names(all_dates)[2] <- "Dataset"
+all_dates$Date <- as_date(all_dates$Date)
+
+all_dates %>% 
+  ggplot(aes(x = Date, fill = Dataset)) +
+  geom_histogram(alpha = 0.7, binwidth = 7) +
+    theme_report() +
+    scale_x_date(date_breaks = "8 weeks") +
+    geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
+    geom_vline(xintercept = max(apps_with_indicators$date_submitted), colour = "black")
+```
+
+Similar data-preprocessing steps as we took for the applications dataset were taken for the actions, cards, and petpoints datasets. For the actions dataset, it was important for us to change the format of the data so each row represented a single `trello id` (prior to this each `checklist_item` for single `trello_id` had a separate row). For the purpose of analysing the denied and red-flagged applications, we created another dataset comprised of the applications and the cards datasets.
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Still don't know what the discrepancy is due to 
 master_apps_report <- apps_with_indicators %>%
   filter(!is.na(trello_id)) %>%
   left_join(actions) %>%
@@ -369,10 +411,10 @@ masterapps_20190324 <- masterapps_20190324 %>%
                                        levels=c("<25","26-100","101-200","201-500","501-1000","1001-5000",">5000","NA"),
                                        ordered=TRUE))
 
-setdiff(colnames(master_apps_report), colnames(masterapps_20190324))
-dim(master_apps_report)
-dim(masterapps_20190324)
-identical(master_apps_report, masterapps_20190324)
+# setdiff(colnames(master_apps_report), colnames(masterapps_20190324))
+# dim(master_apps_report)
+# dim(masterapps_20190324)
+# identical(master_apps_report, masterapps_20190324)
 ```
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
@@ -383,7 +425,7 @@ apps_cards <- apps_with_indicators %>%
 
 ##Analysis of Time in Processing Applications
 
-### How Animal & Outcome Site Influence Appiclation Timelines
+### How Animal & Outcome Site Influence Application Timelines
 
 Application timelines were measured by taking the difference between the time an application was submitted and the time that application resulted in an adoption. Only applications that resulted in adoption were assessed; applications that were denied were not included in the analysis. This is a potential area of further investigation. 
 
@@ -392,7 +434,7 @@ In general, cat applications typically take longer than dog applications. The ch
 ```{r kc_timeline_boxplot_animal, echo=FALSE, fig.height=3, fig.width=8, fig.align = "center"}
 
 # boxplot of adoption_time by animal
-masterapps_20190324 %>%
+master_apps_report %>%
   filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
   
   ggplot(aes(x = animal_type, y = adoption_time, fill = animal_type)) +                 # break out checklist_item by cat & dog
@@ -420,7 +462,7 @@ The outcome site for an adoption also influences the timeline of an application.
 
 ```{r kc_heatmap_data, include=FALSE }
 # isolate the data that is related to both outcome site & animal type
-site_animal_df <- masterapps_20190324 %>%
+site_animal_df <- master_apps_report %>%
   drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
   filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
   group_by(outcome_sitename, animal_type) %>%                     # before calculations, group data by outcome site
@@ -468,7 +510,7 @@ collapse_rows_df <- function(df, variable){
 }
 
 # get count of each animal at each outcome_site
-site_count <- masterapps_20190324 %>%
+site_count <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   drop_na(outcome_sitename) %>%
   group_by(outcome_sitename, animal_type) %>%
@@ -487,18 +529,30 @@ site_animal_join <- left_join(site_animal_df, site_count)
 
 ``` {r kc_table_site, echo=FALSE, fig.width=6}                                               
 # drop the "combined" column and rename columns for formatting
-site_animal_join %>%
+# site_animal_join %>%
+#   mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
+#   select(-c(mean, combined)) %>%
+#   select(outcome_sitename, animal_type, n, median) %>%
+#   rename("median adoption time" = "median") %>%
+#   drop_na(outcome_sitename) %>%
+#   collapse_rows_df(outcome_sitename) %>% 
+#   
+#   
+#   formattable(align =c("l","l","c","c"), list(
+#   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
+#   `median adoption time`= color_tile("#FFFFFF", "#FFFFFF")))
+
+kc_table_site <- site_animal_join %>%
   mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
   select(-c(mean, combined)) %>%
   select(outcome_sitename, animal_type, n, median) %>%
   rename("median adoption time" = "median") %>%
   drop_na(outcome_sitename) %>%
-  collapse_rows_df(outcome_sitename) %>% 
-  
-  
-  formattable(align =c("l","l","c","c"), list(
-  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
-  `median adoption time`= color_tile("#FFFFFF", "#FFFFFF")))
+  collapse_rows_df(outcome_sitename)
+
+kable(kc_table_site, "latex", booktabs = T,
+      align =c("l","l","c","c")) %>% 
+    kable_styling(full_width = F)
 ```
 
 From the heatmap and table above, it's clear that overall average adoption times were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places 
@@ -518,7 +572,7 @@ Only one site had a higher median adoption time for dogs than for cats—Grays F
 
 ```{r checklist_boxplot, echo=FALSE, fig.align="center", fig.height=5, fig.width=10, warning=FALSE}
 #  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
-masterapps_20190324 %>%
+master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%                       # flatten checklist rows into one column (called "checklist_item") and corresponding values into one column (called "values")
   
@@ -546,7 +600,7 @@ The chart above removed significant outliers, but further inspection of these ou
 
 ```{r checklist_site_animal_data, echo=FALSE}
 # isolate the data that is related to checklist items for adoptions
-checklist_calcs <- masterapps_20190324 %>%
+checklist_calcs <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -557,7 +611,7 @@ checklist_calcs <- masterapps_20190324 %>%
   rename("median days from last item" = "median") 
 
 # get the count of each checklist item occurrence
-checklist_count <- masterapps_20190324 %>%
+checklist_count <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -575,24 +629,29 @@ checklist_df <- merge(checklist_count, checklist_calcs, by = "checklist_item", a
 
 ```{r checklist_site_animal_table, echo=FALSE}
 # put the table into formattable
-formattable(checklist_df, align =c("l","c","c","c"), list(
-  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
-  `mean days from last item`= color_tile("#FFFFFF", "#FFFFFF"),
-  `median days from last item`= color_tile("#FFFFFF", "#FFFFFF")))
+# formattable(checklist_df, align =c("l","c","c","c"), list(
+#   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+#   `mean days from last item`= color_tile("#FFFFFF", "#FFFFFF"),
+#   `median days from last item`= color_tile("#FFFFFF", "#FFFFFF")))
+
+kable(checklist_df, "latex", booktabs = T, align =c("l","c","c","c")) %>% 
+  kable_styling(full_width = F)
 ```
 
 The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
 ```{r Adoption, echo=FALSE}
-masterapps_20190324 %>% 
+master_apps_report %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
-   geom_bar() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+   geom_bar(position = "dodge", width = 0.9) +
     labs(title = "Specific Animal") +
     xlab("Chose Specific Animal") +
     scale_fill_discrete(name = "Adoption Status") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..), stat='count',
+             position = position_dodge(width = 0.9),
+             vjust = -0.3) +
+    theme_report()
 ```
 
 When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
@@ -600,14 +659,17 @@ When applicants requested a specific type of animal, 30% of applications resulte
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
+master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Monthly budgets") +
     xlab("Monthly Budget for Pet") +
+    ylim(0,160) +
     scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 
@@ -616,14 +678,17 @@ Most of the applicants who adopted a pet had allocated a monthly budget of less 
 
 ```{r, echo=FALSE}
 ### Home alone avg
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Alone Average") +
     xlab("Averge Number of Hours Alone Per Day") +
     scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    ylim(0,80) +
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
@@ -631,14 +696,17 @@ Applicants who expected to leave the animal alone at home for longer hours chose
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
   labs(title = "Number of Adults in Home") +
   xlab("Number of Adults at Home") +
+    ylim(0,170) +
   scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 
 ```
 
@@ -647,25 +715,33 @@ Singles overwhelmingly seem to prefer to adopt a pet.
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Number of Children in Home") +
   xlab("Number of Children at Home") +
   scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    ylim(0,320) +
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
 
 
 ```{r, echo=FALSE}
-expcols <- masterapps_20190324 %>% 
+expcols <- master_apps_report %>% 
   select(starts_with("experience_")) %>% 
   colnames()
-expdata <- masterapps_20190324 %>%
+expdata <- master_apps_report %>%
   select(starts_with("experience_"),adoption,animal_type) %>%
-  group_by(adoption,animal_type) %>% summarize_at(vars(-group_cols(c("animal_type","adoption"))),sum) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(c("experience_bred.sold_ind", "experience_current.housemates.pet_ind",
+                                                         "experience_currently.have.pet_ind", "experience_euthanized_ind",
+                                                         "experience_given.away_ind", "experience_given.to.shelter_ind",
+                                                         "experience_grew.up.with_ind", "experience_never.lived.with_ind",
+                                                         "experience_past.housemates.pet_ind", "experience_pet.died.in.care_ind",
+                                                         "experience_pet.ran.away_ind")),sum) %>%
   gather(key="ExperienceType",value="value",expcols)
 variable_names <- list(
  "experience_bred.sold_ind" = "Bred/Sold",
@@ -685,40 +761,65 @@ variable_labeller <- function(variable,value){
   return(variable_names[value])
 }
 
+# expdata %>%
+#   ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+#   geom_bar(stat="identity") +
+#   facet_wrap(~ExperienceType, labeller=variable_labeller) +
+#     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+#     labs(title = "Experience Type with Pets") +
+#     xlab("Adoption Status") +
+#     scale_fill_discrete(name = "Animal Type") + #+ 
+#    #geom_text(aes(label=value),position=position_stack(1.1)) +
+#     theme_report()
+#     
 expdata %>%
-  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  ggplot(mapping=aes(x=ExperienceType,y=value,fill=animal_type)) +
   geom_bar(stat="identity") +
-  facet_wrap(~ExperienceType, labeller=variable_labeller) +
+  facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Experience Type with Pets") +
     xlab("Adoption Status") +
-    scale_fill_discrete(name = "Animal Type") #+
-   #geom_text(aes(label=value),position=position_stack(1.1))
+    scale_x_discrete(labels = variable_labeller) +
+    scale_fill_discrete(name = "Animal Type") + #+
+   #geom_text(aes(label=value),position=position_stack(1.1)) +
+   coord_flip() +
+    theme_report()
 ```
 
 Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
 
 ```{r, echo=FALSE}
 ### Home Pet Policy
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
-    geom_bar() +
+    geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Pet Policy") +
     xlab("Home Pet Policy") +
     scale_fill_discrete(name = "Animal Type") +
-    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    geom_text(aes(label=..count..),stat='count',
+              position = position_dodge(width = 0.9),
+             vjust = -0.3) +
+    theme_report()
 ```
 
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
 ```{r, echo=FALSE}
-retcols <- masterapps_20190324 %>% 
+retcols <- master_apps_report %>% 
   select(starts_with("return.")) %>% 
   colnames()
-retdata <- masterapps_20190324 %>%
+retdata <- master_apps_report %>%
   select(starts_with("return."),adoption,animal_type) %>%
-  group_by(adoption,animal_type) %>% summarize_at(vars(-group_cols(c("animal_type","adoption"))),sum) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(c("return.pet_allergies.appear_ind", "return.pet_becomes.aggressive_ind",
+                                                         "return.pet_destructive_ind", "return.pet_jumps.on.counters_ind",
+                                                         "return.pet_jumps.on.furniture_ind", "return.pet_litter.box.issues_ind",
+                                                         "return.pet_moving.too.far_ind", "return.pet_new.baby_ind",
+                                                         "return.pet_none_ind", "return.pet_not.allowed.new.living.space_ind",
+                                                         "return.pet_not.enough.time_ind", "return.pet_not.housebroken_ind",
+                                                         "return.pet_other_ind", "return.pet_pet.sheds_ind",
+                                                         "return.pet_scratches.furniture_ind", "return.pet_too.playful_ind",
+                                                         "return.pet_vet.becomes.expensive_ind")), sum) %>%
   gather(key="ReturnReasons",value="value",retcols)
 variable_names <- list(
  "return.pet_allergies.appear_ind" = "Allergies Appear",
@@ -744,35 +845,51 @@ variable_labeller <- function(variable,value){
   return(variable_names[value])
 }
 
+# retdata %>%
+#   ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+#   geom_bar(stat="identity") +
+#   facet_wrap(~ReturnReasons, labeller=variable_labeller) +
+#     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+#     labs(title = "Possible Reasons to Return Pet") +
+#     xlab("Adoption Status") +
+#     scale_fill_discrete(name = "Animal Type") + #+
+#    #geom_text(aes(label=value),position=position_stack(1.1)) +
+#     theme_report()
+#     
 retdata %>%
-  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  ggplot(mapping=aes(x=ReturnReasons,y=value,fill=animal_type)) +
   geom_bar(stat="identity") +
-  facet_wrap(~ReturnReasons, labeller=variable_labeller) +
+  facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Possible Reasons to Return Pet") +
+    labs(title = "Experience Type with Pets") +
     xlab("Adoption Status") +
-    scale_fill_discrete(name = "Animal Type") #+
-   #geom_text(aes(label=value),position=position_stack(1.1))
+    scale_x_discrete(labels = variable_labeller) +
+    scale_fill_discrete(name = "Animal Type") + #+
+   #geom_text(aes(label=value),position=position_stack(1.1)) +
+   coord_flip() +
+    theme_report()
 
 ```
 
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
+master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
-    geom_bar() +
+    geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Allergies") +
     xlab("Allergy Status") +
    scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count',
+             position = position_dodge(width = 0.9),
+             hjust = -0.3) +
+    coord_flip() +
+    ylim(0, 350) +
+    theme_report()
 ```
 
 Most of the people who adopted a pet had no allergies.
-
-
-###Affecting Decline
 
 ##Denied and Red Flagged Applications
 
@@ -781,7 +898,8 @@ Most of the people who adopted a pet had no allergies.
 **Denied Applications**<br>
 Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
-Key takeaways:<br>
+Key takeaways:
+
 * No known allergies for the applicants
 * Budget had no impact (same budget range for approved applications)
 * All household members agreed to get a pet
@@ -796,56 +914,90 @@ df_redflag <- dplyr::filter(master_apps_report, label.names_red.flag_ind == 1)
 df_denied$budget_monthly_ranges <- factor(df_denied$budget_monthly_ranges,levels = c("26-100", "101-200", "201-500", "501-1000"))
 
 ggplot(df_denied, aes(x=allergies, fill=animal_type)) +
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Allergy Status") +
   labs(x = "Allergies", y= "Count", fill = "Animal Type") +
-  coord_cartesian(ylim=c(0, 15))
+    geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    facet_wrap(~animal_type) +
+  coord_cartesian(ylim=c(0, 15)) +
+    theme_report()
 
 ggplot(df_denied, aes(x=budget_monthly_ranges, fill=animal_type)) + 
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Budget Ranges") +
   labs(x = "Budget Range ($)",                                                            
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 10)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    theme_report()+
+    facet_wrap(~animal_type)
 
 ggplot(df_denied, aes(x=all_household_agree, fill=animal_type)) + 
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Household Agrees Status") +
   labs(x = "Household Agrees",                                                            
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 15)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type)
 
-g1 <- ggplot(df_denied, aes(x=home_owner, fill=animal_type)) + 
-  geom_bar(width=.5) +
+ggplot(df_denied, aes(x=home_owner, fill=animal_type)) + 
+  geom_bar() +
   labs(y= "Count") +
   ggtitle("Characteristics of Applicants' Homes") +
   theme(legend.position="none") +
   coord_cartesian(ylim=c(0, 10)) +
+    ylim(0, 6) +
   theme(axis.text.x = element_text(angle=60, vjust=0.5)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             hjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type) +
+    coord_flip()
 
-g2 <- ggplot(df_denied, aes(x=home_pet_policy, fill=animal_type)) + 
-  geom_bar(width=.5) +
+ggplot(df_denied, aes(x=home_pet_policy, fill=animal_type)) + 
+  geom_bar() +
   labs(fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 10)) +
+    ylim(0, 8) +
   theme(axis.text.x = element_text(angle=60, vjust=0.5), axis.title.y = element_blank()) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             hjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type) +
+    coord_flip()
 
-theme_set(theme_cowplot(font_size=13))
-plot_grid(g1, g2, align='h')
+# theme_set(theme_cowplot(font_size=13))
+# plot_grid(g1, g2, align='h')
 
 #home along average; varies too much
-ggplot(df_denied, aes(x=home_alone_avg)) + 
-  geom_bar(aes(fill=animal_type), width=.5) +
+# ggplot(df_denied, aes(x=home_alone_avg, fill=animal_type)) + 
+#   geom_bar() +
+#   ggtitle("Home Alone Avg") +
+#   labs(x = "Hours",                                                            
+#        y= "Count",
+#        fill = "Animal Type") +
+#       geom_text(aes(label=..count..), stat='count',
+#              vjust = -0.3) +
+#     theme_report()
+df_denied %>% 
+    group_by(home_alone_avg, animal_type) %>% 
+    tally() %>% 
+    ggplot(aes(x=home_alone_avg, y = n, fill=animal_type, label = n)) +
+  geom_bar(stat = "identity") +
   ggtitle("Home Alone Avg") +
-  labs(x = "Hours",                                                            
+  labs(x = "Hours",
        y= "Count",
        fill = "Animal Type") +
-  coord_cartesian(ylim=c(0, 4))
+    scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9)) +
+    scale_y_continuous(breaks = c(1,2)) +
+    theme_report()
 
 #trying to get all the experiences to show in one chart
 #df_exp <- dplyr::count(df_denied, experience) #frequency of experiences for all denied applications
@@ -863,7 +1015,9 @@ ggplot(experience_summary, aes(x= fct_reorder(cleaned_col, value, .desc=TRUE), y
   theme(axis.text.x = element_text(angle=50, vjust=0.5)) +
   guides(fill=FALSE) +
   ggtitle("Prior Pet Experiences") +
-  labs(x = "Experience", y= "Count") 
+  labs(x = "Experience", y = "Count")  +
+    coord_flip() +
+    theme_report()
 
 ```
 <br>**Red Flagged Applications**<br>
@@ -894,7 +1048,9 @@ ggplot(df_redflag, aes(x=last_label)) +
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 45)) +
-  theme(axis.text.x = element_text(angle=80, vjust=0.5))
+  theme(axis.text.x = element_text(angle=80, vjust=0.5)) +
+    coord_flip() +
+    theme_report()
 
 ```
 
@@ -928,7 +1084,8 @@ ggplot(na_check, aes(x = reorder(variable, value), y = value)) +
        y = "Count of NA's",
        title = "Count of NAs in Applications Data Set"
   ) + 
-  coord_flip()
+  coord_flip() +
+    theme_report()
 
 #![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
 
@@ -965,7 +1122,7 @@ One of the most important recommendations moving forward would be to redesign th
 ##Important Features for Prediction
 
 ```{r randomforest, echo=FALSE}
-master_mod <- masterapps_20190324 %>%
+master_mod <- master_apps_report %>%
   mutate(adoption = as.factor(ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),1,0))) %>%
   #mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type==1),1,0)) %>%
   select(-c( home_pet_policy, reason_for_adoption, all_household_agree, allergies, home_owner, all_household_agree, allergies,
@@ -1018,13 +1175,13 @@ testing <- master_mod[-inTrain,]
 #![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/ImportantVariables.png)
 ```
 
-Till now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand  how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
+Until now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand  how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
 
 To successfully build a Random Forest, we further cleaned the data to take care of all the missing values. We used 1665 observations and 90 variables out of a total of 1684 observations and 251 variables.
 
 The combined effect of different characteristics on the adoption status can be studied by considering one of the important outputs generated by the Random Forests, the subset of predictor values that are found to be most commonly used as a criteria for splitting the dataset into two smaller regions at each node. This subset of predictor values, referred to as Important Variables, are shown in the plot below.  As seen in the list, we find that the top three characteristics are number of children in a home, the type of dog, and the date the application was submitted. Improved results or a different set of important characteristics can be obtained from better and more complete data. 
 
-![](`r here::here("/Analyses/2_Applicants/final_analyses/report_images/ImportantVariables.png")`
+![Important variables](2_Applicants/final_analyses/report_images/ImportantVariables.png){width=600px}
 
 \newpage
 ## 3. Geographic factors
@@ -1075,17 +1232,17 @@ We also looked at applications that were processed within an efficient timeframe
 
 We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was also a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. There could be many reasons for this: applicants who live in areas where many people do not have easy access to the internet may not be as familiar with filling out an online application (which represents the current application dataset); they may also not be able to easily find the information they need (since not all websites are mobile friendly); or they may be filling out the application form on a mobile device, which might be too long/detailed to adequately complete on a small screen. 
 
-![Cell data plan only coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot01.png){width=250px}
+![Cell data plan only coefficients](3_GIS/rplot01.png){width=250px}
 
 Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. This effect was less pronounced in northeast Philly.
 
-![Population 25-34 enrolled in school coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot02.png){width=250px}
+![Population 25-34 enrolled in school coefficients](3_GIS/rplot02.png){width=250px}
 
 #### Cats
 
 Interestingly, for cats we found that in neighborhoods where a higher percentage of the population is children in grades 5-8, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
 
-![Children grades 5-8 coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot03.png){width=250px}
+![Children grades 5-8 coefficients](3_GIS/rplot03.png){width=250px}
 
 ### Conclusions and Next Steps
 
