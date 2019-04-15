@@ -6,7 +6,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8)
+knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8, message = FALSE, warning = FALSE)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
               "caret", "kableExtra")
@@ -171,7 +171,7 @@ clean_city <- function(colname) {
 
 As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. For data pre-processing, the following steps were particularly important:
 
-* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks").
+* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks"). (See further discussion of this issue in the *Data Issues affecting Analyses* section)
 * For `children_in_home` and `adults_in_home`, ignoring "-" by taking the absolute value and replacing absurd values with NA (we replaced values greater than 15 with NAs).
 * Capping `budget_monthly` and `budget_emergency` at $10000 and $20000 respectively.
 * Addressing spelling variations in the `City` variable. For example, replacing the strings "PHILLY", "FILADELFIA", "PHILIDELPHIA", "PHIMADELPHIA", "PHIALADELPHIA", "PHIALDELPHIA", "PHILDELPHIA" with "PHILADELPHIA".
@@ -250,17 +250,16 @@ Our cleaned applications dataset contained 1906 rows, 1594 unique trellos ids an
 ```{r include = FALSE}
 nrow(apps_with_indicators)
 length(unique(apps_with_indicators$trello_id))
-min(apps_with_indicators$date_submitted)
-max(apps_with_indicators$date_submitted)
+min(apps_with_indicators$date_submitted) - max(apps_with_indicators$date_submitted)
 ```
 
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 apps_with_indicators %>% 
   ggplot(aes(x = date_submitted, fill = animal_type)) +
-  geom_histogram() +
-  facet_wrap(~animal_type) +
-    theme_report()
+  geom_histogram(alpha = 0.5) +
+    theme_report() +
+    scale_x_date(date_breaks = "2 weeks")
 ```
 
 
@@ -361,9 +360,36 @@ petpoint_with_indicators <- petpoint %>%
 # petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
 ```
 
-To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. We also created another dataset comprised of the applications dataset and the cards dataset for analysing denied and red-flagged applications.
+To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. One issue we encountered was that the date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively).
 
-```{r echo = TRUE, message = FALSE, warning = FALSE}
+```{r include = FALSE}
+max(apps_with_indicators$date_submitted) - min(apps_with_indicators$date_submitted)
+max(as_date(actions$date_start)) - min(as_date(actions$date_start))
+max(as_date(petpoint$outcome_date)) - min(as_date(petpoint$outcome_date))
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+apps_dates <- cbind(as.character(apps_with_indicators$date_submitted), rep("apps", length(apps_with_indicators$date_submitted)))
+actions_dates <- cbind(as.character(actions$date_start), rep("actions", length(actions$date_start)))
+petpoint_dates <- cbind(as.character(petpoint$outcome_date), rep("petpoint", length(petpoint$outcome_date)))
+all_dates <- as.data.frame(rbind(apps_dates, actions_dates, petpoint_dates))
+names(all_dates)[1] <- "Date"
+names(all_dates)[2] <- "Dataset"
+all_dates$Date <- as_date(all_dates$Date)
+
+all_dates %>% 
+  ggplot(aes(x = Date, fill = Dataset)) +
+  geom_histogram(alpha = 0.7, binwidth = 7) +
+    theme_report() +
+    scale_x_date(date_breaks = "8 weeks") +
+    geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
+    geom_vline(xintercept = max(apps_with_indicators$date_submitted), colour = "black")
+```
+
+Similar data-preprocessing steps as we took for the applications dataset were taken for the actions, cards, and petpoints datasets. For the actions dataset, it was important for us to change the format of the data so each row represented a single `trello id` (prior to this each `checklist_item` for single `trello_id` had a separate row). For the purpose of analysing the denied and red-flagged applications, we created another dataset comprised of the applications and the cards datasets.
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Still don't know what the discrepancy is due to 
 master_apps_report <- apps_with_indicators %>%
   filter(!is.na(trello_id)) %>%
   left_join(actions) %>%
@@ -385,10 +411,10 @@ masterapps_20190324 <- masterapps_20190324 %>%
                                        levels=c("<25","26-100","101-200","201-500","501-1000","1001-5000",">5000","NA"),
                                        ordered=TRUE))
 
-setdiff(colnames(master_apps_report), colnames(masterapps_20190324))
-dim(master_apps_report)
-dim(masterapps_20190324)
-identical(master_apps_report, masterapps_20190324)
+# setdiff(colnames(master_apps_report), colnames(masterapps_20190324))
+# dim(master_apps_report)
+# dim(masterapps_20190324)
+# identical(master_apps_report, masterapps_20190324)
 ```
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
@@ -408,7 +434,7 @@ In general, cat applications typically take longer than dog applications. The ch
 ```{r kc_timeline_boxplot_animal, echo=FALSE, fig.height=3, fig.width=8, fig.align = "center"}
 
 # boxplot of adoption_time by animal
-masterapps_20190324 %>%
+master_apps_report %>%
   filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
   
   ggplot(aes(x = animal_type, y = adoption_time, fill = animal_type)) +                 # break out checklist_item by cat & dog
@@ -436,7 +462,7 @@ The outcome site for an adoption also influences the timeline of an application.
 
 ```{r kc_heatmap_data, include=FALSE }
 # isolate the data that is related to both outcome site & animal type
-site_animal_df <- masterapps_20190324 %>%
+site_animal_df <- master_apps_report %>%
   drop_na(outcome_sitename) %>%                                   # one id with no adoption site, drop that id
   filter(!adoption_time < 0) %>%                                  # remove negative values in adoption_time column
   group_by(outcome_sitename, animal_type) %>%                     # before calculations, group data by outcome site
@@ -484,7 +510,7 @@ collapse_rows_df <- function(df, variable){
 }
 
 # get count of each animal at each outcome_site
-site_count <- masterapps_20190324 %>%
+site_count <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   drop_na(outcome_sitename) %>%
   group_by(outcome_sitename, animal_type) %>%
@@ -546,7 +572,7 @@ Only one site had a higher median adoption time for dogs than for cats—Grays F
 
 ```{r checklist_boxplot, echo=FALSE, fig.align="center", fig.height=5, fig.width=10, warning=FALSE}
 #  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
-masterapps_20190324 %>%
+master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%                       # flatten checklist rows into one column (called "checklist_item") and corresponding values into one column (called "values")
   
@@ -574,7 +600,7 @@ The chart above removed significant outliers, but further inspection of these ou
 
 ```{r checklist_site_animal_data, echo=FALSE}
 # isolate the data that is related to checklist items for adoptions
-checklist_calcs <- masterapps_20190324 %>%
+checklist_calcs <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -585,7 +611,7 @@ checklist_calcs <- masterapps_20190324 %>%
   rename("median days from last item" = "median") 
 
 # get the count of each checklist item occurrence
-checklist_count <- masterapps_20190324 %>%
+checklist_count <- master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%
   drop_na(value) %>%
@@ -615,7 +641,7 @@ kable(checklist_df, "latex", booktabs = T, align =c("l","c","c","c")) %>%
 The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
 ```{r Adoption, echo=FALSE}
-masterapps_20190324 %>% 
+master_apps_report %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
    geom_bar(position = "dodge", width = 0.9) +
@@ -633,7 +659,7 @@ When applicants requested a specific type of animal, 30% of applications resulte
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
+master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -652,7 +678,7 @@ Most of the applicants who adopted a pet had allocated a monthly budget of less 
 
 ```{r, echo=FALSE}
 ### Home alone avg
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -670,7 +696,7 @@ Applicants who expected to leave the animal alone at home for longer hours chose
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -689,7 +715,7 @@ Singles overwhelmingly seem to prefer to adopt a pet.
 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Number of Children in Home") +
@@ -705,10 +731,10 @@ Again, families with no children at home seem to be the largest number of applic
 
 
 ```{r, echo=FALSE}
-expcols <- masterapps_20190324 %>% 
+expcols <- master_apps_report %>% 
   select(starts_with("experience_")) %>% 
   colnames()
-expdata <- masterapps_20190324 %>%
+expdata <- master_apps_report %>%
   select(starts_with("experience_"),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(c("experience_bred.sold_ind", "experience_current.housemates.pet_ind",
                                                          "experience_currently.have.pet_ind", "experience_euthanized_ind",
@@ -764,7 +790,7 @@ Interestingly, more number of applicants who were able to successfully adopt had
 
 ```{r, echo=FALSE}
 ### Home Pet Policy
-masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
     geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -780,10 +806,10 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_polic
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
 
 ```{r, echo=FALSE}
-retcols <- masterapps_20190324 %>% 
+retcols <- master_apps_report %>% 
   select(starts_with("return.")) %>% 
   colnames()
-retdata <- masterapps_20190324 %>%
+retdata <- master_apps_report %>%
   select(starts_with("return."),adoption,animal_type) %>%
   group_by(adoption,animal_type) %>% summarize_at(vars(c("return.pet_allergies.appear_ind", "return.pet_becomes.aggressive_ind",
                                                          "return.pet_destructive_ind", "return.pet_jumps.on.counters_ind",
@@ -848,7 +874,7 @@ retdata %>%
 The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
 
 ```{r, echo=FALSE}
-masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
+master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
     geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -872,12 +898,13 @@ Most of the people who adopted a pet had no allergies.
 **Denied Applications**<br>
 Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
-Key takeaways:<br>
-*   No known allergies for the applicants
-*   Budget had no impact (same budget range for approved applications)
-*   All household members agreed to get a pet
-*   Majority of the applicants did not enter a home pet policy and not everyone is the home owner
-*   Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
+Key takeaways:
+
+* No known allergies for the applicants
+* Budget had no impact (same budget range for approved applications)
+* All household members agreed to get a pet
+* Majority of the applicants did not enter a home pet policy and not everyone is the home owner
+* Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
 
 
 ```{r denied applications, echo = F,  message = F,  warning = F}
@@ -1095,7 +1122,7 @@ One of the most important recommendations moving forward would be to redesign th
 ##Important Features for Prediction
 
 ```{r randomforest, echo=FALSE}
-master_mod <- masterapps_20190324 %>%
+master_mod <- master_apps_report %>%
   mutate(adoption = as.factor(ifelse((!is.na(outcome_type) & outcome_type=="Adoption"),1,0))) %>%
   #mutate(adoption = ifelse((!is.na(outcome_type) & outcome_type==1),1,0)) %>%
   select(-c( home_pet_policy, reason_for_adoption, all_household_agree, allergies, home_owner, all_household_agree, allergies,
