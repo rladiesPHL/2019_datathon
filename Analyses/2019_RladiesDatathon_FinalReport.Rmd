@@ -11,7 +11,22 @@ packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
               "caret", "kableExtra")
 invisible(lapply(packages, require, character.only = TRUE))
+```
 
+```{r ggplot theme, echo = FALSE}
+theme_report <- function () { 
+  theme_bw(base_size = 10) %+replace% 
+    theme(
+      axis.title.x = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      axis.title.y  = element_text(face="bold", angle=90, margin = margin(0, 5, 0, 5)),
+      axis.text.y  = element_text(hjust = 0.95),
+      plot.title = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      legend.text = element_text(margin = margin(5, 0, 5, 0)),
+      legend.title = element_text(face="bold", margin = margin(5, 0, 5, 0)),
+      strip.text.x = element_text(margin = margin(7, 0, 7, 0)),
+      strip.text.y = element_text(angle=90, margin = margin(0, 7, 0, 7))
+    )
+}
 ```
 
 # Executive Summary
@@ -244,7 +259,8 @@ max(apps_with_indicators$date_submitted)
 apps_with_indicators %>% 
   ggplot(aes(x = date_submitted, fill = animal_type)) +
   geom_histogram() +
-  facet_wrap(~animal_type)
+  facet_wrap(~animal_type) +
+    theme_report()
 ```
 
 
@@ -602,12 +618,14 @@ The table above shows the exceptions to the average checklist times. The ACCT an
 masterapps_20190324 %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
-   geom_bar() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+   geom_bar(position = "dodge", width = 0.9) +
     labs(title = "Specific Animal") +
     xlab("Chose Specific Animal") +
     scale_fill_discrete(name = "Adoption Status") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..), stat='count',
+             position = position_dodge(width = 0.9),
+             vjust = -0.3) +
+    theme_report()
 ```
 
 When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
@@ -621,8 +639,11 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Monthly budgets") +
     xlab("Monthly Budget for Pet") +
+    ylim(0,160) +
     scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 
@@ -638,7 +659,10 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg
     labs(title = "Home Alone Average") +
     xlab("Averge Number of Hours Alone Per Day") +
     scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    ylim(0,80) +
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
@@ -652,8 +676,11 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
   labs(title = "Number of Adults in Home") +
   xlab("Number of Adults at Home") +
+    ylim(0,170) +
   scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 
 ```
 
@@ -668,7 +695,10 @@ masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(children_in_ho
     labs(title = "Number of Children in Home") +
   xlab("Number of Children at Home") +
   scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    ylim(0,320) +
+   geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    facet_grid(animal_type ~ .) +
+    theme_report()
 ```
 
 Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
@@ -705,15 +735,29 @@ variable_labeller <- function(variable,value){
   return(variable_names[value])
 }
 
+# expdata %>%
+#   ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+#   geom_bar(stat="identity") +
+#   facet_wrap(~ExperienceType, labeller=variable_labeller) +
+#     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+#     labs(title = "Experience Type with Pets") +
+#     xlab("Adoption Status") +
+#     scale_fill_discrete(name = "Animal Type") + #+ 
+#    #geom_text(aes(label=value),position=position_stack(1.1)) +
+#     theme_report()
+#     
 expdata %>%
-  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  ggplot(mapping=aes(x=ExperienceType,y=value,fill=animal_type)) +
   geom_bar(stat="identity") +
-  facet_wrap(~ExperienceType, labeller=variable_labeller) +
+  facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Experience Type with Pets") +
     xlab("Adoption Status") +
-    scale_fill_discrete(name = "Animal Type") #+
-   #geom_text(aes(label=value),position=position_stack(1.1))
+    scale_x_discrete(labels = variable_labeller) +
+    scale_fill_discrete(name = "Animal Type") + #+
+   #geom_text(aes(label=value),position=position_stack(1.1)) +
+   coord_flip() +
+    theme_report()
 ```
 
 Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
@@ -722,12 +766,15 @@ Interestingly, more number of applicants who were able to successfully adopt had
 ### Home Pet Policy
 masterapps_20190324 %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
-    geom_bar() +
+    geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Pet Policy") +
     xlab("Home Pet Policy") +
     scale_fill_discrete(name = "Animal Type") +
-    geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+    geom_text(aes(label=..count..),stat='count',
+              position = position_dodge(width = 0.9),
+             vjust = -0.3) +
+    theme_report()
 ```
 
 Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
@@ -772,15 +819,29 @@ variable_labeller <- function(variable,value){
   return(variable_names[value])
 }
 
+# retdata %>%
+#   ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+#   geom_bar(stat="identity") +
+#   facet_wrap(~ReturnReasons, labeller=variable_labeller) +
+#     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
+#     labs(title = "Possible Reasons to Return Pet") +
+#     xlab("Adoption Status") +
+#     scale_fill_discrete(name = "Animal Type") + #+
+#    #geom_text(aes(label=value),position=position_stack(1.1)) +
+#     theme_report()
+#     
 retdata %>%
-  ggplot(mapping=aes(x=adoption,y=value,fill=animal_type)) +
+  ggplot(mapping=aes(x=ReturnReasons,y=value,fill=animal_type)) +
   geom_bar(stat="identity") +
-  facet_wrap(~ReturnReasons, labeller=variable_labeller) +
+  facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Possible Reasons to Return Pet") +
+    labs(title = "Experience Type with Pets") +
     xlab("Adoption Status") +
-    scale_fill_discrete(name = "Animal Type") #+
-   #geom_text(aes(label=value),position=position_stack(1.1))
+    scale_x_discrete(labels = variable_labeller) +
+    scale_fill_discrete(name = "Animal Type") + #+
+   #geom_text(aes(label=value),position=position_stack(1.1)) +
+   coord_flip() +
+    theme_report()
 
 ```
 
@@ -789,12 +850,17 @@ The main reason that people would return a pet in the future seem to be if the p
 ```{r, echo=FALSE}
 masterapps_20190324 %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
-    geom_bar() +
+    geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Allergies") +
     xlab("Allergy Status") +
    scale_fill_discrete(name = "Animal Type") +
-   geom_text(aes(label=..count..),stat='count',position=position_stack(1.1))
+   geom_text(aes(label=..count..),stat='count',
+             position = position_dodge(width = 0.9),
+             hjust = -0.3) +
+    coord_flip() +
+    ylim(0, 350) +
+    theme_report()
 ```
 
 Most of the people who adopted a pet had no allergies.
@@ -810,11 +876,11 @@ Most of the people who adopted a pet had no allergies.
 Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
 Key takeaways:<br>
-* No known allergies for the applicants
-* Budget had no impact (same budget range for approved applications)
-* All household members agreed to get a pet
-* Majority of the applicants did not enter a home pet policy and not everyone is the home owner
-* Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
+*   No known allergies for the applicants
+*   Budget had no impact (same budget range for approved applications)
+*   All household members agreed to get a pet
+*   Majority of the applicants did not enter a home pet policy and not everyone is the home owner
+*   Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
 
 
 ```{r denied applications, echo = F,  message = F,  warning = F}
@@ -824,56 +890,90 @@ df_redflag <- dplyr::filter(master_apps_report, label.names_red.flag_ind == 1)
 df_denied$budget_monthly_ranges <- factor(df_denied$budget_monthly_ranges,levels = c("26-100", "101-200", "201-500", "501-1000"))
 
 ggplot(df_denied, aes(x=allergies, fill=animal_type)) +
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Allergy Status") +
   labs(x = "Allergies", y= "Count", fill = "Animal Type") +
-  coord_cartesian(ylim=c(0, 15))
+    geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    facet_wrap(~animal_type) +
+  coord_cartesian(ylim=c(0, 15)) +
+    theme_report()
 
 ggplot(df_denied, aes(x=budget_monthly_ranges, fill=animal_type)) + 
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Budget Ranges") +
   labs(x = "Budget Range ($)",                                                            
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 10)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    theme_report()+
+    facet_wrap(~animal_type)
 
 ggplot(df_denied, aes(x=all_household_agree, fill=animal_type)) + 
-  geom_bar(width=.5) +
+  geom_bar() +
   ggtitle("Household Agrees Status") +
   labs(x = "Household Agrees",                                                            
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 15)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             vjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type)
 
-g1 <- ggplot(df_denied, aes(x=home_owner, fill=animal_type)) + 
-  geom_bar(width=.5) +
+ggplot(df_denied, aes(x=home_owner, fill=animal_type)) + 
+  geom_bar() +
   labs(y= "Count") +
   ggtitle("Characteristics of Applicants' Homes") +
   theme(legend.position="none") +
   coord_cartesian(ylim=c(0, 10)) +
+    ylim(0, 6) +
   theme(axis.text.x = element_text(angle=60, vjust=0.5)) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             hjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type) +
+    coord_flip()
 
-g2 <- ggplot(df_denied, aes(x=home_pet_policy, fill=animal_type)) + 
-  geom_bar(width=.5) +
+ggplot(df_denied, aes(x=home_pet_policy, fill=animal_type)) + 
+  geom_bar() +
   labs(fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 10)) +
+    ylim(0, 8) +
   theme(axis.text.x = element_text(angle=60, vjust=0.5), axis.title.y = element_blank()) +
-  geom_text(aes(label=..count..), stat='count', position=position_stack(1))
+  geom_text(aes(label=..count..), stat='count',
+             hjust = -0.3) +
+    theme_report() +
+    facet_wrap(~animal_type) +
+    coord_flip()
 
-theme_set(theme_cowplot(font_size=13))
-plot_grid(g1, g2, align='h')
+# theme_set(theme_cowplot(font_size=13))
+# plot_grid(g1, g2, align='h')
 
 #home along average; varies too much
-ggplot(df_denied, aes(x=home_alone_avg)) + 
-  geom_bar(aes(fill=animal_type), width=.5) +
+# ggplot(df_denied, aes(x=home_alone_avg, fill=animal_type)) + 
+#   geom_bar() +
+#   ggtitle("Home Alone Avg") +
+#   labs(x = "Hours",                                                            
+#        y= "Count",
+#        fill = "Animal Type") +
+#       geom_text(aes(label=..count..), stat='count',
+#              vjust = -0.3) +
+#     theme_report()
+df_denied %>% 
+    group_by(home_alone_avg, animal_type) %>% 
+    tally() %>% 
+    ggplot(aes(x=home_alone_avg, y = n, fill=animal_type, label = n)) +
+  geom_bar(stat = "identity") +
   ggtitle("Home Alone Avg") +
-  labs(x = "Hours",                                                            
+  labs(x = "Hours",
        y= "Count",
        fill = "Animal Type") +
-  coord_cartesian(ylim=c(0, 4))
+    scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9)) +
+    scale_y_continuous(breaks = c(1,2)) +
+    theme_report()
 
 #trying to get all the experiences to show in one chart
 #df_exp <- dplyr::count(df_denied, experience) #frequency of experiences for all denied applications
@@ -891,7 +991,9 @@ ggplot(experience_summary, aes(x= fct_reorder(cleaned_col, value, .desc=TRUE), y
   theme(axis.text.x = element_text(angle=50, vjust=0.5)) +
   guides(fill=FALSE) +
   ggtitle("Prior Pet Experiences") +
-  labs(x = "Experience", y= "Count") 
+  labs(x = "Experience", y = "Count")  +
+    coord_flip() +
+    theme_report()
 
 ```
 <br>**Red Flagged Applications**<br>
@@ -922,7 +1024,9 @@ ggplot(df_redflag, aes(x=last_label)) +
        y= "Count",
        fill = "Animal Type") +
   coord_cartesian(ylim=c(0, 45)) +
-  theme(axis.text.x = element_text(angle=80, vjust=0.5))
+  theme(axis.text.x = element_text(angle=80, vjust=0.5)) +
+    coord_flip() +
+    theme_report()
 
 ```
 
@@ -956,7 +1060,8 @@ ggplot(na_check, aes(x = reorder(variable, value), y = value)) +
        y = "Count of NA's",
        title = "Count of NAs in Applications Data Set"
   ) + 
-  coord_flip()
+  coord_flip() +
+    theme_report()
 
 #![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/NA_Count.png)
 
@@ -1046,7 +1151,7 @@ testing <- master_mod[-inTrain,]
 #![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/ImportantVariables.png)
 ```
 
-Till now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand  how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
+Until now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand  how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
 
 To successfully build a Random Forest, we further cleaned the data to take care of all the missing values. We used 1665 observations and 90 variables out of a total of 1684 observations and 251 variables.
 
