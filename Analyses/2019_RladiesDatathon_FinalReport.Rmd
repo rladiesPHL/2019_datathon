@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
-              "caret")
+              "caret", "kableExtra")
 invisible(lapply(packages, require, character.only = TRUE))
 
 ```
@@ -487,18 +487,30 @@ site_animal_join <- left_join(site_animal_df, site_count)
 
 ``` {r kc_table_site, echo=FALSE, fig.width=6}                                               
 # drop the "combined" column and rename columns for formatting
-site_animal_join %>%
+# site_animal_join %>%
+#   mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
+#   select(-c(mean, combined)) %>%
+#   select(outcome_sitename, animal_type, n, median) %>%
+#   rename("median adoption time" = "median") %>%
+#   drop_na(outcome_sitename) %>%
+#   collapse_rows_df(outcome_sitename) %>% 
+#   
+#   
+#   formattable(align =c("l","l","c","c"), list(
+#   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
+#   `median adoption time`= color_tile("#FFFFFF", "#FFFFFF")))
+
+kc_table_site <- site_animal_join %>%
   mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
   select(-c(mean, combined)) %>%
   select(outcome_sitename, animal_type, n, median) %>%
   rename("median adoption time" = "median") %>%
   drop_na(outcome_sitename) %>%
-  collapse_rows_df(outcome_sitename) %>% 
-  
-  
-  formattable(align =c("l","l","c","c"), list(
-  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")), 
-  `median adoption time`= color_tile("#FFFFFF", "#FFFFFF")))
+  collapse_rows_df(outcome_sitename)
+
+kable(kc_table_site, "latex", booktabs = T,
+      align =c("l","l","c","c")) %>% 
+    kable_styling(full_width = F)
 ```
 
 From the heatmap and table above, it's clear that overall average adoption times were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places 
@@ -575,10 +587,13 @@ checklist_df <- merge(checklist_count, checklist_calcs, by = "checklist_item", a
 
 ```{r checklist_site_animal_table, echo=FALSE}
 # put the table into formattable
-formattable(checklist_df, align =c("l","c","c","c"), list(
-  `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
-  `mean days from last item`= color_tile("#FFFFFF", "#FFFFFF"),
-  `median days from last item`= color_tile("#FFFFFF", "#FFFFFF")))
+# formattable(checklist_df, align =c("l","c","c","c"), list(
+#   `Indicator Name` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+#   `mean days from last item`= color_tile("#FFFFFF", "#FFFFFF"),
+#   `median days from last item`= color_tile("#FFFFFF", "#FFFFFF")))
+
+kable(checklist_df, "latex", booktabs = T, align =c("l","c","c","c")) %>% 
+  kable_styling(full_width = F)
 ```
 
 The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
@@ -665,7 +680,12 @@ expcols <- masterapps_20190324 %>%
   colnames()
 expdata <- masterapps_20190324 %>%
   select(starts_with("experience_"),adoption,animal_type) %>%
-  group_by(adoption,animal_type) %>% summarize_at(vars(-group_cols(c("animal_type","adoption"))),sum) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(c("experience_bred.sold_ind", "experience_current.housemates.pet_ind",
+                                                         "experience_currently.have.pet_ind", "experience_euthanized_ind",
+                                                         "experience_given.away_ind", "experience_given.to.shelter_ind",
+                                                         "experience_grew.up.with_ind", "experience_never.lived.with_ind",
+                                                         "experience_past.housemates.pet_ind", "experience_pet.died.in.care_ind",
+                                                         "experience_pet.ran.away_ind")),sum) %>%
   gather(key="ExperienceType",value="value",expcols)
 variable_names <- list(
  "experience_bred.sold_ind" = "Bred/Sold",
@@ -718,7 +738,15 @@ retcols <- masterapps_20190324 %>%
   colnames()
 retdata <- masterapps_20190324 %>%
   select(starts_with("return."),adoption,animal_type) %>%
-  group_by(adoption,animal_type) %>% summarize_at(vars(-group_cols(c("animal_type","adoption"))),sum) %>%
+  group_by(adoption,animal_type) %>% summarize_at(vars(c("return.pet_allergies.appear_ind", "return.pet_becomes.aggressive_ind",
+                                                         "return.pet_destructive_ind", "return.pet_jumps.on.counters_ind",
+                                                         "return.pet_jumps.on.furniture_ind", "return.pet_litter.box.issues_ind",
+                                                         "return.pet_moving.too.far_ind", "return.pet_new.baby_ind",
+                                                         "return.pet_none_ind", "return.pet_not.allowed.new.living.space_ind",
+                                                         "return.pet_not.enough.time_ind", "return.pet_not.housebroken_ind",
+                                                         "return.pet_other_ind", "return.pet_pet.sheds_ind",
+                                                         "return.pet_scratches.furniture_ind", "return.pet_too.playful_ind",
+                                                         "return.pet_vet.becomes.expensive_ind")), sum) %>%
   gather(key="ReturnReasons",value="value",retcols)
 variable_names <- list(
  "return.pet_allergies.appear_ind" = "Allergies Appear",
@@ -1024,7 +1052,7 @@ To successfully build a Random Forest, we further cleaned the data to take care 
 
 The combined effect of different characteristics on the adoption status can be studied by considering one of the important outputs generated by the Random Forests, the subset of predictor values that are found to be most commonly used as a criteria for splitting the dataset into two smaller regions at each node. This subset of predictor values, referred to as Important Variables, are shown in the plot below.  As seen in the list, we find that the top three characteristics are number of children in a home, the type of dog, and the date the application was submitted. Improved results or a different set of important characteristics can be obtained from better and more complete data. 
 
-![](`r here::here("/Analyses/2_Applicants/final_analyses/report_images/ImportantVariables.png")`
+![Important variables](2_Applicants/final_analyses/report_images/ImportantVariables.png){width=600px}
 
 \newpage
 ## 3. Geographic factors
@@ -1075,17 +1103,17 @@ We also looked at applications that were processed within an efficient timeframe
 
 We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was also a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. There could be many reasons for this: applicants who live in areas where many people do not have easy access to the internet may not be as familiar with filling out an online application (which represents the current application dataset); they may also not be able to easily find the information they need (since not all websites are mobile friendly); or they may be filling out the application form on a mobile device, which might be too long/detailed to adequately complete on a small screen. 
 
-![Cell data plan only coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot01.png){width=250px}
+![Cell data plan only coefficients](3_GIS/rplot01.png){width=250px}
 
 Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. This effect was less pronounced in northeast Philly.
 
-![Population 25-34 enrolled in school coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot02.png){width=250px}
+![Population 25-34 enrolled in school coefficients](3_GIS/rplot02.png){width=250px}
 
 #### Cats
 
 Interestingly, for cats we found that in neighborhoods where a higher percentage of the population is children in grades 5-8, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
 
-![Children grades 5-8 coefficients](/home/karla/Documents/RLadies/joys_fork/2019_datathon/Analyses/3_GIS/rplot03.png){width=250px}
+![Children grades 5-8 coefficients](3_GIS/rplot03.png){width=250px}
 
 ### Conclusions and Next Steps
 
