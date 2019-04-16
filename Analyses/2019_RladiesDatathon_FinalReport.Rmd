@@ -57,6 +57,19 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 * **Brendan Graham** is a clinical data analyst at The Children’s Hospital of Philadelphia with a background in applied statistics.
 * **Ambika Sowmyan** heads the Marketing data analytics group at Hartford Funds. Her background is in Finance and Retail and has a graduate degree in Management and Predictive Analytics.
 
+### Summary
+
+*** The cleaned dataset we used for our analysis contained 1594 unique trello IDs with application submitted dates between 2018-08-30 to 2018-12-31
+*** For applications that resulted in adoption, cat applications took longer to process than dog applications. Cat apps took 19 days and dog apps took 8 days on average.
+*** Based on the animal's outcome site, adoption times were faster at PAWS Foster Program & PAWS Offsite Adoptions locations.
+*** Singles seem to prefer to adopt a pet. 
+*** There were 12 denied applications and 133 red flagged
+*** For the denied applications, the applicants had no known allergies and many of them had unfortunate incidents with prior pets
+*** There was a lot of missing data in the applications especially for the home pet policy question.
+*** We recommend redesiging the application to enforce standardized, limited, and logical responses. For example, for certain questions, allow only a single response or provide a drop down menu. Doing so will save PAWS staff time when reviewing applications and help with future analyses. 
+
+
+
 ### Data Pre-processing
 
 ```{r load_data, echo = FALSE, message = FALSE, warning = FALSE}
@@ -640,6 +653,11 @@ kable(checklist_df, "latex", booktabs = T, align =c("l","c","c","c")) %>%
 
 The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
+
+##Analysis of Application Characteristics that Result in Adoption 
+
+We analysed the the different factors of the applications that ended with a successful adoption. 
+
 ```{r Adoption, echo=FALSE}
 master_apps_report %>% 
   #filter(outcome_type=="Adoption") %>%
@@ -871,7 +889,7 @@ retdata %>%
 
 ```
 
-The main reason that people would return a pet in the future seem to be if the pet sheds or if they moved too far away. Of these, more number of people who would return if the pet sheds did not adopt and of hte ones who adopted, they mainly adopted a cat. 
+The main reason that people would return a pet in the future is if the pet sheds or if they move far away. Of those who said they would return the pet if it sheds, they either did not adopt or they adopted a cat.
 
 ```{r, echo=FALSE}
 master_apps_report %>% filter(outcome_type=="Adoption") %>%
@@ -891,11 +909,12 @@ master_apps_report %>% filter(outcome_type=="Adoption") %>%
 
 Most of the people who adopted a pet had no allergies.
 
-##Denied and Red Flagged Applications
+##Analysis of Denied and Red Flagged Applications
 
 <br> We further investigated the characteristics of applications that were denied or red flagged. There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. 
-<br><br>
-**Denied Applications**<br>
+<br>
+
+<br>**Denied Applications**<br>
 Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
 Key takeaways:
@@ -1112,7 +1131,7 @@ mildly-allergic,not-sure        |  1
 very-allergic,mildly-allergic   |  1
 very-allergic,no-allergies     |   1
 
-In one case the responses conflict with each other: "very-allergic,no-allergies". This make grouping the data after the fact almost impossible because its not clear if this applicant has allergies or not. This is one example, but there were some other cases where this problem occurred as well, such a for the questions relating to Experience and Where the Pet Will be Kept. 
+In one case the responses conflict with each other: "very-allergic,no-allergies". This make grouping the data after the fact almost impossible because its not clear if this applicant has allergies or not. This is one example, but there were some other cases where this problem occurred as well, such as for the questions relating to Experience and Where the Pet Will be Kept. 
 
 For the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e.only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient.
 
