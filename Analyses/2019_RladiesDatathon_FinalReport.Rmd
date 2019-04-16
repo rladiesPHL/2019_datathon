@@ -59,14 +59,14 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 
 ### Summary
 
-*** The cleaned dataset we used for our analysis contained 1594 unique trello IDs with application submitted dates between 2018-08-30 to 2018-12-31
-*** For applications that resulted in adoption, cat applications took longer to process than dog applications. Cat apps took 19 days and dog apps took 8 days on average.
-*** Based on the animal's outcome site, adoption times were faster at PAWS Foster Program & PAWS Offsite Adoptions locations.
-*** Singles seem to prefer to adopt a pet. 
-*** There were 12 denied applications and 133 red flagged
-*** For the denied applications, the applicants had no known allergies and many of them had unfortunate incidents with prior pets
-*** There was a lot of missing data in the applications especially for the home pet policy question.
-*** We recommend redesiging the application to enforce standardized, limited, and logical responses. For example, for certain questions, allow only a single response or provide a drop down menu. Doing so will save PAWS staff time when reviewing applications and help with future analyses. 
+* The cleaned dataset we used for our analysis contained 1594 unique trello IDs with application submitted dates between 2018-08-30 to 2018-12-31
+* For applications that resulted in adoption, cat applications took longer to process than dog applications. Cat apps took 19 days and dog apps took 8 days on average.
+* Based on the animal's outcome site, adoption times were faster at PAWS Foster Program & PAWS Offsite Adoptions locations.
+* Singles seem to prefer to adopt a pet. 
+* There were 12 denied applications and 133 red flagged
+* For the denied applications, the applicants had no known allergies and many of them had unfortunate incidents with prior pets
+* There was a lot of missing data in the applications especially for the home pet policy question.
+* We recommend redesiging the application to enforce standardized, limited, and logical responses. For example, for certain questions, allow only a single response or provide a drop down menu. Doing so will save PAWS staff time when reviewing applications and help with future analyses. 
 
 
 
