@@ -1,0 +1,185 @@
+---
+title: "Animal Intake Characteristics"
+author: "Javier Jasso"
+output:
+  pdf_document: default
+  html_document: default
+code_folding: hide
+---
+
+```{r first chunk, include=FALSE}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+##Research Question:
+How did intake type (Surrender, Return, Stray, and Transfer in) affect application wait time (i.e., intake to release date)?
+
+##Dataset 
+```{r}
+#load packages
+library(tidyverse)
+library(psych)
+
+#import data
+master_animal <- read.csv("~/Documents/GitHub/2019_datathon/Data/processed_data/master_animal.csv")
+
+```
+
+```{r data_manipulation}
+#use dplyr to get subset of data
+library(tidyverse)
+
+master_animal_intake <- master_animal %>% 
+    dplyr::select(intake_type,
+           intake_subtype,
+           wait_days, 
+           animal_type) %>% 
+    filter(!is.na(intake_type)) %>% 
+    mutate(intake_type = factor(intake_type), 
+           animal_type = factor(animal_type), 
+           wait = as.numeric(wait_days))
+
+table(master_animal_intake$intake_type)
+table(master_animal_intake$intake_subtype)
+```
+
+```{r subtype}
+subtype_filter <- master_animal_intake %>% 
+    filter(intake_subtype == 'Returned Adoption' |
+               intake_subtype == 'Public Drop Off')
+```
+
+## Descriptive Data
+NB: one case removed for analysis due to missing intake type
+NB: More NAs in the animal_type variable
+
+We can summarize the data above with a table:
+```{r}
+master_animal_intake %>%
+    group_by(intake_type) %>% 
+    summarise(Wait = mean(wait_days),
+              SD = sd(wait_days),
+              n = n())
+```
+Now the same table, by animal type (cat vs. dog)
+```{r summary_animal.type}
+cats <- master_animal_intake %>%
+    group_by(intake_type) %>% 
+    filter(animal_type=='cat') %>% 
+    summarise(time=mean(wait_days), SD=sd(wait_days), n=n())
+cats
+dogs <- master_animal_intake %>%
+    group_by(intake_type) %>% 
+    filter(animal_type == 'dog') %>% 
+    summarise(time=mean(wait_days), SD=sd(wait_days), n=n())
+dogs
+```
+
+And a table of Intake Subtype variable:  
+```{r}
+table(master_animal_intake$intake_subtype)
+
+```
+For this analysis, we retained 2 of the variables: Public Dropoff (n = 433) and Returned Adoption (n = 213).
+
+##  Plotting
+Frequency of "Intake Type" variable:
+```{r}
+#cleanup code
+ggplot.cleanup = theme(panel.grid.major = element_blank(),
+                       panel.grid.minor = element_blank(),
+                       panel.background = element_blank(),
+                       axis.line = element_line(color = 'black'))
+
+intake_type_hist <- ggplot(master_animal_intake, aes(intake_type))
+intake_type_hist +
+    geom_bar(color="turquoise", fill="turquoise")+
+    xlab('Intake Type') +
+    ylab('Frequency')+
+    ggplot.cleanup +
+    theme(axis.title.x = element_text(size=20),
+          axis.title.y = element_text(size=20)) +
+    coord_flip()
+
+```
+
+Frequency of "Intake Type" variable:
+```{r}
+#plotting fequency of intake_subtype var:
+intake_subtype_all_hist <- ggplot(master_animal_intake, aes(intake_subtype))
+intake_subtype_all_hist +
+    geom_bar(color="gold", fill="gold")+
+    xlab('Intake Subtype') +
+    ylab('Frequency')+
+    ggplot.cleanup +
+    theme(axis.title.x = element_text(size=20),
+          axis.title.y = element_text(size=20)) +
+    coord_flip()
+```
+
+
+```{r}
+
+intake_subtype_hist <- ggplot(subtype_filter, aes(intake_subtype))
+intake_subtype_hist +
+    geom_bar(color="gold", fill="gold")+
+    xlab('Intake Subtype') +
+    ylab('Frequency')+
+    ggplot.cleanup +
+    theme(axis.title.x = element_text(size=20),
+          axis.title.y = element_text(size=20)) +
+    coord_flip()
+
+```
+
+#Analysis
+Now let's run multiple regression models.  
+Here, we have a model with Intake Type predicting Wait:
+```{r eval = FALSE}
+intake_type_lm <- lm(wait_days ~ intake_type, master_animal_intake)
+summary(intake_type_lm)
+```
+
+A no-intercept version of the same variables:
+```{r}
+intake_type_lm_no.int <- lm(wait_days ~ intake_type - 1, master_animal_intake)
+summary(intake_type_lm_no.int)
+
+ggplot(master_animal_intake, aes(x = intake_type, y = wait_days)) +
+    geom_point() +
+    stat_smooth(method = "lm")
+```
+
+And, for fun, let's run an ANOVA using aov()
+```{r}
+intake_aov <- aov(wait_days ~ intake_type, master_animal_intake) 
+summary(intake_aov)
+```
+
+Also, we can test for a possible Intake Type x Animal Type interaction:
+```{r interaction}
+intake_type_int <- lm(wait_days ~ intake_type*animal_type, master_animal_intake)
+summary(intake_type_int)
+```
+
+Regression model with Public Dropoff and Returned Adoption:
+```{r lm_subtype}
+#lm subtype:
+intake_subtype_lm <- lm(wait_days ~ intake_subtype, subtype_filter)
+summary(intake_subtype_lm)
+intake_subtype_lm$coefficients
+##lm subtype plot:
+ggplot(subtype_filter, aes(x = intake_subtype, y = wait_days)) +
+    geom_point() +
+    stat_smooth(method = "lm")
+```
+
+#Results: 
+##Intake Type
+There are significant differences in time, F(3, 2781) = 32.67, p < .001, such that "stray"" and "transfer" had significantly **longer** wait times than "surrender," while there were no significantly different wait times between "surrender" and "return."  
+
+##Intake Subtype
+Mean wait days: “public drop off” = 55; “returned adopt” = 32.  
+There are significantly different wait, with “public drop off” > “returned adopt.”
+
+

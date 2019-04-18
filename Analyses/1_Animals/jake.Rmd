@@ -1,0 +1,161 @@
+---
+title: "PAWS petpoint charts"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r workspace}
+library(tidyverse) # data manipulation
+library(lubridate) # date formatting
+options(scipen = 999) # turn off scientific notation
+
+df_name <- "petpoint.csv"
+```
+
+```{r raw_data}
+# fix dates = turns "12/31/2018 11:59 AM" to "2018-12-31"
+convert_date <-  function(x) {
+    mdy_hm(x) %>% as.Date()
+}
+
+# initial manipulation: remove some fields, remove singletons, convert dates, add wait time
+raw_data <-
+    read.csv(paste0("./Data/", df_name)) %>%
+    select(-c(X, animal_type, markings, dob, 
+              STATEFP:INTPTLON)) %>% 
+    filter(species != "Wild Mammal") %>% 
+    filter(outcome_type != "Admin Missing") %>% 
+    mutate_at(vars(matches("date")), funs(convert_date)) %>% 
+    mutate(wait_days = as.integer(difftime(release_date, intake_date, units = "days")))
+    
+# quick histogram of wait times
+hist(raw_data$wait_days)
+```
+
+
+```{r custom_functions}
+# confirm if numeric/date fields should be cut
+check_n_cat <- function(x) {
+    (is.numeric(x) | is.integer(x) | is.Date(x)) &
+    n_distinct(x) > 15
+}
+
+# cut numeric and dates into 10 groups
+cut_custom <- function(x){
+    label <- # create cut labels ex: "[0-4)" "[5-9)"
+        cut(
+            x, 
+            breaks = 10, 
+            include.lowest = TRUE, 
+            dig.lab = 5,
+            right = FALSE, 
+            ordered_result = TRUE) 
+    
+    ord <- # will create order ex: "(02)"
+        paste0("(", str_pad(as.integer(label), 2, pad = "0"), ") ")
+    
+    # if cut returns brackets, add order ex: "(02) [5-9)"
+    ifelse(str_detect(label, "\\["), paste0(ord, label), as.character(label))
+}
+
+# lump categorical data into 10 groups
+collapse_cat <- function(x, n = 10) {
+    n_cat <- n_distinct(x)-n
+        
+    fct_lump(x, n) %>% 
+        str_replace("^Other$", paste0("Other (", n_cat, ")"))
+}
+
+```
+
+```{r df_as_categories}
+# vector of variables to ignore in df_as_categories
+ignore_vars <- "outcome_trello_id"
+
+# transform all columns: remove ignore_vars columns, remove rows wit NAs cut numeric data into categories, lump categorical data, add id
+df_as_categories <-
+    raw_data %>% 
+    select(-one_of(ignore_vars)) %>%
+    filter(complete.cases(.)) %>%
+    mutate_if(check_n_cat, funs(cut_custom)) %>%
+    mutate_all(collapse_cat) %>% 
+    mutate(id = row_number())
+```
+
+```{r get_fields}
+# table of class attributes
+column_class <- 
+  tibble(name = colnames(raw_data)) %>% 
+  mutate(ord = row_number(),
+         class = as.character(sapply(raw_data, class)),
+         n = as.integer(sapply(raw_data, n_distinct)),
+         class = ifelse(n <= 2, "logical", class))
+
+# vector of column names
+get_vars <- names(df_as_categories)
+
+# function to create counts, first column selected by integer #, this is similar to a gather of all field & field values followed by count but resulting in fewer rows at each step
+agg_fields <-
+    function(i){
+        df_as_categories %>% 
+        select(value = i) %>% 
+        mutate(field = names(df_as_categories)[i],
+               value = as.character(value)) %>% 
+        group_by(field, value) %>% 
+        summarise(n = n()) %>% 
+        ungroup() %>% 
+        group_by(field, value) %>% 
+        summarise(n = sum(n)) %>% 
+        ungroup()
+    }
+
+# base table
+get_fields <- 
+    agg_fields(1)
+
+# for loop to append rows
+for(i in 2:length(get_vars)){
+    get_fields <-
+        bind_rows(get_fields,
+                  agg_fields(i))
+    
+    print(i)
+}
+```
+
+```{r initial_plots}
+# get names of all categorical variables
+cat_vars <- 
+    column_class %>% 
+    filter(str_detect(class, "logical|factor|character")) %>% 
+    pull(name)
+
+# get names of all numeric & date variables
+num_vars <-
+    column_class %>% 
+    filter(!name %in% cat_vars) %>% 
+    pull(name)
+
+# plot of categorical variables
+    get_fields %>% 
+    filter(field %in% cat_vars) %>% 
+    ggplot(aes(x = fct_reorder(str_sub(value, 1, 15), n), y = n)) +
+        geom_col() +
+        facet_wrap(~field, scales = "free") +
+        coord_flip() +
+        labs(title = paste0(df_name, ": categorical fields"),
+             x = "")
+
+# plot of numeric variables
+    get_fields %>% 
+    filter(field %in% num_vars) %>% 
+    ggplot(aes(x = value, y = n)) +
+        geom_col() +
+        facet_wrap(~field, scales = "free") +
+        coord_flip() +
+        labs(title = paste0(df_name, ": numeric & date fields"),
+             x = "")
+```

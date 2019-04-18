@@ -1,0 +1,677 @@
+---
+title: "rladiesanalysis"
+author: "Alexandria Lesicko"
+date: "3/18/2019"
+output: html_document
+---
+
+```{r}
+#Import master animal data
+master_animal <- read.csv("~/Downloads/master_animal.csv")
+```
+
+```{r}
+#Extract intake month
+master_animal$intake_month <- format(as.Date(master_animal$intake_date), "%B")
+```
+
+```{r}
+#Plot monthly trends in intake
+master_animal$intake_month_fac = factor(master_animal$intake_month, levels = month.name)
+intake_month_counts <- table(master_animal$intake_month_fac)
+df_intake_month_counts <- data.frame(intake_month_counts)
+names(df_intake_month_counts)[1]<-"Month"
+df_intake_month_counts$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_intake_month_counts, aes(x=Month, y=Freq, fill = Season)) + geom_bar(stat = "identity") + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + ggtitle("Monthly Trends in Intake - Total for All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+```
+```{r}
+#Extract release month
+master_animal$release_month <- format(as.Date(master_animal$release_date), "%B")
+```
+
+```{r}
+#Plot monthly trends in release
+master_animal$release_month_fac = factor(master_animal$release_month, levels = month.name)
+release_month_counts <- table(master_animal$release_month_fac)
+df_release_month_counts <- data.frame(release_month_counts)
+names(df_release_month_counts)[1]<-"Month"
+df_release_month_counts$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+ggplot(df_release_month_counts, aes(x=Month, y=Freq, fill = Season)) + geom_bar(stat = "identity") + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + ggtitle("Monthly Trends in Release - Total for All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+```
+
+```{r}
+#Plot intake-outtake index
+df_intake_outtake_index <- cbind(df_intake_month_counts[1],df_intake_month_counts[3])
+
+df_intake_outtake_index$Index <-(df_intake_month_counts$Freq-df_release_month_counts$Freq)/(df_intake_month_counts$Freq+df_release_month_counts$Freq)
+
+ggplot(df_intake_outtake_index, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat = "identity") + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + ggtitle("Intake-Outtake Index - Total for All Facilities") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+#Plot Monthly Patterns in Intake Age
+boxplot(master_animal$age_intake ~ master_animal$intake_month_fac, data = master_animal, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake")
+
+stripchart(master_animal$age_intake ~ master_animal$intake_month_fac, vertical = TRUE, data = master_animal, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+```
+
+```{r}
+#Plot Monthly Patterns in Wait Days
+boxplot(master_animal$wait_days ~ master_animal$intake_month_fac, data = master_animal, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days",
+     main   = "Seasonal Patterns in Wait Days")
+
+stripchart(master_animal$wait_days ~ master_animal$intake_month_fac, vertical = TRUE, data = master_animal, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+```
+
+```{r}
+#Subset Data by Species
+cat <- master_animal[ which(master_animal$species=='Cat'), ]
+dog <- master_animal[ which(master_animal$species=='Dog'), ]
+```
+
+```{r}
+#Plot monthly trends in intake by species
+cat_intake_month_counts <- table(cat$intake_month_fac)
+dog_intake_month_counts <- table(dog$intake_month_fac)
+df_intake_month_counts_species <- data.frame(cat_intake_month_counts, dog_intake_month_counts)
+df_intake_month_counts_species <- df_intake_month_counts_species[-3]
+names(df_intake_month_counts_species)[1] <- "Month"
+names(df_intake_month_counts_species)[2] <- "Cats"
+names(df_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_intake_month_counts_species <- melt(df_intake_month_counts_species, id.vars='Month')
+df_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+
+library(ggplot2)
+ggplot(df_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+```
+
+
+```{r}
+#Plot monthly trends in release by species
+cat_release_month_counts <- table(cat$release_month_fac)
+dog_release_month_counts <- table(dog$release_month_fac)
+df_release_month_counts_species <- data.frame(cat_release_month_counts, dog_release_month_counts)
+df_release_month_counts_species <- df_release_month_counts_species[-3]
+names(df_release_month_counts_species)[1] <- "Month"
+names(df_release_month_counts_species)[2] <- "Cats"
+names(df_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_release_month_counts_species <- melt(df_release_month_counts_species, id.vars='Month')
+df_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+
+library(ggplot2)
+ggplot(df_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+
+```
+
+```{r}
+#Plot intake-outtake index by species
+df_intake_outtake_index_species <- cbind(df_intake_month_counts_species[1],df_intake_month_counts_species[2],df_intake_month_counts_species[4])
+
+df_intake_outtake_index_species$Index <-(df_intake_month_counts_species$value-df_release_month_counts_species$value)/(df_intake_month_counts_species$value+df_release_month_counts_species$value)
+
+ggplot(df_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + theme(axis.text.x = element_text(angle=90, hjust=1))
+```
+
+```{r}
+#Plot Monthly Patterns in Intake Age by Species
+boxplot(cat$age_intake ~ cat$intake_month_fac, data = cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(cat$age_intake ~ cat$intake_month_fac, vertical = TRUE, data = cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(dog$age_intake ~ dog$intake_month_fac, data = dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(dog$age_intake ~ dog$intake_month_fac, vertical = TRUE, data = dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+```
+
+```{r}
+#Plot Monthly Patterns in Wait Days
+boxplot(cat$wait_days ~ cat$intake_month_fac, data = cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats")
+
+stripchart(cat$wait_days ~ cat$intake_month_fac, vertical = TRUE, data = cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(dog$wait_days ~ dog$intake_month_fac, data = dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs")
+
+stripchart(dog$wait_days ~ dog$intake_month_fac, vertical = TRUE, data = dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+```
+
+```{r}
+#Subset Data by Intake Location
+GFA <- master_animal[ which(master_animal$intake_sitename=='Grays Ferry Avenue'), ]
+PAC <- master_animal[ which(master_animal$intake_sitename=='PAC'), ]
+GA <- master_animal[ which(master_animal$intake_sitename=='Grant Avenue'), ]
+PAWS_FP <- master_animal[ which(master_animal$intake_sitename=='PAWS Foster Program'), ]
+PAWS_OA <- master_animal[ which(master_animal$intake_sitename=='PAWS Offsite Adoptions'), ]
+```
+
+```{r}
+#Subset Intake Location Data by Species
+GFA_cat <- GFA[ which(GFA$species=='Cat'), ]
+GFA_dog <- GFA[ which(GFA$species=='Dog'), ]
+
+PAC_cat <- PAC[ which(PAC$species=='Cat'), ]
+PAC_dog <- PAC[ which(PAC$species=='Dog'), ]
+
+GA_cat <- GA[ which(GA$species=='Cat'), ]
+GA_dog <- GA[ which(GA$species=='Dog'), ]
+
+PAWS_FP_cat <- PAWS_FP[ which(PAWS_FP$species=='Cat'), ]
+PAWS_FP_dog <- PAWS_FP[ which(PAWS_FP$species=='Dog'), ]
+
+PAWS_OA_cat <- PAWS_OA[ which(PAWS_OA$species=='Cat'), ]
+PAWS_OA_dog <- PAWS_OA[ which(PAWS_OA$species=='Dog'), ]
+```
+
+```{r}
+#Plot Monthly Trends in Intake by Species for Each Location
+
+#Grays Ferry Avenue
+GFA_cat_intake_month_counts <- table(GFA_cat$intake_month_fac)
+GFA_dog_intake_month_counts <- table(GFA_dog$intake_month_fac)
+df_GFA_intake_month_counts_species <- data.frame(GFA_cat_intake_month_counts, GFA_dog_intake_month_counts)
+df_GFA_intake_month_counts_species <- df_GFA_intake_month_counts_species[-3]
+names(df_GFA_intake_month_counts_species)[1] <- "Month"
+names(df_GFA_intake_month_counts_species)[2] <- "Cats"
+names(df_GFA_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GFA_intake_month_counts_species <- melt(df_GFA_intake_month_counts_species, id.vars='Month')
+df_GFA_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_GFA_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - Grays Ferry Avenue") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+
+
+#PAC
+PAC_cat_intake_month_counts <- table(PAC_cat$intake_month_fac)
+PAC_dog_intake_month_counts <- table(PAC_dog$intake_month_fac)
+df_PAC_intake_month_counts_species <- data.frame(PAC_cat_intake_month_counts, PAC_dog_intake_month_counts)
+df_PAC_intake_month_counts_species <- df_PAC_intake_month_counts_species[-3]
+names(df_PAC_intake_month_counts_species)[1] <- "Month"
+names(df_PAC_intake_month_counts_species)[2] <- "Cats"
+names(df_PAC_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAC_intake_month_counts_species <- melt(df_PAC_intake_month_counts_species, id.vars='Month')
+df_PAC_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAC_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - PAC") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+
+
+#Grant Avenue
+GA_cat_intake_month_counts <- table(GA_cat$intake_month_fac)
+GA_dog_intake_month_counts <- table(GA_dog$intake_month_fac)
+df_GA_intake_month_counts_species <- data.frame(GA_cat_intake_month_counts, GA_dog_intake_month_counts)
+df_GA_intake_month_counts_species <- df_GA_intake_month_counts_species[-3]
+names(df_GA_intake_month_counts_species)[1] <- "Month"
+names(df_GA_intake_month_counts_species)[2] <- "Cats"
+names(df_GA_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GA_intake_month_counts_species <- melt(df_GA_intake_month_counts_species, id.vars='Month')
+df_GA_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_GA_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - Grant Avenue") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+
+
+#PAWS Foster Program
+PAWS_FP_cat_intake_month_counts <- table(PAWS_FP_cat$intake_month_fac)
+PAWS_FP_dog_intake_month_counts <- table(PAWS_FP_dog$intake_month_fac)
+df_PAWS_FP_intake_month_counts_species <- data.frame(PAWS_FP_cat_intake_month_counts, PAWS_FP_dog_intake_month_counts)
+df_PAWS_FP_intake_month_counts_species <- df_PAWS_FP_intake_month_counts_species[-3]
+names(df_PAWS_FP_intake_month_counts_species)[1] <- "Month"
+names(df_PAWS_FP_intake_month_counts_species)[2] <- "Cats"
+names(df_PAWS_FP_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_FP_intake_month_counts_species <- melt(df_PAWS_FP_intake_month_counts_species, id.vars='Month')
+df_PAWS_FP_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAWS_FP_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - PAWS Foster Program") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+
+
+#PAWS Offsite Adoptions
+PAWS_OA_cat_intake_month_counts <- table(PAWS_OA_cat$intake_month_fac)
+PAWS_OA_dog_intake_month_counts <- table(PAWS_OA_dog$intake_month_fac)
+df_PAWS_OA_intake_month_counts_species <- data.frame(PAWS_OA_cat_intake_month_counts, PAWS_OA_dog_intake_month_counts)
+df_PAWS_OA_intake_month_counts_species <- df_PAWS_OA_intake_month_counts_species[-3]
+names(df_PAWS_OA_intake_month_counts_species)[1] <- "Month"
+names(df_PAWS_OA_intake_month_counts_species)[2] <- "Cats"
+names(df_PAWS_OA_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_OA_intake_month_counts_species <- melt(df_PAWS_OA_intake_month_counts_species, id.vars='Month')
+df_PAWS_OA_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAWS_OA_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Intake - PAWS Offsite Adoptions") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Intakes")
+```
+
+```{r}
+#Plot Monthly Trends in Release by Species for Each Location
+
+#Grays Ferry Avenue
+GFA_cat_release_month_counts <- table(GFA_cat$release_month_fac)
+GFA_dog_release_month_counts <- table(GFA_dog$release_month_fac)
+df_GFA_release_month_counts_species <- data.frame(GFA_cat_release_month_counts, GFA_dog_release_month_counts)
+df_GFA_release_month_counts_species <- df_GFA_release_month_counts_species[-3]
+names(df_GFA_release_month_counts_species)[1] <- "Month"
+names(df_GFA_release_month_counts_species)[2] <- "Cats"
+names(df_GFA_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GFA_release_month_counts_species <- melt(df_GFA_release_month_counts_species, id.vars='Month')
+df_GFA_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_GFA_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - Grays Ferry Avenue") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+
+
+#PAC
+PAC_cat_release_month_counts <- table(PAC_cat$release_month_fac)
+PAC_dog_release_month_counts <- table(PAC_dog$release_month_fac)
+df_PAC_release_month_counts_species <- data.frame(PAC_cat_release_month_counts, PAC_dog_release_month_counts)
+df_PAC_release_month_counts_species <- df_PAC_release_month_counts_species[-3]
+names(df_PAC_release_month_counts_species)[1] <- "Month"
+names(df_PAC_release_month_counts_species)[2] <- "Cats"
+names(df_PAC_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAC_release_month_counts_species <- melt(df_PAC_release_month_counts_species, id.vars='Month')
+df_PAC_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_PAC_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - PAC") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+
+
+#Grant Avenue
+GA_cat_release_month_counts <- table(GA_cat$release_month_fac)
+GA_dog_release_month_counts <- table(GA_dog$release_month_fac)
+df_GA_release_month_counts_species <- data.frame(GA_cat_release_month_counts, GA_dog_release_month_counts)
+df_GA_release_month_counts_species <- df_GA_release_month_counts_species[-3]
+names(df_GA_release_month_counts_species)[1] <- "Month"
+names(df_GA_release_month_counts_species)[2] <- "Cats"
+names(df_GA_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GA_release_month_counts_species <- melt(df_GA_release_month_counts_species, id.vars='Month')
+df_GA_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_GA_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - Grant Avenue") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+
+
+#PAWS Foster Program
+PAWS_FP_cat_release_month_counts <- table(PAWS_FP_cat$release_month_fac)
+PAWS_FP_dog_release_month_counts <- table(PAWS_FP_dog$release_month_fac)
+df_PAWS_FP_release_month_counts_species <- data.frame(PAWS_FP_cat_release_month_counts, PAWS_FP_dog_release_month_counts)
+df_PAWS_FP_release_month_counts_species <- df_PAWS_FP_release_month_counts_species[-3]
+names(df_PAWS_FP_release_month_counts_species)[1] <- "Month"
+names(df_PAWS_FP_release_month_counts_species)[2] <- "Cats"
+names(df_PAWS_FP_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_FP_release_month_counts_species <- melt(df_PAWS_FP_release_month_counts_species, id.vars='Month')
+df_PAWS_FP_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_PAWS_FP_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - PAWS Foster Program") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+
+
+#PAWS Offsite Adoptions
+PAWS_OA_cat_release_month_counts <- table(PAWS_OA_cat$release_month_fac)
+PAWS_OA_dog_release_month_counts <- table(PAWS_OA_dog$release_month_fac)
+df_PAWS_OA_release_month_counts_species <- data.frame(PAWS_OA_cat_release_month_counts, PAWS_OA_dog_release_month_counts)
+df_PAWS_OA_release_month_counts_species <- df_PAWS_OA_release_month_counts_species[-3]
+names(df_PAWS_OA_release_month_counts_species)[1] <- "Month"
+names(df_PAWS_OA_release_month_counts_species)[2] <- "Cats"
+names(df_PAWS_OA_release_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_OA_release_month_counts_species <- melt(df_PAWS_OA_release_month_counts_species, id.vars='Month')
+df_PAWS_OA_release_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_PAWS_OA_release_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Monthly Trends in Release - PAWS Offsite Adoptions") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Releases")
+```
+
+```{r}
+#Plot intake-outtake index by species for each location
+
+#Grays Ferry Avenue
+df_GFA_intake_outtake_index_species <- cbind(df_GFA_intake_month_counts_species[1],df_GFA_intake_month_counts_species[2],df_GFA_intake_month_counts_species[4])
+
+df_GFA_intake_outtake_index_species$Index <-(df_GFA_intake_month_counts_species$value-df_GFA_release_month_counts_species$value)/(df_GFA_intake_month_counts_species$value+df_GFA_release_month_counts_species$value)
+
+ggplot(df_GFA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - Grays Ferry Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+
+#PAC
+df_PAC_intake_outtake_index_species <- cbind(df_PAC_intake_month_counts_species[1],df_PAC_intake_month_counts_species[2],df_PAC_intake_month_counts_species[4])
+
+df_PAC_intake_outtake_index_species$Index <-(df_PAC_intake_month_counts_species$value-df_PAC_release_month_counts_species$value)/(df_PAC_intake_month_counts_species$value+df_PAC_release_month_counts_species$value)
+
+ggplot(df_PAC_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - PAC") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+
+#Grant Avenue
+df_GA_intake_outtake_index_species <- cbind(df_GA_intake_month_counts_species[1],df_GA_intake_month_counts_species[2],df_GA_intake_month_counts_species[4])
+
+df_GA_intake_outtake_index_species$Index <-(df_GA_intake_month_counts_species$value-df_GA_release_month_counts_species$value)/(df_GA_intake_month_counts_species$value+df_GA_release_month_counts_species$value)
+
+ggplot(df_GA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - Grant Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+
+#PAWS Foster Program
+df_PAWS_FP_intake_outtake_index_species <- cbind(df_PAWS_FP_intake_month_counts_species[1],df_PAWS_FP_intake_month_counts_species[2],df_PAWS_FP_intake_month_counts_species[4])
+
+df_PAWS_FP_intake_outtake_index_species$Index <-(df_PAWS_FP_intake_month_counts_species$value-df_PAWS_FP_release_month_counts_species$value)/(df_PAWS_FP_intake_month_counts_species$value+df_PAWS_FP_release_month_counts_species$value)
+
+ggplot(df_PAWS_FP_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - PAWS Foster Program") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+
+#PAWS Offsite Adoptions
+df_PAWS_OA_intake_outtake_index_species <- cbind(df_PAWS_OA_intake_month_counts_species[1],df_PAWS_OA_intake_month_counts_species[2],df_PAWS_OA_intake_month_counts_species[4])
+
+df_PAWS_OA_intake_outtake_index_species$Index <-(df_PAWS_OA_intake_month_counts_species$value-df_PAWS_OA_release_month_counts_species$value)/(df_PAWS_OA_intake_month_counts_species$value+df_PAWS_OA_release_month_counts_species$value)
+
+ggplot(df_PAWS_OA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Outtake Index - PAWS Offsite Adoptions") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) 
+```
+
+```{r}
+#Plot Monthly Patterns in Intake Age by Species for Each Location
+
+#Grays Ferry Avenue
+boxplot(GFA_cat$age_intake ~ GFA_cat$intake_month_fac, data = GFA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(GFA_cat$age_intake ~ GFA_cat$intake_month_fac, vertical = TRUE, data = GFA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(GFA_dog$age_intake ~ GFA_dog$intake_month_fac, data = GFA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(GFA_dog$age_intake ~ GFA_dog$intake_month_fac, vertical = TRUE, data = GFA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAC
+boxplot(PAC_cat$age_intake ~ PAC_cat$intake_month_fac, data = PAC_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(PAC_cat$age_intake ~ PAC_cat$intake_month_fac, vertical = TRUE, data = PAC_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAC_dog$age_intake ~ PAC_dog$intake_month_fac, data = PAC_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(PAC_dog$age_intake ~ PAC_dog$intake_month_fac, vertical = TRUE, data = PAC_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+
+#Grant Avenue
+boxplot(GA_cat$age_intake ~ GA_cat$intake_month_fac, data = GA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(GA_cat$age_intake ~ GA_cat$intake_month_fac, vertical = TRUE, data = GA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(GA_dog$age_intake ~ GA_dog$intake_month_fac, data = GA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(GA_dog$age_intake ~ GA_dog$intake_month_fac, vertical = TRUE, data = GA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAWS Foster Program
+boxplot(PAWS_FP_cat$age_intake ~ PAWS_FP_cat$intake_month_fac, data = PAWS_FP_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(PAWS_FP_cat$age_intake ~ PAWS_FP_cat$intake_month_fac, vertical = TRUE, data = PAWS_FP_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAWS_FP_dog$age_intake ~ PAWS_FP_dog$intake_month_fac, data = PAWS_FP_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(PAWS_FP_dog$age_intake ~ PAWS_FP_dog$intake_month_fac, vertical = TRUE, data = PAWS_FP_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAWS Offsite Adoptions
+boxplot(PAWS_OA_cat$age_intake ~ PAWS_OA_cat$intake_month_fac, data = PAWS_OA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Cats")
+
+stripchart(PAWS_OA_cat$age_intake ~ PAWS_OA_cat$intake_month_fac, vertical = TRUE, data = PAWS_OA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAWS_OA_dog$age_intake ~ PAWS_OA_dog$intake_month_fac, data = PAWS_OA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Age at Intake (Months)",
+     main   = "Seasonal Patterns in Age at Intake for Dogs")
+
+stripchart(PAWS_OA_dog$age_intake ~ PAWS_OA_dog$intake_month_fac, vertical = TRUE, data = PAWS_OA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+```
+
+```{r}
+#Plot Monthly Patterns in Wait Days by Species for Each Location
+
+#Grays Ferry Avenue
+boxplot(GFA_cat$wait_days ~ GFA_cat$release_month_fac, data = GFA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats - Grays Ferry Avenue")
+
+stripchart(GFA_cat$wait_days ~ GFA_cat$release_month_fac, vertical = TRUE, data = GFA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(GFA_dog$wait_days ~ GFA_dog$release_month_fac, data = GFA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs - Grays Ferry Avenue")
+
+stripchart(GFA_dog$wait_days ~ GFA_dog$release_month_fac, vertical = TRUE, data = GFA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAC
+boxplot(PAC_cat$wait_days ~ PAC_cat$release_month_fac, data = PAC_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats - PAC")
+
+stripchart(PAC_cat$wait_days ~ PAC_cat$release_month_fac, vertical = TRUE, data = PAC_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAC_dog$wait_days ~ PAC_dog$release_month_fac, data = PAC_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs - PAC")
+
+stripchart(PAC_dog$wait_days ~ PAC_dog$release_month_fac, vertical = TRUE, data = PAC_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+
+#Grant Avenue
+boxplot(GA_cat$wait_days ~ GA_cat$release_month_fac, data = GA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats - Grant Avenue")
+
+stripchart(GA_cat$wait_days ~ GA_cat$release_month_fac, vertical = TRUE, data = GA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(GA_dog$wait_days ~ GA_dog$release_month_fac, data = GA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs - Grant Avenue")
+
+stripchart(GA_dog$wait_days ~ GA_dog$release_month_fac, vertical = TRUE, data = GA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAWS Foster Program
+boxplot(PAWS_FP_cat$wait_days ~ PAWS_FP_cat$release_month_fac, data = PAWS_FP_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats - PAWS Foster Program")
+
+stripchart(PAWS_FP_cat$wait_days ~ PAWS_FP_cat$release_month_fac, vertical = TRUE, data = PAWS_FP_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAWS_FP_dog$wait_days ~ PAWS_FP_dog$release_month_fac, data = PAWS_FP_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs - PAWS Foster Program")
+
+stripchart(PAWS_FP_dog$wait_days ~ PAWS_FP_dog$release_month_fac, vertical = TRUE, data = PAWS_FP_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+#PAWS Offsite Adoptions
+boxplot(PAWS_OA_cat$wait_days ~ PAWS_OA_cat$release_month_fac, data = PAWS_OA_cat, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Cats - PAWS Offsite Adoptions")
+
+stripchart(PAWS_OA_cat$wait_days ~ PAWS_OA_cat$release_month_fac, vertical = TRUE, data = PAWS_OA_cat, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+
+boxplot(PAWS_OA_dog$wait_days ~ PAWS_OA_dog$release_month_fac, data = PAWS_OA_dog, outline = FALSE,
+     xlab   = "Month",
+     ylab   = "Wait Days (Months)",
+     main   = "Seasonal Patterns in Wait Days for Dogs - PAWS Offsite Adoptions")
+
+stripchart(PAWS_OA_dog$wait_days ~ PAWS_OA_dog$release_month_fac, vertical = TRUE, data = PAWS_OA_dog, method = "jitter", add = TRUE, pch = 20, cex = 0.5, col = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4"))
+```
+
+```{r}
+#Plot Monthly Patterns in Intake Condition
+sick <- master_animal[ which(master_animal$intake_condition=='Sick'), ]
+healthy <- master_animal[ which(master_animal$intake_condition=='Healthy'), ]
+
+sick_intake_month_counts <- table(sick$intake_month_fac)
+df_sick_intake_month_counts <- data.frame(sick_intake_month_counts)
+names(df_sick_intake_month_counts)[1]<-"Month"
+df_sick_intake_month_counts$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+healthy_intake_month_counts <- table(healthy$intake_month_fac)
+df_healthy_intake_month_counts <- data.frame(healthy_intake_month_counts)
+names(df_healthy_intake_month_counts)[1]<-"Month"
+df_healthy_intake_month_counts$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter")
+
+library(ggplot2)
+ggplot(df_sick_intake_month_counts, aes(x=Month, y=Freq, fill = Season)) + geom_bar(stat = "identity") + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + ggtitle("Intake Condition (Sick) - Total for All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Sick Intakes")
+
+library(ggplot2)
+ggplot(df_healthy_intake_month_counts, aes(x=Month, y=Freq, fill = Season)) + geom_bar(stat = "identity") + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + ggtitle("Intake Condition (Healthy) - Total for All Facilities") + theme(plot.title = element_text(hjust = 0.5)) + ylab("Number of Healthy Intakes") 
+
+```
+
+```{r}
+#Subset the Number of Sick Intake Cases by Location and Species
+GFA_cat_sick <- GFA_cat[ which(GFA_cat$intake_condition=='Sick'), ]
+GFA_dog_sick <- GFA_dog[ which(GFA_dog$intake_condition=='Sick'), ]
+
+PAC_cat_sick <- PAC_cat[ which(PAC_cat$intake_condition=='Sick'), ]
+PAC_dog_sick <- PAC_dog[ which(PAC_dog$intake_condition=='Sick'), ]
+
+GA_cat_sick <- GA_cat[ which(GA_cat$intake_condition=='Sick'), ]
+GA_dog_sick <- GA_dog[ which(GA_dog$intake_condition=='Sick'), ]
+
+PAWS_FP_cat_sick <- PAWS_FP_cat[ which(PAWS_FP_cat$species=='Sick'), ]
+PAWS_FP_dog_sick <- PAWS_FP_dog[ which(PAWS_FP_dog$species=='Sick'), ]
+
+PAWS_OA_cat_sick <- PAWS_OA_cat[ which(PAWS_OA_cat$species=='Sick'), ]
+PAWS_OA_dog_sick <- PAWS_OA_dog[ which(PAWS_OA_dog$species=='Sick'), ]
+```
+
+```{r}
+#Plot Monthly Trends in Intake by Species for Each Location
+
+#Grays Ferry Avenue
+GFA_cat_sick_intake_month_counts <- table(GFA_cat_sick$intake_month_fac)
+GFA_dog_sick_intake_month_counts <- table(GFA_dog_sick$intake_month_fac)
+df_GFA_sick_intake_month_counts_species <- data.frame(GFA_cat_sick_intake_month_counts, GFA_dog_sick_intake_month_counts)
+df_GFA_sick_intake_month_counts_species <- df_GFA_sick_intake_month_counts_species[-3]
+names(df_GFA_sick_intake_month_counts_species)[1] <- "Month"
+names(df_GFA_sick_intake_month_counts_species)[2] <- "Cats"
+names(df_GFA_sick_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GFA_sick_intake_month_counts_species <- melt(df_GFA_sick_intake_month_counts_species, id.vars='Month')
+df_GFA_sick_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_GFA_sick_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake Condition (Sick) - Grays Ferry Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) + ylab("Number of Intakes")
+
+
+#PAC
+PAC_cat_sick_intake_month_counts <- table(PAC_cat_sick$intake_month_fac)
+PAC_dog_sick_intake_month_counts <- table(PAC_dog_sick$intake_month_fac)
+df_PAC_sick_intake_month_counts_species <- data.frame(PAC_cat_sick_intake_month_counts, PAC_dog_sick_intake_month_counts)
+df_PAC_sick_intake_month_counts_species <- df_PAC_sick_intake_month_counts_species[-3]
+names(df_PAC_sick_intake_month_counts_species)[1] <- "Month"
+names(df_PAC_sick_intake_month_counts_species)[2] <- "Cats"
+names(df_PAC_sick_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAC_sick_intake_month_counts_species <- melt(df_PAC_sick_intake_month_counts_species, id.vars='Month')
+df_PAC_sick_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAC_sick_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake Condition (Sick) - PAC") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) + ylab("Number of Intakes")
+
+
+#Grant Avenue
+GA_cat_sick_intake_month_counts <- table(GA_cat_sick$intake_month_fac)
+GA_dog_sick_intake_month_counts <- table(GA_dog_sick$intake_month_fac)
+df_GA_sick_intake_month_counts_species <- data.frame(GA_cat_sick_intake_month_counts, GA_dog_sick_intake_month_counts)
+df_GA_sick_intake_month_counts_species <- df_GA_sick_intake_month_counts_species[-3]
+names(df_GA_sick_intake_month_counts_species)[1] <- "Month"
+names(df_GA_sick_intake_month_counts_species)[2] <- "Cats"
+names(df_GA_sick_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_GA_sick_intake_month_counts_species <- melt(df_GA_sick_intake_month_counts_species, id.vars='Month')
+df_GA_sick_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_GA_sick_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake Condition (Sick) - Grant Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) + ylab("Number of Intakes")
+
+
+#PAWS Foster Program
+PAWS_FP_cat_sick_intake_month_counts <- table(PAWS_FP_cat_sick$intake_month_fac)
+PAWS_FP_dog_sick_intake_month_counts <- table(PAWS_FP_dog_sick$intake_month_fac)
+df_PAWS_FP_sick_intake_month_counts_species <- data.frame(PAWS_FP_cat_sick_intake_month_counts, PAWS_FP_dog_sick_intake_month_counts)
+df_PAWS_FP_sick_intake_month_counts_species <- df_PAWS_FP_sick_intake_month_counts_species[-3]
+names(df_PAWS_FP_sick_intake_month_counts_species)[1] <- "Month"
+names(df_PAWS_FP_sick_intake_month_counts_species)[2] <- "Cats"
+names(df_PAWS_FP_sick_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_FP_sick_intake_month_counts_species <- melt(df_PAWS_FP_sick_intake_month_counts_species, id.vars='Month')
+df_PAWS_FP_sick_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAWS_FP_sick_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake Condition (Sick) - PAWS Foster Program") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) + ylab("Number of Intakes")
+
+
+#PAWS Offsite Adoptions
+PAWS_OA_cat_sick_intake_month_counts <- table(PAWS_OA_cat_sick$intake_month_fac)
+PAWS_OA_dog_sick_intake_month_counts <- table(PAWS_OA_dog_sick$intake_month_fac)
+df_PAWS_OA_sick_intake_month_counts_species <- data.frame(PAWS_OA_cat_sick_intake_month_counts, PAWS_OA_dog_sick_intake_month_counts)
+df_PAWS_OA_sick_intake_month_counts_species <- df_PAWS_OA_sick_intake_month_counts_species[-3]
+names(df_PAWS_OA_sick_intake_month_counts_species)[1] <- "Month"
+names(df_PAWS_OA_sick_intake_month_counts_species)[2] <- "Cats"
+names(df_PAWS_OA_sick_intake_month_counts_species)[3] <- "Dogs"
+library(reshape2)
+df_PAWS_OA_sick_intake_month_counts_species <- melt(df_PAWS_OA_sick_intake_month_counts_species, id.vars='Month')
+df_PAWS_OA_sick_intake_month_counts_species$Season <- c(rep("Winter",2), rep("Spring",3), rep("Summer",3), rep("Fall",3), "Winter") 
+
+library(ggplot2)
+ggplot(df_PAWS_OA_sick_intake_month_counts_species, aes(x=Month, y=value, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake Condition (Sick) - PAWS Offsite Adoptions") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) + ylab("Number of Intakes")
+```
+

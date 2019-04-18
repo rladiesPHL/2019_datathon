@@ -1,0 +1,241 @@
+---
+title: "pet_type"
+author: "Katerina Placek"
+date: "3/9/2019"
+output: html_document
+---
+
+which types of pets stay in the system longer (intake to outcome) - species, weight/size, (ideally break down for cats vs dogs); age: forcats (do young animals stay longer), health condition
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r workspace}
+library(tidyverse) # data manipulation
+library(lubridate) # date formatting
+options(scipen = 999) # turn off scientific notation
+
+df_name <- "petpoint.csv"
+```
+
+```{r raw_data}
+convert_date <-  function(x) {
+    mdy_hm(x) %>% as.Date()
+}
+
+raw_data <-
+    read.csv(paste0("../../Data/", df_name), na.strings = "") %>%
+    select(-c(X, animal_type, markings, dob, 
+              STATEFP:INTPTLON)) %>% 
+    filter(species != "Wild Mammal") %>% 
+    filter(outcome_type != "Admin Missing") %>% 
+    
+    mutate_at(vars(matches("date")), funs(convert_date)) %>% 
+    mutate(wait_days = as.integer(difftime(release_date, intake_date, units = "days"))) %>%
+    group_by(species) %>%
+    mutate(long_wait = wait_days > median(wait_days, na.rm = T)) %>%
+    ungroup() %>% 
+    filter(!is.na(wait_days)) %>% 
+    mutate(age_intake = as.numeric(age_intake)) %>%  
+    mutate(intake_asilomar = replace(intake_asilomar, intake_asilomar== "Unassigned", NA)) %>% 
+    mutate(intake_sitename = replace(intake_sitename, intake_sitename== "2007 Recordkeeping"| intake_sitename== "The PACCA Legacy", NA))
+```
+
+```{r}
+raw_data %>%
+    group_by(species) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(wait_days, species, median) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, fill = species)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(~species, scales = "fixed") +
+        xlab("Days from Intake to Outcome")+
+        theme(axis.title=element_text(size=14), strip.text = element_text(size=20))
+```
+
+```{r species}
+wilcox.test(wait_days~species, data = raw_data) 
+
+table(raw_data$species, raw_data$long_wait)
+```   
+
+```{r}
+raw_data %>%
+    filter(species == "Dog") %>%
+    group_by(intake_sitename) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(wait_days, median, intake_sitename) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, fill = intake_sitename)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(~intake_sitename, scales = "free_x") +
+        expand_limits(x = 0, y = 0) +
+        xlab("Days from Intake to Outcome") +
+        theme(legend.position = "none", axis.title=element_text(size=14), strip.text = element_text(size=14))+
+        ggtitle("Dogs: Wait Time by Location")
+```
+
+```{r}
+raw_data %>%
+    filter(species == "Cat") %>%
+    filter(!is.na(intake_sitename)) %>%
+    group_by(intake_sitename) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(wait_days, median, intake_sitename) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, fill = intake_sitename)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(~intake_sitename, scales = "free_x") +
+        expand_limits(x = 0, y = 0) +
+        annotate("text", label= median) + 
+        xlab("Days from Intake to Outcome") +
+        theme(legend.position = "none", axis.title=element_text(size=14), strip.text = element_text(size=14))+
+        ggtitle("Cats: Wait Time by Location")
+```
+
+```{r}
+kruskal.test(wait_days~intake_sitename, data=raw_data[raw_data$species=="Dog",])
+
+kruskal.test(wait_days~intake_sitename, data=raw_data[raw_data$species=="Cat",])
+```
+
+
+```{r}
+# plot n per breed
+raw_data %>%
+  ggplot(aes(x = primary_breed, fill = long_wait)) +
+  geom_bar() +
+  facet_wrap(~species, scales = "free") +
+  coord_flip() +
+theme(strip.text = element_text(size=14), axis.text.y = element_text(color = "grey20", size = 10))
+
+# plot n per age group
+raw_data %>%
+  ggplot(aes(x = age_intake, fill = long_wait)) +
+  geom_bar() +
+  facet_wrap(~species, scales = "free") +
+  coord_flip()+
+theme(strip.text = element_text(size=14))
+
+# plot n per intake health condition
+raw_data %>%
+    filter(species == "Dog")%>%
+    filter(!is.na(intake_asilomar))%>%
+  group_by(wait_days, intake_asilomar) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(~intake_asilomar, scales = "fixed")+
+theme(strip.text = element_text(size=14))
+
+raw_data %>%
+    filter(species == "Cat")%>%
+    filter(!is.na(intake_asilomar))%>%
+  group_by(wait_days, intake_asilomar) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
+        geom_col() +
+        facet_wrap(~intake_asilomar, scales = "fixed", ncol = 4)+
+theme(strip.text = element_text(size=14))
+
+  raw_data %>%
+    filter(!is.na(intake_asilomar))%>%
+    group_by(intake_asilomar, species) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(species, wait_days, intake_asilomar, median) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(species~intake_asilomar, scales = "fixed", ncol = 4)+
+theme(strip.text = element_text(size=14), legend.position = "none")
+ 
+# plot n per outcome health condition
+raw_data %>%
+    filter(!is.na(outcome_asilomar))%>%
+  group_by(species, wait_days, outcome_asilomar) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = outcome_asilomar)) +
+        geom_col() +
+        facet_wrap(species~outcome_asilomar, scales = "fixed")
+```
+
+```{r}
+#group by category for dog breeds to analyse more easily as factor
+dog_breeds <- sort(unique(raw_data$primary_breed[raw_data$species=="Dog"]))
+
+#small = under 24 lbs; med = 24-44 lbs; large = 44+ lbs
+
+small_breeds <- c("Beagle", "Bichon Frise", "Chihuahua, Long Coat", "Chihuahua, Short Coat", "Dachshund, Miniature Long Haired", "Dachshund, Miniature Smooth Haired", "Dachshund, Standard Smooth Haired", "Griffon, Brussels", "Havanese", "Kooikerhondje", "Lhasa Apso", "Maltese", "Miniature Pinscher", "Mixed Breed, Small (under 24 lbs fully grown)", "Papillon", "Pekingese", "Pomeranian", "Poodle, Miniature", "Poodle, Toy", "Pug", "Schnauzer, Miniature", "Shiba Inu", "Shih Tzu", "Spaniel, Cavalier King Charles", "Terrier", "Terrier, Cairn", "Terrier, Jack Russell", "Terrier, Russell", "Terrier, Silky", "Terrier, Yorkshire")
+
+medium_breeds <- c("American Eskimo", "Mixed Breed, Medium (up to 44 lbs fully grown)", "Schnauzer, Standard", "Spaniel", "Spaniel, American Cocker", "Spaniel, English Cocker", "Terrier, Staffordshire Bull", "Terrier, Tibetan", "Welsh Corgi, Cardigan")
+
+large_breeds <- c("Australian Shepherd", "Border Collie", "Boxer", "Bulldog", "Bulldog, American", "Hound", "Mixed Breed, Large (over 44 lbs fully grown)", "Norwegian Elkhound", "Poodle, Standard","Retriever", "Retriever, Golden", "Retriever, Labrador", "Shepherd", "Terrier, American Pit Bull", "Terrier, Bull", "Terrier, Pit Bull")
+
+raw_data <- raw_data %>% 
+    mutate(size = ifelse(primary_breed %in% small_breeds, "Small (under 24 lbs)",
+                ifelse(primary_breed %in% medium_breeds, "Medium (up to 44 lbs)",
+                ifelse(primary_breed %in% large_breeds, "Large (over 44 lbs)", NA))))
+
+raw_data$size <- factor(raw_data$size, levels = c("Small (under 24 lbs)","Medium (up to 44 lbs)","Large (over 44 lbs)"))
+
+raw_data %>%
+  filter(species == "Dog") %>%
+  ggplot(aes(x = size, fill = long_wait)) +
+  geom_bar() +
+  coord_flip()
+
+raw_data %>%
+  filter(species == "Dog") %>%
+    group_by(size) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(wait_days, median, size) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = size)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(~size, scales = "fixed")+
+        xlab("Days from Intake to Outcome") +
+        theme(legend.position = "none", axis.title=element_text(size=14), strip.text = element_text(size=14))
+```
+
+```{r}
+raw_data %>%
+    filter(!is.na(outcome_type)) %>%
+    group_by(species, outcome_type) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(outcome_type, median, species) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n, col = species)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        facet_wrap(species~outcome_type, scales = "fixed")+
+        xlab("Days from Intake to Outcome") +
+        theme(legend.position = "none", axis.title=element_text(size=14), strip.text = element_text(size=14))
+```
+
+```{r}
+#intake_asilomar? group by category for dog breeds to analyse more easily as factor
+mod1 <- lm(wait_days~ age_intake + size + intake_asilomar + intake_sitename, data = filter(raw_data, species=="Dog"))
+summary(mod1)
+
+
+
+mod2 <- lm(wait_days~ gender + age_intake + intake_asilomar + outcome_asilomar, data = filter(raw_data, species=="Cat" & gender != "U"))
+summary(mod2)
+
+```
+
+```{r}
+mod3 <- glm(long_wait~ gender + age_intake + size + intake_asilomar + outcome_asilomar, data = filter(raw_data, species=="Dog"), family = binomial(link=logit))
+summary(mod3)
+
+mod4 <- glm(long_wait~ gender + age_intake + intake_asilomar + outcome_asilomar, data = filter(raw_data, species=="Cat" & gender != "U"), family = binomial(link=logit))
+summary(mod4)
+```
