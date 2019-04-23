@@ -45,9 +45,21 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 3. Geographic characteristics that influence adoptions
 4. Social media activity that could influence adoptions
 
+# Timeline and Workflow
+
+Prior to kickoff, data were obtained and preprocessed. After downloading the data from multiple sources, individual entries were matched based on first name, last name, address, and other relevant variables. Once matched, any identifiable information was removed from the dataset. This occurred before the data were made available to the group for analysis. 
+
+**February 12**: Kickoff Meetup: At this event, the project was introduced and teams were formed to work on one of the 4 topics outlined above. All participants were encouraged to join the R-Ladies Philly Slack workspace and to set up a GitHub account (which was used as the main collaborative platform). 
+
+After the kickoff meetup, groups worked together online, getting together on an as-needed basis. Questions were asked and answered via Slack, with an occasional clarification email to PAWS.
+
+**March 26**: Conclusion Meetup: At this meetup, teams presented their results and discussed their experiences. Individual team reports were finalized in the weeks following this meetup, and then integrated into the present report. 
+
 \newpage
 # Results
 ## 1. Animal Trajectories
+
+This analysis investigated factors relating to an animal's trajectory in the PAWS system using PetPoint data from 2018. The group operationalized animal trajectory as wait time and outcome (e.g. adoption), with wait time defined as time in days from intake to outcome. We restricted analyses to dogs and cats, as other animals' data points were sparse and compromised statistical power. Our primary factors of interest included animal characteristics (size, breed, health), intake type, and seasonal patterns. 
 
 ### Contributors
 
@@ -59,10 +71,6 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 
 **Katerina Placek** is a PhD candidate in neuroscience at the University of Pennsylvania and a co-organizer of R-Ladies Philly. She enjoys integrating outreach with teaching and learning in the local data science community.
 
-### Problem definition and dataset
-
-In this series of analyses, we investigated factors relating to an animal's trajectory in the PAWS system using PetPoint data from 2018. We operationalized animal trajectory as wait time and outcome (e.g. adoption), with wait time defined as time in days from intake to outcome. We restricted our analyses to dogs and cats, as other animals' data points were sparse and compromised statistical power. Our primary factors of interest included animal characteristics (size, breed, health), intake type, and seasonal patterns. Through this, we aimed to elucidate factors contributing to an animal's time in the PAWS system.
-
 ### Results
 Our analyses focused on four facets of the PetPoint dataset:  
 1. Data Exploration and defining 'Wait Time'   
@@ -70,7 +78,7 @@ Our analyses focused on four facets of the PetPoint dataset:
 3. Intake and Outcome Characteristics  
 4. Seasonal/Locational Patterns
 
-```{r workspace}
+```{r workspace, echo = FALSE}
 
 options(scipen = 999) # turn off scientific notation
 
@@ -78,8 +86,8 @@ df_name <- "petpoint.csv"
 ```
 
 ### 1. Data Exploration and Defining 'Wait Time'
-We first examined animals' outcomes for all 2831 animals in the 2018 Pet Point datset.
-```{r raw_data}
+
+```{r raw_data, echo = FALSE}
 convert_date <-  function(x) {
     mdy_hm(x) %>% as.Date()
 }
@@ -103,16 +111,21 @@ raw_data <-
     mutate(intake_sitename = replace(intake_sitename, intake_sitename== "2007 Recordkeeping"| intake_sitename== "The PACCA Legacy", NA))
 ```
 
-```{r}
-raw_data %>%
+```{r, echo=FALSE}
+outcome_types <- raw_data %>%
     filter(!is.na(outcome_type)) %>%
     group_by("Outcome Type" = outcome_type) %>% 
-    summarise("Number of Animals"=n())%>% 
-    kable()
+    summarise("Number of Animals"=n())
+
+nanimals <- as.data.frame(table(raw_data$species))
+# kable(nanimals, col.names = c("Species",
+#                           "Number of Animals"))
+
 ```
 
-Next, we calculated 'wait time' (time in days from intake to outcome) for each animal:
-```{r}
+We first examined animals' outcomes for all animals in the 2018 Pet Point datset where information was available and the outcome was not "Euthanasia" or "Died". Of the 2831 animals, 2777 were adopted, 30 were returned to their owner or guardian, and 24 were transferred out. With regard to animal species, there were 2424 cats (2390 adopted, 18 returned to owner, and 16 transferred out) and 407 dogs (387 adopted, 12 returned to owner, and 8 transferred out). Overall, more than 95% of animals who had a live outcome were placed with an adoptive family via PAWS.
+
+```{r, include = FALSE}
 raw_data %>%
     mutate(median = median(wait_days, na.rm =)) %>% 
     group_by(wait_days, median) %>% 
@@ -127,17 +140,7 @@ raw_data %>%
         ggtitle("Wait Time for all PAWS animals in 2018")
 ```
 
-We found that the median wait time for an animal at PAWS in 2018 was 45 days.
-
-We then analyzed outcome type and wait time based on animal species. We calculated the numbers of animals per species in the PetPoint dataset:
-```{r}
-nanimals <- as.data.frame(table(raw_data$species))
-kable(nanimals, col.names = c("Species",
-                           "Number of Animals"))
-```
-
-And we visualized the frequency of outcome types per species:
-```{r}
+```{r, include = FALSE}
 raw_data %>%
     filter(!is.na(outcome_type)) %>%
     group_by(species, outcome_type) %>% 
@@ -160,8 +163,7 @@ raw_data %>%
         ggtitle("Outcome for PAWS animals in 2018 - By Species")
 ```
 
-And also visualized the frequency of wait time lengths per species:
-```{r}
+```{r, include = FALSE}
 raw_data %>%
     group_by(species) %>% 
     mutate(median = median(wait_days, na.rm =)) %>% 
@@ -183,9 +185,10 @@ raw_data %>%
         ggtitle("Wait Time for PAWS animals in 2018 - By Species")
 ```
 
-We found that the median wait time for a PAWS cat in 2018 was 51 days and that the median wait time for a PAWS dog in 2018 was 18 days.
+The median 'wait time' (time in days from intake to outcome) for an animal at PAWS in 2018 was 45 days (51 days for cats, and 18 days for dogs). More specifically, cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
 
-```{r custom_functions}
+
+```{r custom_functions, echo = FALSE}
 # confirm if numeric/date fields should be cut
 check_n_cat <- function(x) {
     (is.numeric(x) | is.integer(x) | is.Date(x)) &
@@ -219,7 +222,7 @@ collapse_cat <- function(x, n = 10) {
 }
 ```
 
-```{r df_as_categories}
+```{r df_as_categories, echo = FALSE}
 # vector of variables to ignore in df_as_categories
 ignore_vars <- "outcome_trello_id"
 
@@ -233,7 +236,7 @@ df_as_categories <-
     mutate(id = row_number())
 ```
 
-```{r get_fields}
+```{r get_fields, echo = FALSE}
 # table of class attributes
 column_class <- 
   tibble(name = colnames(raw_data)) %>% 
@@ -272,17 +275,17 @@ for(i in 2:length(get_vars)){
 }
 ```
 
-Next, for each species, we visualized which PetPoint variables contributed to differences in wait time:
+Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines in the two plots below):
 
 ![](1_Animals/cats.001.jpeg) 
 
 ![](1_Animals/dogs.001.jpeg)
 
-We focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines on each plot).
+
 
 ### 2. Animal Characteristics
-For animal characteristics contributing to wait time at PAWS, we first examined breed per species:
-```{r}
+
+```{r, include = FALSE}
 # plot n per breed
 raw_data %>%
   ggplot(aes(x = primary_breed, col = species)) +
@@ -295,10 +298,11 @@ theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "gr
         ggtitle("Breed frequency per Species")
 ```
 
-Most, if not all, cats from PAWS were 'domestic short hair', while dogs' breed variability was greater.
+For animal characteristics contributing to wait time at PAWS, we first examined breed per species. We found that most, if not all, cats from PAWS were 'domestic short hair', while dogs' breed variability was greater. Among dogs, our findings indicate that Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times.
 
-We then classified each animal as having a 'long' or a 'short' wait time based on the median wait time per species, and examined whether wait time differed on breed for dogs and cats:
-```{r}
+```{r, include = FALSE}
+# We then classified each animal as having a 'long' or a 'short' wait time based on the median wait time per species, and examined whether wait time differed on breed for dogs and cats:
+
 # plot n per breed
 raw_data %>%
   ggplot(aes(x = primary_breed, fill = long_wait)) +
@@ -311,10 +315,7 @@ theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "gr
         ggtitle("Breed frequency per Species by Wait Time")
 ```
 
-Our findings indicate that for dogs, Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times.
-
-Based on the large number of unique dog breeds in the PetPoint dataset, we classified dogs into 3 size categories based on average weight per breed. We then visualized wait times by size category:
-```{r}
+```{r, include = FALSE}
 #group by category for dog breeds to analyse more easily as factor
 dog_breeds <- sort(unique(raw_data$primary_breed[raw_data$species=="Dog"]))
 
@@ -345,7 +346,7 @@ raw_data %>%
 
 ```
 
-Our statistical analyses demonstrated no significant differences in wait time based on dog size category.
+Given the large number of unique dog breeds in the PetPoint dataset, it was difficult to draw definitive conclusions from the above result. Therefore, we classified dogs into 3 size categories based on average weight per breed. Our analyses demonstrated no significant differences in wait time based on dog size category. 
 
 We then examined age group per species, to determine whether wait time different on age group for dogs and cats:
 ```{r}

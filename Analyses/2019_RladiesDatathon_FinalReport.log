@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  18 APR 2019 22:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  22 APR 2019 22:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1090,1533 +1090,1266 @@ Underfull \hbox (badness 10000) in paragraph at lines 151--154
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<1_Animals/cats.001.jpeg, id=197, 1002.74625pt x 507.8975pt>
+File: 1_Animals/cats.001.jpeg Graphic file (type jpg)
+<use 1_Animals/cats.001.jpeg>
+Package pdftex.def Info: 1_Animals/cats.001.jpeg  used on input line 284.
+(pdftex.def)             Requested size: 469.76074pt x 237.93687pt.
+<1_Animals/dogs.001.jpeg, id=198, 1027.84pt x 513.92pt>
+File: 1_Animals/dogs.001.jpeg Graphic file (type jpg)
+<use 1_Animals/dogs.001.jpeg>
+Package pdftex.def Info: 1_Animals/dogs.001.jpeg  used on input line 290.
+(pdftex.def)             Requested size: 469.75385pt x 234.8769pt.
+[2] [3pdfTeX warning (ext4): destination with the same identifier (name{figure.
+1}) has been already used, duplicate ignored
 
-Package xcolor Warning: Incompatible color definition on input line 238.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.301 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+2}) has been already used, duplicate ignored
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 239.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.301 
+       <./1_Animals/cats.001.jpeg> <./1_Animals/dogs.001.jpeg>]
+
+Package xcolor Warning: Incompatible color definition on input line 311.
+
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 312.
 
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 240.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 314.
 
-Package xcolor Warning: Incompatible color definition on input line 244.
-
-
-Package xcolor Warning: Incompatible color definition on input line 244.
+Package xcolor Warning: Incompatible color definition on input line 324.
 
 
-Package xcolor Warning: Incompatible color definition on input line 252.
+Package xcolor Warning: Incompatible color definition on input line 324.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf, id=
+209, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf
+ Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf>
+
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-8-1.pdf  used on input line 326.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
+
+Package xcolor Warning: Incompatible color definition on input line 334.
 
 
-Package xcolor Warning: Incompatible color definition on input line 276.
+Package xcolor Warning: Incompatible color definition on input line 344.
 
 
-Package xcolor Warning: Incompatible color definition on input line 276.
+Package xcolor Warning: Incompatible color definition on input line 344.
 
 
-Package xcolor Warning: Incompatible color definition on input line 276.
-
-[2]
-
-Package xcolor Warning: Incompatible color definition on input line 276.
+Overfull \vbox (0.18147pt too high) detected at line 344
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 276.
+Package xcolor Warning: Incompatible color definition on input line 344.
+
+[4 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf
+>]
+
+Package xcolor Warning: Incompatible color definition on input line 344.
 
 
-Package xcolor Warning: Incompatible color definition on input line 278.
+Package xcolor Warning: Incompatible color definition on input line 344.
 
-
-Package xcolor Warning: Incompatible color definition on input line 286.
-
-
-Package xcolor Warning: Incompatible color definition on input line 286.
-
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 288.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 346.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 288.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 346.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 288
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 346
 .
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 288
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 346
 .
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 288.
+(Font)              <10> on input line 346.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 288.
+(Font)              <7> on input line 346.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 288.
-LaTeX Font Info:    Try loading font information for U+msa on input line 288.
+(Font)              <5> on input line 346.
+LaTeX Font Info:    Try loading font information for U+msa on input line 346.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 288.
+LaTeX Font Info:    Try loading font information for U+msb on input line 346.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-Package xcolor Warning: Incompatible color definition on input line 303.
+Package xcolor Warning: Incompatible color definition on input line 366.
 
 
-Package xcolor Warning: Incompatible color definition on input line 318.
+Package xcolor Warning: Incompatible color definition on input line 382.
 
 
-Package xcolor Warning: Incompatible color definition on input line 318.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-2-1.pdf, id=
-204, 561.09625pt x 346.29375pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-2-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-2-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-2-1.pdf  used on input line 320.
-(pdftex.def)             Requested size: 469.75085pt x 289.91779pt.
-[3]
-
-Package xcolor Warning: Incompatible color definition on input line 328.
-
-
-Package xcolor Warning: Incompatible color definition on input line 334.
-
-
-Package xcolor Warning: Incompatible color definition on input line 334.
-
-
-Package xcolor Warning: Incompatible color definition on input line 350.
-
-
-Package xcolor Warning: Incompatible color definition on input line 360.
-
-
-Package xcolor Warning: Incompatible color definition on input line 360.
-
-
-Package xcolor Warning: Incompatible color definition on input line 380.
-
-[4 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-2-1.pdf
->]
-
-Package xcolor Warning: Incompatible color definition on input line 395.
-
-
-Package xcolor Warning: Incompatible color definition on input line 395.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-4-1.pdf, id=
-221, 559.08875pt x 346.29375pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-4-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-4-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-4-1.pdf  used on input line 397.
-(pdftex.def)             Requested size: 469.76784pt x 290.9693pt.
-
-Package xcolor Warning: Incompatible color definition on input line 401.
-
-
-Package xcolor Warning: Incompatible color definition on input line 410.
-
-
-Package xcolor Warning: Incompatible color definition on input line 410.
-
-
-Package xcolor Warning: Incompatible color definition on input line 422.
-
-
-Package xcolor Warning: Incompatible color definition on input line 437.
-
-
-Package xcolor Warning: Incompatible color definition on input line 437.
-
-
-Package xcolor Warning: Incompatible color definition on input line 437.
-
-[5 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-4-1.pdf
->]
-
-Package xcolor Warning: Incompatible color definition on input line 437.
-
-
-Package xcolor Warning: Incompatible color definition on input line 437.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-5-1.pdf, id=
-234, 561.09625pt x 346.29375pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-5-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-5-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-5-1.pdf  used on input line 439.
-(pdftex.def)             Requested size: 469.75085pt x 289.91779pt.
-
-Package xcolor Warning: Incompatible color definition on input line 444.
-
-
-Package xcolor Warning: Incompatible color definition on input line 478.
-
-
-Package xcolor Warning: Incompatible color definition on input line 478.
-
-
-Underfull \vbox (badness 1297) detected at line 478
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 478.
-
-[6 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-5-1.pdf
->]
-
-Package xcolor Warning: Incompatible color definition on input line 478.
-
-
-Package xcolor Warning: Incompatible color definition on input line 478.
-
-
-Package xcolor Warning: Incompatible color definition on input line 480.
-
-
-Package xcolor Warning: Incompatible color definition on input line 494.
-
-
-Package xcolor Warning: Incompatible color definition on input line 494.
-
-
-Package xcolor Warning: Incompatible color definition on input line 496.
-
-
-Package xcolor Warning: Incompatible color definition on input line 535.
-
-
-Package xcolor Warning: Incompatible color definition on input line 535.
-
-
-Underfull \vbox (badness 10000) detected at line 535
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 535.
-
-[7]
-
-Package xcolor Warning: Incompatible color definition on input line 535.
-
-
-Package xcolor Warning: Incompatible color definition on input line 535.
-
-<1_Animals/cats.001.jpeg, id=252, 1027.84pt x 770.88pt>
-File: 1_Animals/cats.001.jpeg Graphic file (type jpg)
-<use 1_Animals/cats.001.jpeg>
-Package pdftex.def Info: 1_Animals/cats.001.jpeg  used on input line 542.
-(pdftex.def)             Requested size: 469.75385pt x 352.31538pt.
-<1_Animals/dogs.001.jpeg, id=253, 1027.84pt x 770.88pt>
-File: 1_Animals/dogs.001.jpeg Graphic file (type jpg)
-<use 1_Animals/dogs.001.jpeg>
-Package pdftex.def Info: 1_Animals/dogs.001.jpeg  used on input line 548.
-(pdftex.def)             Requested size: 469.75385pt x 352.31538pt.
-
-Package xcolor Warning: Incompatible color definition on input line 561.
-
-[8pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.561 \begin{Shaded}
-                     <./1_Animals/cats.001.jpeg>] [9pdfTeX warning (ext4): dest
-ination with the same identifier (name{figure.2}) has been already used, duplic
-ate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.561 \begin{Shaded}
-                     <./1_Animals/dogs.001.jpeg>]
-
-Package xcolor Warning: Incompatible color definition on input line 574.
-
-
-Package xcolor Warning: Incompatible color definition on input line 574.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-6-1.pdf, id=
-264, 561.09625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-6-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-6-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-6-1.pdf  used on input line 576.
-(pdftex.def)             Requested size: 469.75085pt x 288.2371pt.
-
-Package xcolor Warning: Incompatible color definition on input line 585.
-
-
-Package xcolor Warning: Incompatible color definition on input line 598.
-
-
-Package xcolor Warning: Incompatible color definition on input line 598.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-7-1.pdf, id=
-265, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-7-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-7-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-7-1.pdf  used on input line 600.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-[10 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-6-1.pd
-f>]
-
-Package xcolor Warning: Incompatible color definition on input line 609.
-
-
-Package xcolor Warning: Incompatible color definition on input line 639.
-
-
-Package xcolor Warning: Incompatible color definition on input line 639.
-
-
-Package xcolor Warning: Incompatible color definition on input line 639.
-
-[11 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-7-1.pd
-f>]
-
-Package xcolor Warning: Incompatible color definition on input line 639.
-
-
-Package xcolor Warning: Incompatible color definition on input line 639.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf, id=
-290, 554.07pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf
- Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pdf>
-
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-8-1.pdf  used on input line 641.
-(pdftex.def)             Requested size: 469.75275pt x 291.89345pt.
-
-Package xcolor Warning: Incompatible color definition on input line 649.
-
-
-Package xcolor Warning: Incompatible color definition on input line 662.
-
-
-Package xcolor Warning: Incompatible color definition on input line 662.
+Package xcolor Warning: Incompatible color definition on input line 382.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-9-1.pdf, id=
-291, 553.06625pt x 344.28625pt>
+225, 563.10374pt x 346.29375pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-9-1.pdf
  Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-9-1.pdf>
 
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-9-1.pdf  used on input line 664.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-[12 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-8-1.pd
-f>]
+named-chunk-9-1.pdf  used on input line 384.
+(pdftex.def)             Requested size: 469.75604pt x 288.8874pt.
 
-Package xcolor Warning: Incompatible color definition on input line 672.
+Package xcolor Warning: Incompatible color definition on input line 386.
 
+[5 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-9-1.pdf
+>]
 
-Package xcolor Warning: Incompatible color definition on input line 682.
-
-
-Package xcolor Warning: Incompatible color definition on input line 682.
+Package xcolor Warning: Incompatible color definition on input line 396.
 
 
-Package xcolor Warning: Incompatible color definition on input line 704.
+Package xcolor Warning: Incompatible color definition on input line 396.
 
 
-Package xcolor Warning: Incompatible color definition on input line 720.
+Package xcolor Warning: Incompatible color definition on input line 418.
 
 
-Package xcolor Warning: Incompatible color definition on input line 720.
+Package xcolor Warning: Incompatible color definition on input line 433.
 
 
-Package xcolor Warning: Incompatible color definition on input line 720.
-
-[13 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-9-1.pd
-f>]
-
-Package xcolor Warning: Incompatible color definition on input line 720.
-
-
-Package xcolor Warning: Incompatible color definition on input line 720.
+Package xcolor Warning: Incompatible color definition on input line 433.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-10-1.pdf, id
-=317, 563.10374pt x 346.29375pt>
+=238, 561.09625pt x 346.29375pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-10-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-10-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-10-1.pdf  used on input line 722.
-(pdftex.def)             Requested size: 469.75604pt x 288.8874pt.
-
-Package xcolor Warning: Incompatible color definition on input line 724.
-
-
-Package xcolor Warning: Incompatible color definition on input line 734.
-
-
-Package xcolor Warning: Incompatible color definition on input line 734.
-
-
-Package xcolor Warning: Incompatible color definition on input line 756.
-
-
-Package xcolor Warning: Incompatible color definition on input line 771.
-
-
-Package xcolor Warning: Incompatible color definition on input line 771.
-
-
-Package xcolor Warning: Incompatible color definition on input line 771.
-
-[14 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-10-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 771.
-
-
-Package xcolor Warning: Incompatible color definition on input line 771.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-11-1.pdf, id
-=330, 561.09625pt x 346.29375pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-11-1.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-11-1.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-11-1.pdf  used on input line 773.
+named-chunk-10-1.pdf  used on input line 435.
 (pdftex.def)             Requested size: 469.75085pt x 289.91779pt.
+[6 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-10-1.pd
+f>]
 
-Package xcolor Warning: Incompatible color definition on input line 785.
-
-
-Package xcolor Warning: Incompatible color definition on input line 797.
-
-
-Package xcolor Warning: Incompatible color definition on input line 797.
+Package xcolor Warning: Incompatible color definition on input line 447.
 
 
-Package xcolor Warning: Incompatible color definition on input line 803.
+Package xcolor Warning: Incompatible color definition on input line 459.
 
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 807
+
+Package xcolor Warning: Incompatible color definition on input line 459.
+
+
+Package xcolor Warning: Incompatible color definition on input line 465.
+
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 469
 .
 (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 812.
+Package xcolor Warning: Incompatible color definition on input line 474.
 
 
-Package xcolor Warning: Incompatible color definition on input line 812.
+Package xcolor Warning: Incompatible color definition on input line 474.
 
-
-Package xcolor Warning: Incompatible color definition on input line 812.
-
-[15 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-11-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 812.
-
-
-Package xcolor Warning: Incompatible color definition on input line 812.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-13-1.pdf, id
-=345, 561.09625pt x 343.2825pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-13-1.pd
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-12-1.pdf, id
+=251, 561.09625pt x 343.2825pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-12-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-13-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-12-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-13-1.pdf  used on input line 814.
+named-chunk-12-1.pdf  used on input line 476.
 (pdftex.def)             Requested size: 469.75085pt x 287.39676pt.
 
-Package xcolor Warning: Incompatible color definition on input line 816.
+Package xcolor Warning: Incompatible color definition on input line 478.
 
 
-Package xcolor Warning: Incompatible color definition on input line 823.
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-Package xcolor Warning: Incompatible color definition on input line 823.
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-Package xcolor Warning: Incompatible color definition on input line 842.
+Package xcolor Warning: Incompatible color definition on input line 485.
+
+[7 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-12-1.pd
+f>]
+
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-Package xcolor Warning: Incompatible color definition on input line 854.
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-Package xcolor Warning: Incompatible color definition on input line 854.
+Package xcolor Warning: Incompatible color definition on input line 504.
 
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pdf, id
-=346, 562.1pt x 345.29pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pd
+
+Package xcolor Warning: Incompatible color definition on input line 516.
+
+
+Package xcolor Warning: Incompatible color definition on input line 516.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-14-1.pdf, id
+=266, 562.1pt x 345.29pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-14-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-14-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-15-1.pdf  used on input line 856.
+named-chunk-14-1.pdf  used on input line 518.
 (pdftex.def)             Requested size: 469.75067pt x 288.5611pt.
-[16 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-13-1.p
-df>]
 
-Package xcolor Warning: Incompatible color definition on input line 865.
+Package xcolor Warning: Incompatible color definition on input line 527.
 
 
-Package xcolor Warning: Incompatible color definition on input line 873.
+Package xcolor Warning: Incompatible color definition on input line 535.
 
 
-Package xcolor Warning: Incompatible color definition on input line 873.
+Package xcolor Warning: Incompatible color definition on input line 535.
 
 
-Package xcolor Warning: Incompatible color definition on input line 889.
+Package xcolor Warning: Incompatible color definition on input line 551.
+
+[8 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-14-1.pd
+f>]
+
+Package xcolor Warning: Incompatible color definition on input line 559.
 
 
-Package xcolor Warning: Incompatible color definition on input line 897.
+Package xcolor Warning: Incompatible color definition on input line 559.
 
 
-Package xcolor Warning: Incompatible color definition on input line 897.
+Package xcolor Warning: Incompatible color definition on input line 578.
 
 
-Package xcolor Warning: Incompatible color definition on input line 916.
-
-[17 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 930.
+Package xcolor Warning: Incompatible color definition on input line 592.
 
 
-Package xcolor Warning: Incompatible color definition on input line 930.
+Package xcolor Warning: Incompatible color definition on input line 592.
 
-<2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf, id=371,
+<2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf, id=279,
  554.07pt x 346.29375pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf Gra
 phic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/in
-teraction-1.pdf  used on input line 932.
+teraction-1.pdf  used on input line 594.
 (pdftex.def)             Requested size: 469.75275pt x 293.59544pt.
+[9 <./2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 939.
-
-
-Package xcolor Warning: Incompatible color definition on input line 949.
+Package xcolor Warning: Incompatible color definition on input line 601.
 
 
-Package xcolor Warning: Incompatible color definition on input line 949.
+Package xcolor Warning: Incompatible color definition on input line 611.
 
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-16-1.pdf, id
-=372, 562.1pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-16-1.pd
+
+Package xcolor Warning: Incompatible color definition on input line 611.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pdf, id
+=292, 562.1pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-16-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-16-1.pdf  used on input line 951.
+named-chunk-15-1.pdf  used on input line 613.
 (pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
 
-Package xcolor Warning: Incompatible color definition on input line 953.
-
-[18 <./2019_RladiesDatathon_FinalReport_files/figure-latex/interaction-1.pdf>]
-
-Package xcolor Warning: Incompatible color definition on input line 960.
+Package xcolor Warning: Incompatible color definition on input line 615.
 
 
-Package xcolor Warning: Incompatible color definition on input line 960.
+Package xcolor Warning: Incompatible color definition on input line 622.
 
 
-Package xcolor Warning: Incompatible color definition on input line 993.
+Package xcolor Warning: Incompatible color definition on input line 622.
 
 
-Package xcolor Warning: Incompatible color definition on input line 999.
+Package xcolor Warning: Incompatible color definition on input line 655.
 
-
-Package xcolor Warning: Incompatible color definition on input line 999.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1001.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1013.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1013.
-
-
-Overfull \vbox (1.29619pt too high) detected at line 1013
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1013.
-
-[19 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-16-1.p
+[10 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-15-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1013.
+Package xcolor Warning: Incompatible color definition on input line 661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1013.
+Package xcolor Warning: Incompatible color definition on input line 661.
+
+
+Package xcolor Warning: Incompatible color definition on input line 663.
+
+
+Package xcolor Warning: Incompatible color definition on input line 675.
+
+
+Package xcolor Warning: Incompatible color definition on input line 675.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-18-1.pdf, id
+=305, 562.1pt x 345.29pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-18-1.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-18-1.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-18-1.pdf  used on input line 677.
+(pdftex.def)             Requested size: 469.75067pt x 288.5611pt.
+
+Package xcolor Warning: Incompatible color definition on input line 689.
+
+
+Package xcolor Warning: Incompatible color definition on input line 706.
+
+
+Package xcolor Warning: Incompatible color definition on input line 706.
+
+
+Package xcolor Warning: Incompatible color definition on input line 706.
+
+[11 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-18-1.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 706.
+
+
+Package xcolor Warning: Incompatible color definition on input line 706.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-19-1.pdf, id
-=398, 562.1pt x 345.29pt>
+=318, 553.06625pt x 343.2825pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-19-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-19-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-19-1.pdf  used on input line 1015.
-(pdftex.def)             Requested size: 469.75067pt x 288.5611pt.
+named-chunk-19-1.pdf  used on input line 708.
+(pdftex.def)             Requested size: 469.75409pt x 291.57149pt.
 
-Package xcolor Warning: Incompatible color definition on input line 1027.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1044.
+Package xcolor Warning: Incompatible color definition on input line 712.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1044.
+Package xcolor Warning: Incompatible color definition on input line 730.
+
+
+Package xcolor Warning: Incompatible color definition on input line 730.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-20-1.pdf, id
-=399, 553.06625pt x 343.2825pt>
+=319, 553.06625pt x 343.2825pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-20-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-20-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-20-1.pdf  used on input line 1046.
+named-chunk-20-1.pdf  used on input line 732.
 (pdftex.def)             Requested size: 469.75409pt x 291.57149pt.
-[20 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-19-1.p
+[12 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-19-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1050.
+Package xcolor Warning: Incompatible color definition on input line 736.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1068.
+Package xcolor Warning: Incompatible color definition on input line 749.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1068.
+Package xcolor Warning: Incompatible color definition on input line 749.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-21-1.pdf, id
-=412, 553.06625pt x 343.2825pt>
+=332, 553.06625pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-21-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-21-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-21-1.pdf  used on input line 1070.
-(pdftex.def)             Requested size: 469.75409pt x 291.57149pt.
-[21 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-20-1.p
+named-chunk-21-1.pdf  used on input line 751.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
+[13 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-20-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1074.
+Package xcolor Warning: Incompatible color definition on input line 758.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1087.
+Package xcolor Warning: Incompatible color definition on input line 795.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1087.
+Package xcolor Warning: Incompatible color definition on input line 795.
+
+
+Package xcolor Warning: Incompatible color definition on input line 795.
+
+[14 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-21-1.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 795.
+
+
+Package xcolor Warning: Incompatible color definition on input line 795.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-22-1.pdf, id
-=425, 553.06625pt x 344.28625pt>
+=359, 553.06625pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-22-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-22-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-22-1.pdf  used on input line 1089.
+named-chunk-22-1.pdf  used on input line 797.
 (pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-[22 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-21-1.p
+
+Package xcolor Warning: Incompatible color definition on input line 805.
+
+
+Package xcolor Warning: Incompatible color definition on input line 814.
+
+
+Package xcolor Warning: Incompatible color definition on input line 814.
+
+
+Package xcolor Warning: Incompatible color definition on input line 816.
+
+
+Package xcolor Warning: Incompatible color definition on input line 834.
+
+
+Package xcolor Warning: Incompatible color definition on input line 834.
+
+
+Package xcolor Warning: Incompatible color definition on input line 834.
+
+[15 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-22-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1096.
+Package xcolor Warning: Incompatible color definition on input line 834.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1133.
+Package xcolor Warning: Incompatible color definition on input line 834.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1133.
+Package xcolor Warning: Incompatible color definition on input line 836.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1133.
-
-[23 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-22-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 1133.
+Package xcolor Warning: Incompatible color definition on input line 971.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1133.
+Package xcolor Warning: Incompatible color definition on input line 971.
 
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-23-1.pdf, id
-=450, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-23-1.pd
+
+Underfull \vbox (badness 10000) detected at line 971
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+[16]
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+
+Underfull \vbox (badness 10000) detected at line 971
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 971
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+[17]
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+
+Package xcolor Warning: Incompatible color definition on input line 971.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-1.pdf, id
+=380, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-23-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-23-1.pdf  used on input line 1135.
+named-chunk-25-1.pdf  used on input line 973.
 (pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
 
-Package xcolor Warning: Incompatible color definition on input line 1143.
+Package xcolor Warning: Incompatible color definition on input line 975.
+
+[18]
+
+Package xcolor Warning: Incompatible color definition on input line 984.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1152.
+Package xcolor Warning: Incompatible color definition on input line 984.
 
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-2.pdf, id
+=385, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-2.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-2.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-25-2.pdf  used on input line 986.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
 
-Package xcolor Warning: Incompatible color definition on input line 1152.
+Package xcolor Warning: Incompatible color definition on input line 988.
 
-
-Package xcolor Warning: Incompatible color definition on input line 1154.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1172.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1172.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1172.
-
-[24 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-23-1.p
+[19 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1172.
+Package xcolor Warning: Incompatible color definition on input line 997.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1172.
+Package xcolor Warning: Incompatible color definition on input line 997.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-3.pdf, id
+=399, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-3.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-3.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-25-3.pdf  used on input line 999.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
+
+Package xcolor Warning: Incompatible color definition on input line 1001.
+
+[20 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-2.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 1010.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1174.
+Package xcolor Warning: Incompatible color definition on input line 1010.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-4.pdf, id
+=412, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-4.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-4.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-25-4.pdf  used on input line 1012.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
+
+Package xcolor Warning: Incompatible color definition on input line 1014.
+
+[21 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-3.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 1023.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1309.
+Package xcolor Warning: Incompatible color definition on input line 1023.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-5.pdf, id
+=425, 553.06625pt x 344.28625pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-5.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-5.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-25-5.pdf  used on input line 1025.
+(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
+[22 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-4.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 1029.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1309.
+Package xcolor Warning: Incompatible color definition on input line 1041.
 
 
-Underfull \vbox (badness 10000) detected at line 1309
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
-
-[25]
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
-
-
-Underfull \vbox (badness 10000) detected at line 1309
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1309
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
-
-[26]
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1309.
+Package xcolor Warning: Incompatible color definition on input line 1041.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-1.pdf, id
-=472, 553.06625pt x 344.28625pt>
+=438, 562.1pt x 343.2825pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-26-1.pdf  used on input line 1311.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-
-Package xcolor Warning: Incompatible color definition on input line 1313.
-
-[27]
-
-Package xcolor Warning: Incompatible color definition on input line 1322.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1322.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-2.pdf, id
-=477, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-2.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-2.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-26-2.pdf  used on input line 1324.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-
-Package xcolor Warning: Incompatible color definition on input line 1326.
-
-[28 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-1.p
+named-chunk-26-1.pdf  used on input line 1043.
+(pdftex.def)             Requested size: 469.75067pt x 286.88342pt.
+[23 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-25-5.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1335.
+Package xcolor Warning: Incompatible color definition on input line 1047.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1335.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-3.pdf, id
-=491, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-3.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-3.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-26-3.pdf  used on input line 1337.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-
-Package xcolor Warning: Incompatible color definition on input line 1339.
-
-[29 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-2.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 1348.
+Package xcolor Warning: Incompatible color definition on input line 1058.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1348.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-4.pdf, id
-=504, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-4.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-4.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-26-4.pdf  used on input line 1350.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-
-Package xcolor Warning: Incompatible color definition on input line 1352.
-
-[30 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-3.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 1361.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1361.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-5.pdf, id
-=517, 553.06625pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-5.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-5.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-26-5.pdf  used on input line 1363.
-(pdftex.def)             Requested size: 469.75409pt x 292.42404pt.
-[31 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-4.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 1367.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1379.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1379.
+Package xcolor Warning: Incompatible color definition on input line 1058.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-27-1.pdf, id
-=531, 562.1pt x 343.2825pt>
+=451, 562.1pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-27-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-27-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-27-1.pdf  used on input line 1381.
-(pdftex.def)             Requested size: 469.75067pt x 286.88342pt.
-[32 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-5.p
+named-chunk-27-1.pdf  used on input line 1060.
+(pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
+[24 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-26-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1385.
+Package xcolor Warning: Incompatible color definition on input line 1064.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1396.
+Package xcolor Warning: Incompatible color definition on input line 1083.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1396.
+Package xcolor Warning: Incompatible color definition on input line 1083.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-28-1.pdf, id
-=544, 562.1pt x 344.28625pt>
+=464, 562.1pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-28-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-28-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-28-1.pdf  used on input line 1398.
+named-chunk-28-1.pdf  used on input line 1085.
 (pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
-[33 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-27-1.p
+[25 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-27-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1402.
+Package xcolor Warning: Incompatible color definition on input line 1090.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1421.
+Package xcolor Warning: Incompatible color definition on input line 1107.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1421.
+Package xcolor Warning: Incompatible color definition on input line 1107.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-29-1.pdf, id
-=557, 562.1pt x 344.28625pt>
+=478, 562.1pt x 343.2825pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-29-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-29-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-29-1.pdf  used on input line 1423.
-(pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
-[34 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-28-1.p
+named-chunk-29-1.pdf  used on input line 1109.
+(pdftex.def)             Requested size: 469.75067pt x 286.88342pt.
+[26 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-28-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1428.
+Package xcolor Warning: Incompatible color definition on input line 1116.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1445.
+Package xcolor Warning: Incompatible color definition on input line 1129.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1445.
+Package xcolor Warning: Incompatible color definition on input line 1129.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-30-1.pdf, id
-=570, 562.1pt x 343.2825pt>
+=492, 562.1pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-30-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-30-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-30-1.pdf  used on input line 1447.
-(pdftex.def)             Requested size: 469.75067pt x 286.88342pt.
-[35 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-29-1.p
+named-chunk-30-1.pdf  used on input line 1131.
+(pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
+[27 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-29-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 1454.
+Package xcolor Warning: Incompatible color definition on input line 1137.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1467.
+Package xcolor Warning: Incompatible color definition on input line 1150.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1467.
+Package xcolor Warning: Incompatible color definition on input line 1150.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-31-1.pdf, id
-=583, 562.1pt x 344.28625pt>
+=505, 562.1pt x 344.28625pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-31-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-31-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-31-1.pdf  used on input line 1469.
+named-chunk-31-1.pdf  used on input line 1152.
 (pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
-[36 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-30-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 1475.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1488.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1488.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-32-1.pdf, id
-=596, 562.1pt x 344.28625pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-32-1.pd
+[28 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-30-1.p
+df>] [29 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-3
+1-1.pdf>] [30]
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-34-1.pdf, id
+=535, 557.08125pt x 348.30125pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-34-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-32-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-34-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-32-1.pdf  used on input line 1490.
-(pdftex.def)             Requested size: 469.75067pt x 287.72227pt.
-[37 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-31-1.p
-df>] [38 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-3
-2-1.pdf>] [39]
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-35-1.pdf, id
-=628, 557.08125pt x 348.30125pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-35-1.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-35-1.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-35-1.pdf  used on input line 1619.
+named-chunk-34-1.pdf  used on input line 1281.
 (pdftex.def)             Requested size: 469.76414pt x 293.70839pt.
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-40-1.pdf, id
-=629, 557.08125pt x 346.29375pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-40-1.pd
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-39-1.pdf, id
+=536, 557.08125pt x 346.29375pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-39-1.pd
 f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-40-1.pdf
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-39-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-40-1.pdf  used on input line 1630.
+named-chunk-39-1.pdf  used on input line 1292.
 (pdftex.def)             Requested size: 469.76414pt x 292.01553pt.
-[40 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-35-1.p
+[31 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-34-1.p
 df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/kc_timeline_boxplot_animal
--1.pdf, id=645, 562.1pt x 202.7575pt>
+-1.pdf, id=553, 562.1pt x 202.7575pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/kc_timeline_boxplot_a
 nimal-1.pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/kc_timeline_boxplot_an
 imal-1.pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/kc
-_timeline_boxplot_animal-1.pdf  used on input line 1660.
+_timeline_boxplot_animal-1.pdf  used on input line 1322.
 (pdftex.def)             Requested size: 469.75067pt x 169.44577pt.
-[41 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-40-1.p
+[32 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-39-1.p
 df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/kc_heatmap_site-1.pdf, id=
-662, 495.8525pt x 177.66376pt>
+570, 495.8525pt x 177.66376pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/kc_heatmap_site-1.pdf
  Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/kc_heatmap_site-1.pdf>
 
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/kc
-_heatmap_site-1.pdf  used on input line 1673.
+_heatmap_site-1.pdf  used on input line 1335.
 (pdftex.def)             Requested size: 469.75583pt x 168.31332pt.
-[42 <./2019_RladiesDatathon_FinalReport_files/figure-latex/kc_timeline_boxplot_
+[33 <./2019_RladiesDatathon_FinalReport_files/figure-latex/kc_timeline_boxplot_
 animal-1.pdf> <./2019_RladiesDatathon_FinalReport_files/figure-latex/kc_heatmap
 _site-1.pdf>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/checklist_boxplot-1.pdf, i
-d=688, 705.63625pt x 347.2975pt>
+d=596, 705.63625pt x 347.2975pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/checklist_boxplot-1.p
 df Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/checklist_boxplot-1.pd
 f>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/ch
-ecklist_boxplot-1.pdf  used on input line 1736.
+ecklist_boxplot-1.pdf  used on input line 1398.
 (pdftex.def)             Requested size: 469.75903pt x 231.2043pt.
-[43 <./2019_RladiesDatathon_FinalReport_files/figure-latex/checklist_boxplot-1.
+[34 <./2019_RladiesDatathon_FinalReport_files/figure-latex/checklist_boxplot-1.
 pdf>]
-<2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf, id=708, 55
+<2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf, id=616, 55
 7.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf Graphi
 c file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/Ad
-option-1.pdf  used on input line 1787.
+option-1.pdf  used on input line 1449.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-42-1.pdf, id
+=617, 557.08125pt x 342.27875pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-42-1.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-42-1.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-42-1.pdf  used on input line 1457.
+(pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
+[35 <./2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-43-1.pdf, id
-=709, 557.08125pt x 342.27875pt>
+=630, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-43-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-43-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-43-1.pdf  used on input line 1795.
+named-chunk-43-1.pdf  used on input line 1462.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
-[44 <./2019_RladiesDatathon_FinalReport_files/figure-latex/Adoption-1.pdf>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-44-1.pdf, id
-=722, 557.08125pt x 342.27875pt>
+=631, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-44-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-44-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-44-1.pdf  used on input line 1800.
+named-chunk-44-1.pdf  used on input line 1469.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
+[36 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-42-1.p
+df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-43-1.p
+df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-45-1.pdf, id
-=723, 557.08125pt x 342.27875pt>
+=652, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-45-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-45-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-45-1.pdf  used on input line 1807.
+named-chunk-45-1.pdf  used on input line 1473.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
-[45 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-43-1.p
-df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-44-1.p
-df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-46-1.pdf, id
-=744, 557.08125pt x 342.27875pt>
+=653, 561.09625pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-46-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-46-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-46-1.pdf  used on input line 1811.
-(pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
+named-chunk-46-1.pdf  used on input line 1478.
+(pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
+[37 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-44-1.p
+df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-45-1.p
+df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-47-1.pdf, id
-=745, 561.09625pt x 339.2675pt>
+=675, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-47-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-47-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-47-1.pdf  used on input line 1816.
-(pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
-[46 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-45-1.p
-df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-46-1.p
-df>]
+named-chunk-47-1.pdf  used on input line 1483.
+(pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-48-1.pdf, id
-=767, 557.08125pt x 342.27875pt>
+=676, 561.09625pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-48-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-48-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-48-1.pdf  used on input line 1821.
-(pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
+named-chunk-48-1.pdf  used on input line 1488.
+(pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
+[38 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-46-1.p
+df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-47-1.p
+df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-49-1.pdf, id
-=768, 561.09625pt x 339.2675pt>
+=697, 561.09625pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-49-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-49-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-49-1.pdf  used on input line 1826.
+named-chunk-49-1.pdf  used on input line 1494.
 (pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
-[47 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-47-1.p
-df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-48-1.p
-df>]
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-50-1.pdf, id
-=789, 561.09625pt x 339.2675pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-50-1.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-50-1.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-50-1.pdf  used on input line 1832.
-(pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
-[48 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-49-1.p
-df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-50-1.p
+[39 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-48-1.p
+df> <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-49-1.p
 df>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-1.pdf,
- id=810, 557.08125pt x 341.275pt>
+ id=718, 557.08125pt x 341.275pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-1
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-1.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-1.pdf  used on input line 1867.
+nied applications-1.pdf  used on input line 1529.
 (pdftex.def)             Requested size: 469.76414pt x 287.78342pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-2.pdf,
- id=811, 557.08125pt x 342.27875pt>
+ id=719, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-2
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-2.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-2.pdf  used on input line 1868.
+nied applications-2.pdf  used on input line 1530.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-3.pdf,
- id=812, 557.08125pt x 342.27875pt>
+ id=720, 557.08125pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-3
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-3.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-3.pdf  used on input line 1869.
+nied applications-3.pdf  used on input line 1531.
 (pdftex.def)             Requested size: 469.76414pt x 288.62984pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-4.pdf,
- id=813, 557.08125pt x 339.2675pt>
+ id=721, 557.08125pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-4
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-4.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-4.pdf  used on input line 1870.
+nied applications-4.pdf  used on input line 1532.
 (pdftex.def)             Requested size: 469.76414pt x 286.09058pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-5.pdf,
- id=814, 557.08125pt x 346.29375pt>
+ id=722, 557.08125pt x 346.29375pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-5
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-5.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-5.pdf  used on input line 1871.
+nied applications-5.pdf  used on input line 1533.
 (pdftex.def)             Requested size: 469.76414pt x 292.01553pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-6.pdf,
- id=815, 557.08125pt x 339.2675pt>
+ id=723, 557.08125pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-6
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-6.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-6.pdf  used on input line 1872.
+nied applications-6.pdf  used on input line 1534.
 (pdftex.def)             Requested size: 469.76414pt x 286.09058pt.
 <2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-7.pdf,
- id=816, 563.10374pt x 339.2675pt>
+ id=724, 563.10374pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-7
 .pdf Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-7.
 pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/de
-nied applications-7.pdf  used on input line 1873.
+nied applications-7.pdf  used on input line 1535.
 (pdftex.def)             Requested size: 469.75604pt x 283.02591pt.
-[49 <./2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-
-1.pdf>] [50 <./2019_RladiesDatathon_FinalReport_files/figure-latex/denied appli
+[40 <./2019_RladiesDatathon_FinalReport_files/figure-latex/denied applications-
+1.pdf>] [41 <./2019_RladiesDatathon_FinalReport_files/figure-latex/denied appli
 cations-2.pdf> <./2019_RladiesDatathon_FinalReport_files/figure-latex/denied ap
-plications-3.pdf>] [51 <./2019_RladiesDatathon_FinalReport_files/figure-latex/d
+plications-3.pdf>] [42 <./2019_RladiesDatathon_FinalReport_files/figure-latex/d
 enied applications-4.pdf> <./2019_RladiesDatathon_FinalReport_files/figure-late
-x/denied applications-5.pdf>] [52 <./2019_RladiesDatathon_FinalReport_files/fig
+x/denied applications-5.pdf>] [43 <./2019_RladiesDatathon_FinalReport_files/fig
 ure-latex/denied applications-6.pdf> <./2019_RladiesDatathon_FinalReport_files/
 figure-latex/denied applications-7.pdf>]
-<2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf, id=890, 56
+<2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf, id=799, 56
 1.09625pt x 339.2675pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf Graphi
 c file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf>
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/re
-d flag-1.pdf  used on input line 1892.
+d flag-1.pdf  used on input line 1554.
 (pdftex.def)             Requested size: 469.75085pt x 284.03539pt.
-<2_Applicants/final_analyses/report_images/ImportantVariables.png, id=891, 649.
+<2_Applicants/final_analyses/report_images/ImportantVariables.png, id=800, 649.
 42625pt x 543.02875pt>
 File: 2_Applicants/final_analyses/report_images/ImportantVariables.png Graphic 
 file (type png)
 <use 2_Applicants/final_analyses/report_images/ImportantVariables.png>
 Package pdftex.def Info: 2_Applicants/final_analyses/report_images/ImportantVar
-iables.png  used on input line 1929.
+iables.png  used on input line 1591.
 (pdftex.def)             Requested size: 451.69182pt x 377.68974pt.
-[53 <./2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf>] [54
+[44 <./2019_RladiesDatathon_FinalReport_files/figure-latex/red flag-1.pdf>] [45
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1933 \newpage
+l.1595 \newpage
                 <./2_Applicants/final_analyses/report_images/ImportantVariables
-.png>] [55]
-<3_GIS/rplot01.png, id=924, 450.18187pt x 450.18187pt>
+.png>] [46]
+<3_GIS/rplot01.png, id=831, 450.18187pt x 450.18187pt>
 File: 3_GIS/rplot01.png Graphic file (type png)
 <use 3_GIS/rplot01.png>
-Package pdftex.def Info: 3_GIS/rplot01.png  used on input line 2079.
+Package pdftex.def Info: 3_GIS/rplot01.png  used on input line 1741.
 (pdftex.def)             Requested size: 188.2027pt x 188.2027pt.
-<3_GIS/rplot02.png, id=925, 450.18187pt x 450.18187pt>
+<3_GIS/rplot02.png, id=832, 450.18187pt x 450.18187pt>
 File: 3_GIS/rplot02.png Graphic file (type png)
 <use 3_GIS/rplot02.png>
-Package pdftex.def Info: 3_GIS/rplot02.png  used on input line 2094.
+Package pdftex.def Info: 3_GIS/rplot02.png  used on input line 1756.
 (pdftex.def)             Requested size: 188.2027pt x 188.2027pt.
-<3_GIS/rplot03.png, id=927, 450.18187pt x 450.18187pt>
+<3_GIS/rplot03.png, id=834, 450.18187pt x 450.18187pt>
 File: 3_GIS/rplot03.png Graphic file (type png)
 <use 3_GIS/rplot03.png>
-Package pdftex.def Info: 3_GIS/rplot03.png  used on input line 2114.
+Package pdftex.def Info: 3_GIS/rplot03.png  used on input line 1776.
 (pdftex.def)             Requested size: 188.2027pt x 188.2027pt.
-[56] [57pdfTeX warning (ext4): destination with the same identifier (name{figur
+[47] [48pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.2135 
+l.1797 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
 .5}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.2135 
-        <./3_GIS/rplot01.png (PNG copy)> <./3_GIS/rplot02.png (PNG copy)>] [58p
+l.1797 
+        <./3_GIS/rplot01.png (PNG copy)> <./3_GIS/rplot02.png (PNG copy)>] [49p
 dfTeX warning (ext4): destination with the same identifier (name{figure.6}) has
  been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.2176 
-        <./3_GIS/rplot03.png (PNG copy)>] [59]
+l.1838 
+        <./3_GIS/rplot03.png (PNG copy)>] [50]
 
-Package xcolor Warning: Incompatible color definition on input line 2230.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2237.
+Package xcolor Warning: Incompatible color definition on input line 1892.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2237.
+Package xcolor Warning: Incompatible color definition on input line 1899.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2239.
+Package xcolor Warning: Incompatible color definition on input line 1899.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2249.
+Package xcolor Warning: Incompatible color definition on input line 1901.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2249.
+Package xcolor Warning: Incompatible color definition on input line 1911.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1911.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-51-1.pdf, id
+=859, 566.115pt x 351.3125pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-51-1.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-51-1.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-51-1.pdf  used on input line 1913.
+(pdftex.def)             Requested size: 469.76303pt x 291.5196pt.
+
+Package xcolor Warning: Incompatible color definition on input line 1915.
+
+[51]
+
+Package xcolor Warning: Incompatible color definition on input line 1932.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1932.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-52-1.pdf, id
-=951, 566.115pt x 351.3125pt>
+=865, 568.1225pt x 349.305pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-52-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-52-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-52-1.pdf  used on input line 2251.
-(pdftex.def)             Requested size: 469.76303pt x 291.5196pt.
+named-chunk-52-1.pdf  used on input line 1934.
+(pdftex.def)             Requested size: 469.7731pt x 288.83575pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2253.
+Package xcolor Warning: Incompatible color definition on input line 1936.
 
-[60]
+[52 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-51-1.p
+df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2270.
+Package xcolor Warning: Incompatible color definition on input line 1952.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2270.
+Package xcolor Warning: Incompatible color definition on input line 1952.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-53-1.pdf, id
-=957, 568.1225pt x 349.305pt>
+=877, 568.1225pt x 349.305pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-53-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-53-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-53-1.pdf  used on input line 2272.
+named-chunk-53-1.pdf  used on input line 1954.
 (pdftex.def)             Requested size: 469.7731pt x 288.83575pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2274.
+Package xcolor Warning: Incompatible color definition on input line 1956.
 
-[61 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-52-1.p
+[53 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-52-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2290.
+Package xcolor Warning: Incompatible color definition on input line 1974.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2290.
+Package xcolor Warning: Incompatible color definition on input line 1974.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-54-1.pdf, id
-=970, 568.1225pt x 349.305pt>
+=890, 568.1225pt x 351.3125pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-54-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-54-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-54-1.pdf  used on input line 2292.
-(pdftex.def)             Requested size: 469.7731pt x 288.83575pt.
-
-Package xcolor Warning: Incompatible color definition on input line 2294.
-
-[62 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-53-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 2312.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2312.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-55-1.pdf, id
-=982, 568.1225pt x 351.3125pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-55-1.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-55-1.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-55-1.pdf  used on input line 2314.
+named-chunk-54-1.pdf  used on input line 1976.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2316.
+Package xcolor Warning: Incompatible color definition on input line 1978.
 
-[63 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-54-1.p
+[54 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-53-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2347.
+Package xcolor Warning: Incompatible color definition on input line 2009.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2347.
+Package xcolor Warning: Incompatible color definition on input line 2009.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2349.
+Package xcolor Warning: Incompatible color definition on input line 2011.
 
-[64 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-55-1.p
+[55 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-54-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2360.
+Package xcolor Warning: Incompatible color definition on input line 2022.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2360.
+Package xcolor Warning: Incompatible color definition on input line 2022.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-1.pdf, id
+=914, 562.1pt x 351.3125pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-1.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-1.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-56-1.pdf  used on input line 2024.
+(pdftex.def)             Requested size: 469.75067pt x 293.59415pt.
+
+Package xcolor Warning: Incompatible color definition on input line 2026.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2042.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2042.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-2.pdf, id
+=915, 562.1pt x 349.305pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-2.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-2.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-56-2.pdf  used on input line 2044.
+(pdftex.def)             Requested size: 469.75067pt x 291.91647pt.
+
+Package xcolor Warning: Incompatible color definition on input line 2046.
+
+[56 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-1.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 2065.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2065.
+
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-3.pdf, id
+=927, 560.0925pt x 349.305pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-3.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-3.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-56-3.pdf  used on input line 2067.
+(pdftex.def)             Requested size: 469.77368pt x 292.97713pt.
+
+Package xcolor Warning: Incompatible color definition on input line 2069.
+
+[57 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-2.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 2079.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2079.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-1.pdf, id
-=1005, 562.1pt x 351.3125pt>
+=939, 551.05875pt x 332.24126pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-57-1.pdf  used on input line 2362.
-(pdftex.def)             Requested size: 469.75067pt x 293.59415pt.
+named-chunk-57-1.pdf  used on input line 2081.
+(pdftex.def)             Requested size: 469.77272pt x 283.23273pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2364.
+Package xcolor Warning: Incompatible color definition on input line 2083.
 
-
-Package xcolor Warning: Incompatible color definition on input line 2380.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2380.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-2.pdf, id
-=1006, 562.1pt x 349.305pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-2.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-2.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-57-2.pdf  used on input line 2382.
-(pdftex.def)             Requested size: 469.75067pt x 291.91647pt.
-
-Package xcolor Warning: Incompatible color definition on input line 2384.
-
-[65 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-1.p
+[58 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-56-3.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2403.
+Package xcolor Warning: Incompatible color definition on input line 2096.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2403.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-3.pdf, id
-=1018, 560.0925pt x 349.305pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-3.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-3.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-57-3.pdf  used on input line 2405.
-(pdftex.def)             Requested size: 469.77368pt x 292.97713pt.
-
-Package xcolor Warning: Incompatible color definition on input line 2407.
-
-[66 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-2.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 2417.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2417.
+Package xcolor Warning: Incompatible color definition on input line 2096.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-58-1.pdf, id
-=1031, 551.05875pt x 332.24126pt>
+=954, 554.07pt x 323.2075pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-58-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-58-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-58-1.pdf  used on input line 2419.
-(pdftex.def)             Requested size: 469.77272pt x 283.23273pt.
+named-chunk-58-1.pdf  used on input line 2098.
+(pdftex.def)             Requested size: 469.75275pt x 274.02243pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2421.
+Package xcolor Warning: Incompatible color definition on input line 2100.
 
-[67 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-3.p
+[59 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-57-1.p
 df>]
 
-Package xcolor Warning: Incompatible color definition on input line 2434.
+Package xcolor Warning: Incompatible color definition on input line 2139.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2434.
+Package xcolor Warning: Incompatible color definition on input line 2139.
+
+
+Underfull \vbox (badness 10000) detected at line 2139
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 2139.
+
+[60 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-58-1.p
+df>]
+
+Package xcolor Warning: Incompatible color definition on input line 2139.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2139.
 
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-1.pdf, id
-=1047, 554.07pt x 323.2075pt>
+=981, 554.07pt x 323.2075pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-59-1.pdf  used on input line 2436.
+named-chunk-59-1.pdf  used on input line 2141.
 (pdftex.def)             Requested size: 469.75275pt x 274.02243pt.
 
-Package xcolor Warning: Incompatible color definition on input line 2438.
-
-[68 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-58-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 2477.
+Package xcolor Warning: Incompatible color definition on input line 2143.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2477.
+Package xcolor Warning: Incompatible color definition on input line 2159.
 
 
-Underfull \vbox (badness 10000) detected at line 2477
- []
+Package xcolor Warning: Incompatible color definition on input line 2159.
 
-
-Package xcolor Warning: Incompatible color definition on input line 2477.
-
-[69 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-1.p
-df>]
-
-Package xcolor Warning: Incompatible color definition on input line 2477.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2477.
-
+<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-2.pdf, id
+=982, 554.07pt x 323.2075pt>
+File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-2.pd
+f Graphic file (type pdf)
+<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-2.pdf
+>
+Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
+named-chunk-59-2.pdf  used on input line 2161.
+(pdftex.def)             Requested size: 469.75275pt x 274.02243pt.
+[61 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-59-1.p
+df>] [62 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-5
+9-2.pdf>]
 <2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-1.pdf, id
-=1074, 554.07pt x 323.2075pt>
+=1014, 571.13374pt x 342.27875pt>
 File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-1.pd
 f Graphic file (type pdf)
 <use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-1.pdf
 >
 Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-60-1.pdf  used on input line 2479.
-(pdftex.def)             Requested size: 469.75275pt x 274.02243pt.
-
-Package xcolor Warning: Incompatible color definition on input line 2481.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2497.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2497.
-
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-2.pdf, id
-=1075, 554.07pt x 323.2075pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-2.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-2.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-60-2.pdf  used on input line 2499.
-(pdftex.def)             Requested size: 469.75275pt x 274.02243pt.
-[70 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-1.p
-df>] [71 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-6
-0-2.pdf>]
-<2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-61-1.pdf, id
-=1106, 571.13374pt x 342.27875pt>
-File: 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-61-1.pd
-f Graphic file (type pdf)
-<use 2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-61-1.pdf
->
-Package pdftex.def Info: 2019_RladiesDatathon_FinalReport_files/figure-latex/un
-named-chunk-61-1.pdf  used on input line 2531.
+named-chunk-60-1.pdf  used on input line 2193.
 (pdftex.def)             Requested size: 469.75322pt x 281.52168pt.
-[72 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-61-1.p
+[63 <./2019_RladiesDatathon_FinalReport_files/figure-latex/unnamed-chunk-60-1.p
 df>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2598.
-[73]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2598.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2260.
+[64]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2260.
 (./2019_RladiesDatathon_FinalReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2598.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2598.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2260.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2260.
 
 Package rerunfilecheck Info: File `2019_RladiesDatathon_FinalReport.out' has no
 t changed.
-(rerunfilecheck)             Checksum: 6E06DEE268230BC7A427B93AA99C8078;10918.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2598.
+(rerunfilecheck)             Checksum: EA68867F423E67F2F2748F506AAFC6E5;10860.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2260.
  ) 
 Here is how much of TeX's memory you used:
- 15274 strings out of 492982
- 237710 string characters out of 6134896
- 354278 words of memory out of 5000000
- 18350 multiletter control sequences out of 15000+600000
- 52449 words of font info for 95 fonts, out of 8000000 for 9000
+ 15239 strings out of 492982
+ 235576 string characters out of 6134896
+ 353935 words of memory out of 5000000
+ 18326 multiletter control sequences out of 15000+600000
+ 52366 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,9n,38p,1479b,432s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
@@ -2627,11 +2360,11 @@ m/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf
 2.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/font
 s/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pf
 b>
-Output written on 2019_RladiesDatathon_FinalReport.pdf (73 pages, 4933426 bytes
+Output written on 2019_RladiesDatathon_FinalReport.pdf (64 pages, 4572091 bytes
 ).
 PDF statistics:
- 1195 PDF objects out of 1200 (max. 8388607)
- 905 compressed objects within 10 object streams
- 138 named destinations out of 1000 (max. 500000)
- 10938 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 1100 PDF objects out of 1200 (max. 8388607)
+ 838 compressed objects within 9 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 10908 words of extra memory for PDF output out of 12000 (max. 10000000)
 
