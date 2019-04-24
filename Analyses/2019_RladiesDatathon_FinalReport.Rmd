@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8, message = FALSE, warning = FALSE)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
-              "caret", "kableExtra", "psych", "reshape2", "kableExtra", "janitor", "tidytext")
+              "caret", "kableExtra", "psych", "reshape2", "kableExtra", "janitor", "tidytext", "gridExtra")
 invisible(lapply(packages, require, character.only = TRUE))
 ```
 
@@ -45,6 +45,10 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 3. Geographic characteristics that influence adoptions
 4. Social media activity that could influence adoptions
 
+The data included the following datasets:
+1. PetPoint data for animals who had a recorded outcome at PAWS in 2018 (this means that animals who were active at PAWS at the time of download, i.e. Jnauary 2019, were not included).
+
+
 # Timeline and Workflow
 
 Prior to kickoff, data were obtained and preprocessed. After downloading the data from multiple sources, individual entries were matched based on first name, last name, address, and other relevant variables. Once matched, any identifiable information was removed from the dataset. This occurred before the data were made available to the group for analysis. 
@@ -71,26 +75,76 @@ This analysis investigated factors relating to an animal's trajectory in the PAW
 
 **Katerina Placek** is a PhD candidate in neuroscience at the University of Pennsylvania and a co-organizer of R-Ladies Philly. She enjoys integrating outreach with teaching and learning in the local data science community.
 
-### Results
-Our analyses focused on four facets of the PetPoint dataset:  
-1. Data Exploration and defining 'Wait Time'   
-2. Animal Characteristics  
-3. Intake and Outcome Characteristics  
-4. Seasonal/Locational Patterns
-
 ```{r workspace, echo = FALSE}
+
+# Our analyses focused on four facets of the PetPoint dataset:  
+# 1. Data Exploration and defining 'Wait Time'   
+# 2. Animal Characteristics  
+# 3. Intake and Outcome Characteristics  
+# 4. Seasonal/Locational Patterns
 
 options(scipen = 999) # turn off scientific notation
 
 df_name <- "petpoint.csv"
 ```
 
-### 1. Data Exploration and Defining 'Wait Time'
+### 1. Initial Observations
 
-```{r raw_data, echo = FALSE}
+First, we looked at the overall adoption percentages for cats vs. dogs, compared to other outcomes. Among the cats that were taken in at PAWS in 2018, 92% (2,390 cats) were adopted, 1.31% (34 cats) were transferred out or returned to their owner or guardian, and 6.7% (174 cats) died or were euthanized. For dogs, 93% (387 dogs) were adopted, 4.78% (20 dogs) were transferred out or returned to their owners or guardians, and 2.63% (11 dogs) died or were euthanized. In subsequent analyses, we focused only on those animals whose outcome was "Adoption", "Returned to Owner or Guardian" or "Transfer Out".
+
+```{r raw_data_include_all, echo = FALSE}
 convert_date <-  function(x) {
     mdy_hm(x) %>% as.Date()
 }
+
+raw_data_all <-
+    read.csv(paste0(here::here("/Data/", df_name)), na.strings = "") %>%
+    select(-c(X, animal_type, markings, dob, 
+              STATEFP:INTPTLON)) %>% 
+    filter(outcome_type != "Admin Missing") %>% 
+    filter(species != "Wild Mammal") %>% 
+    mutate_at(vars(matches("date")), funs(convert_date)) %>% 
+    mutate(stay_days = as.integer(difftime(outcome_date, intake_date, units = "days"))) %>%
+    group_by(species) %>%
+    ungroup() %>% 
+    mutate(age_intake = as.numeric(age_intake)) %>%  
+    mutate(intake_asilomar = replace(intake_asilomar, intake_asilomar== "Unassigned", NA)) %>% 
+    mutate(intake_sitename = replace(intake_sitename, intake_sitename== "2007 Recordkeeping"| intake_sitename== "The PACCA Legacy", NA))
+
+outcome_by_species <- raw_data_all %>%
+    group_by("Outcome Type" = outcome_type,
+             "Species" = species) %>% 
+    summarise("Number of Animals"=n()) %>%
+    spread(Species, `Number of Animals`)
+
+outcome_by_species$pct_Cat <- outcome_by_species$Cat/sum(outcome_by_species$Cat)
+outcome_by_species$pct_Dog <- outcome_by_species$Dog/sum(outcome_by_species$Dog)
+
+g1 <- ggplot(outcome_by_species, aes(x = `Outcome Type`, y = pct_Cat)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = paste(round(pct_Cat*100, digits=2),"%") , y = pct_Cat), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Cats") + 
+    xlab("Outcome Type") + 
+    ylab ("Percent") +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+    
+g2 <- ggplot(outcome_by_species, aes(x = `Outcome Type`, y = pct_Dog)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = paste(round(pct_Dog*100, digits=2),"%") , y = pct_Dog), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Dogs") + 
+    xlab("Outcome Type") + 
+    ylab ("Percent") +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+grid.arrange(g1,g2, ncol = 2, top = "Percent Animals by Species and Outcome Type")
+
+```
+
+
+
+```{r raw_data, echo = FALSE}
+
+# We first examined animals' outcomes for all animals in the 2018 Pet Point datset. Of the 2831 animals, 2777 were adopted, 30 were returned to their owner or guardian, and 24 were transferred out. With regard to animal species, there were 2424 cats (2390 adopted, 18 returned to owner, and 16 transferred out) and 407 dogs (387 adopted, 12 returned to owner, and 8 transferred out). 
 
 master_animal <- read.csv(here::here("/Data/processed_data/master_animal.csv"))
 
@@ -109,9 +163,7 @@ raw_data <-
     mutate(age_intake = as.numeric(age_intake)) %>%  
     mutate(intake_asilomar = replace(intake_asilomar, intake_asilomar== "Unassigned", NA)) %>% 
     mutate(intake_sitename = replace(intake_sitename, intake_sitename== "2007 Recordkeeping"| intake_sitename== "The PACCA Legacy", NA))
-```
 
-```{r, echo=FALSE}
 outcome_types <- raw_data %>%
     filter(!is.na(outcome_type)) %>%
     group_by("Outcome Type" = outcome_type) %>% 
@@ -120,10 +172,52 @@ outcome_types <- raw_data %>%
 nanimals <- as.data.frame(table(raw_data$species))
 # kable(nanimals, col.names = c("Species",
 #                           "Number of Animals"))
-
 ```
 
-We first examined animals' outcomes for all animals in the 2018 Pet Point datset where information was available and the outcome was not "Euthanasia" or "Died". Of the 2831 animals, 2777 were adopted, 30 were returned to their owner or guardian, and 24 were transferred out. With regard to animal species, there were 2424 cats (2390 adopted, 18 returned to owner, and 16 transferred out) and 407 dogs (387 adopted, 12 returned to owner, and 8 transferred out). Overall, more than 95% of animals who had a live outcome were placed with an adoptive family via PAWS.
+We then looked at the median 'wait time' (time in days from intake to release date) for an animal at PAWS in 2018. Across all animals, the median wait time was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
+
+The distribution of wait times by age group yielded interesting results. For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spend the least amount of time at PAWS (approx. 26 and 17.5 days respectively). Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
+
+```{r wait time by animal age, echo = FALSE}
+
+wait_by_age <- raw_data %>%
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(species, age_group) %>% 
+    summarise(median=median(wait_days)) 
+
+wait_by_age$age_group <- factor(wait_by_age$age_group,
+                levels = c("Less than 4 weeks",
+                           "4 to 6 weeks",
+                           "6 to 12 weeks",
+                           "12 weeks to 6 months",
+                           "6 months to 1 year",
+                           "1 to 2 years",
+                           "2 to 4 years",
+                           "4 to 6 years",
+                           "6 to 10 years",
+                           "10 or more years"))
+wait_by_age <- wait_by_age %>%
+    spread(species, median)
+
+g1 <- ggplot(wait_by_age, aes(x = `age_group`, y = Cat)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = Cat , y = Cat), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Cats") + 
+    xlab("Age Group") + 
+    ylab ("Median Wait Time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+g2 <- ggplot(wait_by_age, aes(x = `age_group`, y = Dog)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = Dog , y = Dog), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Dogs") + 
+    xlab("Age Group") + 
+    ylab ("Median Wait Time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2, ncol = 2, top = "Median Wait Time, by Species and Age Group")
+
+```
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -185,7 +279,7 @@ raw_data %>%
         ggtitle("Wait Time for PAWS animals in 2018 - By Species")
 ```
 
-The median 'wait time' (time in days from intake to outcome) for an animal at PAWS in 2018 was 45 days (51 days for cats, and 18 days for dogs). More specifically, cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
+
 
 
 ```{r custom_functions, echo = FALSE}
@@ -275,30 +369,63 @@ for(i in 2:length(get_vars)){
 }
 ```
 
-Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines in the two plots below):
+### 2. Animal Characteristics
+
+Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines in the two plots below). These variables were: primary breed, age group, and health at intake.
 
 ![](1_Animals/cats.001.jpeg) 
 
 ![](1_Animals/dogs.001.jpeg)
 
+For animal characteristics contributing to wait time at PAWS, we first examined primary breed per species. The graph below shows the top 5 most frequent cat breeds and the top 10 most frequent dog breeds at PAWS in 2018. We found that most, if not all, cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater, with the most frequent dogs being labeled Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. In both graphs, the "Other" category represents a total count of animals in breeds that were not in the top 5 or 10 most frequent. 
 
-
-### 2. Animal Characteristics
-
-```{r, include = FALSE}
+```{r, echo = FALSE}
 # plot n per breed
-raw_data %>%
-  ggplot(aes(x = primary_breed, col = species)) +
-  geom_bar() +
-  facet_wrap(~species, scales = "free") +
-  ylab("Number of Animals") +
-  xlab("Breed") +
-  coord_flip() +
-theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "grey20", size = 8), legend.position = "none")+
-        ggtitle("Breed frequency per Species")
+by_breed <- raw_data %>%
+    group_by(species, primary_breed) %>%
+    summarise(n = n()) %>%
+    arrange(species, desc(n)) %>%
+    group_by(species, Breed = factor(c(as.character(primary_breed[1:5]), rep("Other", n() - 5)),
+                            levels = c(as.character(primary_breed[1:5]), "Other"))) %>%
+    tally(n)
+    
+by_breed_cats <- by_breed[by_breed$species == "Cat",]
+by_breed_cats$Breed <- factor(by_breed_cats$Breed,
+                levels = as.character(by_breed_cats$Breed[order(by_breed_cats$n, decreasing = TRUE)]))
+
+g1 <- ggplot(by_breed_cats, aes(x = Breed, y = n)) +
+    geom_bar(stat = "identity") +
+    ylab("Number of Animals") +
+    xlab("Breed") +
+    coord_flip() +
+    theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "grey20", size = 8), legend.position ="none")+
+    ggtitle("Breed frequency Cats")
+
+by_breed <- raw_data %>%
+    group_by(species, primary_breed) %>%
+    summarise(n = n()) %>%
+    arrange(species, desc(n)) %>%
+    group_by(species, Breed = factor(c(as.character(primary_breed[1:10]), rep("Other", n() - 10)),
+                            levels = c(as.character(primary_breed[1:10]), "Other"))) %>%
+    tally(n)
+
+by_breed_dogs <- by_breed[by_breed$species == "Dog",]
+by_breed_dogs$Breed <- factor(by_breed_dogs$Breed,
+                levels = as.character(by_breed_dogs$Breed[order(by_breed_dogs$n, decreasing = TRUE)]))
+
+g2 <- ggplot(by_breed_dogs, aes(x = Breed, y = n)) +
+    geom_bar(stat = "identity") +
+    ylab("Number of Animals") +
+    xlab("Breed") +
+    coord_flip() +
+    theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "grey20", size = 8), legend.position ="none")+
+    ggtitle("Breed frequency Dogs")
+
+grid.arrange(g1, g2, ncol = 1)
+
 ```
 
-For animal characteristics contributing to wait time at PAWS, we first examined breed per species. We found that most, if not all, cats from PAWS were 'domestic short hair', while dogs' breed variability was greater. Among dogs, our findings indicate that Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times.
+Among dogs, our findings indicate that Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times.
 
 ```{r, include = FALSE}
 # We then classified each animal as having a 'long' or a 'short' wait time based on the median wait time per species, and examined whether wait time differed on breed for dogs and cats:
@@ -348,8 +475,7 @@ raw_data %>%
 
 Given the large number of unique dog breeds in the PetPoint dataset, it was difficult to draw definitive conclusions from the above result. Therefore, we classified dogs into 3 size categories based on average weight per breed. Our analyses demonstrated no significant differences in wait time based on dog size category. 
 
-We then examined age group per species, to determine whether wait time different on age group for dogs and cats:
-```{r}
+```{r, include = FALSE}
 # plot n per age group
 raw_data %>%
   ggplot(aes(x = age_intake, fill = long_wait)) +
@@ -362,10 +488,11 @@ theme(strip.text = element_text(size=14))+
         ggtitle("Age at Intake by Wait Time per Species")
 ```
 
-We found that cats in younger age groups have longer wait times, whereas but found no differences in dogs based on age group.
+We then examined age group per species, to determine whether wait time different on age group for dogs and cats. We found that cats in younger age groups have longer wait times, but found no differences in dogs based on age group.
 
 Last, we examined health at intake and outcome per species relative to wait times.
-```{r}
+
+```{r, echo = FALSE}
   raw_data %>%
     filter(!is.na(intake_asilomar))%>%
     group_by(intake_asilomar, species) %>% 
@@ -373,7 +500,9 @@ Last, we examined health at intake and outcome per species relative to wait time
     group_by(Species = species, "Intake Asilomar" = intake_asilomar, "Median Wait Time (Days)" = median) %>% 
     summarise("Number of Animals"=n()) %>% 
     kable()
+```
 
+```{r include = FALSE}
 # plot n per intake health condition
   raw_data %>%
     filter(!is.na(intake_asilomar))%>%
@@ -390,16 +519,17 @@ Last, we examined health at intake and outcome per species relative to wait time
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 raw_data %>%
-    filter(!is.na(intake_asilomar))%>%
-    group_by(intake_asilomar, species) %>% 
+    filter(!is.na(outcome_asilomar))%>%
+    group_by(outcome_asilomar, species) %>% 
     mutate(median = median(wait_days, na.rm =)) %>% 
-    group_by(Species = species, "Outcome Asilomar" = intake_asilomar, "Median Wait Time (Days)" = median) %>% 
+    group_by(Species = species, "Outcome Asilomar" = outcome_asilomar, "Median Wait Time (Days)" = median) %>% 
     summarise("Number of Animals"=n()) %>% 
     kable()
+```
 
-
+```{r, include = FALSE}
 # plot n per outcome health condition
 raw_data %>%
     filter(!is.na(outcome_asilomar))%>%
@@ -417,8 +547,10 @@ raw_data %>%
 Our analyses revealed that for cats only, health condition at intake and outcome was associated with longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'.
 
 ### 3. Intake  Characteristics
+
 Next, we examined intake characteristics across the petpoint dataset. 
-```{r}
+
+```{r, echo = FALSE}
 master_animal_intake <- master_animal %>% 
     dplyr::select(intake_type,
            intake_subtype,
@@ -431,7 +563,8 @@ master_animal_intake <- master_animal %>%
 ```
 
 We first examined the frequency of primary intake type for all animals and calculated the median wait days for all animals based on intake type:
-```{r}
+
+```{r, echo = FALSE}
 ggplot(master_animal_intake, aes(intake_type))+
     geom_bar(color="turquoise", fill="turquoise")+
     xlab('Intake Type') +
@@ -441,7 +574,7 @@ ggplot(master_animal_intake, aes(intake_type))+
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 master_animal_intake %>%
     group_by("Intake Type" = intake_type) %>% 
     summarise("Number of Animals" = n(), "Median Wait Time (Days)" = median(wait_days)) %>% 
@@ -449,7 +582,8 @@ master_animal_intake %>%
 ```
 
 Using analysis of variance, we examined whether wait days differed based on animal intake type:
-```{r}
+
+```{r, echo = FALSE}
 intake_aov <- aov(wait_days ~ intake_type, master_animal_intake) 
 #summary(intake_aov)
 
@@ -464,7 +598,8 @@ ggplot(master_animal_intake, aes(x = intake_type, y = wait_days, col = intake_ty
 Our results indicated that animals at PAWS with an intake of "Stray" or "Transfer In" had significantly longer wait times relative to animals who with an intake type of "Owner/Guardian Surrender" or "Return."
 
 We next examined intake type by species:
-```{r summary_animal.type}
+
+```{r summary_animal.type, echo = FALSE}
 master_animal_intake %>%
     group_by("Intake Type" = intake_type) %>% 
     filter(animal_type=='cat') %>% 
@@ -479,7 +614,8 @@ master_animal_intake %>%
 ```
 
 And we examined whether the effect of intake type on wait time differed by animal species:
-```{r interaction}
+
+```{r interaction, include = FALSE}
 intake_type_int <- lm(wait_days ~ intake_type*animal_type, master_animal_intake)
 #summary(intake_type_int)
 
@@ -496,7 +632,8 @@ ggplot(., aes(x = intake_type, y = wait_days, col = animal_type))+
 We found that as previously, cats had longer wait times for each intake type relative to dogs.
 
 We next examined the intake subtype for all animals:
-```{r}
+
+```{r, echo = FALSE}
 #plotting frequency of intake_subtype var:
 ggplot(master_animal_intake, aes(intake_subtype)) +
     geom_bar(color="gold", fill="gold")+
@@ -506,7 +643,7 @@ ggplot(master_animal_intake, aes(intake_subtype)) +
     ggtitle("Frequency of Intake Subtype")
 ```
 
-```{r}
+```{r, echo = FALSE}
 master_animal_intake %>%
     group_by("Intake Subtype" = intake_subtype) %>% 
     summarise("Number of Animals" = n(), "Median Wait Time (Days)" = median(wait_days)) %>% 
@@ -514,13 +651,13 @@ master_animal_intake %>%
 ```
 
 We focused our analysis of intake subtype on animals in the Public Dropoff and Returned Adoption categories:
-```{r}
+```{r, echo = FALSE}
 subtype_filter <- master_animal_intake %>% 
     filter(intake_subtype == 'Returned Adoption' |
                intake_subtype == 'Public Drop Off')
 ```
 
-```{r}
+```{r, echo = FALSE}
 intake_subtype_lm <- lm(wait_days ~ intake_subtype, subtype_filter)
 #summary(intake_subtype_lm)
 
@@ -535,9 +672,11 @@ ggplot(subtype_filter, aes(x = intake_subtype, y = wait_days, col = intake_subty
 We found that animals with an intake subtype of 'Public Drop Off' had a significantly longer wait time than animals with an intake subtype of 'Returned Adoption.'
 
 ### 4. Seasonal and Locational Patterns
+
 Last, we examined animals' wait time at PAWS by season and location. 
 We examined the frequency of intakes per month: 
-```{r}
+
+```{r, echo = FALSE}
 #Extract intake month
 master_animal$intake_month <- format(as.Date(master_animal$intake_date), "%B")
 #Plot monthly trends in intake
@@ -555,7 +694,7 @@ ggplot(df_intake_month_counts, aes(x=Month, y=Freq, fill = Season)) +
 ```
 
 And examined the frequency of releases per month:
-```{r}
+```{r, echo = FALSE}
 #Extract release month
 master_animal$release_month <- format(as.Date(master_animal$release_date), "%B")
 
@@ -574,7 +713,7 @@ ggplot(df_release_month_counts, aes(x=Month, y=Freq, fill = Season)) +
 ```
 
 And calculated the difference between intakes and releases per month:
-```{r}
+```{r, echo = FALSE}
 #Plot intake-outtake index
 df_intake_outtake_index <- cbind(df_intake_month_counts[1],df_intake_month_counts[3])
 
@@ -590,7 +729,8 @@ ggplot(df_intake_outtake_index, aes(x=Month, y=Index, fill = Season)) +
 We found that the summer and spring months have higher intakes relative to releases.
 
 We then looked at monthly trends in intakes and releases by species:
-```{r}
+
+```{r, echo = FALSE}
 #Subset Data by Species
 cat <- master_animal[ which(master_animal$species=='Cat'), ]
 dog <- master_animal[ which(master_animal$species=='Dog'), ]
@@ -631,7 +771,8 @@ We found that cats have higher intakes than releases in spring and summer months
 
 
 We then examined seasonal patterns in intake-release index by location for each species: 
-```{r}
+
+```{r, echo = FALSE}
 #Subset Data by Intake Location
 GFA <- master_animal[ which(master_animal$intake_sitename=='Grays Ferry Avenue'), ]
 PAC <- master_animal[ which(master_animal$intake_sitename=='PAC'), ]
@@ -640,7 +781,7 @@ PAWS_FP <- master_animal[ which(master_animal$intake_sitename=='PAWS Foster Prog
 PAWS_OA <- master_animal[ which(master_animal$intake_sitename=='PAWS Offsite Adoptions'), ]
 ```
 
-```{r}
+```{r, echo = FALSE}
 #Subset Intake Location Data by Species
 GFA_cat <- GFA[ which(GFA$species=='Cat'), ]
 GFA_dog <- GFA[ which(GFA$species=='Dog'), ]
@@ -658,7 +799,7 @@ PAWS_OA_cat <- PAWS_OA[ which(PAWS_OA$species=='Cat'), ]
 PAWS_OA_dog <- PAWS_OA[ which(PAWS_OA$species=='Dog'), ]
 ```
 
-```{r}
+```{r, echo = FALSE}
 #Plot Monthly Trends in Intake-Release Index by Species for Each Location
 
 #Grays Ferry Avenue
@@ -822,7 +963,7 @@ ggplot(df_PAWS_OA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Sea
 ```
 
 We then examined seasonal patterns in wait time: 
-```{r}
+```{r, echo = FALSE}
 cols = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4")
     
 ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
@@ -835,7 +976,7 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
 ```
 
 And examined seasonal patterns in wait time per species: 
-```{r}
+```{r, echo = FALSE}
 ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
     geom_boxplot()+ 
     scale_colour_manual(values = cols)+
@@ -847,7 +988,7 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
 ```
 
 We then visualized the wait time by location for each species.
-```{r}
+```{r, echo = FALSE}
 raw_data %>%
     filter(species == "Cat") %>%
     filter(!is.na(intake_sitename)) %>%
@@ -868,7 +1009,7 @@ raw_data %>%
 
 Our findings demonstrated that PAWS offsite adoptions has the shortest wait time for cats.
 
-```{r}
+```{r, echo = FALSE}
 raw_data %>%
     filter(species == "Dog") %>%
     group_by(intake_sitename) %>% 
@@ -888,7 +1029,7 @@ raw_data %>%
 Our findings demonstrated that the PAC location has the shortest wait time for dogs.
 
 Last, we examined wait time by intake health condition for each species.
-```{r}
+```{r, echo = FALSE}
 master_animal %>% 
     filter(species=="Cat") %>% 
     ggplot(., aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
@@ -903,7 +1044,7 @@ master_animal %>%
 
 For cats, we found a that animals classified as 'Sick', 'Injured', and 'Under 7 Weeks' tended to have longer wait times in the spring and summer months.
 
-```{r}
+```{r, echo = FALSE}
 master_animal %>% 
     filter(species=="Dog") %>% 
     ggplot(., aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
