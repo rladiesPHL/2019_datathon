@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ## Problem definition and dataset
 
-In this series of analyses, we investigated factors relating to an animal's trajectory in the PAWS system using PetPoint data from 2018. We operationalized animal trajectory as wait time and outcome (e.g. adoption), with wait time defined as time in days from intake to outcome. We restricted our analyses to dogs and cats, as other animals' data points were sparse and compromised statistical power. Our primary factors of interest included animal characteristics (size, breed, health), intake type, and seasonal patterns. Through this, we aimed to elucidate factors contributing to an animal's time in the PAWS system.
+In this series of analyses, we investigated factors relating to an animal's trajectory in the PAWS system using PetPoint data from 2018. We operationalized animal trajectory as wait time and outcome (e.g. adoption), with wait time defined as time in days from intake to release. We restricted our analyses to dogs and cats, as other animals' data points were sparse and compromised statistical power. Our primary factors of interest included animal characteristics (size, breed, health), intake type, and seasonal patterns. Through this, we aimed to elucidate factors contributing to an animal's time in the PAWS system.
 
 ## Results
 Our analyses focused on four facets of the PetPoint dataset:  
@@ -52,7 +52,7 @@ df_name <- "petpoint.csv"
 ```
 
 ## 1. Data Exploration and Defining 'Wait Time'
-We first examined animals' outcomes for all 2831 animals in the 2018 Pet Point datset.
+We first examined animals' outcomes for all 3018 animals in the 2018 Pet Point datset.
 ```{r raw_data}
 convert_date <-  function(x) {
     mdy_hm(x) %>% as.Date()
@@ -64,14 +64,11 @@ raw_data <-
     read.csv(paste0("../../Data/", df_name), na.strings = "") %>%
     select(-c(X, animal_type, markings, dob, 
               STATEFP:INTPTLON)) %>% 
-    filter(outcome_type != "Admin Missing") %>% 
-    filter(species != "Wild Mammal") %>% 
     mutate_at(vars(matches("date")), funs(convert_date)) %>% 
     mutate(wait_days = as.integer(difftime(release_date, intake_date, units = "days"))) %>%
     group_by(species) %>%
     mutate(long_wait = wait_days > median(wait_days, na.rm = T)) %>%
     ungroup() %>% 
-    filter(!is.na(wait_days)) %>% 
     mutate(age_intake = as.numeric(age_intake)) %>%  
     mutate(intake_asilomar = replace(intake_asilomar, intake_asilomar== "Unassigned", NA)) %>% 
     mutate(intake_sitename = replace(intake_sitename, intake_sitename== "2007 Recordkeeping"| intake_sitename== "The PACCA Legacy", NA))
@@ -85,32 +82,33 @@ raw_data %>%
     kable()
 ```
 
-Next, we calculated 'wait time' (time in days from intake to outcome) for each animal:
-```{r}
-raw_data %>%
-    mutate(median = median(wait_days, na.rm =)) %>% 
-    group_by(wait_days, median) %>% 
-    summarise(n=n()) %>% 
-    ggplot(aes(x = wait_days, y = n)) +
-        geom_col() +
-        geom_vline(aes(xintercept = median)) +
-        geom_text(aes(x = median, label="\nMedian = 45 Days", y=40), colour="black", angle=90, text=element_text(size=20)) +
-        xlab("Days from Intake to Outcome")+
-        ylab("Number of animals")+
-        theme(axis.title=element_text(size=14), strip.text = element_text(size=20), legend.position = "none")+
-        ggtitle("Wait Time for all PAWS animals in 2018")
-```
+And we calculated the numbers of animals per species in the PetPoint dataset:
 
-We found that the median wait time for an animal at PAWS in 2018 was 45 days.
-
-We then analyzed outcome type and wait time based on animal species. We calculated the numbers of animals per species in the PetPoint dataset:
 ```{r}
 nanimals <- as.data.frame(table(raw_data$species))
 kable(nanimals, col.names = c("Species",
                            "Number of Animals"))
 ```
 
-And we visualized the frequency of outcome types per species:
+Next, we calculated 'wait time' (time in days from intake to release) for each animal. Animals who unfortunately did not have a release date (i.e. outcome type of 'Died' or 'Euthanasia' due to health reasons) and animals whose outcome was unknown (i.e. outcome type of 'Admin Missing') were not included in our calculations of wait time.
+```{r}
+raw_data %>%
+    mutate(median = median(wait_days, na.rm =TRUE)) %>% 
+    group_by(wait_days, median) %>% 
+    summarise(n=n()) %>% 
+    ggplot(aes(x = wait_days, y = n)) +
+        geom_col() +
+        geom_vline(aes(xintercept = median)) +
+        geom_text(aes(x = median, label="\nMedian = 45 Days", y=40), colour="black", angle=90, text=element_text(size=20)) +
+        xlab("Days from Intake to Release")+
+        ylab("Number of animals")+
+        theme(axis.title=element_text(size=14), strip.text = element_text(size=20), legend.position = "none")+
+        ggtitle("Wait Time for PAWS animals in 2018")
+```
+
+We found that the median wait time for an animal at PAWS in 2018 was 45 days.
+
+We then analyzed outcome type and wait time based on animal species:
 ```{r}
 raw_data %>%
     filter(!is.na(outcome_type)) %>%
@@ -119,7 +117,13 @@ raw_data %>%
     group_by(Species = species, "Outcome Type" = outcome_type, "Median Wait Time (Days)" = median) %>% 
     summarise("Number of Animals"=n()) %>% 
     kable()
-
+```
+ 
+And visualized the wait time per outcome types per species (Note, animals with no 'wait time' were excluded):
+```{r}
+raw_data <- raw_data %>%
+    filter(!is.na(wait_days))
+    
 raw_data %>%
     filter(!is.na(outcome_type)) %>%
     group_by(species, outcome_type, wait_days) %>% 
@@ -129,7 +133,7 @@ raw_data %>%
     ggplot(aes(x = wait_days, y = n, col = species)) +
         geom_col() +
         facet_wrap(species~outcome_type, scales = "fixed")+
-        xlab("Days from Intake to Outcome") +
+        xlab("Days from Intake to Release") +
         theme(legend.position = "none", axis.title=element_text(size=10), strip.text = element_text(size=10))+
         ggtitle("Outcome for PAWS animals in 2018 - By Species")
 ```
@@ -151,7 +155,7 @@ raw_data %>%
     ggplot(aes(x = wait_days, y = n, fill = species)) +
         geom_col() +
         facet_wrap(~species, scales = "fixed") +
-        xlab("Days from Intake to Outcome")+
+        xlab("Days from Intake to Release")+
         ylab("Number of animals")+
         theme(axis.title=element_text(size=14), strip.text = element_text(size=20), legend.position = "none")+
         ggtitle("Wait Time for PAWS animals in 2018 - By Species")
@@ -337,7 +341,7 @@ theme(strip.text = element_text(size=14))+
 
 We found that cats in younger age groups have longer wait times, whereas but found no differences in dogs based on age group.
 
-Last, we examined health at intake and outcome per species relative to wait times.
+Last, we examined health at intake and release per species relative to wait times.
 ```{r}
   raw_data %>%
     filter(!is.na(intake_asilomar))%>%
@@ -355,7 +359,7 @@ Last, we examined health at intake and outcome per species relative to wait time
     summarise(n=n()) %>% 
     ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
         geom_col() +
-        xlab("Days from Intake to Outcome") +
+        xlab("Days from Intake to Relase") +
         ylab("Number of Animals") +
         facet_wrap(species~intake_asilomar, scales = "fixed", ncol = 4)+
         theme(strip.text = element_text(size=10), legend.position = "none") +
@@ -380,14 +384,14 @@ raw_data %>%
     summarise(n=n()) %>% 
     ggplot(aes(x = wait_days, y = n, col = outcome_asilomar)) +
         geom_col() +
-        xlab("Days from Intake to Outcome") +
+        xlab("Days from Intake to Release") +
         ylab("Number of Animals") +
         facet_wrap(species~outcome_asilomar, scales = "fixed") +
         theme(strip.text = element_text(size=10), legend.position = "none")+
-        ggtitle("Outcome Health Condition")
+        ggtitle("Release Health Condition")
 ```
 
-Our analyses revealed that for cats only, health condition at intake and outcome was associated with longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'.
+Our analyses revealed that for cats only, health condition at intake and relase was associated with longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'.
 
 ## 3. Intake  Characteristics
 Next, we examined intake characteristics across the petpoint dataset. 
@@ -429,7 +433,7 @@ intake_aov <- aov(wait_days ~ intake_type, master_animal_intake)
 ggplot(master_animal_intake, aes(x = intake_type, y = wait_days, col = intake_type)) +
     geom_boxplot() +
     xlab('Intake Type') +
-    ylab('Days from Intake to Outcome')+
+    ylab('Days from Intake to Release')+
     theme(legend.position = "none") +
     ggtitle("Wait Time by Intake Type")
 ```
@@ -461,7 +465,7 @@ filter(!is.na(animal_type)) %>%
 ggplot(., aes(x = intake_type, y = wait_days, col = animal_type))+
     geom_boxplot() +
     xlab('Intake Type') +
-    ylab('Days from Intake to Outcome')+
+    ylab('Days from Intake to Release')+
     ggtitle("Wait Time by Intake Type per Species") +
     theme(legend.title = element_blank())
 ```
@@ -500,7 +504,7 @@ intake_subtype_lm <- lm(wait_days ~ intake_subtype, subtype_filter)
 ggplot(subtype_filter, aes(x = intake_subtype, y = wait_days, col = intake_subtype)) +
     geom_boxplot() +
     xlab('Intake Subtype') +
-    ylab('Days from Intake to Outcome')+
+    ylab('Days from Intake to Release')+
     ggtitle("Wait Time by Intake Type") +
     theme(legend.position = "none")
 ```
@@ -803,7 +807,7 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
     scale_colour_manual(values = cols)+
     ggtitle("Wait Time by Intake Month") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none") +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days from Intake to Release")+
         xlab("Month")
 ```
 
@@ -815,7 +819,7 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
     facet_wrap(~species)+
     ggtitle("Wait Time by Intake Month per Species") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none") +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days from Intake to Release")+
         xlab("Month")
 ```
 
@@ -832,10 +836,9 @@ raw_data %>%
         facet_wrap(~intake_sitename, scales = "free_x") +
         expand_limits(x = 0, y = 0) +
         annotate("text", label= median) + 
-        xlab("Days from Intake to Outcome") +
+        xlab("Days from Intake to Release") +
         theme(legend.position = "none", strip.text = element_text(size=14))+
-          xlab('Number of Animals') +
-        ylab('Days from Intake to Outcome')+
+          ylab('Number of Animals') +
         ggtitle("Cats: Wait Time by Location")
 ```
 
@@ -851,10 +854,9 @@ raw_data %>%
         geom_col() +
         facet_wrap(~intake_sitename, scales = "free_x") +
         expand_limits(x = 0, y = 0) +
-        xlab("Days from Intake to Outcome") +
+        xlab("Days from Intake to Release") +
         theme(legend.position = "none", strip.text = element_text(size=14))+
-        xlab('Number of Animals') +
-        ylab('Days from Intake to Outcome')+
+        ylab('Number of Animals')+
         ggtitle("Dogs: Wait Time by Location")
 ```
 
@@ -870,7 +872,7 @@ master_animal %>%
     facet_wrap(~intake_condition)+
     ggtitle("Cats: Wait Time by Intake Condition")+
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none")+
-        ylab("Days from Intake to Outcome")+
+        ylab("Days from Intake to Release")+
         xlab("Month")
 ```
 
@@ -885,7 +887,7 @@ master_animal %>%
     facet_wrap(~intake_condition)+
     ggtitle("Dogs: Wait Time by Intake Condition")+
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none")+
-        ylab("Days from Intake to Outcome")+
+        ylab("Days from Intake to Release")+
         xlab("Month")
 ```
 
