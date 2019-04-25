@@ -176,49 +176,6 @@ nanimals <- as.data.frame(table(raw_data$species))
 
 We then looked at the median 'wait time' (time in days from intake to release date) for an animal at PAWS in 2018. Across all animals, the median wait time was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
 
-The distribution of wait times by age group yielded interesting results. For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spend the least amount of time at PAWS (approx. 26 and 17.5 days respectively). Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
-
-```{r wait time by animal age, echo = FALSE}
-
-wait_by_age <- raw_data %>%
-    mutate(median = median(wait_days, na.rm =)) %>% 
-    group_by(species, age_group) %>% 
-    summarise(median=median(wait_days)) 
-
-wait_by_age$age_group <- factor(wait_by_age$age_group,
-                levels = c("Less than 4 weeks",
-                           "4 to 6 weeks",
-                           "6 to 12 weeks",
-                           "12 weeks to 6 months",
-                           "6 months to 1 year",
-                           "1 to 2 years",
-                           "2 to 4 years",
-                           "4 to 6 years",
-                           "6 to 10 years",
-                           "10 or more years"))
-wait_by_age <- wait_by_age %>%
-    spread(species, median)
-
-g1 <- ggplot(wait_by_age, aes(x = `age_group`, y = Cat)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
-    geom_text(aes(label = Cat , y = Cat), size = 3, position = position_stack(vjust = 0.5)) + 
-    ggtitle("Cats") + 
-    xlab("Age Group") + 
-    ylab ("Median Wait Time") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    
-g2 <- ggplot(wait_by_age, aes(x = `age_group`, y = Dog)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
-    geom_text(aes(label = Dog , y = Dog), size = 3, position = position_stack(vjust = 0.5)) + 
-    ggtitle("Dogs") + 
-    xlab("Age Group") + 
-    ylab ("Median Wait Time") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-grid.arrange(g1,g2, ncol = 2, top = "Median Wait Time, by Species and Age Group")
-
-```
-
 ```{r, include = FALSE}
 raw_data %>%
     mutate(median = median(wait_days, na.rm =)) %>% 
@@ -373,9 +330,9 @@ for(i in 2:length(get_vars)){
 
 Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines in the two plots below). These variables were: primary breed, age group, and health at intake.
 
-![](1_Animals/cats.001.jpeg) 
+`r knitr::include_graphics('1_Animals/cats.001.jpeg')`
 
-![](1_Animals/dogs.001.jpeg)
+`r knitr::include_graphics('1_Animals/dogs.001.jpeg')`
 
 For animal characteristics contributing to wait time at PAWS, we first examined primary breed per species. The graph below shows the top 5 most frequent cat breeds and the top 10 most frequent dog breeds at PAWS in 2018. We found that most, if not all, cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater, with the most frequent dogs being labeled Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. In both graphs, the "Other" category represents a total count of animals in breeds that were not in the top 5 or 10 most frequent. 
 
@@ -425,7 +382,6 @@ grid.arrange(g1, g2, ncol = 1)
 
 ```
 
-Among dogs, our findings indicate that Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times.
 
 ```{r, include = FALSE}
 # We then classified each animal as having a 'long' or a 'short' wait time based on the median wait time per species, and examined whether wait time differed on breed for dogs and cats:
@@ -442,7 +398,13 @@ theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "gr
         ggtitle("Breed frequency per Species by Wait Time")
 ```
 
-```{r, include = FALSE}
+We then looked at wait times by breed, and found that among dogs, Shih Tzus tend to have shorter wait times whereas Terriers tend to have longer wait times. However, given the large number of unique dog breeds in the PetPoint dataset, it was difficult to draw definitive conclusions. Therefore, we classified dogs into 3 size categories based on average weight per breed: 
+
+- small = under 24 lbs (Beagle, Bichon Frise, Chihuahua, Long Coat, Chihuahua, Short Coat, Dachshund, Miniature Long Haired, Dachshund, Miniature Smooth Haired, Dachshund, Standard Smooth Haired, Griffon, Brussels, Havanese, Kooikerhondje, Lhasa Apso, Maltese, Miniature Pinscher, Mixed Breed, Small (under 24 lbs fully grown), Papillon, Pekingese, Pomeranian, Poodle, Miniature, Poodle, Toy, Pug, Schnauzer, Miniature, Shiba Inu, Shih Tzu, Spaniel, Cavalier King Charles, Terrier, Terrier, Cairn, Terrier, Jack Russell, Terrier, Russell, Terrier, Silky, Terrier, Yorkshire)) 
+- medium = 24-44 lbs (American Eskimo, Mixed Breed, Medium (up to 44 lbs fully grown), Schnauzer, Standard, Spaniel, Spaniel, American Cocker, Spaniel, English Cocker, Terrier, Staffordshire Bull, Terrier, Tibetan, Welsh Corgi, Cardigan) 
+- large = 44+ lbs (Australian Shepherd, Border Collie, Boxer, Bulldog, Bulldog, American, Hound, Mixed Breed, Large (over 44 lbs fully grown), Norwegian Elkhound, Poodle, Standard,Retriever, Retriever, Golden, Retriever, Labrador, Shepherd, Terrier, American Pit Bull, Terrier, Bull, Terrier, Pit Bull)
+
+```{r, echo = FALSE}
 #group by category for dog breeds to analyse more easily as factor
 dog_breeds <- sort(unique(raw_data$primary_breed[raw_data$species=="Dog"]))
 
@@ -461,19 +423,37 @@ raw_data <- raw_data %>%
 
 raw_data$size <- factor(raw_data$size, levels = c("Small (under 24 lbs)","Medium (up to 44 lbs)","Large (over 44 lbs)"))
 
+wait_days_by_size <- raw_data %>%
+    filter(species == "Dog") %>%
+    group_by(size) %>%
+    summarise(median_wait = median(wait_days))
+
+# overall are there differences in wait days between breed sizes?
+kruskal.test(raw_data$wait_days[raw_data$species == "Dog"] ~ raw_data$size[raw_data$species == "Dog"])
+
+# at p = 0.19, not really; however, the difference between medium dogs' median wait time (11 days) and small and large dogs' wait times (17 and 20 days) seems too large to be completely nonsignificant.. 
+
+pairwise.wilcox.test(raw_data$wait_days[raw_data$species == "Dog"], 
+                          raw_data$size[raw_data$species == "Dog"], 
+                          p.adjust.method="none")
+
+# at p's of 0.079 and 0.081 it's worth mentioning.
+
 raw_data %>%
   filter(species == "Dog") %>%
-  ggplot(aes(x = size, fill = long_wait)) +
-  geom_bar() +
-  xlab("Size Category") +
-  ylab("Number of Animals") +
-  coord_flip() +
- theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
-        ggtitle("Wait time by Size: Dogs")
+    group_by(size) %>%
+    summarise(median_wait = median(wait_days)) %>%
+    ggplot(aes(x = size, y = median_wait)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("Size Category") +
+    ylab("Number of Days") +
+    coord_flip() +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Wait time by Size: Dogs")
 
 ```
 
-Given the large number of unique dog breeds in the PetPoint dataset, it was difficult to draw definitive conclusions from the above result. Therefore, we classified dogs into 3 size categories based on average weight per breed. Our analyses demonstrated no significant differences in wait time based on dog size category. 
+While overall our analyses indicated no statistically significant differences in wait time based on dog size category, it is worth mentioning that medium sized dogs' wait time (11 days) trended towards being shorter than the wait time of small breeds (17 days) or large breeds (20 days).
 
 ```{r, include = FALSE}
 # plot n per age group
@@ -488,36 +468,195 @@ theme(strip.text = element_text(size=14))+
         ggtitle("Age at Intake by Wait Time per Species")
 ```
 
-We then examined age group per species, to determine whether wait time different on age group for dogs and cats. We found that cats in younger age groups have longer wait times, but found no differences in dogs based on age group.
+We then examined age group per species, to determine whether wait time different on age group for dogs and cats. For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spend the least amount of time at PAWS (approx. 26 and 17.5 days respectively). Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
 
-Last, we examined health at intake and outcome per species relative to wait times.
+```{r wait time by animal age, echo = FALSE}
+
+wait_by_age <- raw_data %>%
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(species, age_group) %>% 
+    summarise(median=median(wait_days)) 
+
+wait_by_age$age_group <- factor(wait_by_age$age_group,
+                levels = c("Less than 4 weeks",
+                           "4 to 6 weeks",
+                           "6 to 12 weeks",
+                           "12 weeks to 6 months",
+                           "6 months to 1 year",
+                           "1 to 2 years",
+                           "2 to 4 years",
+                           "4 to 6 years",
+                           "6 to 10 years",
+                           "10 or more years"))
+wait_by_age <- wait_by_age %>%
+    spread(species, median)
+
+g1 <- ggplot(wait_by_age, aes(x = `age_group`, y = Cat)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = Cat , y = Cat), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Cats") + 
+    xlab("Age Group") + 
+    ylab ("Median Wait Time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+g2 <- ggplot(wait_by_age, aes(x = `age_group`, y = Dog)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_text(aes(label = Dog , y = Dog), size = 3, position = position_stack(vjust = 0.5)) + 
+    ggtitle("Dogs") + 
+    xlab("Age Group") + 
+    ylab ("Median Wait Time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2, ncol = 2, 
+             top = "Median Wait Time, by Species and Age Group")
+
+```
+
+Last, we examined health status at intake per species relative to wait times. 
 
 ```{r, echo = FALSE}
-  raw_data %>%
+condition_intake <- raw_data %>%
     filter(!is.na(intake_asilomar))%>%
     group_by(intake_asilomar, species) %>% 
     mutate(median = median(wait_days, na.rm =)) %>% 
     group_by(Species = species, "Intake Asilomar" = intake_asilomar, "Median Wait Time (Days)" = median) %>% 
-    summarise("Number of Animals"=n()) %>% 
-    kable()
+    summarise("Number of Animals"=n())
+
+g1 <- ggplot(data=condition_intake[condition_intake$Species == "Dog",], aes(x = `Intake Asilomar`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition at intake") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Wait time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2 <- ggplot(data=condition_intake[condition_intake$Species == "Dog",], aes(x = `Intake Asilomar`, y = `Number of Animals`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition at intake") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number of animals") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2,top = "Dogs by Intake Condition", ncol = 2)
+
 ```
 
-```{r include = FALSE}
+For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs.
+
+```{r, echo = FALSE}
+
+g1 <- ggplot(data=condition_intake[condition_intake$Species == "Cat",], aes(x = `Intake Asilomar`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition at intake") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Wait time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2 <- ggplot(data=condition_intake[condition_intake$Species == "Cat",], aes(x = `Intake Asilomar`, y = `Number of Animals`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition at intake") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number of animals") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2,top = "Cats by Intake Condition", ncol = 2)
+
+```
+
+For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
+
+We also looked at health change from intake to outcome. Specifically, we created the following health change categories: 
+
+- no change = an animal's intake and outcome ASILOMAR status were the same
+- decline = an animal's outcome ASILOMAR status changed from Healthy to Treatable or Unhealthy; or from Treatable to Unhealthy
+- improvement = an animal's outcome ASILOMAR status changed from Treatable or Unhealthy to Healthy; or from Unhealthy to Treatable. 
+
+
+```{r echo = FALSE}
+raw_data$health_change <- NA
+raw_data$health_change[as.character(raw_data$intake_asilomar) == as.character(raw_data$outcome_asilomar)] <- "no_change"
+raw_data$health_change[as.character(raw_data$intake_asilomar) %in% c("Healthy",
+                                                                     "Treatable-Manageable",
+                                                                     "Treatable-Rehabilitatable") & 
+                           as.character(raw_data$outcome_asilomar) %in% c("Unhealthy/Untreatable")] <- "decline"
+raw_data$health_change[as.character(raw_data$intake_asilomar) %in% c("Healthy") & 
+                           as.character(raw_data$outcome_asilomar) %in% c("Treatable-Manageable",
+                                                                     "Treatable-Rehabilitatable")] <- "decline"
+raw_data$health_change[as.character(raw_data$intake_asilomar) %in% c("Unhealthy/Untreatable") & 
+                           as.character(raw_data$outcome_asilomar) %in% c("Healthy",
+                                                                     "Treatable-Manageable",
+                                                                     "Treatable-Rehabilitatable")] <- "improvement"
+raw_data$health_change[as.character(raw_data$intake_asilomar) %in% c("Treatable-Manageable", "Treatable-Rehabilitatable") & 
+                           as.character(raw_data$outcome_asilomar) %in% c("Healthy")] <- "improvement"
+
+raw_data$health_change <- as.factor(raw_data$health_change)
+
 # plot n per intake health condition
-  raw_data %>%
-    filter(!is.na(intake_asilomar))%>%
-    group_by(intake_asilomar, species) %>% 
-    group_by(species, wait_days, intake_asilomar) %>% 
-    summarise(n=n()) %>% 
-    ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
-        geom_col() +
-        xlab("Days from Intake to Outcome") +
-        ylab("Number of Animals") +
-        facet_wrap(species~intake_asilomar, scales = "fixed", ncol = 4)+
-        theme(strip.text = element_text(size=10), legend.position = "none") +
-        ggtitle("Intake Health Condition")
+  # raw_data %>%
+  #   filter(!is.na(intake_asilomar))%>%
+  #   group_by(intake_asilomar, species) %>% 
+  #   group_by(species, wait_days, intake_asilomar) %>% 
+  #   summarise(n=n()) %>% 
+  #   ggplot(aes(x = wait_days, y = n, col = intake_asilomar)) +
+  #       geom_col() +
+  #       xlab("Days from Intake to Outcome") +
+  #       ylab("Number of Animals") +
+  #       facet_wrap(species~intake_asilomar, scales = "fixed", ncol = 4)+
+  #       theme(strip.text = element_text(size=10), legend.position = "none") +
+  #       ggtitle("Intake Health Condition")
+
+health_change_data <- raw_data %>%
+    filter(!is.na(health_change))%>%
+    group_by(health_change, species) %>% 
+    mutate(median = median(wait_days, na.rm =)) %>% 
+    group_by(Species = species, "Health Change" = health_change, "Median Wait Time (Days)" = median) %>% 
+    summarise("Number of Animals"=n())
+
+g1 <- ggplot(data=health_change_data[health_change_data$Species == "Cat",], 
+             aes(x = `Health Change`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition change") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Wait time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2 <- ggplot(data=health_change_data[health_change_data$Species == "Cat",], aes(x = `Health Change`, y = `Number of Animals`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition change") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number of animals") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2,top = "Cats by Health Condition Change", ncol = 2)
+
 ```
 
+```{r, echo = FALSE}
+g1 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], 
+             aes(x = `Health Change`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition change") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Wait time") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], aes(x = `Health Change`, y = `Number of Animals`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("ASILOMAR condition change") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number of animals") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2,top = "Dogs by Health Condition Change", ncol = 2)
+
+```
 
 ```{r, echo = FALSE}
 raw_data %>%
@@ -544,7 +683,7 @@ raw_data %>%
         ggtitle("Outcome Health Condition")
 ```
 
-Our analyses revealed that for cats only, health condition at intake and outcome was associated with longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'.
+
 
 ### 3. Intake  Characteristics
 
