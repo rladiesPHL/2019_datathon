@@ -404,7 +404,7 @@ We then looked at wait times by breed, and found that among dogs, Shih Tzus tend
 - medium = 24-44 lbs (American Eskimo, Mixed Breed, Medium (up to 44 lbs fully grown), Schnauzer, Standard, Spaniel, Spaniel, American Cocker, Spaniel, English Cocker, Terrier, Staffordshire Bull, Terrier, Tibetan, Welsh Corgi, Cardigan) 
 - large = 44+ lbs (Australian Shepherd, Border Collie, Boxer, Bulldog, Bulldog, American, Hound, Mixed Breed, Large (over 44 lbs fully grown), Norwegian Elkhound, Poodle, Standard,Retriever, Retriever, Golden, Retriever, Labrador, Shepherd, Terrier, American Pit Bull, Terrier, Bull, Terrier, Pit Bull)
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 #group by category for dog breeds to analyse more easily as factor
 dog_breeds <- sort(unique(raw_data$primary_breed[raw_data$species=="Dog"]))
 
@@ -512,7 +512,7 @@ grid.arrange(g1,g2, ncol = 2,
 
 ```
 
-Last, we examined health status at intake per species relative to wait times. 
+Last, we examined health status at intake per species relative to wait times. For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs.
 
 ```{r, echo = FALSE}
 condition_intake <- raw_data %>%
@@ -542,7 +542,7 @@ grid.arrange(g1,g2,top = "Dogs by Intake Condition", ncol = 2)
 
 ```
 
-For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs.
+For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
 
 ```{r, echo = FALSE}
 
@@ -566,14 +566,13 @@ grid.arrange(g1,g2,top = "Cats by Intake Condition", ncol = 2)
 
 ```
 
-For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
-
 We also looked at health change from intake to outcome. Specifically, we created the following health change categories: 
 
 - no change = an animal's intake and outcome ASILOMAR status were the same
 - decline = an animal's outcome ASILOMAR status changed from Healthy to Treatable or Unhealthy; or from Treatable to Unhealthy
 - improvement = an animal's outcome ASILOMAR status changed from Treatable or Unhealthy to Healthy; or from Unhealthy to Treatable. 
 
+For cats, we observed that the wait time is longest for those cats that experience an improvement in overall condition while at PAWS (78 days), although these cats represent only 10% of the total cats at PAWS. Cats that experienced no change in condition while at PAWS (89%) had a median wait time of 47 days. 
 
 ```{r echo = FALSE}
 raw_data$health_change <- NA
@@ -636,6 +635,8 @@ grid.arrange(g1,g2,top = "Cats by Health Condition Change", ncol = 2)
 
 ```
 
+For dogs, we observed that the wait time is also longest for those dogs that experience an improvement in overall condition while at PAWS (26 days), although these dogs also represent only a small percentage (7%) of the total dogs at PAWS. Dogs that experienced no change in condition while at PAWS (93%) had a median wait time of 20 days. 
+
 ```{r, echo = FALSE}
 g1 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], 
              aes(x = `Health Change`, y = `Median Wait Time (Days)`)) +
@@ -683,13 +684,12 @@ raw_data %>%
         ggtitle("Outcome Health Condition")
 ```
 
-
-
 ### 3. Intake  Characteristics
 
-Next, we examined intake characteristics across the petpoint dataset. 
-
 ```{r, echo = FALSE}
+
+# Next, we examined intake characteristics across the petpoint dataset. 
+
 master_animal_intake <- master_animal %>% 
     dplyr::select(intake_type,
            intake_subtype,
@@ -701,9 +701,9 @@ master_animal_intake <- master_animal %>%
            wait = as.numeric(wait_days))
 ```
 
-We first examined the frequency of primary intake type for all animals and calculated the median wait days for all animals based on intake type:
+```{r, include = FALSE}
+# We first examined the frequency of primary intake type for all animals and calculated the median wait days for all animals based on intake type. 
 
-```{r, echo = FALSE}
 ggplot(master_animal_intake, aes(intake_type))+
     geom_bar(color="turquoise", fill="turquoise")+
     xlab('Intake Type') +
@@ -713,16 +713,16 @@ ggplot(master_animal_intake, aes(intake_type))+
 
 ```
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 master_animal_intake %>%
     group_by("Intake Type" = intake_type) %>% 
     summarise("Number of Animals" = n(), "Median Wait Time (Days)" = median(wait_days)) %>% 
     kable()
 ```
 
-Using analysis of variance, we examined whether wait days differed based on animal intake type:
-
 ```{r, echo = FALSE}
+# Using analysis of variance, we examined whether wait days differed based on animal intake type:
+
 intake_aov <- aov(wait_days ~ intake_type, master_animal_intake) 
 #summary(intake_aov)
 
@@ -732,25 +732,47 @@ ggplot(master_animal_intake, aes(x = intake_type, y = wait_days, col = intake_ty
     ylab('Days from Intake to Outcome')+
     theme(legend.position = "none") +
     ggtitle("Wait Time by Intake Type")
+
+# Our results indicated that animals at PAWS with an intake of "Stray" or "Transfer In" had significantly longer wait times relative to animals who with an intake type of "Owner/Guardian Surrender" or "Return."
+
 ```
 
-Our results indicated that animals at PAWS with an intake of "Stray" or "Transfer In" had significantly longer wait times relative to animals who with an intake type of "Owner/Guardian Surrender" or "Return."
-
-We next examined intake type by species:
+We examined intake characteristics across the petpoint dataset, by species:
 
 ```{r summary_animal.type, echo = FALSE}
-master_animal_intake %>%
+master_animal_intake_cat <- master_animal_intake %>%
     group_by("Intake Type" = intake_type) %>% 
     filter(animal_type=='cat') %>% 
-    summarise("Number of Cats" = n(), "Median Wait Time (Days)" = median(wait_days))%>% 
-    kable()
+    summarise("Number of Cats" = n(), "Median Wait Time (Days)" = median(wait_days))
 
-master_animal_intake %>%
-     group_by("Intake Type" = intake_type) %>% 
+master_animal_intake_dog <- master_animal_intake %>%
+    group_by("Intake Type" = intake_type) %>% 
     filter(animal_type == 'dog') %>% 
-     summarise("Number of Dogs" = n(), "Median Wait Time (Days)"  = median(wait_days))%>% 
-    kable()
+    summarise("Number of Dogs" = n(), "Median Wait Time (Days)"  = median(wait_days))
+
+g1 <- ggplot(data=master_animal_intake_cat, 
+             aes(x = `Intake Type`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("Intake Type") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Cats") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2 <- ggplot(data=master_animal_intake_dog, 
+             aes(x = `Intake Type`, y = `Median Wait Time (Days)`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab("Intake Type") +
+    ylab("Median Wait Time (Days)") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Dogs") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(g1,g2,top = "Wait time by intake type", ncol = 2)
+              
 ```
+
+We found that cats had longer wait times for each intake type relative to dogs. Forthermore, for both cats and dogs, strays and transfers in had the highest wait times. Interestingly, for cats (but not dogs) that were surrenedered by their owner, these also had a high waut time (40 days). 
 
 And we examined whether the effect of intake type on wait time differed by animal species:
 
@@ -766,9 +788,10 @@ ggplot(., aes(x = intake_type, y = wait_days, col = animal_type))+
     ylab('Days from Intake to Outcome')+
     ggtitle("Wait Time by Intake Type per Species") +
     theme(legend.title = element_blank())
-```
 
-We found that as previously, cats had longer wait times for each intake type relative to dogs.
+# We found that as previously, cats had longer wait times for each intake type relative to dogs.
+
+```
 
 We next examined the intake subtype for all animals:
 
