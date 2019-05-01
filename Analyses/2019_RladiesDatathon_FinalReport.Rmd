@@ -31,10 +31,7 @@ theme_report <- function () {
 
 # Executive Summary
 
-* Most animals' outcomes are adoption, and the 'wait time' from intake to outcome is longer for cats than for dogs   
-* Younger age and poorer health contributes to longer wait time for cats; and intake and wait time for younger, health-compromised cats is highest in spring/summer
-* Dogs showed no differences in wait time based on age, health, size, or season
-* Increased resources in spring/summer months for young, unhealthy cats may shorten wait times and alleviate staff burden
+
 
 # Problem definition and dataset
 
@@ -74,6 +71,13 @@ This analysis investigated factors relating to an animal's trajectory in the PAW
 **Javier Jasso** is a certified speech–language pathologist and a PhD candidate in communication sciences and disorders at the University of Texas at Austin. Javier has expertise in the assessment of culturally/linguistically diverse children, focusing on bilingual language acquisition. 
 
 **Katerina Placek** is a PhD candidate in neuroscience at the University of Pennsylvania and a co-organizer of R-Ladies Philly. She enjoys integrating outreach with teaching and learning in the local data science community.
+
+### Summary
+
+* Most animals' outcomes are adoption, and the 'wait time' from intake to outcome is longer for cats than for dogs   
+* Younger age and poorer health contributes to longer wait time for cats; and intake and wait time for younger, health-compromised cats is highest in spring/summer
+* Dogs showed no differences in wait time based on age, health, size, or season
+* Increased resources in spring/summer months for young, unhealthy cats may shorten wait times and alleviate staff burden
 
 ```{r workspace, echo = FALSE}
 
@@ -1218,6 +1222,7 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
 ```
 
 We also estimated wait time by location for each species.
+
 ```{r, echo = FALSE}
 g1 <- raw_data %>%
     filter(species == "Cat") %>%
@@ -1306,6 +1311,8 @@ In conclusion, our analyses revealed that animal characteristics, intake charact
 \newpage
 ## 2. Application Trajectories
 
+This analysis investigated factors relating to an application's trajectory at PAWS - from the time when an applicant submits an application, through the validation checks done by PAWS, to the time the application is marked as complete. The dataset analyzed here included trello IDs (1594 unique trello IDs) and their matched application data from the online application form (applications submitted dates between 2018-08-30 to 2018-12-31). 
+
 ### Contributors
 
 * **Ramaa Nathan** (group leader) is an aspiring data scientist with a PhD in Computer Science and an ongoing masters in Applied Statistics. Her background is in finance and healthcare.
@@ -1317,7 +1324,6 @@ In conclusion, our analyses revealed that animal characteristics, intake charact
 
 ### Summary
 
-* The cleaned dataset we used for our analysis contained 1594 unique trello IDs with application submitted dates between 2018-08-30 to 2018-12-31
 * For applications that resulted in adoption, cat applications took longer to process than dog applications. Cat apps took 19 days and dog apps took 8 days on average.
 * Based on the animal's outcome site, adoption times were faster at PAWS Foster Program & PAWS Offsite Adoptions locations.
 * Singles seem to prefer to adopt a pet. 
@@ -1325,8 +1331,6 @@ In conclusion, our analyses revealed that animal characteristics, intake charact
 * For the denied applications, the applicants had no known allergies and many of them had unfortunate incidents with prior pets
 * There was a lot of missing data in the applications especially for the home pet policy question.
 * We recommend redesiging the application to enforce standardized, limited, and logical responses. For example, for certain questions, allow only a single response or provide a drop down menu. Doing so will save PAWS staff time when reviewing applications and help with future analyses. 
-
-
 
 ### Data Pre-processing
 
@@ -1440,13 +1444,12 @@ clean_city <- function(colname) {
 }
 ```
 
-As our group focussed on questions about application trajectories, our starting point was an applications dataset comprised of `dog_apps.csv` and `cat_apps.csv`. For data pre-processing, the following steps were particularly important:
+As our group focused on questions about application trajectories, our starting point was an applications dataset comprised of online dog and cat applications (`dog_apps.csv` and `cat_apps.csv`). Several data pre-processing steps are important to highlight: 
 
-* Standardizing responses for `ideal_adoption_timeline`, `all_household_agree`, `home_pet_policy`, `experience` and `pet_kept`. For example, `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks"). (See further discussion of this issue in the *Data Issues affecting Analyses* section)
-* For `children_in_home` and `adults_in_home`, ignoring "-" by taking the absolute value and replacing absurd values with NA (we replaced values greater than 15 with NAs).
-* Capping `budget_monthly` and `budget_emergency` at $10000 and $20000 respectively.
-* Addressing spelling variations in the `City` variable. For example, replacing the strings "PHILLY", "FILADELFIA", "PHILIDELPHIA", "PHIMADELPHIA", "PHIALADELPHIA", "PHIALDELPHIA", "PHILDELPHIA" with "PHILADELPHIA".
-* Adding new indicator variables for variables containing lists of responses. For example, from `allergies` we created indicator variables for each response (`allergies_mildly.allergic_ind`, `allergies_no.allergies_ind`, `allergies_not.sure_ind`, `allergies_very.allergic_ind`). 
+* We standardized some responses that differed between cat and dog applications but that we believe had the same meaning (e.g. `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks"). (See further discussion of this issue in the *Data Issues affecting Analyses* section)
+* We replaced text values for `children_in_home` and `adults_in_home` to our best intepretation of what the responder meant (e.g. "-2" we interpreted as "2") and considered values that were excessive (e.g. 15 children in the home) as missing data. 
+* Due to a high variability of resonses on monthly and emergency budgets, we capped these responses at $10,000 (monthly) and $20,000 (emergency). Values higher than these we rounded down to the maximum. 
+
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 cat_apps <- cat_apps %>%
@@ -1516,7 +1519,7 @@ apps_with_indicators <- apps %>%
    left_join(convert_to_ind(apps,"return_pet"))
 ```
 
-Our cleaned applications dataset contained 1906 rows, 1594 unique trellos ids and the submitted dates ranged from 2018-08-30 to 2018-12-31:
+Our cleaned applications dataset contained 1906 rows, 1594 unique Trello IDs, and the submitted dates ranged from 2018-08-30 to 2018-12-31. 
 
 ```{r include = FALSE}
 nrow(apps_with_indicators)
@@ -1530,7 +1533,11 @@ apps_with_indicators %>%
   ggplot(aes(x = date_submitted, fill = animal_type)) +
   geom_histogram(alpha = 0.5) +
     theme_report() +
-    scale_x_date(date_breaks = "2 weeks")
+    scale_x_date(date_breaks = "1 weeks") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+    ggtitle("Number of Applications by Week, by Species") + 
+    xlab("Week of Application Submission") + 
+    ylab("Number of Applications Received")
 ```
 
 
@@ -1631,7 +1638,7 @@ petpoint_with_indicators <- petpoint %>%
 # petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
 ```
 
-To our applications dataset we added fields from the actions dataset (comprised of `dog_actions.csv` and `cat_actions.csv`), the cards dataset (comprised of `dog_cards.csv` and `cat_cards.csv`), and the petpoint dataset (`petpoint.csv`) to create our dataset for analysing successful applications. One issue we encountered was that the date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively).
+To our applications dataset, we added fields from Trello actions and cards. A card contains information about when the application started being processed by PAWS and what label PAWS determined it should have (e.g. "ready to adopt", "red flag", etc.), and Trello actions contained information about the steps in the baclground check process (e.g. vet check, Pet Point check, landlord check, etc.). We also matched applications with PetPoint outcome (`petpoint.csv`) to be able to analyze successful applications. One issue we encountered was that the date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively), which was a result of when the online applications were re-initialized in the PAWS website. Similar data-preprocessing steps as we took for the applications dataset were taken for the actions, cards, and petpoints datasets.
 
 ```{r include = FALSE}
 max(apps_with_indicators$date_submitted) - min(apps_with_indicators$date_submitted)
@@ -1640,26 +1647,57 @@ max(as_date(petpoint$outcome_date)) - min(as_date(petpoint$outcome_date))
 ```
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-apps_dates <- cbind(as.character(apps_with_indicators$date_submitted), rep("apps", length(apps_with_indicators$date_submitted)))
-actions_dates <- cbind(as.character(actions$date_start), rep("actions", length(actions$date_start)))
-petpoint_dates <- cbind(as.character(petpoint$outcome_date), rep("petpoint", length(petpoint$outcome_date)))
-all_dates <- as.data.frame(rbind(apps_dates, actions_dates, petpoint_dates))
-names(all_dates)[1] <- "Date"
-names(all_dates)[2] <- "Dataset"
-all_dates$Date <- as_date(all_dates$Date)
+apps_dates_cat <- cbind(as.character(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "cat"]), rep("apps", length(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "cat"])))
+actions_dates_cat <- cbind(as.character(actions$date_start[actions$animal_type == "cat"]), rep("actions", length(actions$date_start[actions$animal_type == "cat"])))
+petpoint_dates_cat <- cbind(as.character(petpoint$outcome_date[petpoint$animal_type == "cat"]), rep("petpoint", length(petpoint$outcome_date[petpoint$animal_type == "cat"])))
+all_dates_cat <- as.data.frame(rbind(apps_dates_cat, actions_dates_cat, petpoint_dates_cat))
+names(all_dates_cat)[1] <- "Date"
+names(all_dates_cat)[2] <- "Dataset"
+all_dates_cat$Date <- as_date(all_dates_cat$Date)
 
-all_dates %>% 
-  ggplot(aes(x = Date, fill = Dataset)) +
+g1 <- all_dates_cat[all_dates_cat$Dataset == "actions",] %>% 
+  ggplot(aes(x = Date)) +
   geom_histogram(alpha = 0.7, binwidth = 7) +
     theme_report() +
-    scale_x_date(date_breaks = "8 weeks") +
+    scale_x_date(date_breaks = "2 week") +
     geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
-    geom_vline(xintercept = max(apps_with_indicators$date_submitted), colour = "black")
+    geom_vline(xintercept = max(apps_with_indicators$date_submitted), colour = "black") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+    ggtitle("Cats") + 
+    xlab("Week when Trello Action Completed") + 
+    ylab("Number of Trello Actions Completed")
+
+apps_dates_dog <- cbind(as.character(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "dog"]), rep("apps", length(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "dog"])))
+actions_dates_dog <- cbind(as.character(actions$date_start[actions$animal_type == "dog"]), rep("actions", length(actions$date_start[actions$animal_type == "dog"])))
+petpoint_dates_dog <- cbind(as.character(petpoint$outcome_date[petpoint$animal_type == "dog"]), rep("petpoint", length(petpoint$outcome_date[petpoint$animal_type == "dog"])))
+all_dates_dog <- as.data.frame(rbind(apps_dates_dog, actions_dates_dog, petpoint_dates_dog))
+names(all_dates_dog)[1] <- "Date"
+names(all_dates_dog)[2] <- "Dataset"
+all_dates_dog$Date <- as_date(all_dates_dog$Date)
+
+
+g2 <- all_dates_dog[all_dates_dog$Dataset == "actions",] %>% 
+  ggplot(aes(x = Date)) +
+  geom_histogram(alpha = 0.7, binwidth = 7) +
+    theme_report() +
+    scale_x_date(date_breaks = "2 week") +
+    geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
+    geom_vline(xintercept = max(apps_with_indicators$date_submitted), colour = "black") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+    ggtitle("Dogs") + 
+    xlab("Week when Trello Action Completed") + 
+    ylab("Number of Trello Actions Completed")
+
+grid.arrange(g1,g2, ncol=1, top="Trello Actions by Species, by 2 Week Period")
+
 ```
 
-Similar data-preprocessing steps as we took for the applications dataset were taken for the actions, cards, and petpoints datasets. For the actions dataset, it was important for us to change the format of the data so each row represented a single `trello id` (prior to this each `checklist_item` for single `trello_id` had a separate row). For the purpose of analysing the denied and red-flagged applications, we created another dataset comprised of the applications and the cards datasets.
+We noticed that for both cat and dog applications, there was an increase in Trello actions that correlated with the re-introduction of online applications at the end of August 2018. At the minimum, this indicates an increase in tracking/recording overhead that coincided with the re-introduction of online applications. 
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+# For the actions dataset, it was important for us to change the format of the data so each row represented a single `trello id` (prior to this each `checklist_item` for single `trello_id` had a separate row). For the purpose of analysing the denied and red-flagged applications, we created another dataset comprised of the applications and the cards datasets.
+
 # Still don't know what the discrepancy is due to 
 master_apps_report <- apps_with_indicators %>%
   filter(!is.na(trello_id)) %>%
@@ -1726,7 +1764,7 @@ master_apps_report %>%
   coord_flip()                  
 ```
 
-The chart also illuminates that for longer-than-average application timelines, animal type may influence just *how much longer* those above-average timelines are. Of the longer-than-usual applications, cat ones took between 35 days and 70 days compared to about 18 days to 40 days for dogs.
+The chart also illustrates that for longer-than-average application timelines, animal type may influence just *how much longer* those above-average timelines are. Of the longer-than-usual applications, cat ones took between 35 days and 70 days compared to about 18 days to 40 days for dogs.
 
 The outcome site for an adoption also influences the timeline of an application. It's important to note that this analysis does not consider all the potential locations that an animal spent its time during the application process; it is strictly based on the animal's outcome site. 
 
@@ -1817,7 +1855,7 @@ kc_table_site <- site_animal_join %>%
   mutate_at(vars(mean, median), funs(round(., 0))) %>%                                          # round the calcs to 0 decimal places 
   select(-c(mean, combined)) %>%
   select(outcome_sitename, animal_type, n, median) %>%
-  rename("median adoption time" = "median") %>%
+  rename("median adoption time (days)" = "median") %>%
   drop_na(outcome_sitename) %>%
   collapse_rows_df(outcome_sitename)
 
@@ -1826,7 +1864,7 @@ kable(kc_table_site, "latex", booktabs = T,
     kable_styling(full_width = F)
 ```
 
-From the heatmap and table above, it's clear that overall average adoption times were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places 
+From the heatmap and table above, it's clear that overall median processing times for applications that resulted in adoptions were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places. 
 
 Based on median values, here are the fastest & slowest time-to-adoption sites:
 
@@ -1930,7 +1968,7 @@ master_apps_report %>%
     theme_report()
 ```
 
-When applicants requested a specific type of animal, 30% of applications resulted in an adoption vs only 22% of the applications resultd in an adoption. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
+When applicants requested a specific animal, 30% of applications resulted in an adoption vs. only 22% of the applications resultd in an adoption when the applicants did not request a specific animal. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
 
 
 
@@ -1958,7 +1996,7 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg)
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Home Alone Average") +
+    labs(title = "Home Alone Average Time") +
     xlab("Averge Number of Hours Alone Per Day") +
     scale_fill_discrete(name = "Animal Type") +
     ylim(0,80) +
@@ -1970,13 +2008,12 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg)
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
 
 
-
 ```{r, echo=FALSE}
 master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Number of Adults in Home") +
+  labs(title = "Number of Adults in Home (other than applicant)") +
   xlab("Number of Adults at Home") +
     ylim(0,170) +
   scale_fill_discrete(name = "Animal Type") +
@@ -1986,8 +2023,7 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home)
 
 ```
 
-
-Singles overwhelmingly seem to prefer to adopt a pet. 
+We found that the majority of applications where the applicant lived alone (0 other adults in the home) preferred cats, while the the majority of applicants who lived with 1 other person preferred a dog. 
 
 
 ```{r, echo=FALSE}
@@ -2003,8 +2039,7 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_hom
     theme_report()
 ```
 
-Again, families with no children at home seem to be the largest number of applicants. This correlates with mostly singles wanting to adopt.
-
+We also found that individuals with no children at home seem to make up the largest number of applicants. 
 
 ```{r, echo=FALSE}
 expcols <- master_apps_report %>% 
@@ -2062,7 +2097,7 @@ expdata %>%
     theme_report()
 ```
 
-Interestingly, more number of applicants who were able to successfully adopt had less expereince in each of the types of experiences.
+When we looked at the type of experiences applicants had with animals, we noticed that a higher number of applicants who were able to successfully adopt had less expereince with animals in each area. Also important to note is the very low number of successful adoptions for applicants who reported that their pet ran away, was given away, was given to a shelter, or who reported having experience breeding or selling animals. 
 
 ```{r, echo=FALSE}
 ### Home Pet Policy
@@ -2132,13 +2167,15 @@ variable_labeller <- function(variable,value){
 #    #geom_text(aes(label=value),position=position_stack(1.1)) +
 #     theme_report()
 #     
+
+retdata$adoption <- as.character(ifelse(retdata$adoption =="TRUE","Adopted","Did not adopt"))
 retdata %>%
   ggplot(mapping=aes(x=ReturnReasons,y=value,fill=animal_type)) +
   geom_bar(stat="identity") +
   facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Experience Type with Pets") +
-    xlab("Adoption Status") +
+    labs(title = "Reasons for Returning an Adopted Pet in Future, by Adoption Status") +
+    ylab("Count") +
     scale_x_discrete(labels = variable_labeller) +
     scale_fill_discrete(name = "Animal Type") + #+
    #geom_text(aes(label=value),position=position_stack(1.1)) +
@@ -2147,7 +2184,7 @@ retdata %>%
 
 ```
 
-The main reason that people would return a pet in the future is if the pet sheds or if they move far away. Of those who said they would return the pet if it sheds, they either did not adopt or they adopted a cat.
+The main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. Regarding allergies, the vast majority of people who adopted a pet from PAWS reported no allergies.  
 
 ```{r, echo=FALSE}
 master_apps_report %>% filter(outcome_type=="Adoption") %>%
@@ -2165,7 +2202,6 @@ master_apps_report %>% filter(outcome_type=="Adoption") %>%
     theme_report()
 ```
 
-Most of the people who adopted a pet had no allergies.
 
 ### Analysis of Denied and Red Flagged Applications
 
@@ -2173,7 +2209,7 @@ Most of the people who adopted a pet had no allergies.
 <br>
 
 <br>**Denied Applications**<br>
-Below are visualizations that illustrate the applicants' characteristics (e.g. allergies, budget, home pet policy, etc.). We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
+We only have data for 12 denied applications so the analysis is limited. In the future when we have more data, we could compare the denied applications to the adopted ones.<br><br>
 
 Key takeaways:
 
@@ -2184,7 +2220,7 @@ Key takeaways:
 * Many applicants had unfortunate incidents with prior pets (e.g. ran away, died in care)
 
 
-```{r denied applications, echo = F,  message = F,  warning = F}
+```{r denied applications, include = F,  message = F,  warning = F}
 df_denied <- dplyr::filter(master_apps_report, label.names_denied_ind == 1)
 df_redflag <- dplyr::filter(master_apps_report, label.names_red.flag_ind == 1)
 
@@ -2318,16 +2354,29 @@ Below is a visualization that shows the last updated status for applications tha
 
 #dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some are still in progress
 
-ggplot(df_redflag, aes(x=last_label)) + 
-  geom_bar(aes(fill=animal_type), width=.5) +
-  ggtitle("Last Updated Label for Red Flagged Applications") +
+g1 <- ggplot(df_redflag[df_redflag$animal_type == "cat", ], aes(x=last_label)) + 
+  geom_bar(fill="salmon", width=.5) +
+  ggtitle("Cats") +
   labs(x = "Last Updated Label",                                                            
        y= "Count",
        fill = "Animal Type") +
-  coord_cartesian(ylim=c(0, 45)) +
+  # coord_cartesian(ylim=c(0, 45)) +
   theme(axis.text.x = element_text(angle=80, vjust=0.5)) +
     coord_flip() +
     theme_report()
+
+g2 <- ggplot(df_redflag[df_redflag$animal_type == "dog", ], aes(x=last_label)) + 
+  geom_bar(fill="aquamarine3", width=.5) +
+  ggtitle("Dogs") +
+  labs(x = "Last Updated Label",                                                            
+       y= "Count",
+       fill = "Animal Type") +
+  # coord_cartesian(ylim=c(0, 45)) +
+  theme(axis.text.x = element_text(angle=80, vjust=0.5)) +
+    coord_flip() +
+    theme_report()
+
+grid.arrange(g1,g2, ncol=2, top="Last Updated Label for Red Flagged Applications")
 
 ```
 
@@ -2388,7 +2437,7 @@ testing <- master_mod[-inTrain,]
 #![](https://github.com/rladiesPHL/2019_datathon/raw/paws-app-trajectory-q2/Analyses/2_Applicants/final_analyses/presentation_plots/ImportantVariables.png)
 ```
 
-Until now, we have separately analysed the different characteristics that affect adoption or decline. In an attempt to understand  how the different features in the dataset could have had a combined effect on the adoption status, we ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
+After separately analyzing the different characteristics that affect whether an application results in an adoption, we wanted to further understand  how the different features in the dataset could have had a combined effect on the adoption status. We therefore ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
 
 To successfully build a Random Forest, we further cleaned the data to take care of all the missing values. We used 1665 observations and 90 variables out of a total of 1684 observations and 251 variables.
 
