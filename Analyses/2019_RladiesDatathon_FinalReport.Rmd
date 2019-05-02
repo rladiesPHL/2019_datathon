@@ -332,15 +332,16 @@ for(i in 2:length(get_vars)){
 
 ### 2. Animal Characteristics
 
-Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times (i.e. the longest horizontal lines in the two plots below). These variables were: primary breed, age group, and health at intake.
-
-`r knitr::include_graphics('1_Animals/cats.001.jpeg')`
-
-`r knitr::include_graphics('1_Animals/dogs.001.jpeg')`
+Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times: primary breed, age group, and health at intake.
 
 For animal characteristics contributing to wait time at PAWS, we first examined primary breed per species. The graph below shows the top 5 most frequent cat breeds and the top 10 most frequent dog breeds at PAWS in 2018. We found that most, if not all, cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater, with the most frequent dogs being labeled Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. In both graphs, the "Other" category represents a total count of animals in breeds that were not in the top 5 or 10 most frequent. 
 
 ```{r, echo = FALSE}
+
+# `r knitr::include_graphics('1_Animals/cats.001.jpeg')`
+# 
+# `r knitr::include_graphics('1_Animals/dogs.001.jpeg')`
+
 # plot n per breed
 by_breed <- raw_data %>%
     group_by(species, primary_breed) %>%
@@ -2448,18 +2449,15 @@ The combined effect of different characteristics on the adoption status can be s
 \newpage
 ## 3. Geographic factors
 
+These analyses examined the data in relation to geographic and population parameters. We sought to understand how the socioeconomic environment of applicants might affect the likelihood of adoption, and whether there were factors contributing to regional differences in application processing speed. 
+
 ### Contributors
 
 **Joy Payton, MS** is the Supervisor of Data Education in the Department of Biomedical and Health Informatics at the Children's Hospital of Philadelphia. She leads the development and implementation of education and outreach programs to help CHOP scientists become data-savvy and make the best, most informed use of the tools they have available. 
 
 **Karla Fettich, PhD** is Head of Algorithm Development at Orchestrall, Inc. She leads efforts to develop data analytics solutions, predictive models and optimization approaches to create sustainable changes that improve operations and outcomes in long term care facilities. 
 
-### Goals
-
-These analyses examined the data in relation to geographic and population parameters, with two main objectives: 
-
-1) identify an initial set of variables that may be informative for application processing
-2) provide a basis for discussion around the usefulness of geographical data analysis for PAWS at a broader level
+### Summary
 
 ### Datasets
 
@@ -2480,15 +2478,275 @@ In addition to the data collected via the online forms, applicants' addresses we
 
 ### Economic Considerations in Processing Applications
 
-On average, dog applicants live in areas where the median income is higher compared to cat applicants (around $60,000/year for dog applicants vs. $54,000/year for cat applicants) and where the percent of households living under the poverty level is lower (18% for dog applicants vs. 22% for cat applicants). This suggests that dog applicants are from slightly wealthier neighborhoods. We further observed that dog applicants have more range between lower middle class and upper middle class, while cat applicants tend to skew more toward lower incomes. This finding aligns with [the pet care cost estimates provided by the ASPCA](https://www.aspca.org/sites/default/files/pet_care_costs.pdf) which suggest that the first year total costs of owning a dog ($1,471 - $1,779) exceed those of owning a cat ($1,174) - although it is unclear how recent these estimates are. 
+```{r, include=FALSE}
+dog_applicants <-  read.csv(paste0(here::here("Data/dog_apps.csv")), na.strings = "", stringsAsFactors = FALSE)
+cat_applicants <-  read.csv(paste0(here::here("Data/cat_apps.csv")), na.strings = "", stringsAsFactors = FALSE)
+    
+dog_cards <- read.csv(paste0(here::here("Data/dog_cards.csv")), na.strings = "", stringsAsFactors = FALSE)
+cat_cards <- read.csv(paste0(here::here("Data/cat_cards.csv")), na.strings = "", stringsAsFactors = FALSE)
 
-Using the "complete" status of a trello card at the time when the data were pulled, we did not observe a neighborhood wealth difference between completed and non-completed applications. While a "complete" status is fairly vague (it does not indicate the outcome of an application), and several trello cards may have been incomplete due to them being fairly recent, the data do not indicate an economic bias when processing applications.
+dog_actions <- read.csv(paste0(here::here("Data/dog_actions.csv")), na.strings = "", stringsAsFactors = FALSE)
+cat_actions <- read.csv(paste0(here::here("Data/cat_actions.csv")), na.strings = "", stringsAsFactors = FALSE)
 
-We further looked into some of the outcomes of application processing, specifically *red flags* and *denied* applications. Applications from neighborhoods with a lower household median income (under $50,000/year) are more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year). Additionally, red flagged **cat** applicants have a lower estimated monthly budget than their non-red-flagged counterparts ($176 vs. $224). For **dogs**, a similar trend was observed, but it did not reach the statistical significance threshold ($212 vs. $277). This pattern also holds when it comes to emergency budgets: red flagged applicants have a lower estimated emergency budget than their non-red-flagged counterparts ($947 vs. $1,446 for **cats** and $735 vs. $1,848 for **dogs**). While we found that living in a lower income neighborhood does impact the estimated emergency budget at a statistically significant level, it only accounts for about 7% of the observed pattern. This indicates that there are additional factors that may play a role in how much money an applicant is able to set aside on a regular basis for pet care. 
+selected_economic_characteristics <- read.csv(paste0(here::here("Analyses/3_GIS/CensusData/census_tracts_economics.csv")), na.strings = "", stringsAsFactors = FALSE)
+
+cat_applicants <- merge(x = cat_applicants, 
+                        y = selected_economic_characteristics,
+                        by = "GEOID",
+                        all.x = TRUE)
+dog_applicants <- merge(x = dog_applicants, 
+                        y = selected_economic_characteristics,
+                        by = "GEOID",
+                        all.x = TRUE)
+
+all_applicants <- rbind(cat_applicants %>% mutate(pet = "cat"), 
+                      dog_applicants %>% mutate(pet = "dog"))
+
+all_applicants$tract_median_income <- as.numeric(all_applicants$tract_median_income)
+ggplot(all_applicants,aes(x=pet, y=tract_median_income)) +
+  geom_boxplot() 
+
+# it seems like dog applicants come from slightly more affluent areas.  Does that bear up under statistical scrutiny?
+
+t.test(tract_median_income ~ pet, all_applicants)
+t.test(as.numeric(tract_poverty_pct) ~ pet, all_applicants)
+
+# Yes, dog applicants are from wealthier neighborhoods, by a little (a few thousand dollars per year in income and handful of percent difference in the number of households under the poverty level).**
+
+# Let's look at this a different way, to get an idea of distribution:
+
+ggplot(all_applicants,aes(x=tract_median_income)) +
+  geom_density(aes(fill=pet), alpha=0.5)
+
+# We can see that although there's statistical significance to the wealth inequality between cat and dog applicants, there's really not a huge difference in distribution -- dog applicants have more range between lower middle class and upper middle class, while cat applicants tend to skew more toward lower incomes.  But nothing very startling.
+
+```
+
+```{r, include=FALSE}
+
+g1 <- all_applicants %>%
+    group_by(pet) %>%
+    summarise("Average Tract Median Income" = mean(tract_median_income, na.rm=TRUE)) %>% 
+    ggplot(aes(x=pet, y=`Average Tract Median Income`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Median Income") +
+    labs(x = "Animal species applied for",
+         y= "Average median income") +
+    scale_y_continuous(breaks = c(30000,50000,60000)) +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`Average Tract Median Income`/1000, digits=2),"K") , y = `Average Tract Median Income`), size = 3, position = position_stack(vjust = 0.5))
+
+all_applicants$tract_poverty_pct <- as.numeric(all_applicants$tract_poverty_pct)
+g2 <- all_applicants %>%
+    group_by(pet) %>%
+    summarise("Average Tract Percentage Impoverished Households" = mean(tract_poverty_pct, na.rm=TRUE)) %>% 
+    ggplot(aes(x=pet, y=`Average Tract Percentage Impoverished Households`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Poverty") +
+    labs(x = "Animal species applied for",
+         y= "Average percent poverty") +
+    theme_report()  + 
+    geom_text(aes(label = paste(round(`Average Tract Percentage Impoverished Households`, digits=2)," %"), y = `Average Tract Percentage Impoverished Households`), size = 3, position = position_stack(vjust = 0.5))
+
+all_applicants$tract_unemployment_pct <- as.numeric(all_applicants$tract_unemployment_pct)
+g3 <- all_applicants %>%
+    group_by(pet) %>%
+    summarise("Average tract_unemployment_pct" = mean(tract_unemployment_pct, na.rm=TRUE)) %>% 
+    ggplot(aes(x=pet, y=`Average tract_unemployment_pct`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Unemployment") +
+    labs(x = "Animal species applied for",
+         y= "Average number of unemployed people") +
+    theme_report()  + 
+    geom_text(aes(label = paste(round(`Average tract_unemployment_pct`, digits=2)), y = `Average tract_unemployment_pct`), size = 3, position = position_stack(vjust = 0.5))
+
+all_applicants$tract_commute_public_transit <- as.numeric(all_applicants$tract_commute_public_transit)
+g4 <- all_applicants %>%
+    group_by(pet) %>%
+    summarise("Average tract_commute_public_transit" = mean(tract_commute_public_transit, na.rm=TRUE)) %>% 
+    ggplot(aes(x=pet, y=`Average tract_commute_public_transit`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Reliance on Public Transit") +
+    labs(x = "Animal species applied for",
+         y= "Average number of people commuting by public transit") +
+    theme_report()  + 
+    geom_text(aes(label = paste(round(`Average tract_commute_public_transit`, digits=2)), y = `Average tract_commute_public_transit`), size = 3, position = position_stack(vjust = 0.5))
+
+grid.arrange(g1, g2, g3, g4, ncol=2,
+             top = "Applicants' Neighborhood Characteristics")
+
+```
+
+On average, we observed that dog applicants live in areas where the median income is higher compared to cat applicants (around $60,000/year for dog applicants vs. $54,000/year for cat applicants) and where the percent of households living under the poverty level is lower (18% for dog applicants vs. 22% for cat applicants). This suggests that dog applicants are from slightly wealthier neighborhoods. We further observed that dog applicants have more range between lower middle class and upper middle class, while cat applicants tend to skew more toward lower incomes. We also examined whether unemployment and reliance on public transit might play a role in applicants' preferences for dogs vs. cats. We observed no differences in mean neighborhood estimates of number of unemployed people of dog vs. cat applicants, but we did notice that in neighborhoods where cat applicants live, more people tend to rely on public transit for their commute to work. 
+
+This finding aligns with the previous group's findings that a greater proportion of cat applicants had a lower monthly budget for pet care, compared to dog applicants, as well as with [the pet care cost estimates provided by the ASPCA](https://www.aspca.org/sites/default/files/pet_care_costs.pdf) which suggest that the first year total costs of owning a dog ($1,471 - $1,779) exceed those of owning a cat ($1,174). 
+
+While we observed neighborhood wealth differences in animal species preference by applicants, we did not observe this factor to be biasing PAWS when processing applications (for this comparison, we used the "complete" status of a trello card at the time when the data were pulled - although this is fairly vague indicator because it does not describe the outcome of an application beyond having been processed).
+
+```{r echo = FALSE}
+cards <- rbind(cat_cards,dog_cards)
+all_applicants <- merge(x = all_applicants,
+                        y = cards, 
+                        by.x ="outcome_trello_id",
+                        by.y = "id")
+
+all_applicants <- all_applicants %>% mutate(red_flag = str_detect(label_names, "red flag"),
+                                              approved = str_detect(label_names, "approved"),
+                                              denied = str_detect(label_names,"denied"))
+
+# ggplot(all_applicants %>% filter(!is.na(denied)),aes(x=denied, y=tract_median_income)) +
+#   geom_boxplot() 
+
+g1 <- all_applicants %>%
+    group_by(denied) %>%
+    summarise("med_income" = mean(tract_median_income, na.rm=TRUE)) %>% 
+    ggplot(aes(x=denied, y=`med_income`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Denied Applications") +
+    labs(x = "Application Outcome",
+         y= "Average median income") +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`med_income`/1000, digits=2)," K"), y = med_income), size = 3, position = position_stack(vjust = 0.5))
+
+g2 <- all_applicants %>%
+    group_by(red_flag) %>%
+    summarise("med_income" = mean(tract_median_income, na.rm=TRUE)) %>% 
+    ggplot(aes(x=red_flag, y=`med_income`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    ggtitle("Red Flagged Applications") +
+    labs(x = "Application Outcome",
+         y= "Average median income") +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`med_income`/1000, digits=2)," K"), y = med_income), size = 3, position = position_stack(vjust = 0.5))
+
+grid.arrange(g1, g2, ncol=2,
+             top = "Neighborhood wealth differences in application outcomes")
+
+```
+
+We further looked into some of the outcomes of application processing, specifically *red flags* and *denied* applications. Applications from neighborhoods with a lower household median income (under $50,000/year) are more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year). 
+
+```{r, include = FALSE}
+
+# ggplot(all_applicants,aes(x=red_flag, y=tract_median_income)) +
+  # geom_boxplot() 
+
+t.test(tract_median_income ~ red_flag, all_applicants %>% filter(!is.na(red_flag)))
+
+# **There is a statistically significant difference in the neighborhood income level of applicants who are red flagged.**
+
+# This may be completely desired, if the red flag is related to the financial ability to care for a pet and some education or counseling around realistic budgets.  But red flags might reflect bias.  How can we tell?
+
+# Let's start by looking at the budget set aside for the red flag holders.  We'll split out cats and dogs, since the two types of animals have different expected expenses.  First, let's convert currency to numbers:
+
+all_applicants$budget_monthly_num <- as.numeric(gsub('[$,]','',all_applicants$budget_monthly))
+all_applicants$budget_emergency_num <- as.numeric(gsub('[$,]','',all_applicants$budget_emergency))
+
+# Hmm.  I'm going to make a wild guess that negative numbers are a mistake and should be made positive.   I also suspect that things like \$0.50 are user errors and might be \$50.00, but I won't fix that.  Also, I wonder if some people put in their yearly salary or something like that instead of budget?
+# 
+# To try to resolve these, I'm going to do the following:
+# 
+# * Make negative numbers positive
+# * Exclude monthly budgets over $1,000 as unrealistic and probably an error
+# * Exclude emergency budgets over $50,000 as unrealistic and probably an error
+
+all_applicants$budget_monthly_num <- abs(as.numeric(gsub('[$,]','',all_applicants$budget_monthly)))
+all_applicants$budget_emergency_num <- abs(as.numeric(gsub('[$,]','',all_applicants$budget_emergency)))
+all_applicants$budget_emergency_num[which(all_applicants$budget_emergency_num > 50000)] <- NA
+all_applicants$budget_monthly_num[which(all_applicants$budget_monthly_num > 1000)] <- NA
+
+# all_applicants %>%
+#   filter(!is.na(red_flag)) %>%
+#   ggplot(aes(x=pet, y=budget_monthly_num)) +
+#   geom_boxplot(aes(fill=red_flag)) 
+
+# Interestingly, there seems to be a strong monthly budget difference between cat red flag applicants and non red flag applicants.  But there's no appreciable difference in budget between dog owners based on red flag status.
+# 
+# Let's check that, statistically.  First, is the seemingly huge cat difference statistically significant?
+
+t.test(budget_monthly_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "cat") )
+
+# Yes.  **There is a statistically significant difference in the monthly budgets proposed by cat applicants who received red flags and cat applicants who did not.**  This seems to indicate that unrealistic budgeting might come into play when red flags are imposed on cat applicants.
+# 
+# Dog applicants, on the other hand, seemed to have very similar monthly budgets, regardless of their red flag status.  Does that hold up?
+
+t.test(budget_monthly_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "dog") )
+
+# **There's no statistical significance to the very slight difference in dog monthly budgets.  Red flagged dog applicants are budgeting the same monthly amount as their non-red-flagged counterparts.**
+
+# What about emergency budgets?
+
+all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+  ggplot(aes(x=pet, y=budget_emergency_num)) +
+  geom_boxplot(aes(fill=red_flag)) 
+
+# Snap, this is hard to check because of outliers.  Let's just set a ceiling at $10k for emergencies -- if a budget is more than that, we'll just set it to ten thousand.
+
+all_applicants$budget_emergency_num[which(all_applicants$budget_emergency_num > 10000)] <- 10000
+all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+  ggplot(aes(x=pet, y=budget_emergency_num)) +
+  geom_boxplot(aes(fill=red_flag)) 
+
+t.test(budget_emergency_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "dog") )
+t.test(budget_emergency_num ~ red_flag, all_applicants %>% filter(!is.na(red_flag) & pet == "cat") )
+
+# **Yes, emergency budgets are lower for red-flagged applicants for both cats and dogs, at a statistically significant level.**  It seems that emergency budgets being too low might prompt some doubt / red flags.
+```
+
+```{r, echo = FALSE}
+g1 <- all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+    group_by(pet, red_flag) %>%
+    summarize(mean_month = mean(budget_monthly_num, na.rm = TRUE)) %>%
+    ggplot(aes(x=pet, y=mean_month)) +
+    geom_bar(stat="identity", position="dodge", aes(fill=red_flag)) +
+    ggtitle("Monthly Budget") +
+    labs(x = "Animal Species",
+         y= "Average Monthly Budget") +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`mean_month`, digits=2))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
+
+g2 <- all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+    group_by(pet, red_flag) %>%
+    summarize(mean_emer = mean(budget_emergency_num, na.rm = TRUE)) %>%
+    ggplot(aes(x=pet, y=mean_emer)) +
+    geom_bar(stat="identity", position="dodge", aes(fill=red_flag)) +
+    ggtitle("Emergency Budget") +
+    labs(x = "Animal Species",
+         y= "Average Emergency Budget") +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`mean_emer`, digits=2))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
+
+grid.arrange(g1, g2, ncol=2, top = "Budgets by Red Flag Status")
+
+```
+
+Additionally, red flagged **cat** applicants have a lower estimated monthly budget than their non-red-flagged counterparts ($176 vs. $225). For **dogs**, a similar trend was observed, but it did not reach the statistical significance threshold ($212 vs. $276). This pattern also holds when it comes to emergency budgets: red flagged applicants have a lower estimated emergency budget than their non-red-flagged counterparts ($947 vs. $1,473 for **cats** and $735 vs. $1,849 for **dogs**). 
+
+```{r, include = FALSE}
+poverty_budget <- lm(budget_emergency_num ~ tract_median_income, data = all_applicants)
+summary(poverty_budget)
+
+# There's a definite trend, but the R squared seems to indicate that tract income only accounts for about 7% of the difference in budgets.
+# 
+# And let's plot that linear model on top of our scatterplot:
+
+ggplot(all_applicants, aes(x=tract_median_income, y=budget_emergency_num)) +
+  geom_point(aes(color=red_flag), alpha = 0.3) +
+  geom_abline(intercept = poverty_budget$coefficients[1], slope = poverty_budget$coefficients[2])
+
+
+```
+
+While we found that living in a lower income neighborhood does impact the estimated emergency budget at a statistically significant level, it only accounts for about 7% of the observed pattern. This indicates that there are additional factors that may play a role in how much money an applicant is able to set aside on a regular basis for pet care. 
 
 ### Efficiency Analysis in Philadelphia County
 
 We also looked at applications that were processed within an efficient timeframe (defined here as 10 days), vs those that did not. An application was considered efficient if it was given a decision label ("denied", "do not follow up", "adopted", "adoption follow up", "approved",  "ready to adopt",  "ready for review",  "reviewed with handouts only",  "approved with limitation",  "dog meet", "returned", "adopted elsewhere") and the last trello checklist item was checked off 10 days or less from the date of application submission.
+
 
 #### Dogs
 
