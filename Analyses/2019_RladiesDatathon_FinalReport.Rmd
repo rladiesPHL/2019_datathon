@@ -6,6 +6,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
+rm(list = ls())
 knitr::opts_chunk$set(echo = TRUE, fig.height= 5, fig.width = 8, message = FALSE, warning = FALSE)
 packages <- c("here","readr","tidyverse", "lubridate", "skimr","gtools","knitr",
               "data.table", "formattable", "cowplot", "dplyr", "stringr", "tidyr", "forcats",
@@ -2522,7 +2523,7 @@ ggplot(all_applicants,aes(x=tract_median_income)) +
 
 ```
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 
 g1 <- all_applicants %>%
     group_by(pet) %>%
@@ -2745,24 +2746,385 @@ While we found that living in a lower income neighborhood does impact the estima
 
 ### Efficiency Analysis in Philadelphia County
 
-We also looked at applications that were processed within an efficient timeframe (defined here as 10 days), vs those that did not. An application was considered efficient if it was given a decision label ("denied", "do not follow up", "adopted", "adoption follow up", "approved",  "ready to adopt",  "ready for review",  "reviewed with handouts only",  "approved with limitation",  "dog meet", "returned", "adopted elsewhere") and the last trello checklist item was checked off 10 days or less from the date of application submission.
+We also looked at applications that were processed within an efficient timeframe (defined here as 10 days), vs. those that did not. An application was considered efficient if it was given a decision label ("denied", "do not follow up", "adopted", "adoption follow up", "approved",  "ready to adopt",  "ready for review",  "reviewed with handouts only",  "approved with limitation",  "dog meet", "returned", "adopted elsewhere") and the last trello checklist item was checked off 10 days or less from the date of application submission.
 
+
+```{r include = FALSE}
+packages <- c("rgdal", "raster", "tmap", "geosphere", "spp", "rgeos", "glmnet", "spgwr")
+invisible(lapply(packages, require, character.only = TRUE))
+
+not_all_na <- function(x) {any(!is.na(x))}
+
+# load geo data for nj & pa
+nj <- shapefile(here::here("Analyses/3_GIS/KF_TractData/tl_2018_34_tract/tl_2018_34_tract.shp"))
+pa <- shapefile(here::here("Analyses/3_GIS/KF_TractData/tl_2018_42_tract/tl_2018_42_tract.shp"))
+pa_nj <- rbind(nj,pa)
+
+# I'll now load the applications data for both cats and dogs. We'll getting rid of applications that don't have GEOIDs, and assess why those might be missing.
+
+dogs <- read.csv(here::here("Data/dog_apps.csv"), stringsAsFactors = FALSE)
+dogs %>% 
+  filter(is.na(INTPTLON)) %>%
+  group_by(State) %>%
+  summarise(n = n())
+dogs <- dogs[!is.na(dogs$INTPTLON),]  # get rid of geo NAs
+
+# We have 2 PA applicants that have missing geo data, and `r which(duplicated(dogs))` duplicates. Since it's a low number, I will leave this as missing (can't re-do the GEO matching so we'll just have to run it as is). Everyone else is from states outside PA and NJ. 
+
+cats <- read.csv(here::here("Data/cat_apps.csv"), stringsAsFactors = FALSE)
+cats %>% 
+  filter(is.na(INTPTLON)) %>%
+  group_by(State) %>%
+  summarise(n = n())
+cats <- cats[!is.na(cats$INTPTLON),]  # get rid of geo NAs
+
+# For cats, we have 7 PA applicants with missing geo info and and `r which(duplicated(cats))` duplicates. I'll also remove the cat data with missing geo info.
+
+# Now we import the cards data and combine it with the application data. I'm only going to keep data points that have both an application and a trello card. 
+
+dog.cards <- read.csv(here::here("Data/dog_cards.csv"), stringsAsFactors = FALSE)
+dog.appsandcards <- merge(dogs, dog.cards, by.x="outcome_trello_id", by.y="id")
+
+cat.cards <- read.csv(here::here("Data/cat_cards.csv"), stringsAsFactors = FALSE)
+cat.appsandcards <- merge(cats, cat.cards, by.x="outcome_trello_id", by.y="id")
+
+# Check for duplicates:
+
+dog.appsandcards <- dog.appsandcards[which(!dog.appsandcards$outcome_trello_id %in% dog.appsandcards$outcome_trello_id[which(duplicated(dog.appsandcards$outcome_trello_id))]),]
+
+cat.appsandcards <- cat.appsandcards[which(!cat.appsandcards$outcome_trello_id %in% cat.appsandcards$outcome_trello_id[which(duplicated(cat.appsandcards$outcome_trello_id))]),]
+
+# I'll remove all the ids that appear multiple times.
+
+# Import actions and convert the action date to POSIX format so it can be processed. 
+
+dog.actions <- read.csv(here::here("Data/dog_actions.csv"), stringsAsFactors = FALSE)
+dog.actions$date <- as.POSIXlt(dog.actions$date, format="%Y-%m-%dT%H:%M:%SZ")
+
+cat.actions <- read.csv(here::here("Data/cat_actions.csv"), stringsAsFactors = FALSE)
+cat.actions$date <- as.POSIXlt(cat.actions$date, format="%Y-%m-%dT%H:%M:%SZ")
+
+# Using the timestamp, we now identify the last recorded checklist activity, and only keep that instance when combining data with the larger dataset. 
+
+dog.actions <- dog.actions[order(dog.actions$data.card.id, dog.actions$date, decreasing = TRUE),]
+dog.actions <- dog.actions[which(!duplicated(dog.actions$data.card.id)),]
+dog.appsandcards <- merge(dog.appsandcards, dog.actions, by.x="outcome_trello_id", by.y="data.card.id", all.x=TRUE, all.y=FALSE)
+
+cat.actions <- cat.actions[order(cat.actions$data.card.id, cat.actions$date, decreasing = TRUE),]
+cat.actions <- cat.actions[which(!duplicated(cat.actions$data.card.id)),]
+cat.appsandcards <- merge(cat.appsandcards, cat.actions, by.x="outcome_trello_id", by.y="data.card.id", all.x=TRUE, all.y=FALSE)
+
+# Additionally, in order to assess whether an application was processed efficiently (within 10 days), we need to know if a decision was made on it. If yes, then the date on the last recorded action must be less than 10 days from the application date. If no, then the submission date must be 10 days prior to 12/31/2018 (since that is the cutoff for the data).
+
+dog.appsandcards$decision.status <- "no decision"
+dog.appsandcards$decision.status[which(grepl(paste(c("denied", 
+                                            "do not follow up",
+                                            "adopted", 
+                                            "adoption follow up",
+                                            "approved", 
+                                            "ready to adopt", 
+                                            "ready for review", 
+                                            "reviewed with handouts only", 
+                                            "approved with limitation", 
+                                            "dog meet",
+                                            "returned",
+                                            "adopted elsewhere"), collapse="|"), dog.appsandcards$label_names))] <- "decision"
+
+dog.appsandcards$date <- as.character(dog.appsandcards$date)
+dog.appsandcards$date <- ifelse(dog.appsandcards$decision.status == "no decision", "2018-12-31 23:59:59", dog.appsandcards$date)
+dog.appsandcards$date <- as.POSIXlt(dog.appsandcards$date)
+dog.appsandcards$date_submitted <- as.POSIXlt(dog.appsandcards$date_submitted, format="%m/%d/%Y")
+dog.appsandcards$processing.time <- as.numeric(difftime(dog.appsandcards$date, dog.appsandcards$date_submitted, units="days"))
+
+cat.appsandcards$decision.status <- "no decision"
+cat.appsandcards$decision.status[which(grepl(paste(c("denied", 
+                                            "do not follow up",
+                                            "adopted", 
+                                            "adoption follow up",
+                                            "approved", 
+                                            "ready to adopt", 
+                                            "ready for review", 
+                                            "reviewed with handouts only", 
+                                            "approved with limitation", 
+                                            "cat meet",
+                                            "returned",
+                                            "adopted elsewhere"), collapse="|"), cat.appsandcards$label_names))] <- "decision"
+
+cat.appsandcards$date <- as.character(cat.appsandcards$date)
+cat.appsandcards$date <- ifelse(cat.appsandcards$decision.status == "no decision", "2018-12-31 23:59:59", cat.appsandcards$date)
+cat.appsandcards$date <- as.POSIXlt(cat.appsandcards$date)
+cat.appsandcards$date_submitted <- as.POSIXlt(cat.appsandcards$date_submitted, format="%m/%d/%Y")
+cat.appsandcards$processing.time <- as.numeric(difftime(cat.appsandcards$date, cat.appsandcards$date_submitted, units="days"))
+
+summary(dog.appsandcards$processing.time)
+summary(cat.appsandcards$processing.time)
+
+# For both dogs and cats there are some applications where the submission date seems to be after the latest action (which doesn't make sense). We'll remove them. 
+
+dog.appsandcards <- dog.appsandcards[which(dog.appsandcards$processing.time >0),]
+cat.appsandcards <- cat.appsandcards[which(cat.appsandcards$processing.time >0),]
+
+# Next, we're going to label inefficient applications.
+
+dog.appsandcards <- dog.appsandcards[which(dog.appsandcards$decision.status == "decision" | 
+                                            (dog.appsandcards$decision.status == "no decision" & dog.appsandcards$processing.time > 10)),]
+cat.appsandcards <- cat.appsandcards[which(cat.appsandcards$decision.status == "decision" | 
+                                            (cat.appsandcards$decision.status == "no decision" & cat.appsandcards$processing.time > 10)),]
+dog.appsandcards$efficient <- ifelse(dog.appsandcards$processing.time>10,0,1)
+cat.appsandcards$efficient <- ifelse(cat.appsandcards$processing.time>10,0,1)
+
+# Next we'll import census data. The following datasets were extracted:
+
+educ <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_S1401_with_ann.csv"), stringsAsFactors = FALSE)  
+educ.descr <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_S1401_metadata.csv"),stringsAsFactors = FALSE, header = FALSE)  
+select.vars <- c("GEO.id2",
+                "HC02_EST_VC01",
+                "HC02_EST_VC02",
+                "HC02_EST_VC03",
+                "HC02_EST_VC04",
+                "HC02_EST_VC05",
+                "HC02_EST_VC06",
+                "HC02_EST_VC07",
+                "HC02_EST_VC08",
+                "HC02_EST_VC09",
+                "HC02_EST_VC11",
+                "HC02_EST_VC15",
+                "HC02_EST_VC16",
+                "HC02_EST_VC18",
+                "HC02_EST_VC19",
+                "HC02_EST_VC21",
+                "HC02_EST_VC22",
+                "HC02_EST_VC24",
+                "HC02_EST_VC25",
+                "HC02_EST_VC27",
+                "HC02_EST_VC28",
+                "HC02_EST_VC30",
+                "HC02_EST_VC31",
+                "HC02_EST_VC33",
+                "HC02_EST_VC34",
+                "HC02_EST_VC36",
+                "HC02_EST_VC37",
+                "HC02_EST_VC39",
+                "HC02_EST_VC40")
+select.vars.df.educ <- data.frame(select.vars = paste0(select.vars,"_educ"), 
+                             descr = educ.descr$V2[which(educ.descr$V1 %in% select.vars)])
+# knitr::kable(select.vars.df.educ)
+
+educ <- educ[,select.vars]
+educ <- educ[2:nrow(educ),]   # first row is an annotation
+educ[educ=="(X)"] <- NA    # for some reason NA's are marked as '(X)' so we'll replace those with actual NAs
+educ <- mutate_all(educ, function(x) as.numeric(as.character(x)))    # convert everything to numeric
+educ <- select_if(educ, not_all_na)                        # eliminate columns that have all NAs
+colnames(educ) <- paste0(colnames(educ),"_educ")           # attach a suffix to all columns to make them identifiable after combining with other sets
+
+
+#### Median rent
+
+rent <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_B25058_with_ann.csv"),stringsAsFactors = FALSE)  
+rent.descr <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_B25058_metadata.csv"), stringsAsFactors = FALSE, header = FALSE)  
+select.vars <- c("GEO.id2",
+                 "HD01_VD01")
+select.vars.df.rent <- data.frame(select.vars = paste0(select.vars,"_rent"), 
+                             descr = rent.descr$V2[which(rent.descr$V1 %in% select.vars)])
+# knitr::kable(select.vars.df.rent)
+
+rent <- rent[,select.vars]
+rent <- rent[2:nrow(rent),]   # first row is an annotation
+rent[rent=="(X)"] <- NA    # for some reason NA's are marked as '(X)' so we'll replace those with actual NAs
+rent <- mutate_all(rent, function(x) as.numeric(as.character(x)))    # convert everything to numeric
+rent <- select_if(rent, not_all_na)                        # eliminate columns that have all NAs
+colnames(rent) <- paste0(colnames(rent),"_rent")           # attach a suffix to all columns to make them identifiable after combining with other sets
+
+census <- merge(educ, rent, by.x="GEO.id2_educ", by.y="GEO.id2_rent", all=TRUE)    # merge education and rent datasets
+
+#### Computer and networking characteristics
+
+comp <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_S2801_with_ann.csv"), stringsAsFactors = FALSE)   # computing devices
+comp.descr <- read.csv(here::here("Analyses/3_GIS/KF_CensusData/ACS_17_5YR_S2801_metadata.csv"),stringsAsFactors = FALSE, header = FALSE) 
+select.vars <- c("GEO.id2",
+                "HC02_EST_VC04",
+                "HC02_EST_VC05",
+                "HC02_EST_VC06",
+                "HC02_EST_VC07",
+                "HC02_EST_VC08",
+                "HC02_EST_VC09",
+                "HC02_EST_VC10",
+                "HC02_EST_VC11",
+                "HC02_EST_VC12",
+                "HC02_EST_VC13",
+                "HC02_EST_VC16",
+                "HC02_EST_VC17",
+                "HC02_EST_VC18",
+                "HC02_EST_VC19",
+                "HC02_EST_VC20",
+                "HC02_EST_VC21",
+                "HC02_EST_VC22",
+                "HC02_EST_VC23",
+                "HC02_EST_VC26",
+                "HC02_EST_VC27",
+                "HC02_EST_VC28",
+                "HC02_EST_VC29",
+                "HC02_EST_VC30",
+                "HC02_EST_VC31",
+                "HC02_EST_VC32",
+                "HC02_EST_VC33",
+                "HC02_EST_VC34",
+                "HC02_EST_VC35",
+                "HC02_EST_VC36",
+                "HC02_EST_VC37")
+select.vars.df.comp <- data.frame(select.vars = paste0(select.vars,"_comp"), 
+                             descr = comp.descr$V2[which(comp.descr$V1 %in% select.vars)])
+
+comp <- comp[,select.vars]
+comp <- comp[2:nrow(comp),]   # first row is an annotation
+comp[comp=="(X)"] <- NA    # for some reason NA's are marked as '(X)' so we'll replace those with actual NAs
+comp <- mutate_all(comp, function(x) as.numeric(as.character(x)))    # convert everything to numeric
+comp <- select_if(comp, not_all_na)                        # eliminate columns that have all NAs
+colnames(comp) <- paste0(colnames(comp),"_comp")           # attach a suffix to all columns to make them identifiable after combining with other sets
+
+census <- merge(educ, comp, by.x="GEO.id2_educ", by.y="GEO.id2_comp", all=TRUE)    # merge education and comp datasets
+census.descr <- rbind(select.vars.df.educ, 
+                      select.vars.df.rent,
+                      select.vars.df.comp)
+
+# We're going to run analyses separately for dogs and cats. The process will be to first reduce the number of predictors, and then use the selected predictors to assess significance and contribution.
+
+### Dogs
+
+# Reduce number of predictors. Importantly, we're going to define our dependent variable by census tract as being the total number (per census tract) of applications that took longer than 14 days to process.
+
+appsandcards <- dog.appsandcards[,c("GEOID","efficient")]
+
+all.geo <- appsandcards %>% 
+  group_by(GEOID) %>%
+  summarise(efficient = sum(efficient)/n())
+
+all.geo <- merge(all.geo, 
+                 census,
+                 by.x="GEOID",
+                 by.y="GEO.id2_educ",
+                 all.x=TRUE)
+all.geo <- all.geo[complete.cases(all.geo),]
+
+# using lasso to extract variables
+
+x <- model.matrix(efficient ~., data = all.geo)
+x <- x[,-1]
+
+set.seed(10001)
+cvfit <- cv.glmnet(x, all.geo$efficient, type.measure = 'mse', nfolds=5, alpha=.5)
+c <- coef(cvfit, s='lambda.min', exact=TRUE)
+inds <- which(c!=0)
+vars <- data.frame(var = row.names(c)[inds],
+                   value = c[inds])
+vars <- vars[which(!vars$var %in% c("(Intercept)","GEOID")),]
+vars <- vars[order(abs(vars$value), decreasing = TRUE),]
+
+# knitr::kable(census.descr[which(census.descr$select.vars %in% vars$var),])
+
+# Now we combine with geographic data and reduce the set to include only Philadelphia county. We also calculate distance to the nearest PAWS location.
+
+all.geo.spatial <-
+  sp::merge(x = pa_nj, y = all.geo, by = "GEOID", all.x=FALSE, all.y=TRUE)
+all.geo.spatial <- all.geo.spatial[all.geo.spatial$COUNTYFP=="101",]
+
+# calculate distance to nearest PAWS location
+
+# PAWS Adoption locations taken from their website, and latlong obtained via https://gps-coordinates.org/
+# PAC lat = 39.952030; Long = -75.143410 
+# NE lat =  40.084923, long = -75.036904
+# Kawaii kitty Cafe Lat = 39.93867, long = -75.1496
+# Petsmart Oregon Ave Lat = 39.917239, Lon = -75.187238
+# Petsmart Broad & Washington Lat = 39.937967, Lon = -75.167576
+# Grays Ferry Lat = 39.938748 Lon = -75.192532
+
+for (i in 1:nrow(all.geo.spatial)){
+  all.geo.spatial$PAC.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.143410, 39.952030), fun=distGeo)
+  all.geo.spatial$NE.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.036904, 40.084923), fun=distGeo)
+  all.geo.spatial$KK.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.1496, 39.93867), fun=distGeo)
+  all.geo.spatial$PS.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.187238, 39.917239), fun=distGeo)
+  all.geo.spatial$PSO.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.187238, 39.917239), fun=distGeo)
+  all.geo.spatial$PSO.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.167576, 39.937967), fun=distGeo)
+  all.geo.spatial$GF.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.192532, 39.938748), fun=distGeo)
+  all.geo.spatial$shortest.distance[i] <- min(all.geo.spatial$PAC.dist[i],
+                                              all.geo.spatial$NE.dist[i],
+                                              all.geo.spatial$KK.dist[i],
+                                              all.geo.spatial$PS.dist[i],
+                                              all.geo.spatial$PSO.dist[i],
+                                              all.geo.spatial$GF.dist[i])
+}
+
+# Next, we build a linear model that includes the census predictors identified earlier, and the distance to the nearest paws location. 
+set.seed(10002)
+m <- as.formula(paste("efficient ~", paste0(vars$var, collapse="+"), "+ shortest.distance"))
+model <- lm(m, data=all.geo.spatial)
+summary(model)
+
+# We have an adjusted R2 of 0.1785. The significant predictors are HC02_EST_VC20_comp (trend), HC02_EST_VC21_comp (trend), HC02_EST_VC34_educ (p<.05) and HC02_EST_VC02_educ (trend).
+
+resids<-residuals(model)
+all.geo.spatial$map.resids <- resids
+qtm(all.geo.spatial, fill = "map.resids")
+
+# Let's run a geographically weighted regression. 
+
+set.seed(10002)
+GWRbandwidth <- gwr.sel(m, data=all.geo.spatial,adapt=T)
+
+gwr.model = gwr(m, data=all.geo.spatial, 
+                adapt=GWRbandwidth, hatmatrix=TRUE, se.fit=TRUE) 
+gwr.model
+
+results <-as.data.frame(gwr.model$SDF)
+names(results)
+
+gwr.map <- cbind(all.geo.spatial, as.matrix(results))
+qtm(gwr.map, fill = "localR2")
+
+# map outcome variable
+tm_shape(gwr.map) + 
+    tm_fill("efficient", n = 4, style = "fixed", breaks = c(0, .33,.67,1), title = "Efficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+lm.coeffs <- as.data.frame(summary(model)$coefficients)
+
+var <- "HC02_EST_VC20_comp"
+print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+
+# map just this variable
+tm_shape(gwr.map) + tm_fill(paste0(var), n = 3, style = "quantile", title = "Raw data") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+# map coefficients
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+var <- "HC02_EST_VC34_educ"
+print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
+detach("package:tmap", unload=TRUE)
+detach("package:geosphere", unload=TRUE)
+detach("package:rgeos", unload=TRUE)
+detach("package:glmnet", unload=TRUE)
+detach("package:spgwr", unload=TRUE)
+detach("package:raster", unload=TRUE)
+
+```
 
 #### Dogs
 
-We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was also a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. There could be many reasons for this: applicants who live in areas where many people do not have easy access to the internet may not be as familiar with filling out an online application (which represents the current application dataset); they may also not be able to easily find the information they need (since not all websites are mobile friendly); or they may be filling out the application form on a mobile device, which might be too long/detailed to adequately complete on a small screen. 
+We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. There could be many reasons for this: applicants who live in areas where many people do not have easy access to the internet may not be as familiar with filling out an online application (which represents the current application dataset); they may also not be able to easily find the information they need (since not all websites are mobile friendly); or they may be filling out the application form on a mobile device, which might be too long/detailed to adequately complete on a small screen. 
 
-![Cell data plan only coefficients](3_GIS/rplot01.png){width=250px}
+![Cell data plan only coefficients](3_GIS/dogs_celldata){width=300px} ![Population 25-34 enrolled in school coefficients](3_GIS/dogs_enrolled.png){width=300px}
 
-Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. This effect was less pronounced in northeast Philly.
+Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. 
 
-![Population 25-34 enrolled in school coefficients](3_GIS/rplot02.png){width=250px}
+![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=350px}
+
 
 #### Cats
 
 Interestingly, for cats we found that in neighborhoods where a higher percentage of the population is children in grades 5-8, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
 
-![Children grades 5-8 coefficients](3_GIS/rplot03.png){width=250px}
+![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=350px}
 
 ### Conclusions and Next Steps
 
@@ -2789,19 +3151,11 @@ Given that there is a spike in children's interest in animals in middle school, 
 \newpage
 ## 4. Social media factors
 
-* @phillypaws tweets were analyzed to understand any patterns in twitter activity and whether that could be linked to application or pet information
-* No strong trends or observations were gained, but it was fun to look at the data
-* We did not see a strong association between twitter activity and applications
-* We identified the most commonly tweeted words such as "home", "adoption", and "meet"
-* We found that tweets with photos were more often favorited and retweeted
+In this analyses, we analyzed @phillypaws tweets to understand any patterns in twitter activity and whether that could be linked to application or pet information. We examined the data from the PAWS twitter account, @phillypaws. We used the twitter API to download the most recent 3200 tweets, which included all tweets from 2018. Quotes and retweets were not excluded from the dataset.  We did not see a strong association between twitter activity and applications, and we identified the most commonly tweeted words to be "home", "adoption", and "meet". We found that tweets with photos were more often favorited and retweeted.
 
 ### Contributors
 
 **Alice M Walsh, PhD** is a computational biologist in the pharmaceutical industry. She enjoys analyzing patient data and trying to make informed decisions using data. She also enjoys walking and training her dog, Pebbles.
-
-### Problem definition and dataset
-
-We examined the data from the PAWS twitter account, @phillypaws. We used the twitter API to download the most recent 3200 tweets, which included all tweets from 2018. Quotes and retweets were not excluded from the dataset.
 
 ### Results
 
@@ -2812,7 +3166,7 @@ tweets <- readRDS(here::here('/Analyses/4_Other/tweets_13FEB2019.Rds'))
 tweets_18 <- filter(tweets, created_at < as.Date("2019-01-01"), created_at > as.Date("2018-01-01"))
 ```
 
-```{r}
+```{r, echo = FALSE}
 tweets %>% 
   mutate(created_day = lubridate::floor_date(created_at, unit = "day")) %>% 
   count(created_day) %>% 
@@ -2823,7 +3177,7 @@ tweets %>%
 
 ```
 
-```{r}
+```{r, include = FALSE}
 # Let's count tweets by day-of-the-week, week, month, and look for trends
 # Plot by week:
 tweets_18 %>% 
@@ -2841,7 +3195,7 @@ tweets_18 %>%
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 # Plot by month:
 tweets_18 %>% 
   mutate(month = lubridate::floor_date(created_at, unit = "month")) %>% 
@@ -2855,11 +3209,9 @@ tweets_18 %>%
   facet_grid(metric~., scales = "free") +
   theme_bw() + 
   ggtitle("2018 @phillypaws stats by month")
-
-
 ```
 
-```{r}
+```{r, echo = FALSE}
 # Plot by day-of-the-week:
 tweets_18 %>% 
   mutate(weekday = weekdays(created_at)) %>%
@@ -2878,7 +3230,7 @@ tweets_18 %>%
 
 ```
 
-```{r}
+```{r, include = FALSE}
 # Compare twitter activity to application activity?
 cat_apps <- read.csv(here::here('/Data/cat_apps.csv'), 
                      na.strings = c(" ","","na","NA"), stringsAsFactors = F)%>% 
@@ -2910,15 +3262,15 @@ compare_days  <- rbind(compare_tweets, compare_cat_apps, compare_dog_apps)
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 # Line by day
-compare_days %>% 
-  group_by(type) %>% 
-  mutate(percent = n/sum(n) * 100) %>% 
-  ggplot(aes(x=created_day, y=percent, color=type)) + 
-  geom_line() + 
-  theme_bw()+
-  ggtitle("Frequency of applications and tweets \nby day")
+# compare_days %>% 
+#   group_by(type) %>% 
+#   mutate(percent = n/sum(n) * 100) %>% 
+#   ggplot(aes(x=created_day, y=percent, color=type)) + 
+#   geom_line() + 
+#   theme_bw()+
+#   ggtitle("Frequency of applications and tweets \nby day")
 
 # Line by week
 compare_days %>% 
@@ -2935,25 +3287,25 @@ compare_days %>%
   ggtitle("Frequency of applications and tweets \nby week")
 
 # Scatter plot grouped by week
-compare_days %>% 
-  # remove the short week - 2018-08-26 and 2018-12-30
-  filter(created_day > as.Date("2018-09-02"), created_day < as.Date("2018-12-30")) %>% 
-  mutate(week = lubridate::floor_date(created_day, unit = "week")) %>% 
-  group_by(type, week) %>% 
-  summarise(total = sum(n)) %>% 
-  ungroup() %>% 
-  tidyr::spread(key = type, value = total) %>% 
-  tidyr::gather(app_type, apps, cat_apps:dog_apps) %>% 
-  ggplot(aes(x=tweets, y = apps, color=app_type)) + 
-  geom_point() +
-  geom_smooth(method = "lm") +
-  facet_wrap(~app_type) +
-  theme_bw() +
-  ggtitle("Applications by tweets\nNumber per week")
+# compare_days %>% 
+#   # remove the short week - 2018-08-26 and 2018-12-30
+#   filter(created_day > as.Date("2018-09-02"), created_day < as.Date("2018-12-30")) %>% 
+#   mutate(week = lubridate::floor_date(created_day, unit = "week")) %>% 
+#   group_by(type, week) %>% 
+#   summarise(total = sum(n)) %>% 
+#   ungroup() %>% 
+#   tidyr::spread(key = type, value = total) %>% 
+#   tidyr::gather(app_type, apps, cat_apps:dog_apps) %>% 
+#   ggplot(aes(x=tweets, y = apps, color=app_type)) + 
+#   geom_point() +
+#   geom_smooth(method = "lm") +
+#   facet_wrap(~app_type) +
+#   theme_bw() +
+#   ggtitle("Applications by tweets\nNumber per week")
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 # What are the top words in all the tweets?
 # Wrote a function to plot for a given dataset
 # thanks to https://www.williamrchase.com/post/is-hadley-wickham-a-cat-or-dog-person-a-twitter-tidytext-analysis/
@@ -2964,7 +3316,7 @@ plot_top_words(tweets_18) + ggtitle("@phillypaws 2018 tweets\nWord frequency") +
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 
 tweets_18 %>% 
   mutate(has_photo = !is.na(media_type)) %>% 
@@ -2978,7 +3330,7 @@ tweets_18 %>%
   ggtitle("Tweets with photos \nare liked and retweeted more")
 ```
 
-```{r}
+```{r, echo = FALSE}
 # Merge in cat/dog predictions
 pred_img <- readRDS(here::here('/Analyses/4_Other/alice_predict.Rds'))
 pred_img <- pred_img %>% 

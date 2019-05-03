@@ -408,6 +408,7 @@ for (i in 1:nrow(all.geo.spatial)){
 Next, we build a linear model that includes the census predictors identified earlier, and the distance to the nearest paws location. 
 
 ```{r}
+set.seed(10002)
 m <- as.formula(paste("efficient ~", paste0(vars$var, collapse="+"), "+ shortest.distance"))
 model <- lm(m, data=all.geo.spatial)
 summary(model)
