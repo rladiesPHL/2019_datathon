@@ -1,6 +1,6 @@
 ---
 title: "R-Ladies for PAWS Datathon (2019)"
-author: "R-Ladies Philly"
+author: "R-Ladies Philly\n (Organizers: Karla Fettich, Amy Goodwin Davies, Katerina Placek, Alice Walsh, Darina Chudnovskaya)"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output: pdf_document
 ---
@@ -32,8 +32,36 @@ theme_report <- function () {
 
 # Executive Summary
 
+Adoptions: 
+
+* Adoptions made up 92% of all cats' outcomes and 93% of all dogs' outcomes at PAWS in 2018
+* On average cats waited longer (52 days) than dogs (20 days) to find an adopter
+* The age groups that find adopters the fastest are 12 weeks - 1 year for cats, and 6 months - 4 years for dogs
+* The age groups that take longest to find an adopter are up to 12 weeks for cats, and under 4 weeks or over 10 years for dogs
+* Animals that are not healthy at intake but experience a health improvement at PAWS spend significantly more time at PAWS, but represent only a small fraction (7-10%) of all animals
+* Strays and transfers-in had the highest wait times for both cats and dogs, compared to owner surrenders and returns
+* While by far most animals arrive at PAWS via partner transfers-in, the next highest volume of animals arrive at PAWS via Project MEOW (cats) and ACCT diversions (dogs).
+* Peak intake months for cats are March-May and releases are August and November, while dog intakes and releases both peak in December and January
+* Months when more animals arrived at the shelter than were released were March - June for cats, and July and October for dogs
+* Across species, animals released via the Foster Program spent the longest time in PAWS' care, followed by animals at Grant Ave. 
+
+Applications:
+
+* On average, cat applications took longer to process than dog applications (19 days vs 8 days)
+* 
+• Based on the animal’s outcome site, adoption times were faster at PAWS Foster Program & PAWS
+Offsite Adoptions locations.
+• Singles seem to prefer to adopt a pet.
+• There were 12 denied applications and 133 red flagged
+• For the denied applications, the applicants had no known allergies and many of them had unfortunate
+incidents with prior pets
+• There was a lot of missing data in the applications especially for the home pet policy question.
+• We recommend redesiging the application to enforce standardized, limited, and logical responses. For
+example, for certain questions, allow only a single response or provide a drop down menu. Doing so will
+save PAWS staff time when reviewing applications and help with future analyses.
 
 
+\newpage
 # Problem definition and dataset
 
 The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. For this data challenge, PAWS made 2018 data available containing adoption application form submissions, staff processing of applications, and animal outcome data. We developed analytic approaches to better understand the following topics:
@@ -75,7 +103,7 @@ This analysis investigated factors relating to an animal's trajectory in the PAW
 
 ### Summary
 
-* Most animals' outcomes are adoption, and the 'wait time' from intake to outcome is longer for cats than for dogs   
+* Most animals' outcomes are adoption, and the 'wait time' from intake to outcome is longer for cats than for dogs
 * Younger age and poorer health contributes to longer wait time for cats; and intake and wait time for younger, health-compromised cats is highest in spring/summer
 * Dogs showed no differences in wait time based on age, health, size, or season
 * Increased resources in spring/summer months for young, unhealthy cats may shorten wait times and alleviate staff burden
