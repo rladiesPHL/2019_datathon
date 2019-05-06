@@ -32,7 +32,7 @@ theme_report <- function () {
 
 # Executive Summary
 
-Adoptions: 
+**Adoptions**
 
 * Adoptions made up 92% of all cats' outcomes and 93% of all dogs' outcomes at PAWS in 2018
 * On average cats waited longer (52 days) than dogs (20 days) to find an adopter
@@ -45,21 +45,43 @@ Adoptions:
 * Months when more animals arrived at the shelter than were released were March - June for cats, and July and October for dogs
 * Across species, animals released via the Foster Program spent the longest time in PAWS' care, followed by animals at Grant Ave. 
 
-Applications:
+**Applications**
 
 * On average, cat applications took longer to process than dog applications (19 days vs 8 days)
-* 
-• Based on the animal’s outcome site, adoption times were faster at PAWS Foster Program & PAWS
-Offsite Adoptions locations.
-• Singles seem to prefer to adopt a pet.
-• There were 12 denied applications and 133 red flagged
-• For the denied applications, the applicants had no known allergies and many of them had unfortunate
-incidents with prior pets
-• There was a lot of missing data in the applications especially for the home pet policy question.
+* Application processing times for animals were longer when animals were adopted from PAWS Foster Program or PAWS Offsite Adoptions
+* Application checklist items took 1.2 days to complete for cats and 0.9 days for dogs, with vet checks taking the longest to process (1.8 days
+* Requesting a specific animal is associated with a slightly higher rate of adoption than applying without a specific animal in mind
+
+Denied and Red flagged applications:
+
+* Denied applications were few, and tended to differ from approved applications in terms of home pet policy (no pet policy stated in application) and had had unfortunate incidents with prior pets
+* Application factors influencing adoptions include the number of children in the home, animal type, and the date submitted. 
+* Applications from neighborhoods with a lower household median income (under $50,000/year) are more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year).
+
+**Applicant Characteristics**
+
+Cat applicants: 
+
+* Majority have a monthly pet budget of $100
+* Majority expected to leave the animal alone at home for longer hours (8 hours)
+* Majority lived with no other adult in the home
+* Majority had no children
+* Live in areas with a lower median income than dog applicants
+* Live in areas where more people rely on public transit for their commute
+
+Dog applicants: 
+
+* Majority have a monthly pet budget of $200-500
+* Majority shared their home with 1 other adult
+* Majority had no children
+* Live in areas with a higher median income than cat applicants
+* Live in areas where fewer people rely on public transit for their commute
+
+Recommendations
+
 • We recommend redesiging the application to enforce standardized, limited, and logical responses. For
 example, for certain questions, allow only a single response or provide a drop down menu. Doing so will
 save PAWS staff time when reviewing applications and help with future analyses.
-
 
 \newpage
 # Problem definition and dataset
