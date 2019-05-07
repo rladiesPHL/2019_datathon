@@ -1,6 +1,6 @@
 ---
 title: "R-Ladies for PAWS Datathon (2019)"
-author: "R-Ladies Philly\n (Organizers: Karla Fettich, Amy Goodwin Davies, Katerina Placek, Alice Walsh, Darina Chudnovskaya)"
+author: "R-Ladies Philly"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output: pdf_document
 ---
@@ -32,78 +32,40 @@ theme_report <- function () {
 
 # Executive Summary
 
-**Adoptions**
+**Animals**
 
+* By far, most animals arrived at PAWS via partner transfers-in, followed by Project MEOW (cats) and ACCT diversions (dogs)
 * Adoptions made up 92% of all cats' outcomes and 93% of all dogs' outcomes at PAWS in 2018
-* On average cats waited longer (52 days) than dogs (20 days) to find an adopter
-* The age groups that find adopters the fastest are 12 weeks - 1 year for cats, and 6 months - 4 years for dogs
-* The age groups that take longest to find an adopter are up to 12 weeks for cats, and under 4 weeks or over 10 years for dogs
-* Animals that are not healthy at intake but experience a health improvement at PAWS spend significantly more time at PAWS, but represent only a small fraction (7-10%) of all animals
-* Strays and transfers-in had the highest wait times for both cats and dogs, compared to owner surrenders and returns
-* While by far most animals arrive at PAWS via partner transfers-in, the next highest volume of animals arrive at PAWS via Project MEOW (cats) and ACCT diversions (dogs).
-* Peak intake months for cats are March-May and releases are August and November, while dog intakes and releases both peak in December and January
-* Months when more animals arrived at the shelter than were released were March - June for cats, and July and October for dogs
-* Across species, animals released via the Foster Program spent the longest time in PAWS' care, followed by animals at Grant Ave. 
+* On average cats waited longer (52 days) than dogs (20 days) to find an adopter; strays, transfers-in, and animals in the Foster Program waited the longest to be adopted
+* The most quickly adopted animals were 12 week old to 1 year old cats and 6 months old to 4 year old dogs, while the most slowly adopted animals were cats under 12 weeks and dogs under 4 weeks or over 10 years
+* Peak intake months for cats were March-May and releases were August and November, while dog intakes and releases both peaked in December and January; the intake/release ratio for cats in March - June, and for dogs in July and October may indicate times of increased volunteer need
 
 **Applications**
 
-* On average, cat applications took longer to process than dog applications (19 days vs 8 days)
-* Application processing times for animals were longer when animals were adopted from PAWS Foster Program or PAWS Offsite Adoptions
-* Application checklist items took 1.2 days to complete for cats and 0.9 days for dogs, with vet checks taking the longest to process (1.8 days
-* Requesting a specific animal is associated with a slightly higher rate of adoption than applying without a specific animal in mind
-
-Denied and Red flagged applications:
-
-* Denied applications were few, and tended to differ from approved applications in terms of home pet policy (no pet policy stated in application) and had had unfortunate incidents with prior pets
-* Application factors influencing adoptions include the number of children in the home, animal type, and the date submitted. 
-* Applications from neighborhoods with a lower household median income (under $50,000/year) are more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year).
-
-**Applicant Characteristics**
-
-Cat applicants: 
-
-* Majority have a monthly pet budget of $100
-* Majority expected to leave the animal alone at home for longer hours (8 hours)
-* Majority lived with no other adult in the home
-* Majority had no children
-* Live in areas with a lower median income than dog applicants
-* Live in areas where more people rely on public transit for their commute
-
-Dog applicants: 
-
-* Majority have a monthly pet budget of $200-500
-* Majority shared their home with 1 other adult
-* Majority had no children
-* Live in areas with a higher median income than cat applicants
-* Live in areas where fewer people rely on public transit for their commute
-
-Recommendations
-
-• We recommend redesiging the application to enforce standardized, limited, and logical responses. For
-example, for certain questions, allow only a single response or provide a drop down menu. Doing so will
-save PAWS staff time when reviewing applications and help with future analyses.
+* Cat applications took more than twice as long to process than dog applications (19 days vs 8 days), and overall applications took longer to process for animals adopted from the Foster Program
+* Checking vet references was the most time consuming item in the application checklist process (approx. 1.8 days)
+* Applicants whose applications were processed more quickly tended to live in neighborhoods where fewer people relied on cell data for internet (dogs), where more people 25-34 years were enrolled in school (dogs), where there were more kids enrolled in preschool or nursery school (dogs), and where there were fewer kids in grades 5-8 (cats)
+* PAWS' Twitter activity was uncorrelated with adoption applications
+* Denied applications were very few, and tended to have no mention of a home pet policy and more reports of potentially problematic incidents with past pets; however, applications from neighborhoods with a lower household median income (under $50,000/year) were more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year)
+* Factors influencing adoptions included expressing interest in a specific animal, as well as the number of children in the home, animal type, and the date submitted
+* Cat applicants tended to have a lower monthly pet budget (up to $100), expected to leave the animal home alone for longer hours (8 hours), lived with no other adult in the home, had no children, and lived in areas with a lower median income, and where more people relied on public transit for their commute
+* Dog applicants tended to have a higher monthly pet budget ($200-$500), shared their home with 1 other adult, had no children, and lived in areas with a higher median income, and where fewer people relied on public transit for their commute
 
 \newpage
 # Problem definition and dataset
 
-The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. For this data challenge, PAWS made 2018 data available containing adoption application form submissions, staff processing of applications, and animal outcome data. We developed analytic approaches to better understand the following topics:
+The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. PAWS is a non-profit organization dedicated to saving Philadelphia’s homeless and at-risk animals. It is the city’s largest rescue partner and provider of low-cost, basic veterinary care for pet owners and rescue organizations that cannot otherwise access or afford it. Through its 3 no-kill shelters, foster care network, and special events, PAWS finds loving homes for thousands of animals each year. For this data challenge, PAWS made de-identified data from 2018 available. The datasets included adoption application form submissions, application processing data from staff, and animal outcome data. We developed analytic approaches to better understand the following topics:
 
 1. An animal's trajectory at PAWS
 2. An adoption application's trajectory at PAWS
 3. Geographic characteristics that influence adoptions
 4. Social media activity that could influence adoptions
 
-The data included the following datasets:
-1. PetPoint data for animals who had a recorded outcome at PAWS in 2018 (this means that animals who were active at PAWS at the time of download, i.e. Jnauary 2019, were not included).
-
-
 # Timeline and Workflow
 
-Prior to kickoff, data were obtained and preprocessed. After downloading the data from multiple sources, individual entries were matched based on first name, last name, address, and other relevant variables. Once matched, any identifiable information was removed from the dataset. This occurred before the data were made available to the group for analysis. 
+Prior to kickoff, data were obtained and preprocessed. After downloading the data from multiple sources, individual entries were matched based on first name, last name, address, and other relevant variables. Once matched, any identifiable information was removed from the dataset. Subsequently, the deidentified data were made available to the group for analysis. 
 
-**February 12**: Kickoff Meetup: At this event, the project was introduced and teams were formed to work on one of the 4 topics outlined above. All participants were encouraged to join the R-Ladies Philly Slack workspace and to set up a GitHub account (which was used as the main collaborative platform). 
-
-After the kickoff meetup, groups worked together online, getting together on an as-needed basis. Questions were asked and answered via Slack, with an occasional clarification email to PAWS.
+**February 12**: Kickoff Meetup: At this event, the project was introduced and teams were formed to work on one of the 4 topics outlined above. All participants were encouraged to join the R-Ladies Philly Slack workspace and to set up a GitHub account (which was used as the main collaborative platform). After the kickoff meetup, groups worked together online, getting together on an as-needed basis. Questions were asked and answered via Slack, with an occasional clarification email to PAWS.
 
 **March 26**: Conclusion Meetup: At this meetup, teams presented their results and discussed their experiences. Individual team reports were finalized in the weeks following this meetup, and then integrated into the present report. 
 
@@ -112,6 +74,8 @@ After the kickoff meetup, groups worked together online, getting together on an 
 ## 1. Animal Trajectories
 
 This analysis investigated factors relating to an animal's trajectory in the PAWS system using PetPoint data from 2018. The group operationalized animal trajectory as wait time and outcome (e.g. adoption), with wait time defined as time in days from intake to outcome. We restricted analyses to dogs and cats, as other animals' data points were sparse and compromised statistical power. Our primary factors of interest included animal characteristics (size, breed, health), intake type, and seasonal patterns. 
+
+We found that most animals arrived at PAWS via partner transfers-in, followed by Project MEOW (cats) and ACCT diversions (dogs). Furthermore, most animals that arrived at PAWS found an adopter. The 'wait time' from intake to outcome was longer for cats than for dogs, and longer for strays, transfers-in, and animals in the Foster Program. The most quickly adopted animals were 12 week old to 1 year old cats and 6 months old to 4 year old dogs, while the most slowly adopted animals were cats under 12 weeks and dogs under 4 weeks or over 10 years. Peak intake months for cats were March-May and releases were August and November, while dog intakes and releases both peaked in December and January. Increased resources in spring/summer months for young, unhealthy cats may shorten wait times and alleviate staff burden. 
 
 ### Contributors
 
@@ -122,13 +86,6 @@ This analysis investigated factors relating to an animal's trajectory in the PAW
 **Javier Jasso** is a certified speech–language pathologist and a PhD candidate in communication sciences and disorders at the University of Texas at Austin. Javier has expertise in the assessment of culturally/linguistically diverse children, focusing on bilingual language acquisition. 
 
 **Katerina Placek** is a PhD candidate in neuroscience at the University of Pennsylvania and a co-organizer of R-Ladies Philly. She enjoys integrating outreach with teaching and learning in the local data science community.
-
-### Summary
-
-* Most animals' outcomes are adoption, and the 'wait time' from intake to outcome is longer for cats than for dogs
-* Younger age and poorer health contributes to longer wait time for cats; and intake and wait time for younger, health-compromised cats is highest in spring/summer
-* Dogs showed no differences in wait time based on age, health, size, or season
-* Increased resources in spring/summer months for young, unhealthy cats may shorten wait times and alleviate staff burden
 
 ```{r workspace, echo = FALSE}
 
@@ -143,9 +100,9 @@ options(scipen = 999) # turn off scientific notation
 df_name <- "petpoint.csv"
 ```
 
-### 1. Initial Observations
+### Overall Animal Outcomes
 
-First, we looked at the overall adoption percentages for cats vs. dogs, compared to other outcomes. Among the cats that were taken in at PAWS in 2018, 92% (2,390 cats) were adopted, 1.31% (34 cats) were transferred out or returned to their owner or guardian, and 6.7% (174 cats) died or were euthanized. For dogs, 93% (387 dogs) were adopted, 4.78% (20 dogs) were transferred out or returned to their owners or guardians, and 2.63% (11 dogs) died or were euthanized. In subsequent analyses, we focused only on those animals whose outcome was "Adoption", "Returned to Owner or Guardian" or "Transfer Out".
+Among the cats that were taken in at PAWS in 2018, 92% (2,390 cats) were adopted, 1.31% (34 cats) were transferred out or returned to their owner or guardian, and 6.7% (174 cats) died or were euthanized. For dogs, 93% (387 dogs) were adopted, 4.78% (20 dogs) were transferred out or returned to their owners or guardians, and 2.63% (11 dogs) died or were euthanized. In subsequent analyses, we focused only on those animals whose outcome was "Adoption", "Returned to Owner or Guardian" or "Transfer Out".
 
 ```{r raw_data_include_all, echo = FALSE}
 convert_date <-  function(x) {
@@ -195,8 +152,6 @@ grid.arrange(g1,g2, ncol = 2, top = "Percent Animals by Species and Outcome Type
 
 ```
 
-
-
 ```{r raw_data, echo = FALSE}
 
 # We first examined animals' outcomes for all animals in the 2018 Pet Point datset. Of the 2831 animals, 2777 were adopted, 30 were returned to their owner or guardian, and 24 were transferred out. With regard to animal species, there were 2424 cats (2390 adopted, 18 returned to owner, and 16 transferred out) and 407 dogs (387 adopted, 12 returned to owner, and 8 transferred out). 
@@ -229,7 +184,7 @@ nanimals <- as.data.frame(table(raw_data$species))
 #                           "Number of Animals"))
 ```
 
-We then looked at the median 'wait time' (time in days from intake to release date) for an animal at PAWS in 2018. Across all animals, the median wait time was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
+Across all animals, the median wait time (time in days from intake to release date) was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -290,9 +245,6 @@ raw_data %>%
         theme(axis.title=element_text(size=14), strip.text = element_text(size=20), legend.position = "none")+
         ggtitle("Wait Time for PAWS animals in 2018 - By Species")
 ```
-
-
-
 
 ```{r custom_functions, echo = FALSE}
 # confirm if numeric/date fields should be cut
@@ -383,9 +335,9 @@ for(i in 2:length(get_vars)){
 
 ### 2. Animal Characteristics
 
-Next, for each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times: primary breed, age group, and health at intake.
+For each species, we visualized which PetPoint variables contributed to differences in wait time, and focused our subsequent analyses on the variables with the greatest contributions to wait times: primary breed, age group, and health at intake.
 
-For animal characteristics contributing to wait time at PAWS, we first examined primary breed per species. The graph below shows the top 5 most frequent cat breeds and the top 10 most frequent dog breeds at PAWS in 2018. We found that most, if not all, cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater, with the most frequent dogs being labeled Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. In both graphs, the "Other" category represents a total count of animals in breeds that were not in the top 5 or 10 most frequent. 
+The graph below shows the top 5 most frequent cat breeds and the top 10 most frequent dog breeds at PAWS in 2018. We found that most, if not all, cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater. The most frequent dog breeds were Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. In both graphs, the "Other" category represents a total count of animals in breeds that were not in the top 5 or 10 most frequent. 
 
 ```{r, echo = FALSE}
 
@@ -3506,6 +3458,12 @@ For the monthly budget question, there were several negative numbers and some ex
 
 ### Recommendations for Collecting Clean Data
 One of the most important recommendations moving forward would be to redesign the application to enforce standardized, limited and logical responses. Allowing only a single response combined with a limited response set would make analysis much easier in the future. Doing so will save PAWS staff time when reviewing applications _and_ make future analyses  easier and can lead to better insights.  
+
+Recommendations
+
+• We recommend redesiging the application to enforce standardized, limited, and logical responses. For
+example, for certain questions, allow only a single response or provide a drop down menu. Doing so will
+save PAWS staff time when reviewing applications and help with future analyses.
 
 
 ## Conclusions and Next Steps
