@@ -104,6 +104,8 @@ df_name <- "petpoint.csv"
 
 Among the cats that were taken in at PAWS in 2018, 92% (2,390 cats) were adopted, 1.31% (34 cats) were transferred out or returned to their owner or guardian, and 6.7% (174 cats) died or were euthanized. For dogs, 93% (387 dogs) were adopted, 4.78% (20 dogs) were transferred out or returned to their owners or guardians, and 2.63% (11 dogs) died or were euthanized. In subsequent analyses, we focused only on those animals whose outcome was "Adoption", "Returned to Owner or Guardian" or "Transfer Out".
 
+Across all animals, the median wait time (time in days from intake to release date) was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
+
 ```{r raw_data_include_all, echo = FALSE}
 convert_date <-  function(x) {
     mdy_hm(x) %>% as.Date()
@@ -183,8 +185,6 @@ nanimals <- as.data.frame(table(raw_data$species))
 # kable(nanimals, col.names = c("Species",
 #                           "Number of Animals"))
 ```
-
-Across all animals, the median wait time (time in days from intake to release date) was 45 days (51 days for cats, and 18 days for dogs). Cats waited approx. 18.5 days to be transferred out, 4.5 days to be reunited with their owner, and 52 days to find an adopter, while dogs waited 1.5 days to be transferred out, 2 days to be reunited with their owner, and 20 days to be adopted.
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -477,6 +477,8 @@ theme(strip.text = element_text(size=14))+
 
 #### Age Group
 
+For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spent the least amount of time at PAWS. Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
+
 ```{r wait time by animal age, echo = FALSE}
 
 wait_by_age <- raw_data %>%
@@ -519,11 +521,11 @@ grid.arrange(g1,g2, ncol = 2,
 
 ```
 
-For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spent the least amount of time at PAWS. Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
-
 #### Health Status
 
-For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs.
+For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs. 
+
+For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
 
 ```{r, include = FALSE}
 condition_intake <- raw_data %>%
@@ -539,6 +541,7 @@ g1 <- ggplot(data=condition_intake[condition_intake$Species == "Dog",], aes(x = 
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Wait time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g2 <- ggplot(data=condition_intake[condition_intake$Species == "Dog",], aes(x = `Intake Asilomar`, y = `Number of Animals`)) +
@@ -547,6 +550,7 @@ g2 <- ggplot(data=condition_intake[condition_intake$Species == "Dog",], aes(x = 
     ylab("Number") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Number") +
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # grid.arrange(g1,g2,top = "Dogs by Intake Condition", ncol = 2)
@@ -561,6 +565,7 @@ g3 <- ggplot(data=condition_intake[condition_intake$Species == "Cat",], aes(x = 
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Wait time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g4 <- ggplot(data=condition_intake[condition_intake$Species == "Cat",], aes(x = `Intake Asilomar`, y = `Number of Animals`)) +
@@ -569,6 +574,7 @@ g4 <- ggplot(data=condition_intake[condition_intake$Species == "Cat",], aes(x = 
     ylab("Number of Animals") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Number") +
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g12 <- grid.arrange(g1,g2, top = "Dogs", ncol = 2)
@@ -578,8 +584,6 @@ g34 <- grid.arrange(g3,g4, top = "Cats", ncol = 2)
 ```{r, echo = FALSE}
 grid.arrange(g34,g12, top = "Intake Condition", ncol = 2)
 ```
-
-For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
 
 We also looked at health change from intake to outcome. Specifically, we created the following health change categories: 
 
@@ -636,6 +640,7 @@ g1 <- ggplot(data=health_change_data[health_change_data$Species == "Cat",],
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Wait time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g2 <- ggplot(data=health_change_data[health_change_data$Species == "Cat",], aes(x = `Health Change`, y = `Number of Animals`)) +
@@ -644,6 +649,7 @@ g2 <- ggplot(data=health_change_data[health_change_data$Species == "Cat",], aes(
     ylab("Number of Animals") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Number") +
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g12 <- grid.arrange(g1,g2,top = "Cats", ncol = 2)
@@ -660,6 +666,7 @@ g3 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",],
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Wait time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g4 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], aes(x = `Health Change`, y = `Number of Animals`)) +
@@ -668,13 +675,14 @@ g4 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], aes(
     ylab("Number of Animals") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
     ggtitle("Number") +
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g34 <- grid.arrange(g3,g4,top = "Dogs", ncol = 2)
 ```
 
 ```{r, echo = FALSE}
-grid.arrange(g12,g34,top = "Health Condition Change", ncol = 2)
+grid.arrange(g12,g34,top = "Health Condition Change", ncol = 2, heights = c(10,6) )
 ```
 
 ```{r, include = FALSE}
@@ -702,7 +710,9 @@ raw_data %>%
         ggtitle("Outcome Health Condition")
 ```
 
-### 3. Intake  Characteristics
+### Intake  Characteristics
+
+Looking at the main intake reason, we noticed that the majority of animals arriving at PAWS were transfers-in. However, for cats, after transfers in, strays were the next largest intake group. Cats also had longer wait times for each intake type relative to dogs. Furthermore, for both cats and dogs, strays and transfers in had the highest wait times. Interestingly, for cats (but not dogs) that were surrenedered by their owner, these also had a high wait time (40 days). 
 
 ```{r, echo = FALSE}
 
@@ -755,9 +765,7 @@ ggplot(master_animal_intake, aes(x = intake_type, y = wait_days, col = intake_ty
 
 ```
 
-We examined intake characteristics across the petpoint dataset, by species:
-
-```{r summary_animal.type, echo = FALSE}
+```{r summary_animal.type, include = FALSE}
 master_animal_intake_cat <- master_animal_intake %>%
     group_by("Intake Type" = intake_type) %>% 
     filter(animal_type=='cat') %>% 
@@ -770,29 +778,53 @@ master_animal_intake_dog <- master_animal_intake %>%
 
 g1 <- ggplot(data=master_animal_intake_cat, 
              aes(x = `Intake Type`, y = `Median Wait Time (Days)`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") +
-    xlab("Intake Type") +
+    geom_bar(stat = "identity", fill = "darkgoldenrod2") +
+    xlab(" ") +
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
-    ggtitle("Cats") +
+    ggtitle("Wait Time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 g2 <- ggplot(data=master_animal_intake_dog, 
              aes(x = `Intake Type`, y = `Median Wait Time (Days)`)) +
     geom_bar(stat = "identity", fill = "aquamarine3") +
-    xlab("Intake Type") +
+    xlab(" ") +
     ylab("Median Wait Time (Days)") +
     theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
-    ggtitle("Dogs") +
+    ggtitle("Wait Time") +
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-grid.arrange(g1,g2,top = "Wait time by intake type", ncol = 2)
+
+g3 <- ggplot(data=master_animal_intake_cat, 
+             aes(x = `Intake Type`, y = `Number of Cats`)) +
+    geom_bar(stat = "identity", fill = "darkgoldenrod2") +
+    xlab(" ") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number") +
+    geom_text(aes(label = `Number of Cats` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g4 <- ggplot(data=master_animal_intake_dog, 
+             aes(x = `Intake Type`, y = `Number of Dogs`)) +
+    geom_bar(stat = "identity", fill = "aquamarine3") +
+    xlab(" ") +
+    ylab("Number of Animals") +
+    theme(axis.title=element_text(size=14), strip.text = element_text(size=10))+
+    ggtitle("Number") +
+    geom_text(aes(label = `Number of Dogs` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g1 <- grid.arrange(g1,g3,top = "Cats", ncol=2)
+g2 <- grid.arrange(g2,g4,top = "Dogs", ncol=2)
               
 ```
 
-We found that cats had longer wait times for each intake type relative to dogs. Furthermore, for both cats and dogs, strays and transfers in had the highest wait times. Interestingly, for cats (but not dogs) that were surrenedered by their owner, these also had a high wait time (40 days). 
-
-And we examined whether the effect of intake type on wait time differed by animal species:
+```{r, echo=FALSE}
+grid.arrange(g1,g2,top = "Intake Type", ncol=2)
+```
 
 ```{r interaction, include = FALSE}
 intake_type_int <- lm(wait_days ~ intake_type*animal_type, master_animal_intake)
@@ -811,9 +843,7 @@ intake_by_species <-  master_animal_intake %>%
 
 ```
 
-We next examined the intake subtype for all animals:
-
-```{r, echo = FALSE}
+```{r, include = FALSE}
 
 master_animal_intake_subtype <-  master_animal_intake %>%
     filter(!is.na(animal_type)) %>%
@@ -822,41 +852,51 @@ master_animal_intake_subtype <-  master_animal_intake %>%
 
 #plotting frequency of intake_subtype var:
 g1 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_type == "cat",], aes(x = `Intake Subtype`, y = `Number of Animals`)) +
-    geom_bar(color="gold", fill="gold", stat = "identity") +
-    xlab('Intake Subtype') +
+    geom_bar(fill="darkgoldenrod2", stat = "identity") +
+    xlab(' ') +
     ylab('Number of Animals')+
-    coord_flip()+
-    ggtitle("Cats")
+    # coord_flip()+
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    ggtitle("Number")
 
 g2 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_type == "cat",], aes(x = `Intake Subtype`, y = `Median Wait Time (Days)`)) +
-    geom_bar(color="gold", fill="gold", stat = "identity") +
-    xlab('Intake Subtype') +
-    ylab('Median Wait Time (days)')+
-    coord_flip()+
-    ggtitle("Cats")
+    geom_bar(fill="darkgoldenrod2", stat = "identity") +
+    xlab(' ') +
+    ylab('Median Wait Time (Days)')+
+    # coord_flip()+
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    ggtitle("Wait time")
 
 g3 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_type == "dog",], aes(x = `Intake Subtype`, y = `Number of Animals`)) +
-    geom_bar(color="gold", fill="gold", stat = "identity") +
-    xlab('Intake Subtype') +
+    geom_bar(fill="aquamarine3", stat = "identity") +
+    xlab(' ') +
     ylab('Number of Animals')+
-    coord_flip()+
-    ggtitle("Dogs")
+    # coord_flip()+
+    geom_text(aes(label = `Number of Animals` , y = `Number of Animals`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    ggtitle("Number")
 
 g4 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_type == "dog",], aes(x = `Intake Subtype`, y = `Median Wait Time (Days)`)) +
-    geom_bar(color="gold", fill="gold", stat = "identity") +
-    xlab('Intake Subtype') +
-    ylab('Median Wait Time (days)')+
-    coord_flip()+
-    ggtitle("Dogs")
+    geom_bar(fill="aquamarine3", stat = "identity") +
+    xlab(' ') +
+    ylab('Median Wait Time (Days)')+
+    # coord_flip()+
+    geom_text(aes(label = `Median Wait Time (Days)` , y = `Median Wait Time (Days)`), size = 3, position = position_stack(vjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    ggtitle("Wait time")
 
-grid.arrange(g1, g2, g3, g4, ncol = 2)
 ```
 
 We found that for both cats and dogs, partner transfers in accounted for the vast majority of the intakes. However, differences were observed for the next highest intake subtypes: outside of partner transfers in, the majority of cats arrived at PAWS via Project Meow (395 cats, or 19.7%), Public Drop_off (342 cats, or 17%)), and Returned Adoption (134 cats, or 7%). Meanwhile, for dogs that did not arrive at PAWS via Partner Transfer In, the majority were ACCT Diversion (43 dogs or 13%), Returned Adoptions (42 dogs or 13%), and In-Person Surrender to Shelter (24 dogs or 7%). 
 
-It is also worth noting that for both dogs and cats, returned adoptions experienced the speediest re-adoption (15 days median wait for cats, and 10 days median wait for dogs). The next intake subtypes that were associated with shortest wait times for cats were In-Person Surrender to Shelter (36 days), while for dogs these were ACCT Diversion (12 days) and In Person Surrender to Shelter (14.5 days). 
+```{r, echo = FALSE}
+grid.arrange(g1,g2,top = "Cats", ncol=2)
+grid.arrange(g3,g4,top = "Dogs", ncol=2)
+```
 
-We found one record of a dog whose intake subtype was "Project Meow", which may have been an input error - but we included it in the graph nonetheless. 
+It is also worth noting that for both dogs and cats, returned adoptions experienced the speediest re-adoption (15 days median wait for cats, and 10 days median wait for dogs). The next intake subtypes that were associated with shortest wait times for cats were In-Person Surrender to Shelter (36 days), while for dogs these were ACCT Diversion (12 days) and In Person Surrender to Shelter (14.5 days). (Note: we found one record of a dog whose intake subtype was "Project Meow", which may have been an input error - but we included it in the graph below nonetheless.)
 
 ```{r, include = FALSE}
 subtype_filter <- master_animal_intake %>% 
@@ -879,9 +919,9 @@ ggplot(subtype_filter, aes(x = intake_subtype, y = wait_days, col = intake_subty
 
 ```
 
-### 4. Seasonal and Locational Patterns
+### Seasonal and Locational Patterns
 
-Last, we examined animals' wait time at PAWS by season and species. We examined the frequency of intakes and releases per month: 
+It appears that intakes are highest for cats in spring (peaking in May) and summer, and lowest in February and November. Meanwhile for dogs, the highest intakes are in winter (December and January), and the lowest in July and November. On the other hand, for cats, releases from PAWS are highest in August, November and December, while for dogs the highest numbers of releases occur in December, January, August and June. 
 
 ```{r, include = FALSE}
 #Extract intake month
@@ -944,18 +984,14 @@ g4 <- ggplot(df_release_month_counts, aes(x=Month, y=Freq, fill = Season)) +
     ggtitle("Dogs") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(color = "grey20", size = 8, angle = 90))+
     ylab("Number of Releases")
 
-grid.arrange(g1, g3, ncol = 2, top = "Intakes")
+grid.arrange(g1, g3, ncol = 2, top = "Intakes", heights = c(10,5))
 
 ```
-
-It appears that intakes are highest for cats in spring (peaking in May) and summer, and lowest in February and November. Meanwhile for dogs, the highest intakes are in winter (December and January), and the lowest in July and November. 
 
 ```{r, echo = FALSE}
-grid.arrange(g2, g4, ncol = 2, top = "Releases")
+grid.arrange(g2, g4, ncol = 2, top = "Releases", heights=c(10,5))
 
 ```
-
-On the other hand, for cats, releases from PAWS are highest in August, November and December, while for dogs the highest numbers of releases occur in December, January, August and June. 
 
 ```{r, include = FALSE}
 
@@ -975,7 +1011,8 @@ ggplot(df_intake_outtake_index, aes(x=Month, y=Index, fill = Season)) +
 
 ```
 
-We then looked at monthly trends in intakes and releases by species. Specifically, the graphs below show the difference between total number of intakes and releases by month, divided by the total number of intakes and releases per month. The resulting bars can be interpreted as follows: 
+We also looked at monthly trends in intakes and releases by species. Specifically, the graphs below show the difference between total number of intakes and releases by month, divided by the total number of intakes and releases per month. The resulting bars can be interpreted as follows: 
+
 - if >0, the number of intakes is greater than the number of releases
 - if <0, the number of releases is greater than the number of intakes
 - the closer to 0 a bar, the more evenly distributed intakes and releases were in that month
@@ -1048,7 +1085,7 @@ PAWS_OA_cat <- PAWS_OA[ which(PAWS_OA$species=='Cat'), ]
 PAWS_OA_dog <- PAWS_OA[ which(PAWS_OA$species=='Dog'), ]
 ```
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 #Plot Monthly Trends in Intake-Release Index by Species for Each Location
 
 #Grays Ferry Avenue
@@ -1180,38 +1217,90 @@ df_GFA_intake_outtake_index_species <- cbind(df_GFA_intake_month_counts_species[
 
 df_GFA_intake_outtake_index_species$Index <-(df_GFA_intake_month_counts_species$value-df_GFA_release_month_counts_species$value)/(df_GFA_intake_month_counts_species$value+df_GFA_release_month_counts_species$value)
 
-ggplot(df_GFA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Release Index - Grays Ferry Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+ggplot(df_GFA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + 
+    geom_bar(stat='identity', position='dodge') + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~ variable) + 
+    ggtitle("Intake-Release Index - Grays Ferry Avenue") + 
+    geom_hline(yintercept = 0) +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1))
 
 #PAC
 df_PAC_intake_outtake_index_species <- cbind(df_PAC_intake_month_counts_species[1],df_PAC_intake_month_counts_species[2],df_PAC_intake_month_counts_species[4])
 
 df_PAC_intake_outtake_index_species$Index <-(df_PAC_intake_month_counts_species$value-df_PAC_release_month_counts_species$value)/(df_PAC_intake_month_counts_species$value+df_PAC_release_month_counts_species$value)
 
-ggplot(df_PAC_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Release Index - PAC") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+ggplot(df_PAC_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + 
+    geom_bar(stat='identity', position='dodge') + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~ variable) + 
+    ggtitle("Intake-Release Index - PAC") + 
+    geom_hline(yintercept = 0) +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1))
 
 #Grant Avenue
 df_GA_intake_outtake_index_species <- cbind(df_GA_intake_month_counts_species[1],df_GA_intake_month_counts_species[2],df_GA_intake_month_counts_species[4])
 
 df_GA_intake_outtake_index_species$Index <-(df_GA_intake_month_counts_species$value-df_GA_release_month_counts_species$value)/(df_GA_intake_month_counts_species$value+df_GA_release_month_counts_species$value)
 
-ggplot(df_GA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Release Index - Grant Avenue") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+ggplot(df_GA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + 
+    geom_bar(stat='identity', position='dodge') + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~ variable) + 
+    ggtitle("Intake-Release Index - Grant Avenue") + 
+    geom_hline(yintercept = 0) +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1))
 
 #PAWS Foster Program
 df_PAWS_FP_intake_outtake_index_species <- cbind(df_PAWS_FP_intake_month_counts_species[1],df_PAWS_FP_intake_month_counts_species[2],df_PAWS_FP_intake_month_counts_species[4])
 
 df_PAWS_FP_intake_outtake_index_species$Index <-(df_PAWS_FP_intake_month_counts_species$value-df_PAWS_FP_release_month_counts_species$value)/(df_PAWS_FP_intake_month_counts_species$value+df_PAWS_FP_release_month_counts_species$value)
 
-ggplot(df_PAWS_FP_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Release Index - PAWS Foster Program") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1))
+ggplot(df_PAWS_FP_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + 
+    geom_bar(stat='identity', position='dodge') + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~ variable) + 
+    ggtitle("Intake-Release Index - PAWS Foster Program") + 
+    geom_hline(yintercept = 0) +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1))
 
 #PAWS Offsite Adoptions
 df_PAWS_OA_intake_outtake_index_species <- cbind(df_PAWS_OA_intake_month_counts_species[1],df_PAWS_OA_intake_month_counts_species[2],df_PAWS_OA_intake_month_counts_species[4])
 
 df_PAWS_OA_intake_outtake_index_species$Index <-(df_PAWS_OA_intake_month_counts_species$value-df_PAWS_OA_release_month_counts_species$value)/(df_PAWS_OA_intake_month_counts_species$value+df_PAWS_OA_release_month_counts_species$value)
 
-ggplot(df_PAWS_OA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + geom_bar(stat='identity', position='dodge') + scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + facet_wrap(~ variable) + ggtitle("Intake-Release Index - PAWS Offsite Adoptions") + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) 
+ggplot(df_PAWS_OA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Season)) + 
+    geom_bar(stat='identity', position='dodge') + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~ variable) + 
+    ggtitle("Intake-Release Index - PAWS Offsite Adoptions") + 
+    geom_hline(yintercept = 0) +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) 
 ```
 
-We then examined seasonal patterns in wait time, by species: 
+More cats were taken in than were released in the following patterns: 
+
+* January, for Offsite Adoptions
+* March, for Grays Ferry
+* April, for Grays ferry and Grant Ave
+* May, for Grant Ave, PAC and Foster program
+* December, for Offsite Adoptions
+
+It is interesting to observe that the clinic locations receive more cats than they release (which could be an effect of cats being relocated) in spring, while offsite adoptions receive more cats than they release in January and February.
+
+More dogs were taken in than were released in the following patterns: 
+
+* January, for Grant Ave
+* February, for Offsite Adoptions
+* April and May, for Foster Program
+* June, for Grant Ave
+* July, for Grays Ferry
+* October, for Grays Ferry
+* November, for Foster Program
+
+Here it is interesting to observe that the clinic locations receive more dogs than they release in summer months.
+
+We furthern examined seasonal patterns in wait time, by species: 
 ```{r, include = FALSE}
 cols = c("January" = "slateblue4", "February" = "slateblue4", "March" = "cyan4", "April" = "cyan4", "May" = "cyan4", "June" = "yellow2", "July" = "yellow2", "August" = "yellow2", "September" = "sienna2", "October" = "sienna2", "November" = "sienna2", "December" = "slateblue4")
     
@@ -1225,19 +1314,110 @@ ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fa
 ```
 
 ```{r, echo = FALSE}
-ggplot(master_animal, aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
-    geom_boxplot()+ 
-    scale_colour_manual(values = cols)+
-    facet_wrap(~species)+
+
+median_wait_by_month <- master_animal %>%
+    group_by(animal_type, intake_month_fac) %>%
+    summarise(median_wait = median(wait_days))
+median_wait_by_month$Season <- NA
+median_wait_by_month$Season[median_wait_by_month$intake_month_fac %in% 
+                                c("January","February","December")] <- "Winter"
+median_wait_by_month$Season[median_wait_by_month$intake_month_fac %in% 
+                                c("March","April","May")] <- "Spring"
+median_wait_by_month$Season[median_wait_by_month$intake_month_fac %in% 
+                                c("June","July","August")] <- "Summer"
+median_wait_by_month$Season[median_wait_by_month$intake_month_fac %in% 
+                                c("September","October","November")] <- "Fall"
+median_wait_by_month <- median_wait_by_month[!is.na(median_wait_by_month$animal_type),]
+
+ggplot(median_wait_by_month, 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species") +
-    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
         ylab("Days from Intake to Outcome")+
         xlab("Month")
 ```
 
-We also estimated wait time by location for each species.
+We observed that for cats that arrived at PAWS between April and September, the wait time was considerably longer than for cats that arrived in colder months. No such trend was seen for dogs. On a location specific basis, we noted the following patterns: 
+
+* Cats had longer wait times if their intake location was Grays Ferry and Grant Ave between April and September; PAC in May; Foster Program between March and December; and Offsite Adoptions in July
+* Dogs had longer wait times if their intake location was Grant Ave in April, June or July; or Foster Program in April or November. 
 
 ```{r, echo = FALSE}
+
+median_wait_by_month_site <- master_animal %>%
+    group_by(animal_type, intake_month_fac, intake_sitename) %>%
+    summarise(median_wait = median(wait_days))
+median_wait_by_month_site <- median_wait_by_month_site[!is.na(median_wait_by_month_site$animal_type),]
+median_wait_by_month_site$Season <- NA
+median_wait_by_month_site$Season[median_wait_by_month_site$intake_month_fac %in% 
+                                c("January","February","December")] <- "Winter"
+median_wait_by_month_site$Season[median_wait_by_month_site$intake_month_fac %in% 
+                                c("March","April","May")] <- "Spring"
+median_wait_by_month_site$Season[median_wait_by_month_site$intake_month_fac %in% 
+                                c("June","July","August")] <- "Summer"
+median_wait_by_month_site$Season[median_wait_by_month_site$intake_month_fac %in% 
+                                c("September","October","November")] <- "Fall"
+
+g1 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "Grays Ferry Avenue",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
+    ggtitle("Wait Time by Intake Month per Species (Grays Ferry)") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+        ylab("Days from Intake to Outcome")+
+        xlab("Month")
+
+g2 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "Grant Avenue",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
+    ggtitle("Wait Time by Intake Month per Species (Grant Avenue)") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+        ylab("Days from Intake to Outcome")+
+        xlab("Month")
+
+g3 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAC",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
+    ggtitle("Wait Time by Intake Month per Species (PAC)") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+        ylab("Days from Intake to Outcome")+
+        xlab("Month")
+
+g4 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAWS Foster Program",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
+    ggtitle("Wait Time by Intake Month per Species (PAWS Foster Program)") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+        ylab("Days from Intake to Outcome")+
+        xlab("Month")
+
+g5 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAWS Offsite Adoptions",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~animal_type)+
+    ggtitle("Wait Time by Intake Month per Species (PAWS Offsite Adoptions)") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
+        ylab("Days from Intake to Outcome")+
+        xlab("Month")
+
+grid.arrange(g1, ncol=1, heights = c(5, 5))
+grid.arrange(g2, g3, ncol=1, heights = c(10,10))
+grid.arrange(g4, g5, ncol=1, heights = c(10,10))
+```
+
+
+```{r, include = FALSE}
 g1 <- raw_data %>%
     filter(species == "Cat") %>%
     filter(!is.na(outcome_sitename)) %>%
