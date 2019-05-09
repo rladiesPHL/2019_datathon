@@ -2198,16 +2198,17 @@ When applicants requested a specific animal, 30% of applications resulted in an 
 
 
 
-```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption") %>%
+```{r, include=FALSE}
+g1 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=budget_monthly_ranges,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Monthly budgets") +
-    xlab("Monthly Budget for Pet") +
+    xlab("Monthly Budget for Pet (USD)") +
     ylim(0,160) +
     scale_fill_discrete(name = "Animal Type") +
    geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
     facet_grid(animal_type ~ .) +
     theme_report()
 ```
@@ -2216,33 +2217,39 @@ master_apps_report %>% filter(outcome_type=="Adoption") %>%
 Most of the applicants who adopted a pet had allocated a monthly budget of less than $500. 
 
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 ### Home alone avg
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
+g2 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alone_avg))) %>%
   ggplot(mapping=aes(x=home_alone_avg,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Alone Average Time") +
     xlab("Averge Number of Hours Alone Per Day") +
     scale_fill_discrete(name = "Animal Type") +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
     ylim(0,80) +
    geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
     facet_grid(animal_type ~ .) +
     theme_report()
 ```
 
+```{r, echo=FALSE}
+grid.arrange(g1,g2, ncol=2)
+```
+
 Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
 
 
-```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
+```{r, include=FALSE}
+g4 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Number of Adults in Home (other than applicant)") +
+  labs(title = "Adults in Home") +
   xlab("Number of Adults at Home") +
     ylim(0,170) +
   scale_fill_discrete(name = "Animal Type") +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
    geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
     facet_grid(animal_type ~ .) +
     theme_report()
@@ -2252,17 +2259,22 @@ master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home)
 We found that the majority of applications where the applicant lived alone (0 other adults in the home) preferred cats, while the the majority of applicants who lived with 1 other person preferred a dog. 
 
 
-```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
+```{r, include=FALSE}
+g5 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
    geom_bar() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Number of Children in Home") +
+    labs(title = "Children in Home") +
   xlab("Number of Children at Home") +
   scale_fill_discrete(name = "Animal Type") +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
     ylim(0,320) +
    geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
     facet_grid(animal_type ~ .) +
     theme_report()
+```
+
+```{r, echo=FALSE}
+grid.arrange(g4,g5, ncol=2)
 ```
 
 We also found that individuals with no children at home seem to make up the largest number of applicants. 
@@ -2318,6 +2330,7 @@ expdata %>%
     xlab("Adoption Status") +
     scale_x_discrete(labels = variable_labeller) +
     scale_fill_discrete(name = "Animal Type") + #+
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
    #geom_text(aes(label=value),position=position_stack(1.1)) +
    coord_flip() +
     theme_report()
@@ -2325,15 +2338,16 @@ expdata %>%
 
 When we looked at the type of experiences applicants had with animals, we noticed that a higher number of applicants who were able to successfully adopt had less expereince with animals in each area. Also important to note is the very low number of successful adoptions for applicants who reported that their pet ran away, was given away, was given to a shelter, or who reported having experience breeding or selling animals. 
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 ### Home Pet Policy
-master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
+g6 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
     geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Pet Policy") +
     xlab("Home Pet Policy") +
     scale_fill_discrete(name = "Animal Type") +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
     geom_text(aes(label=..count..),stat='count',
               position = position_dodge(width = 0.9),
              vjust = -0.3) +
@@ -2404,6 +2418,7 @@ retdata %>%
     ylab("Count") +
     scale_x_discrete(labels = variable_labeller) +
     scale_fill_discrete(name = "Animal Type") + #+
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
    #geom_text(aes(label=value),position=position_stack(1.1)) +
    coord_flip() +
     theme_report()
@@ -2412,14 +2427,15 @@ retdata %>%
 
 The main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. Regarding allergies, the vast majority of people who adopted a pet from PAWS reported no allergies.  
 
-```{r, echo=FALSE}
-master_apps_report %>% filter(outcome_type=="Adoption") %>%
+```{r, include=FALSE}
+g7 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
     geom_bar(position = "dodge", width = 0.9) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Allergies") +
     xlab("Allergy Status") +
    scale_fill_discrete(name = "Animal Type") +
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
    geom_text(aes(label=..count..),stat='count',
              position = position_dodge(width = 0.9),
              hjust = -0.3) +
@@ -2428,6 +2444,9 @@ master_apps_report %>% filter(outcome_type=="Adoption") %>%
     theme_report()
 ```
 
+```{r, echo=FALSE}
+grid.arrange(g6,g7, ncol=2)
+```
 
 ### Analysis of Denied and Red Flagged Applications
 
@@ -2581,7 +2600,7 @@ Below is a visualization that shows the last updated status for applications tha
 #dplyr::count(df_redflag, last_label) #only two of the red flagged applications were denied but some are still in progress
 
 g1 <- ggplot(df_redflag[df_redflag$animal_type == "cat", ], aes(x=last_label)) + 
-  geom_bar(fill="salmon", width=.5) +
+  geom_bar(fill="darkgoldenrod2", width=.5) +
   ggtitle("Cats") +
   labs(x = "Last Updated Label",                                                            
        y= "Count",
@@ -2753,10 +2772,10 @@ g1 <- all_applicants %>%
     group_by(pet) %>%
     summarise("Average Tract Median Income" = mean(tract_median_income, na.rm=TRUE)) %>% 
     ggplot(aes(x=pet, y=`Average Tract Median Income`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Median Income") +
     labs(x = "Animal species applied for",
-         y= "Average median income") +
+         y= "USD") +
     scale_y_continuous(breaks = c(30000,50000,60000)) +
     theme_report()  + 
     geom_text(aes(label = paste("$ ",round(`Average Tract Median Income`/1000, digits=2),"K") , y = `Average Tract Median Income`), size = 3, position = position_stack(vjust = 0.5))
@@ -2766,10 +2785,10 @@ g2 <- all_applicants %>%
     group_by(pet) %>%
     summarise("Average Tract Percentage Impoverished Households" = mean(tract_poverty_pct, na.rm=TRUE)) %>% 
     ggplot(aes(x=pet, y=`Average Tract Percentage Impoverished Households`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Poverty") +
     labs(x = "Animal species applied for",
-         y= "Average percent poverty") +
+         y= "Percent") +
     theme_report()  + 
     geom_text(aes(label = paste(round(`Average Tract Percentage Impoverished Households`, digits=2)," %"), y = `Average Tract Percentage Impoverished Households`), size = 3, position = position_stack(vjust = 0.5))
 
@@ -2778,10 +2797,10 @@ g3 <- all_applicants %>%
     group_by(pet) %>%
     summarise("Average tract_unemployment_pct" = mean(tract_unemployment_pct, na.rm=TRUE)) %>% 
     ggplot(aes(x=pet, y=`Average tract_unemployment_pct`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Unemployment") +
     labs(x = "Animal species applied for",
-         y= "Average number of unemployed people") +
+         y= "Number of people") +
     theme_report()  + 
     geom_text(aes(label = paste(round(`Average tract_unemployment_pct`, digits=2)), y = `Average tract_unemployment_pct`), size = 3, position = position_stack(vjust = 0.5))
 
@@ -2790,10 +2809,10 @@ g4 <- all_applicants %>%
     group_by(pet) %>%
     summarise("Average tract_commute_public_transit" = mean(tract_commute_public_transit, na.rm=TRUE)) %>% 
     ggplot(aes(x=pet, y=`Average tract_commute_public_transit`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Reliance on Public Transit") +
     labs(x = "Animal species applied for",
-         y= "Average number of people commuting by public transit") +
+         y= "Number of people") +
     theme_report()  + 
     geom_text(aes(label = paste(round(`Average tract_commute_public_transit`, digits=2)), y = `Average tract_commute_public_transit`), size = 3, position = position_stack(vjust = 0.5))
 
@@ -2826,7 +2845,7 @@ g1 <- all_applicants %>%
     group_by(denied) %>%
     summarise("med_income" = mean(tract_median_income, na.rm=TRUE)) %>% 
     ggplot(aes(x=denied, y=`med_income`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Denied Applications") +
     labs(x = "Application Outcome",
          y= "Average median income") +
@@ -2837,7 +2856,7 @@ g2 <- all_applicants %>%
     group_by(red_flag) %>%
     summarise("med_income" = mean(tract_median_income, na.rm=TRUE)) %>% 
     ggplot(aes(x=red_flag, y=`med_income`)) +
-    geom_bar(stat = "identity", fill = "aquamarine3") + 
+    geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Red Flagged Applications") +
     labs(x = "Application Outcome",
          y= "Average median income") +
@@ -2921,29 +2940,43 @@ t.test(budget_emergency_num ~ red_flag, all_applicants %>% filter(!is.na(red_fla
 ```
 
 ```{r, echo = FALSE}
-g1 <- all_applicants %>%
-  filter(!is.na(red_flag)) %>%
-    group_by(pet, red_flag) %>%
-    summarize(mean_month = mean(budget_monthly_num, na.rm = TRUE)) %>%
-    ggplot(aes(x=pet, y=mean_month)) +
-    geom_bar(stat="identity", position="dodge", aes(fill=red_flag)) +
-    ggtitle("Monthly Budget") +
-    labs(x = "Animal Species",
-         y= "Average Monthly Budget") +
-    theme_report()  + 
-    geom_text(aes(label = paste("$ ",round(`mean_month`, digits=2))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
 
-g2 <- all_applicants %>%
+budgets.month <- all_applicants %>%
   filter(!is.na(red_flag)) %>%
     group_by(pet, red_flag) %>%
-    summarize(mean_emer = mean(budget_emergency_num, na.rm = TRUE)) %>%
-    ggplot(aes(x=pet, y=mean_emer)) +
-    geom_bar(stat="identity", position="dodge", aes(fill=red_flag)) +
-    ggtitle("Emergency Budget") +
-    labs(x = "Animal Species",
-         y= "Average Emergency Budget") +
+    summarize(mean_budget = mean(budget_monthly_num, na.rm = TRUE))
+budgets.month$budget <- "monthly"
+
+budgets.emer <- all_applicants %>%
+  filter(!is.na(red_flag)) %>%
+    group_by(pet, red_flag) %>%
+    summarize(mean_budget = mean(budget_emergency_num, na.rm = TRUE))
+budgets.emer$budget <- "emergency"
+
+budgets.cat <- rbind(budgets.month[budgets.month$pet == "cat",], budgets.emer[budgets.emer$pet == "cat",])
+budgets.dog <- rbind(budgets.month[budgets.month$pet == "dog",], budgets.emer[budgets.emer$pet == "dog",])
+
+g1 <- budgets.cat %>%
+    ggplot(aes(x=budget, y=mean_budget)) +
+    geom_bar(stat="identity", position="dodge", aes(fill = red_flag)) +
+    scale_fill_manual(values = c("darkgoldenrod1","darkgoldenrod3")) +
+    scale_y_continuous(limits=c(0,1900)) +
+    ggtitle("Cat Budgets") +
+    labs(x = "Budget Type",
+         y= "USD") +
     theme_report()  + 
-    geom_text(aes(label = paste("$ ",round(`mean_emer`, digits=2))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
+    geom_text(aes(label = paste("$ ",round(`mean_budget`, digits=0))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
+
+g2 <- budgets.dog %>%
+    ggplot(aes(x=budget, y=mean_budget)) +
+    geom_bar(stat="identity", position="dodge", aes(fill = red_flag)) +
+    scale_fill_manual(values = c("aquamarine2","aquamarine4")) +
+    scale_y_continuous(limits=c(0,1900)) +
+    ggtitle("Dog Budgets") +
+    labs(x = "Budget Type",
+         y= "USD") +
+    theme_report()  + 
+    geom_text(aes(label = paste("$ ",round(`mean_budget`, digits=0))), size = 3, position = position_dodge(width=0.1), vjust=-0.25)
 
 grid.arrange(g1, g2, ncol=2, top = "Budgets by Red Flag Status")
 
@@ -3318,11 +3351,134 @@ print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
 tm_shape(gwr.map) + tm_fill(paste0(var), n = 3, style = "quantile", title = "Raw data") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
                                                                                                             legend.title.size = 0.6)
 # map coefficients
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
-                                                                                                            legend.title.size = 0.6)
+tm_shape(gwr.map) + 
+    tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient", palette="BuGn") + 
+    tm_borders(col="black") +
+    tm_layout(title = "Cell Plan Internet", frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
 var <- "HC02_EST_VC34_educ"
 print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
-tm_shape(gwr.map) + tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
+tm_shape(gwr.map) + 
+    tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient", palette="BuGn") + 
+    tm_borders(col="black") +
+    tm_layout(title = "24-34y olds in school", frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
+var <- "HC02_EST_VC02_educ"
+print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+
+tm_shape(gwr.map) + 
+    tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient", palette="BuGn") + 
+    tm_borders(col="black") +
+    tm_layout(title = "Percent nursery/preschool kids", frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
+### Cats
+
+# Reduce number of predictors. Importantly, we're going to define our dependent variable by census tract as being the total number (per census tract) of applications that took longer than 14 days to process.
+
+appsandcards <- cat.appsandcards[,c("GEOID","efficient")]
+
+all.geo <- appsandcards %>% 
+  group_by(GEOID) %>%
+  summarise(efficient = sum(efficient)/n())
+
+all.geo <- merge(all.geo, 
+                 census,
+                 by.x="GEOID",
+                 by.y="GEO.id2_educ",
+                 all.x=TRUE)
+all.geo <- all.geo[complete.cases(all.geo),]
+
+# using lasso to extract variables
+
+x <- model.matrix(efficient ~., data = all.geo)
+x <- x[,-1]
+
+set.seed(10001)
+cvfit <- cv.glmnet(x, all.geo$efficient, type.measure = 'mse', nfolds=5, alpha=.5)
+c <- coef(cvfit, s='lambda.min', exact=TRUE)
+inds <- which(c!=0)
+vars <- data.frame(var = row.names(c)[inds],
+                   value = c[inds])
+vars <- vars[which(!vars$var %in% c("(Intercept)","GEOID")),]
+vars <- vars[order(abs(vars$value), decreasing = TRUE),]
+
+# knitr::kable(census.descr[which(census.descr$select.vars %in% vars$var),])
+
+# Now we combine with geographic data and reduce the set to include only Philadelphia county. We also calculate distance to the nearest PAWS location.
+
+all.geo.spatial <-
+  sp::merge(x = pa_nj, y = all.geo, by = "GEOID", all.x=FALSE, all.y=TRUE)
+all.geo.spatial <- all.geo.spatial[all.geo.spatial$COUNTYFP=="101",]
+
+# calculate distance to nearest PAWS location
+
+# PAWS Adoption locations taken from their website, and latlong obtained via https://gps-coordinates.org/
+# PAC lat = 39.952030; Long = -75.143410 
+# NE lat =  40.084923, long = -75.036904
+# Kawaii kitty Cafe Lat = 39.93867, long = -75.1496
+# Petsmart Oregon Ave Lat = 39.917239, Lon = -75.187238
+# Petsmart Broad & Washington Lat = 39.937967, Lon = -75.167576
+# Grays Ferry Lat = 39.938748 Lon = -75.192532
+
+for (i in 1:nrow(all.geo.spatial)){
+  all.geo.spatial$PAC.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.143410, 39.952030), fun=distGeo)
+  all.geo.spatial$NE.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.036904, 40.084923), fun=distGeo)
+  all.geo.spatial$KK.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.1496, 39.93867), fun=distGeo)
+  all.geo.spatial$PS.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.187238, 39.917239), fun=distGeo)
+  all.geo.spatial$PSO.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.187238, 39.917239), fun=distGeo)
+  all.geo.spatial$PSO.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.167576, 39.937967), fun=distGeo)
+  all.geo.spatial$GF.dist[i] <-  distm(c(as.numeric(all.geo.spatial$INTPTLON[i]),as.numeric(all.geo.spatial$INTPTLAT[i])),c(-75.192532, 39.938748), fun=distGeo)
+  all.geo.spatial$shortest.distance[i] <- min(all.geo.spatial$PAC.dist[i],
+                                              all.geo.spatial$NE.dist[i],
+                                              all.geo.spatial$KK.dist[i],
+                                              all.geo.spatial$PS.dist[i],
+                                              all.geo.spatial$PSO.dist[i],
+                                              all.geo.spatial$GF.dist[i])
+}
+
+# Next, we build a linear model that includes the census predictors identified earlier, and the distance to the nearest paws location. 
+set.seed(10002)
+m <- as.formula(paste("efficient ~", paste0(vars$var, collapse="+"), "+ shortest.distance"))
+model <- lm(m, data=all.geo.spatial)
+summary(model)
+
+# We have an adjusted R2 of 0.06982. The significant predictor is only HC02_EST_VC06_educ.
+
+resids<-residuals(model)
+all.geo.spatial$map.resids <- resids
+qtm(all.geo.spatial, fill = "map.resids")
+
+# Let's run a geographically weighted regression. 
+
+set.seed(10002)
+GWRbandwidth <- gwr.sel(m, data=all.geo.spatial,adapt=T)
+
+gwr.model = gwr(m, data=all.geo.spatial, 
+                adapt=GWRbandwidth, hatmatrix=TRUE, se.fit=TRUE) 
+gwr.model
+
+results <-as.data.frame(gwr.model$SDF)
+names(results)
+
+gwr.map <- cbind(all.geo.spatial, as.matrix(results))
+qtm(gwr.map, fill = "localR2")
+
+# map outcome variable
+tm_shape(gwr.map) + 
+    tm_fill("efficient", n = 4, style = "fixed", breaks = c(0, .33,.67,1), title = "Efficient") + tm_layout(frame = FALSE, legend.text.size = 0.5, 
+                                                                                                            legend.title.size = 0.6)
+lm.coeffs <- as.data.frame(summary(model)$coefficients)
+
+var <- "HC02_EST_VC06_educ"
+print(as.character(census.descr$descr[which(census.descr$select.vars==var)]))
+
+# map coefficients
+tm_shape(gwr.map) + 
+    tm_fill(paste0(var,".1"), n = 3, style = "quantile", title = "Coefficient") + 
+    tm_borders(col="black") +
+    tm_layout(title = "Percent kids grades 5-8", frame = FALSE, legend.text.size = 0.5, legend.title.size = 0.6)
+
 
 detach("package:tmap", unload=TRUE)
 detach("package:geosphere", unload=TRUE)
@@ -3341,14 +3497,12 @@ We found that in neighborhoods with a higher percentage of people who have a cel
 
 Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. 
 
-![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=350px}
+![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=350px} ![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=350px}
 
 
 #### Cats
 
 Interestingly, for cats we found that in neighborhoods where a higher percentage of the population is children in grades 5-8, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
-
-![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=350px}
 
 ### Conclusions and Next Steps
 
