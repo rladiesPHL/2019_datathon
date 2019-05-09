@@ -1368,7 +1368,7 @@ g1 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename
     facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species (Grays Ferry)") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days")+
         xlab("Month")
 
 g2 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "Grant Avenue",], 
@@ -1378,7 +1378,7 @@ g2 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename
     facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species (Grant Avenue)") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days")+
         xlab("Month")
 
 g3 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAC",], 
@@ -1388,7 +1388,7 @@ g3 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename
     facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species (PAC)") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days")+
         xlab("Month")
 
 g4 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAWS Foster Program",], 
@@ -1398,7 +1398,7 @@ g4 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename
     facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species (PAWS Foster Program)") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days")+
         xlab("Month")
 
 g5 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename == "PAWS Offsite Adoptions",], 
@@ -1408,7 +1408,7 @@ g5 <- ggplot(median_wait_by_month_site[median_wait_by_month_site$intake_sitename
     facet_wrap(~animal_type)+
     ggtitle("Wait Time by Intake Month per Species (PAWS Offsite Adoptions)") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
-        ylab("Days from Intake to Outcome")+
+        ylab("Days")+
         xlab("Month")
 
 grid.arrange(g1, ncol=1, heights = c(5, 5))
@@ -1448,7 +1448,7 @@ grid.arrange(g1, g2, top = "Wait Time by Location", ncol=2)
 
 ```
 
-Our findings demonstrat that cats adopted from PAC or from Offsite Adoptions spend the shortest time at PAWS, while cats in the Foster Program spend the longest time at PAWS. Similarly, dogs adopted at Offsite Adoptions spend the shortest time at PAWS, while dogs in the Foster Program spend the longest time at PAWS. Interestingly, for both cats and dogs, animals adopted from Grant Avenue spend longer in the shelter than animals adopted from any other PAWS location.
+Our findings demonstrate that cats adopted from PAC or from Offsite Adoptions spent the shortest time at PAWS, while cats in the Foster Program spent the longest time at PAWS. Similarly, dogs adopted at Offsite Adoptions spent the shortest time at PAWS, while dogs in the Foster Program spent the longest time at PAWS. Interestingly, for both cats and dogs, animals adopted from Grant Avenue spent longer in the shelter than animals adopted from any other PAWS location.
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -1470,21 +1470,57 @@ raw_data %>%
 Last, we examined wait time by intake health condition for each species.
 
 ```{r, echo = FALSE}
-master_animal %>% 
-    filter(species=="Cat") %>% 
-    ggplot(., aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
-    geom_boxplot()+ 
-    scale_colour_manual(values = cols)+
+# master_animal %>% 
+#     filter(species=="Cat") %>% 
+#     ggplot(., aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
+#     geom_boxplot()+ 
+#     scale_colour_manual(values = cols)+
+#     facet_wrap(~intake_condition)+
+#     ggtitle("Cats: Wait Time by Intake Condition")+
+#     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none")+
+#         ylab("Days from Intake to Outcome")+
+#         xlab("Month")
+
+
+median_wait_by_month_health <- master_animal %>%
+    group_by(animal_type, intake_month_fac, intake_condition) %>%
+    summarise(median_wait = median(wait_days))
+median_wait_by_month_health <- median_wait_by_month_health[!is.na(median_wait_by_month_health$animal_type),]
+median_wait_by_month_health$Season <- NA
+median_wait_by_month_health$Season[median_wait_by_month_health$intake_month_fac %in% 
+                                c("January","February","December")] <- "Winter"
+median_wait_by_month_health$Season[median_wait_by_month_health$intake_month_fac %in% 
+                                c("March","April","May")] <- "Spring"
+median_wait_by_month_health$Season[median_wait_by_month_health$intake_month_fac %in% 
+                                c("June","July","August")] <- "Summer"
+median_wait_by_month_health$Season[median_wait_by_month_health$intake_month_fac %in% 
+                                c("September","October","November")] <- "Fall"
+
+ggplot(median_wait_by_month_health[median_wait_by_month_health$animal_type == "cat",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
     facet_wrap(~intake_condition)+
-    ggtitle("Cats: Wait Time by Intake Condition")+
-    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1), legend.position = "none")+
-        ylab("Days from Intake to Outcome")+
+    ggtitle("Cats: Wait Time by Intake Condition") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) +
+        ylab("Days")+
         xlab("Month")
 ```
 
-For cats, we found a that animals classified as 'Sick', 'Injured', and 'Under 7 Weeks' tended to have longer wait times in the spring and summer months.
-
 ```{r, echo = FALSE}
+ggplot(median_wait_by_month_health[median_wait_by_month_health$animal_type == "dog",], 
+       aes(x=intake_month_fac, y=median_wait, fill = Season))+ 
+    geom_bar(stat = "identity") + 
+    scale_fill_manual(values = c("Winter" = "slateblue4", "Spring" = "cyan4", "Summer" = "yellow2", "Fall" = "sienna2")) + 
+    facet_wrap(~intake_condition)+
+    ggtitle("Dogs: Wait Time by Intake Condition") +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=90, hjust=1)) +
+        ylab("Days")+
+        xlab("Month")
+
+```
+
+```{r, include = FALSE}
 master_animal %>% 
     filter(species=="Dog") %>% 
     ggplot(., aes(x=intake_month_fac, y=wait_days, col = intake_month_fac))+ 
@@ -1497,15 +1533,17 @@ master_animal %>%
         xlab("Month")
 ```
 
-For dogs, we found a that animals classified as 'Injured' and 'Sick' also tended to have longer wait times in the spring and summer months.
+For cats, we found a that animals classified as 'Sick', 'Injured', and 'Under 7 Weeks' tended to have longer wait times in the spring and summer months. For dogs, we found a that animals classified as 'Injured' and 'Sick' also tended to have longer wait times in the spring and summer months.
 
 ### Conclusions and Next Steps
-In conclusion, our analyses revealed that animal characteristics, intake characteristics, and seasonal and locational patterns contribute to animals' wait times at PAWS in the 2018 year. Almost all animals' outcomes from 2018 were adoptions, meaning that PAWS is fulfilling its goal of finding homes for needy animals in the Philadelphia area. The median wait time for cats (51 days) was longer than the median wait time for dogs (18 days), and this was likely due to 1) greater number of cats vs dogs, and 2) longer wait times for sick, young cats in the spring and summer months. We also observed differences in wait time by PAWS location for each species, but this is likely due to the number and species of animals at each location. Overall, our findings indicate that PAWS may want to focus resources on young and sick cats in the spring and summer months in order to reduce wait times.
+In conclusion, our analyses revealed that animal characteristics, intake characteristics, and seasonal and locational patterns contributed to animals' wait times at PAWS in 2018. Almost all animals' outcomes from 2018 were adoptions, meaning that PAWS is fulfilling its goal of finding homes for adoptable animals in the Philadelphia area. The median wait time for cats was longer than the median wait time for dogs. We believe that this effect was at least in part driven by longer wait times for sick, young cats in the spring and summer months. We also observed differences in wait time by PAWS location for each species. Overall, our findings indicate that PAWS may want to focus resources on young and sick cats in the spring and summer months in order to reduce wait times.
 
 \newpage
 ## 2. Application Trajectories
 
 This analysis investigated factors relating to an application's trajectory at PAWS - from the time when an applicant submits an application, through the validation checks done by PAWS, to the time the application is marked as complete. The dataset analyzed here included trello IDs (1594 unique trello IDs) and their matched application data from the online application form (applications submitted dates between 2018-08-30 to 2018-12-31). 
+
+We found that for applications that resulted in adoption, cat applications took longer to process (19 days) than dog applications (8 days). Cat apps took 19 days and dog apps took 8 days on average, with the slowest adoptions being at PAWS Foster Program & PAWS Offsite Adoptions locations. We also found that most adopters lived by themselves, or with one other adult in the home, and the majority did not have children in the home. Very few applications were denied in 2018. 
 
 ### Contributors
 
@@ -1515,16 +1553,6 @@ This analysis investigated factors relating to an application's trajectory at PA
 * **Amy Goodwin Davies** is a data scientist with a background in psycholinguistics.
 * **Brendan Graham** is a clinical data analyst at The Children’s Hospital of Philadelphia with a background in applied statistics.
 * **Ambika Sowmyan** heads the Marketing data analytics group at Hartford Funds. Her background is in Finance and Retail and has a graduate degree in Management and Predictive Analytics.
-
-### Summary
-
-* For applications that resulted in adoption, cat applications took longer to process than dog applications. Cat apps took 19 days and dog apps took 8 days on average.
-* Based on the animal's outcome site, adoption times were faster at PAWS Foster Program & PAWS Offsite Adoptions locations.
-* Singles seem to prefer to adopt a pet. 
-* There were 12 denied applications and 133 red flagged
-* For the denied applications, the applicants had no known allergies and many of them had unfortunate incidents with prior pets
-* There was a lot of missing data in the applications especially for the home pet policy question.
-* We recommend redesiging the application to enforce standardized, limited, and logical responses. For example, for certain questions, allow only a single response or provide a drop down menu. Doing so will save PAWS staff time when reviewing applications and help with future analyses. 
 
 ### Data Pre-processing
 
@@ -1638,7 +1666,7 @@ clean_city <- function(colname) {
 }
 ```
 
-As our group focused on questions about application trajectories, our starting point was an applications dataset comprised of online dog and cat applications (`dog_apps.csv` and `cat_apps.csv`). Several data pre-processing steps are important to highlight: 
+As this group focused on questions about application trajectories, the starting point was an applications dataset comprised of online dog and cat applications (`dog_apps.csv` and `cat_apps.csv`). Several data pre-processing steps are important to highlight: 
 
 * We standardized some responses that differed between cat and dog applications but that we believe had the same meaning (e.g. `ideal_adoption_timeline` had responses "next-few-weeks" and "few-weeks" which we standardised as one response ("few-weeks"). (See further discussion of this issue in the *Data Issues affecting Analyses* section)
 * We replaced text values for `children_in_home` and `adults_in_home` to our best intepretation of what the responder meant (e.g. "-2" we interpreted as "2") and considered values that were excessive (e.g. 15 children in the home) as missing data. 
@@ -1713,7 +1741,7 @@ apps_with_indicators <- apps %>%
    left_join(convert_to_ind(apps,"return_pet"))
 ```
 
-Our cleaned applications dataset contained 1906 rows, 1594 unique Trello IDs, and the submitted dates ranged from 2018-08-30 to 2018-12-31. 
+Our cleaned applications dataset contained 1906 rows, 1594 unique Trello IDs, and the submitted dates ranged from 2018-08-30 to 2018-12-31.
 
 ```{r include = FALSE}
 nrow(apps_with_indicators)
@@ -1725,8 +1753,9 @@ min(apps_with_indicators$date_submitted) - max(apps_with_indicators$date_submitt
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 apps_with_indicators %>% 
   ggplot(aes(x = date_submitted, fill = animal_type)) +
-  geom_histogram(alpha = 0.5) +
+  geom_histogram(alpha = 1) +
     theme_report() +
+    scale_fill_manual(values = c("lightgoldenrod2","aquamarine3")) +
     scale_x_date(date_breaks = "1 weeks") +
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
     ggtitle("Number of Applications by Week, by Species") + 
@@ -1851,7 +1880,7 @@ all_dates_cat$Date <- as_date(all_dates_cat$Date)
 
 g1 <- all_dates_cat[all_dates_cat$Dataset == "actions",] %>% 
   ggplot(aes(x = Date)) +
-  geom_histogram(alpha = 0.7, binwidth = 7) +
+  geom_histogram(binwidth = 7, fill="darkgoldenrod2") +
     theme_report() +
     scale_x_date(date_breaks = "2 week") +
     geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
@@ -1859,7 +1888,7 @@ g1 <- all_dates_cat[all_dates_cat$Dataset == "actions",] %>%
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
     ggtitle("Cats") + 
     xlab("Week when Trello Action Completed") + 
-    ylab("Number of Trello Actions Completed")
+    ylab("Actions Completed")
 
 apps_dates_dog <- cbind(as.character(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "dog"]), rep("apps", length(apps_with_indicators$date_submitted[apps_with_indicators$animal_type == "dog"])))
 actions_dates_dog <- cbind(as.character(actions$date_start[actions$animal_type == "dog"]), rep("actions", length(actions$date_start[actions$animal_type == "dog"])))
@@ -1872,7 +1901,7 @@ all_dates_dog$Date <- as_date(all_dates_dog$Date)
 
 g2 <- all_dates_dog[all_dates_dog$Dataset == "actions",] %>% 
   ggplot(aes(x = Date)) +
-  geom_histogram(alpha = 0.7, binwidth = 7) +
+  geom_histogram(binwidth = 7, fill = "aquamarine3") +
     theme_report() +
     scale_x_date(date_breaks = "2 week") +
     geom_vline(xintercept = min(apps_with_indicators$date_submitted), colour = "black") +
@@ -1880,7 +1909,7 @@ g2 <- all_dates_dog[all_dates_dog$Dataset == "actions",] %>%
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) +
     ggtitle("Dogs") + 
     xlab("Week when Trello Action Completed") + 
-    ylab("Number of Trello Actions Completed")
+    ylab("Actions Completed")
 
 grid.arrange(g1,g2, ncol=1, top="Trello Actions by Species, by 2 Week Period")
 
@@ -1941,13 +1970,14 @@ master_apps_report %>%
   filter(!adoption_time < 0) %>%                                                        # remove negative values in adoption_time column
   
   ggplot(aes(x = animal_type, y = adoption_time, fill = animal_type)) +                 # break out checklist_item by cat & dog
-  geom_boxplot(alpha = 0.4, outlier.alpha = 0.3) +                                      # make outliers and boxes more transparent
+  geom_boxplot(outlier.alpha = 0.3) +                                      # make outliers and boxes more transparent
   scale_y_continuous(breaks = seq(0, 140, by=20)) +                                     # set y axis tick intervals at 20
   theme_light() + 
   ggtitle("Adoption Timeline by Animal") +                                              # set plot title
   labs(x = NULL,                                                                        # set plot labels
        y= "days between app submission & adoption",
        fill = "animal type") +
+    scale_fill_manual(values = c("aquamarine3","darkgoldenrod2")) +
   theme(axis.text.y = element_text(size=10),
         plot.title = element_text(hjust = 0.5,                                          # title formatting (center, bold, padding)
                                   line = 15, 
@@ -2078,23 +2108,25 @@ Only one site had a higher median adoption time for dogs than for cats—Grays F
 master_apps_report %>%
   filter(outcome_type == "Adoption") %>%
   gather(checklist_item, value, checklist_ACCT:checklist_VET) %>%                       # flatten checklist rows into one column (called "checklist_item") and corresponding values into one column (called "values")
-  
-  ggplot(aes(x = checklist_item, y = value)) +
-  geom_boxplot(aes(fill = animal_type), alpha = 0.4, outlier.alpha = 0.1) +             # break out checklist_item by cat & dog
-  scale_y_continuous(breaks = seq(0, 20, by=2),                                         # set y axis tick intervals at 2
-                     limits=c(0, 20)) +                                                 # set y limit to 16 to "remove" highest outliers & see plots better 
-  theme_light() + 
-  ggtitle("Day Count Distribution by Checklist Item (Removed Some Outliers)") +
-  labs(x = "checklist item",
-       y= "days from last checklist item",
-       fill = "animal type") +
-  theme(plot.title = element_text(hjust = 0.5,                                          # title formatting (center, bold, padding)
-                                  line = 15, 
-                                  face = "bold", 
-                                  margin = margin(t = 0, r = 0, b = 10, l = 0)),        
-        axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 5, l = 0)),      # x axis title formatting (padding)
-        axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 5))) +    # y axis title formatting (padding)
-  coord_flip()   
+    group_by(animal_type,checklist_item) %>%
+    summarise(median_duration = median(value, na.rm = TRUE)) %>%
+    ggplot(aes(x = checklist_item, y = median_duration)) +
+    geom_bar(stat="identity", aes(fill = animal_type)) +             # break out checklist_item by cat & dog
+    theme_light() + 
+    scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
+    facet_wrap(~animal_type) +
+    ggtitle("Day Count Distribution by Checklist Item (Removed Some Outliers)") +
+    labs(x = "checklist item",
+         y= "days from last checklist item",
+         fill = "animal type") +
+    theme(plot.title = element_text(hjust = 0.5,                                          # title formatting (center, bold, padding)
+                                    line = 15, 
+                                    face = "bold", 
+                                    margin = margin(t = 0, r = 0, b = 10, l = 0)),        
+          axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 5, l = 0)),      # x axis title formatting (padding)
+          axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 5)),     # y axis title formatting (padding)
+          axis.text.x = element_text(angle=45, hjust=1))
+    
 ```
 
 Most application items took between one and two days (median) to complete. While the animal type and outcome site didn't significantly impact the individual item times, cat applications generally exhibited slightly longer times between checklist items. Cat applications averaged about **1.2** days between checklist item, compared to **0.9** for dogs (excluding SPCA & ACCT items). The VET checklist item had the greatest difference between cats and dogs, and also was the item that took the longest (besides SPCA & ACCT items). This distinction between animals, while modest, could contribute to longer submission-to-adoption times for cat applications. 
