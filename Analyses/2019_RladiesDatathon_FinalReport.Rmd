@@ -55,7 +55,7 @@ theme_report <- function () {
 * Dog applicants tended to have a higher monthly pet budget ($200-$500), shared their home with 1 other adult, had no children, and lived in areas with a higher median income, and where fewer people relied on public transit for their commute
 
 \newpage
-# Problem definition and dataset
+# Problem definition
 
 The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. PAWS is a non-profit organization dedicated to saving Philadelphia’s homeless and at-risk animals. It is the city’s largest rescue partner and provider of low-cost, basic veterinary care for pet owners and rescue organizations that cannot otherwise access or afford it. Through its 3 no-kill shelters, foster care network, and special events, PAWS finds loving homes for thousands of animals each year. For this data challenge, PAWS made de-identified data from 2018 available. The datasets included adoption application form submissions, application processing data from staff, and animal outcome data. We developed analytic approaches to better understand the following topics:
 
@@ -63,6 +63,11 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 2. An adoption application's trajectory at PAWS
 3. Geographic characteristics that influence adoptions
 4. Social media activity that could influence adoptions
+
+# Datasets
+
+* **Trello cards**: A card contains information about when the application started being processed by PAWS and what label PAWS determined it should have (e.g. "ready to adopt", "red flag", etc.)
+* **Trello actions**: Trello actions contained information about the steps in the baclground check process (e.g. vet check, Pet Point check, landlord check, etc.). 
 
 # Timeline and Workflow
 
@@ -410,9 +415,9 @@ theme(strip.text = element_text(size=14), axis.text.x = element_text(color = "gr
 
 We found that most cats from PAWS in 2018 were 'domestic short hair', while dogs' breed variability was greater. The most frequent dog breeds were Terrier, Shih Tzu, Pit Bull Terrier, and Chihuahua. Among dogs, Shih Tzus tended to have shorter wait times whereas Terriers tended to have longer wait times. However, given the large number of unique dog breeds in the PetPoint dataset, it was difficult to draw definitive conclusions. Therefore, we classified dogs into 3 size categories based on average weight per breed: 
 
-- **small = under 24 lbs** (Beagle, Bichon Frise, Chihuahua, Long Coat, Chihuahua, Short Coat, Dachshund, Miniature Long Haired, Dachshund, Miniature Smooth Haired, Dachshund, Standard Smooth Haired, Griffon, Brussels, Havanese, Kooikerhondje, Lhasa Apso, Maltese, Miniature Pinscher, Mixed Breed, Small (under 24 lbs fully grown), Papillon, Pekingese, Pomeranian, Poodle, Miniature, Poodle, Toy, Pug, Schnauzer, Miniature, Shiba Inu, Shih Tzu, Spaniel, Cavalier King Charles, Terrier, Terrier, Cairn, Terrier, Jack Russell, Terrier, Russell, Terrier, Silky, Terrier, Yorkshire)
-- **medium = 24-44 lbs** (American Eskimo, Mixed Breed, Medium (up to 44 lbs fully grown), Schnauzer, Standard, Spaniel, Spaniel, American Cocker, Spaniel, English Cocker, Terrier, Staffordshire Bull, Terrier, Tibetan, Welsh Corgi, Cardigan) 
-- **large = 44+ lbs** (Australian Shepherd, Border Collie, Boxer, Bulldog, Bulldog, American, Hound, Mixed Breed, Large (over 44 lbs fully grown), Norwegian Elkhound, Poodle, Standard,Retriever, Retriever, Golden, Retriever, Labrador, Shepherd, Terrier, American Pit Bull, Terrier, Bull, Terrier, Pit Bull)
+- **small = under 24 lbs** 
+- **medium = 24-44 lbs**
+- **large = 44+ lbs** 
 
 ```{r, include = FALSE}
 #group by category for dog breeds to analyse more easily as factor
@@ -526,9 +531,7 @@ grid.arrange(g1,g2, ncol = 2,
 
 #### Health Status
 
-For dogs, we observed that the longest wait times were associated with dogs that came in as "treatable-manageable". However, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs. 
-
-For cats, our analyses revealed that health condition at intake was associated with a longer median wait time. Specifically, cats classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than cats classified as 'Healthy' or 'Treatable-Manageable'. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time. Because of this, efforts to reduce the wait time for these cats would likely impact overall wait times for cats. 
+We observed that for dogs, the longest wait times were associated with those who came in as "Treatable-Manageable" (however, these dogs represent only a small fraction of the dogs coming in at PAWS, so this effect is unlikely to impact overall wait times for dogs). For cats, the ones classified as 'Treatable-Rehabilitatable' and 'Unhealthy/Untreatable' had longer wait times than 'Healthy' or 'Treatable-Manageable' cats. While cats whose intake status was "Unhealthy/Untreatable" were very few, PAWS took in a very high number of cats labeled as "Treatable-Rehabilitate", and these were also the ones with the longest wait time - thus, reducing the wait time for this intake category could impact overall wait times for cats. 
 
 ```{r, include = FALSE}
 condition_intake <- raw_data %>%
@@ -594,8 +597,6 @@ We also looked at health change from intake to outcome. Specifically, we created
 - decline = an animal's outcome ASILOMAR status changed from Healthy to Treatable or Unhealthy; or from Treatable to Unhealthy
 - improvement = an animal's outcome ASILOMAR status changed from Treatable or Unhealthy to Healthy; or from Unhealthy to Treatable. 
 
-For cats, we observed that the wait time is longest for those cats that experience an improvement in overall condition while at PAWS (78 days), although these cats represent only 10% of the total cats at PAWS. Cats that experienced no change in condition while at PAWS (89%) had a median wait time of 47 days. 
-
 ```{r include = FALSE}
 raw_data$health_change <- NA
 raw_data$health_change[as.character(raw_data$intake_asilomar) == as.character(raw_data$outcome_asilomar)] <- "no_change"
@@ -659,8 +660,6 @@ g12 <- grid.arrange(g1,g2,top = "Cats", ncol = 2)
 
 ```
 
-For dogs, we observed that the wait time is also longest for those dogs that experience an improvement in overall condition while at PAWS (26 days), although these dogs also represent only a small percentage (7%) of the total dogs at PAWS. Dogs that experienced no change in condition while at PAWS (93%) had a median wait time of 20 days. 
-
 ```{r, include = FALSE}
 g3 <- ggplot(data=health_change_data[health_change_data$Species == "Dog",], 
              aes(x = `Health Change`, y = `Median Wait Time (Days)`)) +
@@ -685,8 +684,10 @@ g34 <- grid.arrange(g3,g4,top = "Dogs", ncol = 2)
 ```
 
 ```{r, echo = FALSE}
-grid.arrange(g12,g34,top = "Health Condition Change", ncol = 2, heights = c(10,6) )
+grid.arrange(g12,g34,top = "Health Condition Change", ncol = 2, heights = c(10,6))
 ```
+
+For both cats and dogs, the wait time was longest when they experienced an improvement in overall condition while at PAWS (78 days for cats, 26 days for dogs), although these animals represented only a small fraction of total animals (10% of cats, 7% of dogs). Cats that experienced no change in condition while at PAWS (89%) had a median wait time of 47 days, while dogs that experienced no change in condition while at PAWS (93%) had a median wait time of 20 days. 
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -715,7 +716,7 @@ raw_data %>%
 
 ### Intake  Characteristics
 
-Looking at the main intake reason, we noticed that the majority of animals arriving at PAWS were transfers-in. However, for cats, after transfers in, strays were the next largest intake group. Cats also had longer wait times for each intake type relative to dogs. Furthermore, for both cats and dogs, strays and transfers in had the highest wait times. Interestingly, for cats (but not dogs) that were surrenedered by their owner, these also had a high wait time (40 days). 
+The majority of animals arriving at PAWS were transfers-in (followed by strays, for cats). Cats had longer wait times for each intake type relative to dogs (an interesting difference in particular is owner surrender). For both cats and dogs, strays and transfers in had the highest wait times. 
 
 ```{r, echo = FALSE}
 
@@ -892,7 +893,7 @@ g4 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_ty
 
 ```
 
-We found that for both cats and dogs, partner transfers in accounted for the vast majority of the intakes. However, differences were observed for the next highest intake subtypes: outside of partner transfers in, the majority of cats arrived at PAWS via Project Meow (395 cats, or 19.7%), Public Drop_off (342 cats, or 17%)), and Returned Adoption (134 cats, or 7%). Meanwhile, for dogs that did not arrive at PAWS via Partner Transfer In, the majority were ACCT Diversion (43 dogs or 13%), Returned Adoptions (42 dogs or 13%), and In-Person Surrender to Shelter (24 dogs or 7%). 
+Partner transfers in accounted for the vast majority of intakes. However, differences were observed for the next highest intake subtypes: the next-highest numbers of cats arrived at PAWS via Project Meow (395 cats, or 19.7%), Public Drop_off (342 cats, or 17%)), and Returned Adoption (134 cats, or 7%). Meanwhile, the next-highest numbers of dogs arrived at PAWS as ACCT Diversions (43 dogs or 13%), Returned Adoptions (42 dogs or 13%), and In-Person Surrenders to Shelter (24 dogs or 7%). 
 
 ```{r, echo = FALSE}
 grid.arrange(g1,g2,top = "Cats", ncol=2)
@@ -905,9 +906,7 @@ It is also worth noting that for both dogs and cats, returned adoptions experien
 subtype_filter <- master_animal_intake %>% 
     filter(intake_subtype == 'Returned Adoption' |
                intake_subtype == 'Public Drop Off')
-```
 
-```{r, include = FALSE}
 intake_subtype_lm <- lm(wait_days ~ intake_subtype, subtype_filter)
 #summary(intake_subtype_lm)
 
@@ -1451,7 +1450,9 @@ grid.arrange(g1, g2, top = "Wait Time by Location", ncol=2)
 
 ```
 
-Our findings demonstrate that cats adopted from PAC or from Offsite Adoptions spent the shortest time at PAWS, while cats in the Foster Program spent the longest time at PAWS. Similarly, dogs adopted at Offsite Adoptions spent the shortest time at PAWS, while dogs in the Foster Program spent the longest time at PAWS. Interestingly, for both cats and dogs, animals adopted from Grant Avenue spent longer in the shelter than animals adopted from any other PAWS location.
+Cats adopted from PAC or from Offsite Adoptions, and dogs adopted from Offsite Adoptions spent the shortest time at PAWS, while cats and dogs in the Foster Program waited longest. Interestingly, for both cats and dogs, animals adopted from Grant Avenue spent longer in the shelter than animals adopted from any other PAWS location.
+
+Wait times also seemed influenced by intake health condition, particularly in spring and summer months (cats arriving 'Sick', 'Injured', and 'Under 7 Weeks', and dogs arriving 'Injured' and 'Sick' tended to have longer wait times).
 
 ```{r, include = FALSE}
 raw_data %>%
@@ -1469,8 +1470,6 @@ raw_data %>%
         ylab('Days from Intake to Outcome')+
         ggtitle("Dogs: Wait Time by Location")
 ```
-
-Last, we examined wait time by intake health condition for each species.
 
 ```{r, echo = FALSE}
 # master_animal %>% 
@@ -1535,9 +1534,6 @@ master_animal %>%
         ylab("Days from Intake to Outcome")+
         xlab("Month")
 ```
-
-For cats, we found a that animals classified as 'Sick', 'Injured', and 'Under 7 Weeks' tended to have longer wait times in the spring and summer months. For dogs, we found a that animals classified as 'Injured' and 'Sick' also tended to have longer wait times in the spring and summer months.
-
 \newpage
 ## 2. Application Trajectories
 
@@ -1861,7 +1857,7 @@ petpoint_with_indicators <- petpoint %>%
 # petpoint[petpoint$trello_id %in% c("5abd1fc3553a150daabdca1b", "5bd0fef0fbda7d61758333dc"),]
 ```
 
-To our applications dataset, we added fields from Trello actions and cards. A card contains information about when the application started being processed by PAWS and what label PAWS determined it should have (e.g. "ready to adopt", "red flag", etc.), and Trello actions contained information about the steps in the baclground check process (e.g. vet check, Pet Point check, landlord check, etc.). We also matched applications with PetPoint outcome (`petpoint.csv`) to be able to analyze successful applications. One issue we encountered was that the date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively), which was a result of when the online applications were re-initialized in the PAWS website. Similar data-preprocessing steps as we took for the applications dataset were taken for the actions, cards, and petpoints datasets.
+To this applications dataset, we added fields from Trello actions and cards, and PetPoint outcome (`petpoint.csv`), and took similar data preprocessing steps as with the application dataset. The date range for the applications dataset (123 days) was considerable smaller than the actions and petpoint datasets (417 and 413 days respectively), which was a result of when the online applications were re-initialized in the PAWS website. 
 
 ```{r include = FALSE}
 max(apps_with_indicators$date_submitted) - min(apps_with_indicators$date_submitted)
@@ -1955,9 +1951,9 @@ apps_cards <- apps_with_indicators %>%
  left_join(cards_with_indicators)
 ```
 
-### Analysis of Time in Processing Applications
+### Time to Process Applications
 
-#### How Animal & Outcome Site Influence Application Timelines
+#### Application Timelines
 
 Application timelines were measured by taking the difference between the time an application was submitted and the time that application resulted in an adoption. Only applications that resulted in adoption were assessed; applications that were denied were not included in the analysis. This is a potential area of further investigation. 
 
@@ -2101,7 +2097,7 @@ Based on median values, here are the fastest & slowest time-to-adoption sites:
 
 Only one site had a higher median adoption time for dogs than for cats—Grays Ferry Avenue. This site also had the fewest cat adoptions, though (n=2). It's also important to note the small n size for dog apps at PAWS Offsite Adoptions (n=1). 
 
-#### How Animal & Outcome Site Influence Application Checklist Items
+#### Application Checklist Items
 
 ```{r checklist_boxplot, echo=FALSE, fig.align="center", fig.height=5, fig.width=10, warning=FALSE}
 #  REMOVED SOME OUTLIERS; days distribution boxplot, by checklist_item & animal
@@ -2176,12 +2172,10 @@ kable(checklist_df, "latex", booktabs = T, align =c("l","c","c","c")) %>%
 The table above shows the exceptions to the average checklist times. The ACCT and SPCA checklist items took considerably longer to complete than other items, but they also were present in less than 1% of applications. This low sample limits any sound conclusions, but does present an area for potential further exploration. It may be valuable to assess if other components of an application—like red flags or particular animal information—lead to this item being more mandatory. But more data would be needed for this analysis.
 
 
-### Analysis of Application Characteristics that Result in Adoption 
-
-We analysed the the different factors of the applications that ended with a successful adoption. 
+### Successful Adoption Application Characteristics
 
 ```{r Adoption, echo=FALSE}
-master_apps_report %>% 
+g1 <- master_apps_report %>% 
   #filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=specific_animal,fill=adoption)) +
    geom_bar(position = "dodge", width = 0.9) +
@@ -2190,13 +2184,13 @@ master_apps_report %>%
     scale_fill_discrete(name = "Adoption Status") +
    geom_text(aes(label=..count..), stat='count',
              position = position_dodge(width = 0.9),
-             vjust = -0.3) +
+             vjust = 1) +
     theme_report()
+
+grid.arrange(g1, ncol=1, heights=c(10,7))
 ```
 
-When applicants requested a specific animal, 30% of applications resulted in an adoption vs. only 22% of the applications resultd in an adoption when the applicants did not request a specific animal. This seems surprising as we would expect an applicant who is not specific about the type of animal to be able to adopt easily.
-
-
+When applicants requested a specific animal, 30% of applications resulted in an adoption vs. only 22% of the applications resultd in an adoption when the applicants did not request a specific animal. 
 
 ```{r, include=FALSE}
 g1 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
@@ -2210,12 +2204,11 @@ g1 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
    geom_text(aes(label=..count..),stat='count', vjust = -0.3) +
     scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
     facet_grid(animal_type ~ .) +
-    theme_report()
+    theme_report() +
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1))
 ```
 
-
-Most of the applicants who adopted a pet had allocated a monthly budget of less than $500. 
-
+Most of the applicants who adopted a pet had allocated a monthly budget of less than $500. Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. 
 
 ```{r, include=FALSE}
 ### Home alone avg
@@ -2237,9 +2230,6 @@ g2 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_alon
 grid.arrange(g1,g2, ncol=2)
 ```
 
-Applicants who expected to leave the animal alone at home for longer hours chose to adopt a cat. The largest number of applicants expected the animal to be alone for 8 hours, which would be typical of an applicant who works full time. 
-
-
 ```{r, include=FALSE}
 g4 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in_home))) %>%
   ggplot(mapping=aes(x=adults_in_home,fill=animal_type)) +
@@ -2255,9 +2245,6 @@ g4 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(adults_in
     theme_report()
 
 ```
-
-We found that the majority of applications where the applicant lived alone (0 other adults in the home) preferred cats, while the the majority of applicants who lived with 1 other person preferred a dog. 
-
 
 ```{r, include=FALSE}
 g5 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_in_home))) %>%  ggplot(mapping=aes(x=children_in_home,fill=animal_type)) +
@@ -2276,8 +2263,7 @@ g5 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_
 ```{r, echo=FALSE}
 grid.arrange(g4,g5, ncol=2)
 ```
-
-We also found that individuals with no children at home seem to make up the largest number of applicants. 
+We found that the majority of applicants who lived alone preferred cats, while the the majority of applicants who lived with 1 other person preferred a dog. Furthermore, individuals with no children at home seemed to make up the largest number of applicants. 
 
 ```{r, echo=FALSE}
 expcols <- master_apps_report %>% 
@@ -2326,8 +2312,9 @@ expdata %>%
   geom_bar(stat="identity") +
   facet_grid(animal_type~adoption) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
-    labs(title = "Experience Type with Pets") +
-    xlab("Adoption Status") +
+    labs(title = "Adoption Status") +
+    xlab("Experience with Pets") +
+    ylab ("Number of applicants") +
     scale_x_discrete(labels = variable_labeller) +
     scale_fill_discrete(name = "Animal Type") + #+
     scale_fill_manual(values = c("darkgoldenrod2","aquamarine3")) +
@@ -2336,14 +2323,13 @@ expdata %>%
     theme_report()
 ```
 
-When we looked at the type of experiences applicants had with animals, we noticed that a higher number of applicants who were able to successfully adopt had less expereince with animals in each area. Also important to note is the very low number of successful adoptions for applicants who reported that their pet ran away, was given away, was given to a shelter, or who reported having experience breeding or selling animals. 
+When we looked at the type of experiences applicants had with animals, we noticed that a higher number of successful applicants had less experience with animals. The main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. 
 
 ```{r, include=FALSE}
 ### Home Pet Policy
 g6 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_policy))) %>%
   ggplot(mapping=aes(x=home_pet_policy,fill=animal_type)) +
     geom_bar(position = "dodge", width = 0.9) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Home Pet Policy") +
     xlab("Home Pet Policy") +
     scale_fill_discrete(name = "Animal Type") +
@@ -2351,10 +2337,10 @@ g6 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(home_pet_
     geom_text(aes(label=..count..),stat='count',
               position = position_dodge(width = 0.9),
              vjust = -0.3) +
-    theme_report()
-```
+    theme_report() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
 
-Not surprisingly, the highest number of succesful adoptions were associated with a home policy that allowed pets.
+```
 
 ```{r, echo=FALSE}
 retcols <- master_apps_report %>% 
@@ -2425,13 +2411,12 @@ retdata %>%
 
 ```
 
-The main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. Regarding allergies, the vast majority of people who adopted a pet from PAWS reported no allergies.  
+Unsurprisingly, the vast majority of people who adopted a pet from PAWS reported no allergies, nad had a home policy that allowed pets.
 
 ```{r, include=FALSE}
 g7 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
   ggplot(mapping=aes(x=allergies,fill=animal_type),na.rm=TRUE) +
     geom_bar(position = "dodge", width = 0.9) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5)) +
     labs(title = "Allergies") +
     xlab("Allergy Status") +
    scale_fill_discrete(name = "Animal Type") +
@@ -2439,16 +2424,16 @@ g7 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
    geom_text(aes(label=..count..),stat='count',
              position = position_dodge(width = 0.9),
              hjust = -0.3) +
-    coord_flip() +
     ylim(0, 350) +
-    theme_report()
+    theme_report() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r, echo=FALSE}
 grid.arrange(g6,g7, ncol=2)
 ```
 
-### Analysis of Denied and Red Flagged Applications
+### Denied and Red Flagged Application Characteristics
 
 <br> We further investigated the characteristics of applications that were denied or red flagged. There were 12 applications that were denied, 19 that were withdrawn, and 133 that were red flagged. 
 <br>
@@ -2625,7 +2610,6 @@ grid.arrange(g1,g2, ncol=2, top="Last Updated Label for Red Flagged Applications
 
 ```
 
-
 ### Important Features for Prediction
 
 ```{r randomforest, echo=FALSE}
@@ -2697,26 +2681,13 @@ These analyses examined the data in relation to geographic and population parame
 
 ### Contributors
 
-**Joy Payton, MS** is the Supervisor of Data Education in the Department of Biomedical and Health Informatics at the Children's Hospital of Philadelphia. She leads the development and implementation of education and outreach programs to help CHOP scientists become data-savvy and make the best, most informed use of the tools they have available. 
+**Joy Payton, MS** is the Supervisor of Data Education in the Dept. of Biomedical and Health Informatics at the Children's Hospital of Philadelphia. She leads the development and implementation of education and outreach programs. 
 
-**Karla Fettich, PhD** is Head of Algorithm Development at Orchestrall, Inc. She leads efforts to develop data analytics solutions, predictive models and optimization approaches to create sustainable changes that improve operations and outcomes in long term care facilities. 
+**Karla Fettich, PhD** is Head of Algorithm Development at Orchestrall, Inc. She develops data analytics solutions, predictive models and optimization approaches to improve operations and outcomes in long term care facilities. 
 
-### Datasets
+### Data Processing
 
-The following datasets were used: 
-
-1. Online applications for both cats and dogs
-In addition to the data collected via the online forms, applicants' addresses were extracted and associated with their respective census tracts. Census tracts are areas roughly equivalent to a neighborhood established by the Bureau of Census for analyzing populations, and generally have a population size between 1,200 and 8,000 people, with an optimum size of 4,000 people. Prior to making the PAWS data available, individual applicants' names, addresses and other identifiable data were removed from the dataset, keeping only census tract data and ZIP codes. 
-
-2. Trello cards and actions
-3. Census data from the 2017 five-year American Community Survey via the [American Fact Finder](https://factfinder.census.org) for the following areas: 
-
-- Economic characteristics
-- Education characteristics
-- Median rent
-- Computer and networking characteristics
-
-### Results
+We extracted addresses and associated them with their respective census tracts (this was handled by a PAWS volunteer prior to de-identified data being made available to the larger group). Census tracts are areas roughly equivalent to a neighborhood established by the Bureau of Census for analyzing populations. We used census data from the 2017 five-year American Community Survey via the [American Fact Finder](https://factfinder.census.org), and included economic characteristics, education characteristics, median rent, and computer and networking characteristics.
 
 ### Economic Considerations in Processing Applications
 
@@ -3487,20 +3458,15 @@ detach("package:raster", unload=TRUE)
 
 ```
 
-#### Dogs
-
-We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. There could be many reasons for this: applicants who live in areas where many people do not have easy access to the internet may not be as familiar with filling out an online application (which represents the current application dataset); they may also not be able to easily find the information they need (since not all websites are mobile friendly); or they may be filling out the application form on a mobile device, which might be too long/detailed to adequately complete on a small screen. 
+We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. Some reasons could be that these applicants may not be as familiar with filling out online applications (which represents the application dataset we analyzed), or they may have more difficulty finding the information they need, or may be filling out the application form on a mobile device when it was not designed this way. 
 
 ![Cell data plan only coefficients](3_GIS/dogs_celldata){width=300px} ![Population 25-34 enrolled in school coefficients](3_GIS/dogs_enrolled.png){width=300px}
 
-Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we also observed a significantly higher proprotion of efficient applications. It is unclear what the reasons behind this might be, but possible options include the applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. 
+Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we observed a significantly higher proportion of efficient applications. We speculate that this may be related to applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. Finally, we observed a trend that applications were processed more efficiently in neighborhoods with a higher proportion of children enrolled in nursery or preschool, and that this effect was stronger in the northeast. 
 
-![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=350px} ![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=350px}
+![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=300px} ![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=300px}
 
-
-#### Cats
-
-Interestingly, for cats we found that in neighborhoods where a higher percentage of the population is children in grades 5-8, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
+For cats we found that in neighborhoods where there were more middle school children, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
 
 \newpage
 ## 4. Social media factors
@@ -3792,16 +3758,28 @@ cor.test(tweets_by_week$dog, tweets_by_week$dog_apps)
 
 ```
 
-
 \newpage
 # Data considerations
 
 Over the course of our analyses, we uncovered multiple problems with the data. We highlight them here in hopes that they will be useful when redesigning the data collection process in the future. 
 
-**Missing Data**
-Overall we were able to achieve some insights given the application data. However, we were at times limited due to missing data in the applications data set. Below is a plot that shows counts of `NA`'s in each column of the data set. 
+**Cross-platform Limitations**
 
-```{r, echo = F, message = F, warning = F}
+Every platform used by PAWS (PetPoint, online forms, Trello, Volgistics, etc.) has its own way of structuring data, and its own limitations as to how the data can be extracted. For instance, the Trello API sets a hard limit on queries for actions, capping a request at 1000 data points. A data point here means every activity (e.g. card creation, checklist added, checklist item checked off, commend added, file attached, etc.) recorded online during the application process, so an animal could have dozens of these. A mass-export of data is therefore more challenging. For a more streamlined data process, it would be ideal if PAWS could reduce the number of platforms used. Additionally, keeping data about the same applicants and the same animals in multiple disconnected databases makes matching these datasets a manual (or nearly manual) process. A better integration of data would result in much deeper insights that could be obtained on a much more regular basis.
+
+**Online applications for cats and dogs are not consistent**.
+
+While the dog and cat applications collect nearly identical information, this is not reflected in the answer options recorded by the online form. For instance, in the past experience with pets, answer options were recorded as e.g. "bred-sold-a-pet" and "bred-sold", "euthanized-a-pet" and "euthanized", "lived-wit-previous-housemates_pets" and "lived-with-housemate-pet". The data analysis process could be automated and set up more more efficiently if items that mean the same thing were recorded in identical ways. 
+
+**Free text entry where a number is desired**.
+
+Several response options in the online form were set up as free text entries, when in reality the question required a number (e.g. "How long will the cat be left alone?" allows a short paragraph for a response, which leaves it up to whoever processes the application, or whoever analyzes the data, to read the paragraph and make a decision about the number). It would be more efficient for application processing, as well as for analysis, if these fields were set to require a numeric answer. With this kind of data validation in place, PAWS could set up automatic logic _inside_ the application form that could immediately identify a response that is problematic and guide the applicant to reconsider. 
+
+**Missing Data.**
+
+We were at times limited due to missing data in the applications data set. In the application nalaysis, the question with the most missing data was the one regarding home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save time in application processing. More broadly, we recommend that PAWS carefully consider which questions are most valuable, and make those required. 
+
+```{r, include = F, message = F, warning = F}
 cat_apps <- readr::read_csv(here::here("/Data/cat_apps.csv")) %>%
   mutate(animal_type = "cat")
 
@@ -3832,11 +3810,9 @@ ggplot(na_check, aes(x = reorder(variable, value), y = value)) +
 
 ```
 
+**Unlimited Responses and Response Validation.**
 
-The question with the most missing data is one regarding the home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save some time in the future.
-
-**Unlimited Responses and Response Validation**
-Like many of the other teams, we ran into several challenges as a result of questions having a wide range of possible responses and illogical answers. For example, the 12 different responses below are for the Allergy question:
+We ran into several challenges as a result of questions having a wide range of possible responses and illogical answers. For example, the 12 different response possibilities below are for the Allergy question:
 
 Response | Count
 ---------|------
@@ -3853,45 +3829,24 @@ mildly-allergic,not-sure        |  1
 very-allergic,mildly-allergic   |  1
 very-allergic,no-allergies     |   1
 
-In one case the responses conflict with each other: "very-allergic,no-allergies". This make grouping the data after the fact almost impossible because its not clear if this applicant has allergies or not. This is one example, but there were some other cases where this problem occurred as well, such as for the questions relating to Experience and Where the Pet Will be Kept. 
+In one case the responses conflict with each other: "very-allergic,no-allergies". This makes grouping the data after the fact almost impossible because it's not clear if this applicant has allergies or not. Similar situations were encountered across the dataset. Additionally, there were several items that also required some huamn interpretations and processing decisions. For instance, in the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e., only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient and could possibly even help with speed of application processing.
 
-For the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e.only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient.
+**Categorization of response items.**
 
-**Recommendations for Collecting Clean Data**
-One of the most important recommendations moving forward would be to redesign the application to enforce standardized, limited and logical responses. Allowing only a single response combined with a limited response set would make analysis much easier in the future. Doing so will save PAWS staff time when reviewing applications _and_ make future analyses  easier and can lead to better insights.  
+For several application questions, it was unclear how these could be classified into broader categories (which could help streamline the online process, as well as future analyses). For instance, the question asking about experience with pets covers a broad range of experiences, some more desirable than others. However, distinguishing problematic answers from non-problematic ones, or clasisifying someone's experience with a pet (e.g. novice, average, experienced) from these responses is not possible.
 
-• We recommend redesiging the application to enforce standardized, limited, and logical responses. For
-example, for certain questions, allow only a single response or provide a drop down menu. Doing so will
-save PAWS staff time when reviewing applications and help with future analyses.
+**Trello label structure.**
 
-\newpage
+In the Trello card labels we analyzed, we found 37 unique labels, and it was unclear how these were structured. A more deliberate approach to creating and applying labels to cards could help  clarify where each application is at a given point without requiring an in-depth read of the comments history.
+
 # Conclusions and Next Steps
 
-Animal characteristics, intake characteristics, and seasonal and locational patterns contributed to animals' wait times at PAWS in 2018. Almost all animals' outcomes from 2018 were adoptions, meaning that PAWS is fulfilling its goal of finding homes for adoptable animals in the Philadelphia area. The median wait time for cats was longer than the median wait time for dogs. We believe that this effect was at least in part driven by longer wait times for sick, young cats in the spring and summer months. We also observed differences in wait time by PAWS location for each species. Overall, our findings indicate that PAWS may want to focus resources on young and sick cats in the spring and summer months in order to reduce wait times.
+Based on these analyses, we recommend the following: 
 
-We found that for applications that resulted in adoption, cat applications took longer to process (19 days) than dog applications (8 days). Cat apps took 19 days and dog apps took 8 days on average, with the slowest adoptions being at PAWS Foster Program & PAWS Offsite Adoptions locations. We also found that most adopters lived by themselves, or with one other adult in the home, and the majority did not have children in the home. Very few applications were denied in 2018. 
-
-**1. PAWS could develop a "smart" online application, that automatically educates the applicant on the cost of pet ownership when the budget is too low.**
-
-Since red flagged and denied applications still require processing by PAWS staff, and possibly even more intense processing than approved applications, it may be worth automatically screening and educating applicants who may have unrealistic budgeting expectations. Thus, perhaps a pop-up chart could appear when the budget is too low, *while* the applicant fills out the form. If the applicant proceeds to submit the application with a too-low budget, this application could be automatically labeled a red flag and sent for processing to a more experienced staff for further processing. 
-
-**2. PAWS could provide applicants with a detailed breakdown of costs for a new pet, and have an adoption counselor go through the itemized list with the applicant to identify how each item could be covered.**
-
-Taking for instance [the pet care cost estimates provided by the ASPCA](https://www.aspca.org/sites/default/files/pet_care_costs.pdf), PAWS could identify which categories might be most difficult for an applicant to cover. Then, PAWS could provide a set of options (e.g. list of lower cost vets, cheaper options for enrichment using household items, list of affordable dog trainers) that might make the costs more manageable for those who are on a tighter budget. 
-
-**3. PAWS could promote sharing or pooling of resources among its adopters.**
-
-Many pets have preferences when it comes to food, treats and toys, and it takes a while for a new adopter to learn them. This can result in a lot of wasted money. PAWS could facilitate and promote sharing of these resources (including any other accessories, or even transport help), at the adopters' own risk, via an online community. 
-
-**4. PAWS could assess the user-friendliness of its online application form on different platforms. **
-
-While the PAWS website might be mbile-friendly, PAWS could further assess whether the application form itself is represented in the most efficient way on a mobile device. To do this, information would first need to be collected on the number of applicants who submit the application from a mobile device, as a revamping of the mobile interface for the application form may only be necessary if application quality is dependent on the device from which the application was submitted. An additional indicator of user friendliness could be the amount of time applicants spend on an application. PAWS could consider a 'smart' approach in sequencing and presenting questions so that the process is relatively speedy for the applicant, while also ensuring quality data.
-
-**5. PAWS could consider creating programs that are aimed at families with middle-schoolers. **
-
-Given that there is a spike in children's interest in animals in middle school, PAWS could consider some ways to increase involvement of children in the animal care process, either by creating kid-friendly volunteer opportunities, kid-friendly community groups among adopters, or even informational events where people who are interested in adopting can ask questions and discuss experiences with adopters and PAWS representatives. 
-
-Keep on tweeting! If someone wanted to dig deeper into this data, they could:
-
-* Perform better image analysis on photos tweeted
-* Try to link tweets about certain topics (a specific animal, request for donations) to specific outcomes (did the animal get adopted? did they receive more donations?)
+* Focus resources on young and sick cats in the spring and summer months in order to reduce wait times
+* Develop a "smart" online application, that automatically educates the applicant on the cost of pet ownership when the budget is too low
+* Provide applicants with a detailed breakdown of costs for a new pet, and have an adoption counselor go through the itemized list with the applicant to identify how each item could be covered
+* Promote sharing or pooling of resources among adopters (e.g. food, treats and toys) to help them financially
+* Assess the user-friendliness of the online application form on different platforms (eg web vs mobile)
+* Consider creating programs for families with children to help them complete the adoption process and/or to make adopting an animal more accessible to them
+* Keep on tweeting! (for future analyses it may be interesting to look at tweets about certain topics (a specific animal, request for donations) and specific outcomes (did the animal get adopted? did they receive more donations?)
