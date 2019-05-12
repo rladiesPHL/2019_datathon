@@ -37,27 +37,31 @@ theme_report <- function () {
 
 **Animals**
 
-* By far, most animals arrived at PAWS via partner transfers-in, followed by Project MEOW (cats) and ACCT diversions (dogs)
-* Adoptions made up 92% of all cats' outcomes and 93% of all dogs' outcomes at PAWS in 2018
-* On average cats waited longer (52 days) than dogs (20 days) to find an adopter; strays, transfers-in, and animals in the Foster Program waited the longest to be adopted
-* The most quickly adopted animals were 12 week old to 1 year old cats and 6 months old to 4 year old dogs, while the most slowly adopted animals were cats under 12 weeks and dogs under 4 weeks or over 10 years
-* Peak intake months for cats were March-May and releases were August and November, while dog intakes and releases both peaked in December and January; the intake/release ratio for cats in March - June, and for dogs in July and October may indicate times of increased volunteer need
+* In 2018, most homeless cats and dogs arrived at PAWS via partner organization, Project MEOW (cats), and ACCT diversions (dogs) 
+* Peak intake months were March - May for cats and December and January for dogs
+* PAWS received noticeably more animals than it placed in adoptive homes in March - June (cats) and July and October (dogs)
+* PAWS found adoptive homes for over 92% of homeless cats and dogs that were taken in
+* Adoptions were fastest for cats 12 weeks - 1 year old and dogs 6 months - 4 year old
+* Slower adoption timelines were observed cats (52 days vs. 20 days for dogs), animals that were strays, tranfers-in, or in PAWS' Foster Program, very young animals (cats under 12 weeks and dogs under 4 weeks) and older dogs (over 10 years)
 
 **Applications**
 
-* Cat applications took more than twice as long to process than dog applications (19 days vs 8 days), and overall applications took longer to process for animals adopted from the Foster Program
+* Potential adopters waited longer before adopting cats (19 days) than dogs (8 days)
+* PAWS staff spent more time, on average, on each application checklist item for cats (1.2 days) than for dogs (0.9 days)
+* Applications that resulted in adoptions from the Foster Program and from Offsite Locations took longer to reach the adoption outcome than applications that resulted in adoptions from other locations
 * Checking vet references was the most time consuming item in the application checklist process (approx. 1.8 days)
 * Applicants whose applications were processed more quickly tended to live in neighborhoods where fewer people relied on cell data for internet (dogs), where more people 25-34 years were enrolled in school (dogs), where there were more kids enrolled in preschool or nursery school (dogs), and where there were fewer kids in grades 5-8 (cats)
-* PAWS' Twitter activity was uncorrelated with adoption applications
-* Denied applications were very few, and tended to have no mention of a home pet policy and more reports of potentially problematic incidents with past pets; however, applications from neighborhoods with a lower household median income (under $50,000/year) were more likely to be red flagged and denied, compared to those with a higher household median income (over $50,000/year)
-* Factors influencing adoptions included expressing interest in a specific animal, as well as the number of children in the home, animal type, and the date submitted
+* Red flagged applications required more resources from PAWS staff, as they were sent to a manager for decision, or required more information from the applicant; these applications tended to come from neihborhoods with a lower household median income
+* Denied applications were very few, and tended to have no mention of a home pet policy and more reports of potentially problematic incidents with past pets; they also came from neighborhoods with a lower household median income
+* Factors positively influencing adoptions included expressing interest in a specific animal, having no children in the home, and applying to adopt a dog
 * Cat applicants tended to have a lower monthly pet budget (up to $100), expected to leave the animal home alone for longer hours (8 hours), lived with no other adult in the home, had no children, and lived in areas with a lower median income, and where more people relied on public transit for their commute
 * Dog applicants tended to have a higher monthly pet budget ($200-$500), shared their home with 1 other adult, had no children, and lived in areas with a higher median income, and where fewer people relied on public transit for their commute
+* PAWS' Twitter activity was uncorrelated with adoption applications
 
 \newpage
 # Problem definition
 
-The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. PAWS is a non-profit organization dedicated to saving Philadelphia’s homeless and at-risk animals. It is the city’s largest rescue partner and provider of low-cost, basic veterinary care for pet owners and rescue organizations that cannot otherwise access or afford it. Through its 3 no-kill shelters, foster care network, and special events, PAWS finds loving homes for thousands of animals each year. For this data challenge, PAWS made de-identified data from 2018 available. The datasets included adoption application form submissions, application processing data from staff, and animal outcome data. We developed analytic approaches to better understand the following topics:
+The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfare Society (PAWS)](https://phillypaws.org/) improve its adoptions processes. PAWS is a non-profit organization dedicated to saving Philadelphia’s homeless and at-risk animals. It is the city’s largest rescue partner and provider of low-cost, basic veterinary care for pet owners and rescue organizations that cannot otherwise access or afford it. Through its 3 no-kill shelters, foster care network, and special events, PAWS finds loving homes for thousands of animals each year. For this data challenge, PAWS made de-identified data from 2018 available. We developed analytic approaches to better understand the following topics:
 
 1. An animal's trajectory at PAWS
 2. An adoption application's trajectory at PAWS
@@ -66,8 +70,9 @@ The 2019 R-Ladies for PAWS Datathon aimed to help the [Philadelphia Animal Welfa
 
 # Datasets
 
-* **Trello cards**: A card contains information about when the application started being processed by PAWS and what label PAWS determined it should have (e.g. "ready to adopt", "red flag", etc.)
-* **Trello actions**: Trello actions contained information about the steps in the baclground check process (e.g. vet check, Pet Point check, landlord check, etc.). 
+* **Application data** from online application forms for dogs and cats, received between August - December 2018
+* **Animal status data** from PetPoint, including intake date, release date, release location, health status, etc. 
+* **Application processing data** from Trello, which inlcuded *cards* (information about when the application started being processed by PAWS and what label PAWS determined it should have (e.g. "ready to adopt", "red flag", etc.)) and *actions related to checklist items* (information about the steps in the background check process (e.g. vet check, Pet Point check, landlord check, etc.)).
 
 # Timeline and Workflow
 
@@ -76,6 +81,8 @@ Prior to kickoff, data were obtained and preprocessed. After downloading the dat
 **February 12**: Kickoff Meetup: At this event, the project was introduced and teams were formed to work on one of the 4 topics outlined above. All participants were encouraged to join the R-Ladies Philly Slack workspace and to set up a GitHub account (which was used as the main collaborative platform). After the kickoff meetup, groups worked together online, getting together on an as-needed basis. Questions were asked and answered via Slack, with an occasional clarification email to PAWS.
 
 **March 26**: Conclusion Meetup: At this meetup, teams presented their results and discussed their experiences. Individual team reports were finalized in the weeks following this meetup, and then integrated into the present report. 
+
+After the March meetup, reports were combined and edited into the present report. The full data and analyses can be found on the [RLadies Philly GitHub account](https://github.com/rladiesPHL/2019_datathon). 
 
 \newpage
 # Results
@@ -485,7 +492,7 @@ theme(strip.text = element_text(size=14))+
 
 #### Age Group
 
-For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spent the least amount of time at PAWS. Dogs aged 6 months to 4 years spent the least amount of time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
+For cats and dogs alike, the longest wait times were in the 0-4 weeks age group. Understandably, these kittens and puppies require more time at PAWS before they can be adopted out. Interestingly, the longer wait time holds for cats up to 12 weeks, after which it decreases from roughly 65 days to 35 days. Cats aged between 12 weeks and 1 year spent the shortest time at PAWS. Dogs aged 6 months to 4 years spent the shortest time at PAWS, while the time at PAWS increased more sharply for dogs 10 or more years of age. 
 
 ```{r wait time by animal age, echo = FALSE}
 
@@ -716,7 +723,7 @@ raw_data %>%
 
 ### Intake  Characteristics
 
-The majority of animals arriving at PAWS were transfers-in (followed by strays, for cats). Cats had longer wait times for each intake type relative to dogs (an interesting difference in particular is owner surrender). For both cats and dogs, strays and transfers in had the highest wait times. 
+The majority of animals arriving at PAWS were transfers-in (followed by strays, for cats, and owner surrenders, for dogs). Cats had longer wait times for each intake type relative to dogs. For both cats and dogs, strays and transfers in had the highest wait times. 
 
 ```{r, echo = FALSE}
 
@@ -893,14 +900,14 @@ g4 <- ggplot(master_animal_intake_subtype[master_animal_intake_subtype$animal_ty
 
 ```
 
-Partner transfers in accounted for the vast majority of intakes. However, differences were observed for the next highest intake subtypes: the next-highest numbers of cats arrived at PAWS via Project Meow (395 cats, or 19.7%), Public Drop_off (342 cats, or 17%)), and Returned Adoption (134 cats, or 7%). Meanwhile, the next-highest numbers of dogs arrived at PAWS as ACCT Diversions (43 dogs or 13%), Returned Adoptions (42 dogs or 13%), and In-Person Surrenders to Shelter (24 dogs or 7%). 
+Partner transfers in accounted for the vast majority of intakes. However, differences were observed for the next highest intake subtypes: the next-highest numbers of cats arrived at PAWS via Project Meow (395 cats, or 19.7%), Public Drop-off (342 cats, or 17%)), and Returned Adoption (134 cats, or 7%). Meanwhile, the next-highest numbers of dogs arrived at PAWS as ACCT Diversions (43 dogs or 13%), Returned Adoptions (42 dogs or 13%), and In-Person Surrenders to Shelter (24 dogs or 7%). 
 
 ```{r, echo = FALSE}
 grid.arrange(g1,g2,top = "Cats", ncol=2)
 grid.arrange(g3,g4,top = "Dogs", ncol=2)
 ```
 
-It is also worth noting that for both dogs and cats, returned adoptions experienced the speediest re-adoption (15 days median wait for cats, and 10 days median wait for dogs). The next intake subtypes that were associated with shortest wait times for cats were In-Person Surrender to Shelter (36 days), while for dogs these were ACCT Diversion (12 days) and In Person Surrender to Shelter (14.5 days). (Note: we found one record of a dog whose intake subtype was "Project Meow", which may have been an input error - but we included it in the graph below nonetheless.)
+It is also worth noting that for both dogs and cats, returned adoptions experienced the speediest re-adoption (15 days median wait for cats, and 10 days median wait for dogs). The next intake subtypes that were associated with shortest wait times for cats were In-Person Surrender to Shelter (36 days), while for dogs these were ACCT Diversion (12 days) and In Person Surrender to Shelter (14.5 days). (Note: we found one record of a dog whose intake subtype was "Project Meow", which may have been an input error - but we included it in the graph nonetheless.)
 
 ```{r, include = FALSE}
 subtype_filter <- master_animal_intake %>% 
@@ -1013,7 +1020,7 @@ ggplot(df_intake_outtake_index, aes(x=Month, y=Index, fill = Season)) +
 
 ```
 
-We also looked at monthly trends in intakes and releases by species. Specifically, the graphs below show the difference between total number of intakes and releases by month, divided by the total number of intakes and releases per month. The resulting bars can be interpreted as follows: 
+We also looked at monthly trends in intakes and releases by species. Specifically, the graph below shows the difference between total number of intakes and releases by month, divided by the total number of intakes and releases per month. The resulting bars can be interpreted as follows: 
 
 - if >0, the number of intakes is greater than the number of releases
 - if <0, the number of releases is greater than the number of intakes
@@ -1280,7 +1287,7 @@ ggplot(df_PAWS_OA_intake_outtake_index_species, aes(x=Month, y=Index, fill = Sea
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45, hjust=1)) 
 ```
 
-More cats were taken in than were released in the following patterns: 
+More cats were taken in than were released in: 
 
 * January, for Offsite Adoptions
 * March, for Grays Ferry
@@ -1288,9 +1295,9 @@ More cats were taken in than were released in the following patterns:
 * May, for Grant Ave, PAC and Foster program
 * December, for Offsite Adoptions
 
-It is interesting to observe that the clinic locations receive more cats than they release (which could be an effect of cats being relocated) in spring, while offsite adoptions receive more cats than they release in January and February.
+It is interesting to observe that the clinic locations received more cats than they released (which could be an effect of cats being relocated) in spring, while offsite adoptions received more cats than they released in January and February.
 
-More dogs were taken in than were released in the following patterns: 
+More dogs were taken in than were released in: 
 
 * January, for Grant Ave
 * February, for Offsite Adoptions
@@ -1300,7 +1307,7 @@ More dogs were taken in than were released in the following patterns:
 * October, for Grays Ferry
 * November, for Foster Program
 
-Here it is interesting to observe that the clinic locations receive more dogs than they release in summer months.
+Here it is interesting to observe that the clinic locations received more dogs than they released in summer months.
 
 We furthern examined seasonal patterns in wait time, by species: 
 ```{r, include = FALSE}
@@ -1539,7 +1546,7 @@ master_animal %>%
 
 This analysis investigated factors relating to an application's trajectory at PAWS - from the time when an applicant submits an application, through the validation checks done by PAWS, to the time the application is marked as complete. The dataset analyzed here included trello IDs (1594 unique trello IDs) and their matched application data from the online application form (applications submitted dates between 2018-08-30 to 2018-12-31). 
 
-We found that for applications that resulted in adoption, cat applications took longer to process (19 days) than dog applications (8 days). Cat apps took 19 days and dog apps took 8 days on average, with the slowest adoptions being at PAWS Foster Program & PAWS Offsite Adoptions locations. We also found that most adopters lived by themselves, or with one other adult in the home, and the majority did not have children in the home. Very few applications were denied in 2018. 
+We found that for applications that resulted in adoption, cat applications took longer to process (19 days) than dog applications (8 days), with the slowest adoptions being at PAWS Foster Program & PAWS Offsite Adoptions locations. We also found that most adopters lived by themselves, or with one other adult in the home, and the majority did not have children in the home. Very few applications were denied in 2018. 
 
 ### Contributors
 
@@ -1550,7 +1557,7 @@ We found that for applications that resulted in adoption, cat applications took 
 * **Brendan Graham** is a clinical data analyst at The Children’s Hospital of Philadelphia with a background in applied statistics.
 * **Ambika Sowmyan** heads the Marketing data analytics group at Hartford Funds. Her background is in Finance and Retail and has a graduate degree in Management and Predictive Analytics.
 
-### Data Pre-processing
+### Data Pre-Processing
 
 ```{r load_data, echo = FALSE, message = FALSE, warning = FALSE}
 cat_apps = read_csv(here::here("/Data/cat_apps.csv"))
@@ -2000,7 +2007,7 @@ site_animal_df <- master_apps_report %>%
   mutate_at(vars(mean, median), funs(round(., 2)))                # round the calcs to 2 decimal places
 ```
 
-```{r kc_heatmap_site, echo=FALSE, fig.height=2.6, fig.width=7, fig.align = "center"}
+```{r kc_heatmap_site, include=FALSE, fig.height=2.6, fig.width=7, fig.align = "center"}
 # heatmap plot of median adoption time by animal & adoption site
 
 site_animal_df %>%
@@ -2084,18 +2091,14 @@ kable(kc_table_site, "latex", booktabs = T,
     kable_styling(full_width = F)
 ```
 
-From the heatmap and table above, it's clear that overall median processing times for applications that resulted in adoptions were higher at PAWS Foster Program & PAWS Offsite Adoptions locations. This is especially true for cat applications at those places. 
-
 Based on median values, here are the fastest & slowest time-to-adoption sites:
 
 * **Cats**
-    + Slowest: PAWS Foster Program
-    + Fastest: Grays Ferry Avenue
+    + Slowest: PAWS Foster Program & Offsite Locations - 25 days
+    + Fastest: PAC (Grays Ferry was faster but only had 2 cats in our dataset) - 8 days
 * **Dogs**
-    + Slowest: PAWS Foster Program
-    + Fastest: PAC
-
-Only one site had a higher median adoption time for dogs than for cats—Grays Ferry Avenue. This site also had the fewest cat adoptions, though (n=2). It's also important to note the small n size for dog apps at PAWS Offsite Adoptions (n=1). 
+    + Slowest: Grays Ferry Ave (PAWS Offsite Adoptions was slower but only had 1 dog in our dataset) - 12 days
+    + Fastest: PAC - 4 days
 
 #### Application Checklist Items
 
@@ -2190,7 +2193,7 @@ g1 <- master_apps_report %>%
 grid.arrange(g1, ncol=1, heights=c(10,7))
 ```
 
-When applicants requested a specific animal, 30% of applications resulted in an adoption vs. only 22% of the applications resultd in an adoption when the applicants did not request a specific animal. 
+When applicants requested a specific animal, 30% of applications resulted in an adoption vs. only 22% of the applications resulted in an adoption when the applicants did not request a specific animal. 
 
 ```{r, include=FALSE}
 g1 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
@@ -2263,7 +2266,7 @@ g5 <- master_apps_report %>% filter(outcome_type=="Adoption" & (!is.na(children_
 ```{r, echo=FALSE}
 grid.arrange(g4,g5, ncol=2)
 ```
-We found that the majority of applicants who lived alone preferred cats, while the the majority of applicants who lived with 1 other person preferred a dog. Furthermore, individuals with no children at home seemed to make up the largest number of applicants. 
+We found that the majority of applicants who lived alone preferred cats, while the the majority of applicants who lived with 1 other adult preferred a dog. Furthermore, individuals with no children at home seemed to make up the largest number of applicants. 
 
 ```{r, echo=FALSE}
 expcols <- master_apps_report %>% 
@@ -2323,7 +2326,7 @@ expdata %>%
     theme_report()
 ```
 
-When we looked at the type of experiences applicants had with animals, we noticed that a higher number of successful applicants had less experience with animals. The main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. 
+When we looked at the type of experiences applicants had with animals, we noticed that a higher number of successful applicants had less experience with animals. Furthermore, the main reason that people would return a pet in the future is if the pet becomes aggressive or if allergies appeared. 
 
 ```{r, include=FALSE}
 ### Home Pet Policy
@@ -2411,7 +2414,7 @@ retdata %>%
 
 ```
 
-Unsurprisingly, the vast majority of people who adopted a pet from PAWS reported no allergies, nad had a home policy that allowed pets.
+Unsurprisingly, the vast majority of people who adopted a pet from PAWS reported no allergies, and had a home policy that allowed pets.
 
 ```{r, include=FALSE}
 g7 <- master_apps_report %>% filter(outcome_type=="Adoption") %>%
@@ -2668,9 +2671,9 @@ testing <- master_mod[-inTrain,]
 
 After separately analyzing the different characteristics that affect whether an application results in an adoption, we wanted to further understand  how the different features in the dataset could have had a combined effect on the adoption status. We therefore ran a basic Random Forests model on the dataset. A Random Forest is basically a tree-based algorithm where a random subset of predictors (or features) are evaluated at each node and the observed data is split into two regions using one of the predictors and a threshold value for that predictor such that the error in predicting the adoption status is minimized. Starting from the top of the tree with one node, two new nodes are created with each split and the tree is grown recursively till there are only a few observations in each leaf node. Multiple trees are built similarly and the results are combined together to predict the adoption status for any given set of characteristics. 
 
-To successfully build a Random Forest, we further cleaned the data to take care of all the missing values. We used 1665 observations and 90 variables out of a total of 1684 observations and 251 variables.
+The combined effect of different characteristics on the adoption status can be studied by considering one of the important outputs generated by the Random Forests, the subset of predictor values that are found to be most commonly used as a criteria for splitting the dataset into two smaller regions at each node. We found that the top three characteristics that influenced successful adoptions were the number of children in a home, applying for a dog, and the date the application was submitted. 
 
-The combined effect of different characteristics on the adoption status can be studied by considering one of the important outputs generated by the Random Forests, the subset of predictor values that are found to be most commonly used as a criteria for splitting the dataset into two smaller regions at each node. This subset of predictor values, referred to as Important Variables, are shown in the plot below.  As seen in the list, we find that the top three characteristics are number of children in a home, the type of dog, and the date the application was submitted. Improved results or a different set of important characteristics can be obtained from better and more complete data. 
+In future analyses, these variables can be highlighted to better understand adoption patterns.
 
 <!-- ![Important variables](2_Applicants/final_analyses/report_images/ImportantVariables.png){width=600px} -->
 
@@ -2792,7 +2795,7 @@ grid.arrange(g1, g2, g3, g4, ncol=2,
 
 On average, we observed that dog applicants live in areas where the median income is higher compared to cat applicants (around $60,000/year for dog applicants vs. $54,000/year for cat applicants) and where the percent of households living under the poverty level is lower (18% for dog applicants vs. 22% for cat applicants). This suggests that dog applicants are from slightly wealthier neighborhoods. We further observed that dog applicants have more range between lower middle class and upper middle class, while cat applicants tend to skew more toward lower incomes. We also examined whether unemployment and reliance on public transit might play a role in applicants' preferences for dogs vs. cats. We observed no differences in mean neighborhood estimates of number of unemployed people of dog vs. cat applicants, but we did notice that in neighborhoods where cat applicants live, more people tend to rely on public transit for their commute to work. 
 
-This finding aligns with the previous group's findings that a greater proportion of cat applicants had a lower monthly budget for pet care, compared to dog applicants, as well as with [the pet care cost estimates provided by the ASPCA](https://www.aspca.org/sites/default/files/pet_care_costs.pdf) which suggest that the first year total costs of owning a dog ($1,471 - $1,779) exceed those of owning a cat ($1,174). 
+This finding aligns with the previous group's findings that a greater proportion of cat applicants had a lower monthly budget for pet care, compared to dog applicants. This is also in line with [the pet care cost estimates provided by the ASPCA](https://www.aspca.org/sites/default/files/pet_care_costs.pdf) which suggest that the first year total costs of owning a dog ($1,471 - $1,779) exceed those of owning a cat ($1,174). 
 
 While we observed neighborhood wealth differences in animal species preference by applicants, we did not observe this factor to be biasing PAWS when processing applications (for this comparison, we used the "complete" status of a trello card at the time when the data were pulled - although this is fairly vague indicator because it does not describe the outcome of an application beyond having been processed).
 
@@ -2816,7 +2819,7 @@ g1 <- all_applicants %>%
     ggplot(aes(x=denied, y=`med_income`)) +
     geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Denied Applications") +
-    labs(x = "Application Outcome",
+    labs(x = "Denied",
          y= "Average median income") +
     theme_report()  + 
     geom_text(aes(label = paste("$ ",round(`med_income`/1000, digits=2)," K"), y = med_income), size = 3, position = position_stack(vjust = 0.5))
@@ -2827,7 +2830,7 @@ g2 <- all_applicants %>%
     ggplot(aes(x=red_flag, y=`med_income`)) +
     geom_bar(stat = "identity", fill = c("darkgoldenrod2","aquamarine3")) + 
     ggtitle("Red Flagged Applications") +
-    labs(x = "Application Outcome",
+    labs(x = "Red Flagged",
          y= "Average median income") +
     theme_report()  + 
     geom_text(aes(label = paste("$ ",round(`med_income`/1000, digits=2)," K"), y = med_income), size = 3, position = position_stack(vjust = 0.5))
@@ -3458,15 +3461,15 @@ detach("package:raster", unload=TRUE)
 
 ```
 
-We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was a trend for a lower proportion of efficient applications, this effect being more pronounced in north and northeast Philadephia. Some reasons could be that these applicants may not be as familiar with filling out online applications (which represents the application dataset we analyzed), or they may have more difficulty finding the information they need, or may be filling out the application form on a mobile device when it was not designed this way. 
+We found that in neighborhoods with a higher percentage of people who have a cell data plan and no other type of internet subscription, there was a trend for a lower proportion of efficient **dog** applications, this effect being more pronounced in north and northeast Philadephia. Some reasons could be that these applicants may not be as familiar with filling out online applications (which represents the application dataset we analyzed), or they may have more difficulty finding the information they need, or may be filling out the application form on a mobile device when it was not designed this way. 
 
 ![Cell data plan only coefficients](3_GIS/dogs_celldata){width=300px} ![Population 25-34 enrolled in school coefficients](3_GIS/dogs_enrolled.png){width=300px}
 
-Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we observed a significantly higher proportion of efficient applications. We speculate that this may be related to applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. Finally, we observed a trend that applications were processed more efficiently in neighborhoods with a higher proportion of children enrolled in nursery or preschool, and that this effect was stronger in the northeast. 
+Additionally, in neighborhoods with a higher percentage of the population 25 to 34 year old enrolled in school, we observed a significantly higher proportion of efficient **dog** applications. We speculate that this may be related to applicants' level of comfort with online applications, access to information, or other factors that are more specific to the life circumstances of individuals enrolled in school. Finally, we observed a trend that **dog** applications were processed more efficiently if applicants lived in neighborhoods with a higher proportion of children enrolled in nursery or preschool, and that this effect was stronger in the northeast. 
 
 ![Percentage of kids enrolled in nursery school](3_GIS/dogs_nurseryschool.png){width=300px} ![Children grades 5-8 coefficients](3_GIS/cats_grades5-8.png){width=300px}
 
-For cats we found that in neighborhoods where there were more middle school children, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
+For **cats** we found that in neighborhoods where there were more middle school children, the proportion of efficient applications was lower, this effect being more pronounced in the north and northeast. While we do not know the reasons for this effect, it may be worth [noting that ownership of and interest in pets tend to peak in middle childhood (i.e., 8–12 years)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6275470/). It may be that this effect influences the decision to submit an application, but that other barriers interfere with the application's timely processing (e.g. incomplete information, lack of responsiveness to provide additional information, change of mind). 
 
 \newpage
 ## 4. Social media factors
@@ -3547,7 +3550,7 @@ a <- tweets_18 %>%
 a$ratio <- (a$favorites + a$retweets)/a$tweets
 ```
 
-We calculated the ratio of retweets and favorites to paws tweets, per day, as an index of how many people see and interact with a tweet. On average in 2018, 1 PAWS tweet was seen and either retweeted or liked by 33 people. 
+We calculated the ratio of retweets and favorites to PAWS tweets, per day, as an index of how many people see and interact with a tweet. On average in 2018, 1 PAWS tweet was retweeted or liked by 33 people. 
 
 ```{r, include = FALSE}
 # Plot by day-of-the-week:
@@ -3761,23 +3764,23 @@ cor.test(tweets_by_week$dog, tweets_by_week$dog_apps)
 \newpage
 # Data considerations
 
-Over the course of our analyses, we uncovered multiple problems with the data. We highlight them here in hopes that they will be useful when redesigning the data collection process in the future. 
+Over the course of our analyses, we uncovered multiple challenges with the data. We highlight them here in hopes that they will be useful when redesigning the data collection process in the future. 
 
-**Cross-platform Limitations**
+**Cross-platform limitations**
 
-Every platform used by PAWS (PetPoint, online forms, Trello, Volgistics, etc.) has its own way of structuring data, and its own limitations as to how the data can be extracted. For instance, the Trello API sets a hard limit on queries for actions, capping a request at 1000 data points. A data point here means every activity (e.g. card creation, checklist added, checklist item checked off, commend added, file attached, etc.) recorded online during the application process, so an animal could have dozens of these. A mass-export of data is therefore more challenging. For a more streamlined data process, it would be ideal if PAWS could reduce the number of platforms used. Additionally, keeping data about the same applicants and the same animals in multiple disconnected databases makes matching these datasets a manual (or nearly manual) process. A better integration of data would result in much deeper insights that could be obtained on a much more regular basis.
+Every platform used by PAWS (e.g. PetPoint, online forms, Trello, Volgistics, etc.) has its own way of structuring data, and its own limitations as to how the data can be extracted. For instance, the Trello API sets a hard limit on queries for actions, capping a request at 1000 data points. A data point here means every activity (e.g. card creation, checklist added, checklist item checked off, commend added, file attached, etc.) recorded online during the application process, so an animal could have dozens of these. A mass-export of data is therefore more challenging. For a more streamlined data process, it would be ideal if PAWS could reduce the number of platforms used. Additionally, keeping data about the same applicants and the same animals in multiple disconnected databases makes matching these datasets a manual (or nearly manual) process. A better integration of data would result in much deeper insights that could be obtained on a much more regular basis.
 
-**Online applications for cats and dogs are not consistent**.
+**Online applications for cats and dogs are not consistent**
 
-While the dog and cat applications collect nearly identical information, this is not reflected in the answer options recorded by the online form. For instance, in the past experience with pets, answer options were recorded as e.g. "bred-sold-a-pet" and "bred-sold", "euthanized-a-pet" and "euthanized", "lived-wit-previous-housemates_pets" and "lived-with-housemate-pet". The data analysis process could be automated and set up more more efficiently if items that mean the same thing were recorded in identical ways. 
+While the dog and cat applications collect nearly identical information, this is not reflected in the answer options recorded by the online form. For instance, in the question on past experience with pets, answer options were recorded as e.g. "bred-sold-a-pet" and "bred-sold", "euthanized-a-pet" and "euthanized", "lived-wit-previous-housemates_pets" and "lived-with-housemate-pet". The data analysis process could be automated and set up more more efficiently if items that have the same meaning were recorded in identical ways. 
 
-**Free text entry where a number is desired**.
+**Free text entry where a number is desired**
 
 Several response options in the online form were set up as free text entries, when in reality the question required a number (e.g. "How long will the cat be left alone?" allows a short paragraph for a response, which leaves it up to whoever processes the application, or whoever analyzes the data, to read the paragraph and make a decision about the number). It would be more efficient for application processing, as well as for analysis, if these fields were set to require a numeric answer. With this kind of data validation in place, PAWS could set up automatic logic _inside_ the application form that could immediately identify a response that is problematic and guide the applicant to reconsider. 
 
-**Missing Data.**
+**Missing Data**
 
-We were at times limited due to missing data in the applications data set. In the application nalaysis, the question with the most missing data was the one regarding home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save time in application processing. More broadly, we recommend that PAWS carefully consider which questions are most valuable, and make those required. 
+We were at times limited due to missing data in the applications data set. In the application analysis, the question with the most missing data was the one regarding home pet policy. This seems like an important question, especially for renters, and a non-response here may require manual follow up by PAWS staff. Making this a required question could save time in application processing. More broadly, we recommend that PAWS carefully consider which questions are most valuable, and make those required. 
 
 ```{r, include = F, message = F, warning = F}
 cat_apps <- readr::read_csv(here::here("/Data/cat_apps.csv")) %>%
@@ -3810,7 +3813,7 @@ ggplot(na_check, aes(x = reorder(variable, value), y = value)) +
 
 ```
 
-**Unlimited Responses and Response Validation.**
+**Unlimited Responses and Response Validation**
 
 We ran into several challenges as a result of questions having a wide range of possible responses and illogical answers. For example, the 12 different response possibilities below are for the Allergy question:
 
@@ -3829,13 +3832,13 @@ mildly-allergic,not-sure        |  1
 very-allergic,mildly-allergic   |  1
 very-allergic,no-allergies     |   1
 
-In one case the responses conflict with each other: "very-allergic,no-allergies". This makes grouping the data after the fact almost impossible because it's not clear if this applicant has allergies or not. Similar situations were encountered across the dataset. Additionally, there were several items that also required some huamn interpretations and processing decisions. For instance, in the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e., only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient and could possibly even help with speed of application processing.
+In one case the responses conflict with each other: "very-allergic,no-allergies". This makes grouping the data after the fact almost impossible because it's not clear if this applicant has allergies or not. Similar situations were encountered across the dataset. Additionally, there were several items that also required some interpretation and processing decisions. For instance, in the monthly budget question, there were several negative numbers and some extremely large, strange values (i.e $150,159.00). Utilizing some kind of response validation logic (i.e., only allow positive values) and limiting the range of responses to a reasonable size given the question (in this case maybe between 200 and 1,000) would also make future analysis much more efficient and could possibly even help with speed of application processing.
 
-**Categorization of response items.**
+**Categorization of response items**
 
-For several application questions, it was unclear how these could be classified into broader categories (which could help streamline the online process, as well as future analyses). For instance, the question asking about experience with pets covers a broad range of experiences, some more desirable than others. However, distinguishing problematic answers from non-problematic ones, or clasisifying someone's experience with a pet (e.g. novice, average, experienced) from these responses is not possible.
+For several application questions, it was unclear how these could be classified into broader categories (which could help streamline the online process, as well as future analyses). For instance, the question asking about experience with pets covers a broad range of experiences, some more desirable than others. However, distinguishing problematic answers from non-problematic ones, or classifying someone's experience with a pet (e.g. novice, average, experienced) from these responses is not possible.
 
-**Trello label structure.**
+**Trello label structure**
 
 In the Trello card labels we analyzed, we found 37 unique labels, and it was unclear how these were structured. A more deliberate approach to creating and applying labels to cards could help  clarify where each application is at a given point without requiring an in-depth read of the comments history.
 
@@ -3843,10 +3846,15 @@ In the Trello card labels we analyzed, we found 37 unique labels, and it was unc
 
 Based on these analyses, we recommend the following: 
 
+* Categorize animals and applications into levels of difficulty for processing so that applications can be matched with staff and volunteers based on their experience level
+* Set an expected timeline for animals in foster care, taking into account an animal's species, age and medical needs; incentivize foster parents to adhere to the timeline by creating a clear goal structure (e.g. set number of events to partcipate in, number of social media posts to share, number of applications to process, etc.)
+* Identify the reasons for processing speed differences between cat and dog applications
+* Reduce time spent on checking vet references by placing some of the processing burden on applicants (e.g. have applicants request a signed statement prior to submitting their application), streamlining the process with vet practices (e.g. set up a shared online system or standardized process), or designing an interview for applicants that can identify the most important information
+* Reduce the incidence of red flags by automating some parts of the flagging process (e.g. an insufficient monthly budget) and placing the processing burden back on the applicant before the application reaches PAWS staff (e.g. either by requesting that the applicant attach files with their application); alternatively, early flagging could automatically direct an application to a more experienced staff member who could potentially handle the application more efficiently
 * Focus resources on young and sick cats in the spring and summer months in order to reduce wait times
 * Develop a "smart" online application, that automatically educates the applicant on the cost of pet ownership when the budget is too low
 * Provide applicants with a detailed breakdown of costs for a new pet, and have an adoption counselor go through the itemized list with the applicant to identify how each item could be covered
 * Promote sharing or pooling of resources among adopters (e.g. food, treats and toys) to help them financially
-* Assess the user-friendliness of the online application form on different platforms (eg web vs mobile)
+* Assess the user-friendliness of the online application form on different platforms (eg web vs. mobile)
 * Consider creating programs for families with children to help them complete the adoption process and/or to make adopting an animal more accessible to them
 * Keep on tweeting! (for future analyses it may be interesting to look at tweets about certain topics (a specific animal, request for donations) and specific outcomes (did the animal get adopted? did they receive more donations?)
